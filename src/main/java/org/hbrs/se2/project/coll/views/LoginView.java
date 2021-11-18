@@ -7,10 +7,9 @@ import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.Login.LoginControl;
-import org.hbrs.se2.project.coll.control.Login.LoginResult;
+import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.util.Globals;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * View zur Darstellung der Startseite. Diese zeigt dem Benutzer ein Login-Formular an.
@@ -26,7 +25,7 @@ public class LoginView extends VerticalLayout {
         LoginForm component = new LoginForm();
 
         component.addLoginListener(e -> {
-            LoginResult isAuthenticated = loginControl.authentificate( e.getUsername() , e.getPassword() );
+            LoginResultDTO isAuthenticated = loginControl.authentificate( e.getUsername() , e.getPassword() );
 
             if (isAuthenticated.getResult()) {
                 grabAndSetUserIntoSession();
