@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="Main View + JobAdvertisementView">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="Main View + JobAdvertisementView + gitignore">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,8 +80,8 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.CollApplication">
-    <configuration name="BasicTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.BasicUnitTest.demoTestMethod">
+    <configuration name="BasicUnitTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="SE" />
       <extension name="coverage">
         <pattern>
@@ -90,13 +90,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="org.hbrs.se2.project.coll.test" />
-      <option name="MAIN_CLASS_NAME" value="org.hbrs.se2.project.coll.test.BasicTest" />
+      <option name="MAIN_CLASS_NAME" value="org.hbrs.se2.project.coll.test.BasicUnitTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BasicTest.firstTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BasicUnitTest.demoTestMethod" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="SE" />
       <extension name="coverage">
         <pattern>
@@ -105,48 +105,16 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="org.hbrs.se2.project.coll.test" />
-      <option name="MAIN_CLASS_NAME" value="org.hbrs.se2.project.coll.test.BasicTest" />
-      <option name="METHOD_NAME" value="firstTest" />
+      <option name="MAIN_CLASS_NAME" value="org.hbrs.se2.project.coll.test.BasicUnitTest" />
+      <option name="METHOD_NAME" value="demoTestMethod" />
       <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="BasicTest.firstTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="SE" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="java.org.hbrs.se2.project.coll.test.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="java.org.hbrs.se2.project.coll.test" />
-      <option name="MAIN_CLASS_NAME" value="java.org.hbrs.se2.project.coll.test.BasicTest" />
-      <option name="METHOD_NAME" value="firstTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CollApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="SE" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="org.hbrs.se2.project.coll.CollApplication" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SHORTEN_COMMAND_LINE" value="NONE" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CollApplication (2)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="SE" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="org.hbrs.se2.project.Coll.CollApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="CollApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="SE" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="org.hbrs.se2.project.coll.CollApplication" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.hbrs.se2.project.Coll.CollApplication" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="SHORTEN_COMMAND_LINE" value="NONE" />
       <method v="2">
@@ -154,18 +122,14 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.BasicTest.firstTest" />
-      <item itemvalue="JUnit.BasicTest" />
-      <item itemvalue="JUnit.BasicTest.firstTest (1)" />
-      <item itemvalue="Spring Boot.CollApplication (1)" />
       <item itemvalue="Spring Boot.CollApplication" />
-      <item itemvalue="Spring Boot.CollApplication (2)" />
+      <item itemvalue="JUnit.BasicUnitTest" />
+      <item itemvalue="JUnit.BasicUnitTest.demoTestMethod" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.BasicTest.firstTest (1)" />
-        <item itemvalue="JUnit.BasicTest" />
-        <item itemvalue="JUnit.BasicTest.firstTest" />
+        <item itemvalue="JUnit.BasicUnitTest.demoTestMethod" />
+        <item itemvalue="JUnit.BasicUnitTest" />
         <item itemvalue="JUnit.BasicTest.firstTest (1)" />
         <item itemvalue="JUnit.BasicTest" />
       </list>
@@ -184,7 +148,7 @@
       <workItem from="1637233234949" duration="1256000" />
       <workItem from="1637235497652" duration="6025000" />
       <workItem from="1637241702798" duration="6884000" />
-      <workItem from="1637249617936" duration="401000" />
+      <workItem from="1637249617936" duration="754000" />
     </task>
     <task id="LOCAL-00001" summary="created Branch Stellenausschreibung">
       <created>1637238690955</created>
@@ -235,7 +199,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637249932368</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Main View + JobAdvertisementView + gitignore">
+      <created>1637250058773</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1637250058773</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -273,6 +244,7 @@
     <MESSAGE value="update - undo" />
     <MESSAGE value="basic DTO and view" />
     <MESSAGE value="Main View + JobAdvertisementView" />
-    <option name="LAST_COMMIT_MESSAGE" value="Main View + JobAdvertisementView" />
+    <MESSAGE value="Main View + JobAdvertisementView + gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Main View + JobAdvertisementView + gitignore" />
   </component>
 </project>
