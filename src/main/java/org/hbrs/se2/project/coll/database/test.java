@@ -7,17 +7,17 @@ public class test {
 
     public static void main(String[] args) throws SQLException {
         DriverManager.registerDriver(new org.postgresql.Driver());
-        String url = "jdbc:postgresql://dumbo.inf.h-brs.de/demouser";
+        String url = "jdbc:postgresql://dumbo.inf.h-brs.de/houde2s";
         Properties props = new Properties();
-        props.setProperty("user", "demouser");
-        props.setProperty("password", "demouser");
+        props.setProperty("user", "houde2s");
+        props.setProperty("password", "houde2s");
 
         Connection connection = DriverManager.getConnection(url, props);
         Statement statement = connection.createStatement();
-        ResultSet reuslt = statement.executeQuery("SELECT * FROM bierschema.angebot");
+        ResultSet result = statement.executeQuery("SELECT * FROM collhbrs.col_tab_student");
 
-        while (reuslt.next()) {
-            System.out.println("Kneipe: " + reuslt.getString("biersorte"));
+        while (result.next()) {
+            System.out.println("Kneipe: " + result.getString("biersorte"));
         }
     }
 }
