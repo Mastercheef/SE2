@@ -1,4 +1,4 @@
-package org.hbrs.se2.project.coll.control.Login;
+package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.dao.UserDAO;
 import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
