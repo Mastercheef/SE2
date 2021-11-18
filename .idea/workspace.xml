@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="basic DTO and view" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="jenkins" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/views/MainView.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/CollApplication.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/package-lock.json" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="myId2FirstActivated">
+      <map>
+        <entry key="JPA Structure" value="true" />
+      </map>
+    </option>
+    <option name="myId2Visible">
+      <map>
+        <entry key="JPA Structure" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="downloadAnnotationsAutomatically" value="true" />
+        <option name="downloadDocsAutomatically" value="true" />
+        <option name="downloadSourcesAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="215GxdzWIRFwjx42NwLcmiQxhav" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_MARK_IGNORED_FILES_AS_EXCLUDED" value="true" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/src/test/java" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.importing" />
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.CollApplication">
+    <configuration name="BasicTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.hbrs.se2.project.coll.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.hbrs.se2.project.coll.test" />
+      <option name="MAIN_CLASS_NAME" value="org.hbrs.se2.project.coll.test.BasicTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BasicTest.firstTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.hbrs.se2.project.coll.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.hbrs.se2.project.coll.test" />
+      <option name="MAIN_CLASS_NAME" value="org.hbrs.se2.project.coll.test.BasicTest" />
+      <option name="METHOD_NAME" value="firstTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BasicTest.firstTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="java.org.hbrs.se2.project.coll.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="java.org.hbrs.se2.project.coll.test" />
+      <option name="MAIN_CLASS_NAME" value="java.org.hbrs.se2.project.coll.test.BasicTest" />
+      <option name="METHOD_NAME" value="firstTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CollApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="SE" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.hbrs.se2.project.coll.CollApplication" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SHORTEN_COMMAND_LINE" value="NONE" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CollApplication (2)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="SE" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.hbrs.se2.project.Coll.CollApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CollApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="SE" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.hbrs.se2.project.coll.CollApplication" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SHORTEN_COMMAND_LINE" value="NONE" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.BasicTest.firstTest" />
+      <item itemvalue="JUnit.BasicTest" />
+      <item itemvalue="JUnit.BasicTest.firstTest (1)" />
+      <item itemvalue="Spring Boot.CollApplication (1)" />
+      <item itemvalue="Spring Boot.CollApplication" />
+      <item itemvalue="Spring Boot.CollApplication (2)" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.BasicTest.firstTest (1)" />
+        <item itemvalue="JUnit.BasicTest" />
+        <item itemvalue="JUnit.BasicTest.firstTest" />
+        <item itemvalue="JUnit.BasicTest.firstTest (1)" />
+        <item itemvalue="JUnit.BasicTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="" />
+      <created>1637223783047</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1637223783047</updated>
+      <workItem from="1637223785363" duration="1460000" />
+      <workItem from="1637225285232" duration="6435000" />
+      <workItem from="1637233234949" duration="1256000" />
+      <workItem from="1637235497652" duration="6025000" />
+      <workItem from="1637241702798" duration="6884000" />
+    </task>
+    <task id="LOCAL-00001" summary="created Branch Stellenausschreibung">
+      <created>1637238690955</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1637238690955</updated>
+    </task>
+    <task id="LOCAL-00002" summary="basic Structure">
+      <created>1637241589442</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1637241589442</updated>
+    </task>
+    <task id="LOCAL-00003" summary="update">
+      <created>1637241863675</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1637241863675</updated>
+    </task>
+    <task id="LOCAL-00004" summary="update - undo">
+      <created>1637243680141</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1637243680141</updated>
+    </task>
+    <task id="LOCAL-00005" summary="update - undo">
+      <created>1637243824570</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1637243824570</updated>
+    </task>
+    <task id="LOCAL-00006" summary="update - undo">
+      <created>1637243968648</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1637243968648</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/DatabaseDevelopement" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="created Branch Stellenausschreibung" />
+    <MESSAGE value="basic Structure" />
+    <MESSAGE value="update" />
+    <MESSAGE value="update - undo" />
+    <MESSAGE value="basic DTO and view" />
+    <option name="LAST_COMMIT_MESSAGE" value="basic DTO and view" />
+  </component>
+</project>
