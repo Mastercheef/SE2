@@ -1,5 +1,7 @@
 package org.hbrs.se2.project.coll.util;
 
+import com.vaadin.flow.component.Component;
+
 public class Globals {
     public static String CURRENT_USER = "current_User";
 
@@ -16,12 +18,13 @@ public class Globals {
 
     public static class Roles {
         public static final String ADMIN = "admin";
-        public static final String USER = "user";
+        public static final String STUDENT = "student";
+
     }
 
     public static class Errors {
         public static final String NOUSERFOUND = "nouser";
-        public static final String SQLERROR = "sql";
+        public static final String SQLERRO = "sql";
         public static final String DATABASE = "database";
     }
 
