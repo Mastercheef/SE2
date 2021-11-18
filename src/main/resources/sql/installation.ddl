@@ -1,15 +1,4 @@
--- *********************************************
--- * Standard SQL generation                   *
--- *-------------------------------------------*
--- * Generator date:  Apr 14 2003              *
--- * Generation date: Tue Nov 16 16:54:36 2021 *
--- *********************************************
-
-
--- Database Section
--- ________________
-
-create database collhbrs;
+-- fbehri2s, 18.11.2021
 
 
 -- Drop Section
@@ -74,6 +63,7 @@ create table col_tab_contact_person (
      constraint col_un_cp_company_id unique (company_id));
 
 create table col_tab_user (
+     password varchar(20) not null,
      phone_number varchar(12) not null,
      address_id varchar(8) not null,
      salutation varchar(10) not null,
