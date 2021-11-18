@@ -1,6 +1,6 @@
-package org.hbrs.se2.project.coll.control.Login;
+package org.hbrs.se2.project.coll.dtos;
 
-public class LoginResult {
+public class LoginResultDTO {
     private boolean result;
     private String reason;
 

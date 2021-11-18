@@ -1,6 +1,7 @@
-package org.hbrs.se2.project.coll.control.Login;
+package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.dao.UserDAO;
+import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.springframework.stereotype.Component;
 
@@ -10,8 +11,8 @@ public class LoginControl {
 
     private UserDTO userDTO = null;
 
-    public LoginResult authentificate(String username, String password ) {
-        LoginResult authentificationResult = new LoginResult();
+    public LoginResultDTO authentificate(String username, String password ) {
+        LoginResultDTO authentificationResult = new LoginResultDTO();
 
         // User wird per SQL ausgelesen
         this.userDTO = this.getUser( authentificationResult, username , password );
@@ -24,7 +25,7 @@ public class LoginControl {
 
     }
 
-    private UserDTO getUser( LoginResult result, String username , String password ) {
+    private UserDTO getUser(LoginResultDTO result, String username , String password ) {
         UserDTO userTmp;
         UserDAO userDAO = new UserDAO();
         try {
