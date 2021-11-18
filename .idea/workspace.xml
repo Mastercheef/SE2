@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="Main View + JobAdvertisementView + gitignore">
+    <list default="true" id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="created test branch + first test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/hbrs/se2/project/coll/test/BasicUnitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/hbrs/se2/project/coll/test/BasicUnitTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +149,7 @@
       <workItem from="1637233234949" duration="1256000" />
       <workItem from="1637235497652" duration="6025000" />
       <workItem from="1637241702798" duration="6884000" />
-      <workItem from="1637249617936" duration="754000" />
+      <workItem from="1637249617936" duration="1545000" />
     </task>
     <task id="LOCAL-00001" summary="created Branch Stellenausschreibung">
       <created>1637238690955</created>
@@ -206,7 +207,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637250058773</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="created test branch + first test">
+      <created>1637250527601</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1637250527601</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -245,6 +253,7 @@
     <MESSAGE value="basic DTO and view" />
     <MESSAGE value="Main View + JobAdvertisementView" />
     <MESSAGE value="Main View + JobAdvertisementView + gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Main View + JobAdvertisementView + gitignore" />
+    <MESSAGE value="created test branch + first test" />
+    <option name="LAST_COMMIT_MESSAGE" value="created test branch + first test" />
   </component>
 </project>
