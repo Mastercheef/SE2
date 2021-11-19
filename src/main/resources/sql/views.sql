@@ -9,7 +9,7 @@ drop view col_view_student_profile;
 -- ____________
 
 create view col_view_student_profile as
-	select u.salutation, u.title, u.first_name, u.surname, u.mail_address, u.phone_number,
+	select u.user_id, u.salutation, u.title, u.first_name, u.surname, u.mail_address, u.phone_number,
        		a.postal_code, a.city, a.countrie, a.street, a.house_number
 	from collhbrs.col_tab_user u
 	    inner join collhbrs.col_tab_address a on u.address_id = a.address_id
