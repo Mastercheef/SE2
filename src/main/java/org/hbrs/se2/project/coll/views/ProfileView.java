@@ -12,6 +12,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 
 
 //TODO: Diese Seite sollte nur verfügbar sein, wenn man eingeloggt ist.
@@ -19,6 +20,8 @@ import org.hbrs.se2.project.coll.util.Globals;
 @Route(value = "profile", layout = MainLayout.class)
 @PageTitle("Profile")
 public class ProfileView extends VerticalLayout {
+
+    private StudentUserDTO profileDTO;
 
     Label firstname     = new Label("Vorname:");
     Label lfirstname    = new Label("Max");

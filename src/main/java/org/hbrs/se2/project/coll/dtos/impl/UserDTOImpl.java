@@ -1,7 +1,11 @@
 package org.hbrs.se2.project.coll.dtos.impl;
 
 //import org.hbrs.se2.project.coll.dtos.RolleDTO;
+import org.hbrs.se2.project.coll.dtos.RoleDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+
+import java.util.Date;
+import java.util.List;
 
 //import java.util.List;
 
@@ -10,7 +14,14 @@ public class UserDTOImpl implements UserDTO {
     private int id;
     private String firstname;
     private String lastname;
-    // private List<RolleDTO> roles;
+    private String graduation;
+    private Date dateOfBirth;
+    private String address;
+    private String email;
+    private String phone;
+    private String password;
+    private String userid;
+    private List<RoleDTO> roles;
 
     public void setId(int id) {
         this.id = id;
@@ -24,10 +35,21 @@ public class UserDTOImpl implements UserDTO {
         this.lastname = lastname;
     }
 
-   /* public void setRoles(List<RolleDTO> roles) {
+    public void setDateOfBirth(Date dateOfBirth) { this.dateOfBirth = dateOfBirth; }
+
+    public void setAddress(String address) { this.address = address; }
+
+    public void setEmail(String email) { this.email = email; }
+
+    public void setPassword(String password) { this.password = password; }
+
+    public void setUserId(String userid) { this.userid = userid; }
+
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public void setRoles(List<RoleDTO> roles) {
         this.roles = roles;
     }
-    */
 
     @Override
     public int getId() {
@@ -44,12 +66,29 @@ public class UserDTOImpl implements UserDTO {
         return this.lastname;
     }
 
-    /*
     @Override
-    public List<RolleDTO> getRoles() {
+    public Date getDateOfBirth() { return this.dateOfBirth; }
+
+    @Override
+    public String getAddress() { return this.address; }
+
+    @Override
+    public String getEmail() { return this.email; }
+
+    @Override
+    public String getPhone() { return this.phone; }
+
+    @Override
+    public String getPassword() { return this.password; }
+
+    @Override
+    public String getUserId() { return this.userid; }
+
+    @Override
+    public List<RoleDTO> getRoles() {
         return this.roles;
     }
-    */
+
     @Override
     public String toString() {
         return "UserDTOImpl{" +

@@ -1,12 +1,20 @@
 package org.hbrs.se2.project.coll.dtos;
 
-//import org.hbrs.se2.project.hellocar.entities.Rolle;
+import org.hbrs.se2.project.coll.entities.Role;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 public interface UserDTO {
-    int getId();
-    String getFirstName();
-    String getLastName();
-    //public List<RolleDTO> getRoles();
+    public int getId();
+    public String getFirstName();
+    public String getLastName();
+    public String getAddress();
+    public String getPhone();
+    public Date getDateOfBirth();
+    public String getEmail();
+    public String getPassword();
+    public String getUserId();
+    public List<RoleDTO> getRoles();
+
 }
