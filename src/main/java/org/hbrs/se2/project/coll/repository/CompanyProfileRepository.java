@@ -1,6 +1,7 @@
 package org.hbrs.se2.project.coll.repository;
 
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
+import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.entities.CompanyProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,8 +18,8 @@ public interface CompanyProfileRepository extends JpaRepository<CompanyProfile, 
    // CompanyProfileDTO findCompanyProfileByCompanyName(String name);
 
 
-   // CompanyProfileDTO findUserByUserID(String ID);
-
+    //CompanyProfileDTO findCompanyById(int ID);
+    CompanyProfileDTO findCompanyProfileByID ( int id );
 }
 
 

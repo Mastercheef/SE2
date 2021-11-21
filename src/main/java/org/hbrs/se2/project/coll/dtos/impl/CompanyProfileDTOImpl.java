@@ -1,10 +1,12 @@
 package org.hbrs.se2.project.coll.dtos.impl;
 
+import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
+
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.List;
 
-public class CompanyProfileDTOImpl {
+public class CompanyProfileDTOImpl implements CompanyProfileDTO {
 
     private int    ID;
     private String companyName;

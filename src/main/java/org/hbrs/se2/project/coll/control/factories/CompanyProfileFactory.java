@@ -17,7 +17,6 @@ public class CompanyProfileFactory {
         companyProfile.setTelephone( companyProfileDTO.getTelephone() );
         companyProfile.setDescription( companyProfileDTO.getDescription() );
         companyProfile.setWebsite( companyProfileDTO.getWebsite());
-
         // TODO: Anpassen
         //companyProfile.setOffers( companyProfileDTO.getOffers() );
 

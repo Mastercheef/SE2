@@ -22,16 +22,15 @@ public class CompanyProfileControl {
     public void createCompanyProfile(CompanyProfileDTO companyProfileDTO, UserDTO userDTO) {
 
         // Erzeuge neue CompanyProfile-Entity über Factory
-        CompanyProfile companyProfileEntity =
-                CompanyProfileFactory.createCompanyProfile(companyProfileDTO, userDTO);
+        CompanyProfile companyProfileEntity = CompanyProfileFactory.createCompanyProfile(companyProfileDTO, userDTO);
 
         // Abspeicherung der Entity in DB
         this.repository.save(companyProfileEntity);
     }
-
-}
 /*
     public CompanyProfileDTO findCompanyProfileByCompanyName() {
         return repository.findCompanyProfileByCompanyName()
     }*/
+
+}
 

@@ -100,7 +100,7 @@ public class CompanyProfile {
     public void setOffers(List<StellenausschreibungDTO> dto) {
         this.offers = dto;
     }*/
-
+/*
     @Override
     public boolean equals(Object o) {
 
@@ -122,5 +122,5 @@ public class CompanyProfile {
     @Override
     public int hashCode() {
         return Objects.hash(ID, companyName, address, telephone, email, website, description);//, offers);
-    }
+    }*/
 }
