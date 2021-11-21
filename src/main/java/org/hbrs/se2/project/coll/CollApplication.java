@@ -1,4 +1,4 @@
-package org.hbrs.se2.project.Coll;
+package org.hbrs.se2.project.coll;
 
 
 import org.springframework.boot.SpringApplication;
