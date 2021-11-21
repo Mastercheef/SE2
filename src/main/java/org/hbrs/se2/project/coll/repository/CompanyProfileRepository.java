@@ -1,5 +1,6 @@
 package org.hbrs.se2.project.coll.repository;
 
+import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.entities.CompanyProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,24 +10,15 @@ import java.util.List;
 @Component
 public interface CompanyProfileRepository extends JpaRepository<CompanyProfile, Integer> {
 
-/*
-    @Query(" SELECT c.companyName, c.address, c.telephone, c.email, c.website, c.description, c.offers" +
-            " FROM CompanyProfile c, User u" +
-            " WHERE c.ID = u.id")
+    // TODO: Fehler beseitigen
+    /* Ja */
+    //List<CompanyProfileDTO> getUserByOccupation(String occupation );
+    //List<CompanyProfileDTO>
+   // CompanyProfileDTO findCompanyProfileByCompanyName(String name);
 
 
+   // CompanyProfileDTO findUserByUserID(String ID);
 
-
-    @Query("  SELECT c.brand, c.model, c.price, u.firstName, u.lastName" +
-            " FROM Car c, User u " +
-            " WHERE  c.userid = u.id ")
-    List<Object[]> findAllCarsAndTheirUsers();
-
-    @Query("  SELECT c.brand, c.model, c.description, c.date, c.phone, c.price " +
-            " FROM Car c ")
-    List<CarDTO> findAllCarsWithMostImportantValues();
-
-    List<CarDTO> findCarsByDateIsNotNull();*/
 }
 
 

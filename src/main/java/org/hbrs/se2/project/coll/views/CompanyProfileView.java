@@ -16,7 +16,7 @@ import org.hbrs.se2.project.coll.util.Globals;
 
 //TODO: Diese Seite sollte nur verfügbar sein, wenn man eingeloggt ist.
 //TODO: UserDTO für Daten auslesen und in Textfelder einfüllen
-@Route(value = "profile", layout = MainLayout.class)
+@Route(value = "companyprofile", layout = MainLayout.class)
 @PageTitle("Profile")
 public class CompanyProfileView extends VerticalLayout {
 

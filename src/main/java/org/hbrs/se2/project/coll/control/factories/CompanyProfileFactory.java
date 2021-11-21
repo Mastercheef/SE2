@@ -13,15 +13,16 @@ public class CompanyProfileFactory {
         // Übernehme Grundparameter aus dem DTO, die in der UI eingegeben wurden:
         companyProfile.setCompanyName( companyProfileDTO.getCompanyName() );
         companyProfile.setAddress( companyProfileDTO.getAddress() );
-        companyProfile.setEmail( companyProfileDTO.getAddress() );
+        companyProfile.setEmail( companyProfileDTO.getEmail() );
         companyProfile.setTelephone( companyProfileDTO.getTelephone() );
         companyProfile.setDescription( companyProfileDTO.getDescription() );
         companyProfile.setWebsite( companyProfileDTO.getWebsite());
+
         // TODO: Anpassen
         //companyProfile.setOffers( companyProfileDTO.getOffers() );
 
         // TODO: Ändern
-        companyProfile.setID( userDTO.getId() );
+        companyProfile.setID( companyProfile.getID() );
 
         return companyProfile;
     }
