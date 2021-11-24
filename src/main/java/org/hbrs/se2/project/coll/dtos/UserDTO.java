@@ -11,7 +11,7 @@ public interface UserDTO {
     public String getLastName();
     public String getAddress();
     public String getPhone();
-    public Date getDateOfBirth();
+    public LocalDate getDateOfBirth();
     public String getEmail();
     public String getPassword();
     public String getUserId();
