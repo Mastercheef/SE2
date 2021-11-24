@@ -7,30 +7,28 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table( name= "companyprofile", schema = "coll@hbrs")
+@Table( name= "col_tab_company", schema = "collhbrs")
 public class CompanyProfile {
-    private int    ID;
+    private String    ID;
     private String companyName;
     private String address;
-    private String telephone;
-    private String email;
     private String website;
     private String description;
     private List<StellenausschreibungDTO> offers;
 
     @Id
     @GeneratedValue
-    @Column(name = "id")
-    public int getID() {
+    @Column(name = "company_id")
+    public String getID() {
         return ID;
     }
 
-    public void setID(int id) {
+    public void setID(String id) {
         this.ID = id;
     }
 
     @Basic
-    @Column(name = "Company Name")
+    @Column(name = "company_name")
     public String getCompanyName() {
         return companyName;
     }
@@ -40,7 +38,7 @@ public class CompanyProfile {
     }
 
     @Basic
-    @Column(name = "Address")
+    @Column(name = "address_id")
     public String getAddress() {
         return address;
     }
@@ -50,27 +48,7 @@ public class CompanyProfile {
     }
 
     @Basic
-    @Column(name = "Phone number")
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String phone) {
-        this.telephone = phone;
-    }
-
-    @Basic
-    @Column(name = "E-Mail")
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Basic
-    @Column(name = "Website")
+    @Column(name = "homepage")
     public String getWebsite() {
         return website;
     }
@@ -80,7 +58,7 @@ public class CompanyProfile {
     }
 
     @Basic
-    @Column(name = "Description")
+    @Column(name = "company_description")
     public String getDescription() {
         return description;
     }

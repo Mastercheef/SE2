@@ -17,9 +17,9 @@ public interface CompanyProfileRepository extends JpaRepository<CompanyProfile, 
     //List<CompanyProfileDTO>
    // CompanyProfileDTO findCompanyProfileByCompanyName(String name);
 
-
     //CompanyProfileDTO findCompanyById(int ID);
-    CompanyProfileDTO findCompanyProfileByID ( int id );
+
+    CompanyProfileDTO findCompanyProfileByID ( String id );
 }
 
 

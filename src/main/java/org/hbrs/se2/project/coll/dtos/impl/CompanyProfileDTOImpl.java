@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CompanyProfileDTOImpl implements CompanyProfileDTO {
 
-    private int    ID;
+    private String    ID;
     private String companyName;
     private String address;
     private String telephone;
@@ -20,8 +20,8 @@ public class CompanyProfileDTOImpl implements CompanyProfileDTO {
 //    @OneToMany
     private List<StellenausschreibungDTO>  offers;
 
-    public int      getID() { return this.ID; }
-    public void     setID(int id) { this.ID = id; }
+    public String      getID() { return this.ID; }
+    public void     setID(String id) { this.ID = id; }
 
     public String   getCompanyName() { return this.companyName; }
     public void     setCompanyName(String name) { this.companyName = name; }

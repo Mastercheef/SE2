@@ -8,12 +8,10 @@ import java.util.List;
 
 public interface CompanyProfileDTO {
 
-    public int      getID();
+    public String      getID();
 
     public String   getCompanyName();
     public String   getAddress();
-    public String   getTelephone();
-    public String   getEmail();
     public String   getWebsite();
     public String   getDescription();
 

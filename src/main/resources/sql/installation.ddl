@@ -50,8 +50,8 @@ create table col_tab_address (
      address_id varchar(8) not null default nextval('col_seq_address_id'),
      postal_code varchar(5) not null,
      city varchar(16) not null,
-     countrie varchar(16) not null,
-     street varchar(12) not null,
+     country varchar(16) not null,
+     street varchar(16) not null,
      house_number varchar(4) not null,
      constraint col_pk_address_id primary key (address_id));
 

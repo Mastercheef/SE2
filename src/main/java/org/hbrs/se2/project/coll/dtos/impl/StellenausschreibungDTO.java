@@ -14,9 +14,9 @@ public interface StellenausschreibungDTO {
     String getJobDescription();
 
     String getRequirementForApplicants();
-    String getBusinessAdress();
+    String getBusinessAddress();
     boolean getTemporaryEmployment();
     String getDateOfTemporaryEmployment();
     String getContactPerson();
-    String getEmailAdress();
+    String getEmailAddress();
 }
