@@ -15,11 +15,11 @@ public interface CompanyProfileRepository extends JpaRepository<CompanyProfile, 
     /* Ja */
     //List<CompanyProfileDTO> getUserByOccupation(String occupation );
     //List<CompanyProfileDTO>
-   // CompanyProfileDTO findCompanyProfileByCompanyName(String name);
 
     //CompanyProfileDTO findCompanyById(int ID);
 
-    CompanyProfileDTO findCompanyProfileByID ( String id );
+    CompanyProfileDTO findCompanyProfileByID ( int id );
+    CompanyProfileDTO findCompanyProfileByCompanyName(String name);
 }
 
 

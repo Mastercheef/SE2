@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="Added the Class JDBCConnection from carlook to the project. Implemented userDAO based on carlooks Version.">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/sql/testdata.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/hbrs/se2/project/coll/test/CompanyProfileRepositoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    <list default="true" id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="SELECT col_tab_company (findCompanyProfileByID) is running now with JPA.">
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__antlr_antlr_2_7_7.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_classic_1_2_3.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_core_1_2_3.xml" beforeDir="false" />
@@ -231,25 +228,24 @@
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_webjars_npm_vaadin__vaadin_mobile_drag_drop_1_0_0.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_xmlunit_xmlunit_core_2_7_0.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_27.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_11_57__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_11_57__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_11_57__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_11_57__Changes_1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_14_20__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_14_20__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_16_33__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_16_33__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/control/factories/CompanyProfileFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/control/factories/CompanyProfileFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/dao/UserDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/dtos/CompanyProfileDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/dtos/CompanyProfileDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/dtos/impl/CompanyProfileDTOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/dtos/impl/CompanyProfileDTOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/dtos/impl/StellenausschreibungDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/dtos/impl/StellenausschreibungDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/dtos/impl/StellenausschreibungDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/dtos/StellenausschreibungDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/dtos/impl/StellenausschreibungDTOimpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/dtos/impl/StellenausschreibungDTOimpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/CompanyProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/CompanyProfile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/repository/CompanyProfileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/repository/CompanyProfileRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/util/Globals.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/util/Globals.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/services/db/JDBCConnection.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/services/db/exceptions/DatabaseLayerException.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/sql/installation.ddl" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql/installation.ddl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sql/views.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql/views.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sql/testdata.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql/testdata.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/hbrs/se2/project/coll/test/CompanyProfileRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/hbrs/se2/project/coll/test/CompanyProfileRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -412,19 +408,19 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.BasicUnitTest.demoTestMethod" />
-      <item itemvalue="Spring Boot.CollApplication" />
-      <item itemvalue="Spring Boot.CollApplication (1)" />
       <item itemvalue="Database Script.installation.ddl" />
       <item itemvalue="Database Script.testdata.sql" />
+      <item itemvalue="JUnit.BasicUnitTest.demoTestMethod" />
       <item itemvalue="JUnit.CompanyProfileRepositoryTest.readCompany" />
       <item itemvalue="JUnit.CompanyProfileRepositoryTest" />
+      <item itemvalue="Spring Boot.CollApplication" />
+      <item itemvalue="Spring Boot.CollApplication (1)" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.CompanyProfileRepositoryTest" />
-        <item itemvalue="JUnit.CompanyProfileRepositoryTest.readCompany" />
         <item itemvalue="Database Script.testdata.sql" />
+        <item itemvalue="JUnit.CompanyProfileRepositoryTest.readCompany" />
         <item itemvalue="Database Script.installation.ddl" />
         <item itemvalue="JUnit.BasicUnitTest.demoTestMethod" />
       </list>
@@ -448,7 +444,8 @@
       <workItem from="1637429737374" duration="159000" />
       <workItem from="1637521813813" duration="592000" />
       <workItem from="1637666948314" duration="30000" />
-      <workItem from="1637750300948" duration="6438000" />
+      <workItem from="1637750300948" duration="7525000" />
+      <workItem from="1637762689734" duration="4180000" />
     </task>
     <task id="LOCAL-00001" summary="created Branch Stellenausschreibung">
       <created>1637238690955</created>
@@ -520,7 +517,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637317270816</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="SELECT col_tab_company (findCompanyProfileByID) is running now with JPA.">
+      <created>1637757806287</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1637757806288</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -561,6 +565,7 @@
     <MESSAGE value="Main View + JobAdvertisementView + gitignore" />
     <MESSAGE value="created test branch + first test" />
     <MESSAGE value="Added the Class JDBCConnection from carlook to the project. Implemented userDAO based on carlooks Version." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added the Class JDBCConnection from carlook to the project. Implemented userDAO based on carlooks Version." />
+    <MESSAGE value="SELECT col_tab_company (findCompanyProfileByID) is running now with JPA." />
+    <option name="LAST_COMMIT_MESSAGE" value="SELECT col_tab_company (findCompanyProfileByID) is running now with JPA." />
   </component>
 </project>

@@ -1,6 +1,6 @@
 package org.hbrs.se2.project.coll.entities;
 
-import org.hbrs.se2.project.coll.dtos.impl.StellenausschreibungDTO;
+import org.hbrs.se2.project.coll.dtos.StellenausschreibungDTO;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,21 +9,28 @@ import java.util.Objects;
 @Entity
 @Table( name= "col_tab_company", schema = "collhbrs")
 public class CompanyProfile {
-    private String    ID;
+    private int ID;
     private String companyName;
-    private String address;
+    private int address;
+    private int faxNumber;
     private String website;
     private String description;
     private List<StellenausschreibungDTO> offers;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(
+            generator = "company_id"
+    )
+    @SequenceGenerator(
+            name = "company_id",
+            sequenceName = "collhbrs.col_seq_company_id"
+    )
     @Column(name = "company_id")
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
-    public void setID(String id) {
+    public void setID(int id) {
         this.ID = id;
     }
 
@@ -39,12 +46,22 @@ public class CompanyProfile {
 
     @Basic
     @Column(name = "address_id")
-    public String getAddress() {
+    public int getAddress() {
         return address;
     }
 
-    public void setAddress(String addr) {
+    public void setAddress(int addr) {
         this.address = addr;
+    }
+
+    @Basic
+    @Column(name = "fax_number")
+    public int getFaxNumber() {
+        return faxNumber;
+    }
+
+    public void setFaxNumber(int faxNumber) {
+        this.faxNumber = faxNumber;
     }
 
     @Basic

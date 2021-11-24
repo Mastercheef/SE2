@@ -1,6 +1,8 @@
 package org.hbrs.se2.project.coll.dtos.impl;
 
 
+import org.hbrs.se2.project.coll.dtos.StellenausschreibungDTO;
+
 public class StellenausschreibungDTOimpl implements StellenausschreibungDTO {
 
 
