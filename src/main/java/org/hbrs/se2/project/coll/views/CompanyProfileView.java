@@ -8,20 +8,37 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.hbrs.se2.project.coll.control.CompanyProfileControl;
+import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 //TODO: Diese Seite sollte nur verfügbar sein, wenn man eingeloggt ist.
 //TODO: UserDTO für Daten auslesen und in Textfelder einfüllen
 @Route(value = "companyprofile", layout = MainLayout.class)
 @PageTitle("Profile")
-public class CompanyProfileView extends VerticalLayout {
+public class CompanyProfileView extends VerticalLayout implements HasUrlParameter<String> {
+
+    @Autowired
+    private CompanyProfileControl profileControl;
+
+    private CompanyProfileDTO profileDTO;
+
+    @Override
+    public void setParameter(BeforeEvent event,
+                             String parameter) {
+        profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
+    }
 
     Label firstname     = new Label("Vorname:");
-    Label lfirstname    = new Label("Max");
+    //Label lfirstname    = new Label("Max");
+    Label lfirstname    = new Label(profileDTO.getCompanyName());
     Label lastname      = new Label("Nachname:");
     Label llastname     = new Label("Mustermann");
     Label occupation    = new Label("Beruf:");
