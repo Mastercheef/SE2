@@ -58,7 +58,7 @@ create table col_tab_address (
 create table col_tab_contact_person (
      user_id bigint not null,
      company_id bigint not null,
-     role varchar(16) not null,
+     role varchar(16),
      constraint col_pk_cp_user_id primary key (user_id));
 
 create table col_tab_user (
@@ -74,23 +74,35 @@ create table col_tab_user (
      constraint col_pk_u_user_id primary key (user_id));
 
 create table col_tab_job_advertisement (
+     temporary_employment boolean not null,
+     type_of_employment varchar(16) not null,
+     working_hours numeric(2) not null default 0,
+     requirements varchar(1024),
+     address_id bigint not null,
+     start_of_work varchar(16),
+     end_of_work varchar(16),
      contact_person_id bigint not null,
-     job_description varchar(1024) not null,
+     job_description varchar(1024),
      job_title varchar(64) not null,
      student_id bigint not null,
      advertisement_id bigint not null default nextval('col_seq_advertisement_id'),
      constraint col_pk_advertisement_id primary key (advertisement_id));
 
 create table col_tab_student (
+     student_description varchar(2048),
+     website varchar(32),
+     graduation varchar(32) not null,
+     skills varchar(1024),
+     interests varchar(512),
      user_id bigint not null,
-     subject_field varchar(16) not null,
+     subject_field varchar(16),
      constraint col_pk_s_user_id primary key (user_id));
 
 create table col_tab_company (
      company_description varchar(1024) not null,
      company_id bigint not null default nextval('col_seq_company_id'),
-     homepage varchar(32) not null,
-     fax_number varchar(12) not null,
+     homepage varchar(32),
+     fax_number varchar(12),
      company_name varchar(32) not null,
      address_id bigint not null,
      constraint col_pk_company_id primary key (company_id));
@@ -122,6 +134,11 @@ alter table col_tab_job_advertisement
     add constraint col_fk_contact_person_id
     foreign key (contact_person_id)
     references col_tab_contact_person;
+
+alter table col_tab_job_advertisement
+    add constraint col_fk_j_address_id
+    foreign key (address_id)
+    references col_tab_address;
 
 alter table col_tab_student
     add constraint col_fk_s_user_id
