@@ -8,47 +8,60 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.hbrs.se2.project.coll.control.StudentProfileControl;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 //TODO: Diese Seite sollte nur verfügbar sein, wenn man eingeloggt ist.
 //TODO: UserDTO für Daten auslesen und in Textfelder einfüllen
 @Route(value = "profile", layout = MainLayout.class)
 @PageTitle("Profile")
-public class ProfileView extends VerticalLayout {
+public class StudentProfileView extends VerticalLayout implements HasUrlParameter<String> {
+
+    @Autowired
+    private StudentProfileControl profileControl;
 
     private StudentUserDTO profileDTO;
 
+    @Override
+    public void setParameter(BeforeEvent event,
+                             String parameter) {
+        profileDTO = profileControl.loadProfileDataByUserId(parameter);
+    }
+
     Label firstname     = new Label("Vorname:");
-    Label lfirstname    = new Label("Max");
+    Label lfirstname    = new Label(profileDTO.getFirstName());
     Label lastname      = new Label("Nachname:");
-    Label llastname     = new Label("Mustermann");
+    Label llastname     = new Label(profileDTO.getLastName());
     Label occupation    = new Label("Beruf:");
-    Label loccupation   = new Label("Student");
+    Label loccupation   = new Label(profileDTO.getGraduation());
     Label birthdate     = new Label("Geburtsdatum:");
-    Label lbirthdate    = new Label("01.01.1990");
+    Label lbirthdate    = new Label(profileDTO.getDateOfBirth().toString());
     Label address       = new Label("Adresse:");
-    Label laddress      = new Label("Musterstrasse 1, 12345 Musterstadt");
+    Label laddress      = new Label(profileDTO.getAddress());
     Label skills        = new Label("Skills:");
-    Label lskills       = new Label("HTML, CSS, JavaScript, C++");
+    Label lskills       = new Label(profileDTO.getSkills());
     Label email         = new Label("E-Mail:");
-    Label lemail        = new Label("max.mustermann@googlemail.com");
+    Label lemail        = new Label(profileDTO.getEmail());
     Label number        = new Label("Telefon:");
-    Label lnumber       = new Label("0173/11111111");
+    Label lnumber       = new Label(profileDTO.getPhone());
     Label interests     = new Label("Interessen:");
-    Label linterests    = new Label("Klettern, Kochen, Bier");
+    Label linterests    = new Label(profileDTO.getInterests());
     Label website       = new Label("Webseite:");
-    Label lwebsite      = new Label("http://www.maxmusterwebseite.de");
+    Label lwebsite      = new Label(profileDTO.getWebsite());
     Label aboutme       = new Label("Über mich:");
-    Label laboutme      = new Label("Ich kann alles. Ruf mich an, baby");
+    Label laboutme      = new Label(profileDTO.getDescription());
 
     Div   div           = new Div();
 
-    public ProfileView() {
+    public StudentProfileView() {
 
         //TODO: Methods for grabbing UserDTO data
 

@@ -13,7 +13,7 @@ import org.hbrs.se2.project.coll.util.Globals;
 
 @Route(value = "profile_edit", layout = MainLayout.class)
 @PageTitle("Edit your Profile")
-public class ProfileEditView extends VerticalLayout {
+public class StudentProfileEditView extends VerticalLayout {
 
     Label       firstname     = new Label("Vorname:");
     Label       lastname      = new Label("Nachname:");
@@ -42,7 +42,7 @@ public class ProfileEditView extends VerticalLayout {
 
     // TODO: Profilbild
 
-    public ProfileEditView() {
+    public StudentProfileEditView() {
         // TODO: get real Data as placeholders from UserDTO
         lfirstname.setPlaceholder("Max");
         llastname.setPlaceholder("Mustermann");
