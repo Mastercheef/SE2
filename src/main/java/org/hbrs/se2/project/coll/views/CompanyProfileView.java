@@ -62,7 +62,18 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     Div   div           = new Div();
 
-    public CompanyProfileView() {
+    @Override
+    public void setParameter(BeforeEvent event,
+                             String parameter) {
+        if (parameter!="") {
+            profileDTO = profileControl.findCompanyProfileByCompanyID(Integer.parseInt(parameter));
+            System.out.println(profileDTO.getCompanyName());
+            lfirstname    = new Label(profileDTO.getCompanyName());
+            createProfile();
+        }
+    }
+
+    public void createProfile() {
 
         //TODO: Methods for grabbing UserDTO data
 
@@ -123,6 +134,13 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         div.add(h2, profileImage, hfirstname, hlastname, hoccupation, hbirthdate, haddress,
                 hskills, hemail, hnumber, hinterests, hwebsite, haboutme, button);
         add(div);
+    }
+
+
+
+    public CompanyProfileView() {
+
+
     }
 
 }

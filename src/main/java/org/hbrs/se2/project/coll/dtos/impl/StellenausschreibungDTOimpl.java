@@ -1,6 +1,8 @@
 package org.hbrs.se2.project.coll.dtos.impl;
 
 
+import org.hbrs.se2.project.coll.dtos.StellenausschreibungDTO;
+
 public class StellenausschreibungDTOimpl implements StellenausschreibungDTO {
 
 
@@ -12,11 +14,11 @@ public class StellenausschreibungDTOimpl implements StellenausschreibungDTO {
     private String workingLocation;
     private String jobDescription;
     private String requirementForApplicants;
-    private String businessAdress;
+    private String businessAddress;
     private boolean temporaryEmployment;
     private String dateOfTemporaryEmployment;
     private String contactPerson;
-    private String emailAdress;
+    private String emailAddress;
 
     @Override
     public String getCompanyName() {
@@ -54,8 +56,8 @@ public class StellenausschreibungDTOimpl implements StellenausschreibungDTO {
     }
 
     @Override
-    public String getBusinessAdress() {
-        return businessAdress;
+    public String getBusinessAddress() {
+        return businessAddress;
     }
 
 
@@ -76,8 +78,8 @@ public class StellenausschreibungDTOimpl implements StellenausschreibungDTO {
     }
 
     @Override
-    public String getEmailAdress() {
-        return emailAdress;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
     public void setCompanyName(String companyName) {
@@ -108,8 +110,8 @@ public class StellenausschreibungDTOimpl implements StellenausschreibungDTO {
         this.requirementForApplicants = requirementForApplicants;
     }
 
-    public void setBusinessAdress(String businessAdress) {
-        this.businessAdress = businessAdress;
+    public void setBusinessAdress(String businessAddress) {
+        this.businessAddress = businessAddress;
     }
 
     public void setTemporaryEmployment(boolean temporaryEmployment) {
@@ -124,7 +126,7 @@ public class StellenausschreibungDTOimpl implements StellenausschreibungDTO {
         this.contactPerson = contactPerson;
     }
 
-    public void setEmailAdress(String emailAdress) {
-        this.emailAdress = emailAdress;
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }

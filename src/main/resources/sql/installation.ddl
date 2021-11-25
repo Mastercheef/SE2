@@ -47,58 +47,53 @@ create sequence col_seq_company_id
 -- _____________
 
 create table col_tab_address (
-     address_id varchar(8) not null default nextval('col_seq_address_id'),
+     address_id bigint not null default nextval('col_seq_address_id'),
      postal_code varchar(5) not null,
      city varchar(16) not null,
-     countrie varchar(16) not null,
-     street varchar(12) not null,
+     country varchar(16) not null,
+     street varchar(16) not null,
      house_number varchar(4) not null,
      constraint col_pk_address_id primary key (address_id));
 
 create table col_tab_contact_person (
-     user_id varchar(8) not null,
-     company_id varchar(8) not null,
+     user_id bigint not null,
+     company_id bigint not null,
      role varchar(16) not null,
-     constraint col_pk_cp_user_id primary key (user_id),
-     constraint col_un_cp_company_id unique (company_id));
+     constraint col_pk_cp_user_id primary key (user_id));
 
 create table col_tab_user (
      password varchar(20) not null,
      phone_number varchar(12) not null,
-     address_id varchar(8) not null,
+     address_id bigint not null,
      salutation varchar(10) not null,
      title varchar(16) not null,
      first_name varchar(16) not null,
      surname varchar(16) not null,
      mail_address varchar(32) not null,
-     user_id varchar(8) not null default nextval('col_seq_user_id'),
-     constraint col_pk_u_user_id primary key (user_id),
-     constraint col_un_u_address_id unique (address_id));
+     user_id bigint not null default nextval('col_seq_user_id'),
+     constraint col_pk_u_user_id primary key (user_id));
 
 create table col_tab_job_advertisement (
-     contact_person_id varchar(8) not null,
+     contact_person_id bigint not null,
      job_description varchar(1024) not null,
      job_title varchar(64) not null,
-     student_id varchar(8) not null,
-     advertisement_id varchar(8) not null default nextval('col_seq_advertisement_id'),
-     constraint col_pk_advertisement_id primary key (advertisement_id),
-     constraint col_un_student_id unique (student_id),
-     constraint col_un_contact_person_id unique (contact_person_id));
+     student_id bigint not null,
+     advertisement_id bigint not null default nextval('col_seq_advertisement_id'),
+     constraint col_pk_advertisement_id primary key (advertisement_id));
 
 create table col_tab_student (
-     user_id varchar(8) not null,
+     user_id bigint not null,
      subject_field varchar(16) not null,
      constraint col_pk_s_user_id primary key (user_id));
 
 create table col_tab_company (
      company_description varchar(1024) not null,
-     company_id varchar(8) not null default nextval('col_seq_company_id'),
+     company_id bigint not null default nextval('col_seq_company_id'),
      homepage varchar(32) not null,
      fax_number varchar(12) not null,
      company_name varchar(32) not null,
-     address_id varchar(8) not null,
-     constraint col_pk_company_id primary key (company_id),
-     constraint col_un_c_address_id unique (address_id));
+     address_id bigint not null,
+     constraint col_pk_company_id primary key (company_id));
 
 -- Constraints Section
 -- ___________________

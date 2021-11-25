@@ -1,26 +1,31 @@
 package org.hbrs.se2.project.coll.entities;
 
-import org.hbrs.se2.project.coll.dtos.impl.StellenausschreibungDTO;
+import org.hbrs.se2.project.coll.dtos.StellenausschreibungDTO;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table( name= "companyprofile", schema = "coll@hbrs")
+@Table( name= "col_tab_company", schema = "collhbrs")
 public class CompanyProfile {
-    private int    ID;
+    private int ID;
     private String companyName;
-    private String address;
-    private String telephone;
-    private String email;
+    private int address;
+    private int faxNumber;
     private String website;
     private String description;
     private List<StellenausschreibungDTO> offers;
 
     @Id
-    @GeneratedValue
-    @Column(name = "id")
+    @GeneratedValue(
+            generator = "company_id"
+    )
+    @SequenceGenerator(
+            name = "company_id",
+            sequenceName = "collhbrs.col_seq_company_id"
+    )
+    @Column(name = "company_id")
     public int getID() {
         return ID;
     }
@@ -30,7 +35,7 @@ public class CompanyProfile {
     }
 
     @Basic
-    @Column(name = "Company Name")
+    @Column(name = "company_name")
     public String getCompanyName() {
         return companyName;
     }
@@ -40,37 +45,27 @@ public class CompanyProfile {
     }
 
     @Basic
-    @Column(name = "Address")
-    public String getAddress() {
+    @Column(name = "address_id")
+    public int getAddress() {
         return address;
     }
 
-    public void setAddress(String addr) {
+    public void setAddress(int addr) {
         this.address = addr;
     }
 
     @Basic
-    @Column(name = "Phone number")
-    public String getTelephone() {
-        return telephone;
+    @Column(name = "fax_number")
+    public int getFaxNumber() {
+        return faxNumber;
     }
 
-    public void setTelephone(String phone) {
-        this.telephone = phone;
-    }
-
-    @Basic
-    @Column(name = "E-Mail")
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setFaxNumber(int faxNumber) {
+        this.faxNumber = faxNumber;
     }
 
     @Basic
-    @Column(name = "Website")
+    @Column(name = "homepage")
     public String getWebsite() {
         return website;
     }
@@ -80,7 +75,7 @@ public class CompanyProfile {
     }
 
     @Basic
-    @Column(name = "Description")
+    @Column(name = "company_description")
     public String getDescription() {
         return description;
     }

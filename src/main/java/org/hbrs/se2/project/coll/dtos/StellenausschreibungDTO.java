@@ -1,4 +1,4 @@
-package org.hbrs.se2.project.coll.dtos.impl;
+package org.hbrs.se2.project.coll.dtos;
 
 
 
@@ -14,9 +14,9 @@ public interface StellenausschreibungDTO {
     String getJobDescription();
 
     String getRequirementForApplicants();
-    String getBusinessAdress();
+    String getBusinessAddress();
     boolean getTemporaryEmployment();
     String getDateOfTemporaryEmployment();
     String getContactPerson();
-    String getEmailAdress();
+    String getEmailAddress();
 }
