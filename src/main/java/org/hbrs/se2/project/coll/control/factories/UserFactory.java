@@ -11,7 +11,7 @@ public class UserFactory {
         newStudentUser.setLastName(studentDTO.getLastName());
         newStudentUser.setAddress(studentDTO.getAddress());
         newStudentUser.setPhone(studentDTO.getPhone());
-        newStudentUser.setDateOfBirth(studentDTO.getDateOfBirth());
+        //newStudentUser.setDateOfBirth(studentDTO.getDateOfBirth());
         newStudentUser.setEmail(studentDTO.getEmail());
         newStudentUser.setPassword(studentDTO.getPassword());
         newStudentUser.setGraduation(studentDTO.getGraduation());
@@ -25,12 +25,12 @@ public class UserFactory {
 
     public StudentUser createStudentUser(StudentUserDTO studentDTO) {
         StudentUser newStudentUser = new StudentUser();
-        newStudentUser.setUserid(studentDTO.getUserId());
+        newStudentUser.setUserId(studentDTO.getUserId());
         newStudentUser.setFirstName(studentDTO.getFirstName());
         newStudentUser.setLastName(studentDTO.getLastName());
         newStudentUser.setAddress(studentDTO.getAddress());
         newStudentUser.setPhone(studentDTO.getPhone());
-        newStudentUser.setDateOfBirth(studentDTO.getDateOfBirth());
+        //newStudentUser.setDateOfBirth(studentDTO.getDateOfBirth());
         newStudentUser.setEmail(studentDTO.getEmail());
         newStudentUser.setPassword(studentDTO.getPassword());
         newStudentUser.setGraduation(studentDTO.getGraduation());

@@ -13,11 +13,13 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.hbrs.se2.project.coll.util.*;
 
 //TODO: Diese Seite sollte nur verfügbar sein, wenn man eingeloggt ist.
 //TODO: UserDTO für Daten auslesen und in Textfelder einfüllen
@@ -28,41 +30,57 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     @Autowired
     private StudentProfileControl profileControl;
 
-    private StudentUserDTO profileDTO;
+    private UserDTO profileDTO;
+
+    Label firstname     = new Label("Vorname:");
+    Label lfirstname    = new Label("Vorname");
+    Label lastname      = new Label("Nachname:");
+    Label llastname     = new Label("Nachname");
+    Label occupation    = new Label("Beruf:");
+    Label loccupation   = new Label("Beruf");
+    Label birthdate     = new Label("Geburtsdatum:");
+    Label lbirthdate    = new Label("Geburtsdatum");
+    Label address       = new Label("Adresse:");
+    Label laddress      = new Label("Adresse");
+    Label skills        = new Label("Skills:");
+    Label lskills       = new Label("Skills");
+    Label email         = new Label("E-Mail:");
+    Label lemail        = new Label("E-Mail");
+    Label number        = new Label("Telefon:");
+    Label lnumber       = new Label("Telefon");
+    Label interests     = new Label("Interessen:");
+    Label linterests    = new Label("Interessen");
+    Label website       = new Label("Webseite:");
+    Label lwebsite      = new Label("Webseite");
+    Label aboutme       = new Label("Über mich:");
+    Label laboutme      = new Label("Über mich");
+
+    Div   div           = new Div();
 
     @Override
     public void setParameter(BeforeEvent event,
                              String parameter) {
-        profileDTO = profileControl.loadProfileDataByUserId(parameter);
+        System.out.println("Parameter: " + parameter);
+        if (parameter != "") {
+            profileDTO = profileControl.loadProfileDataByUserId(Integer.parseInt(parameter));
+            System.out.println(profileDTO.getFirstName());
+            lfirstname    = new Label(profileDTO.getFirstName());
+            llastname     = new Label(profileDTO.getLastName());
+            //loccupation   = new Label(profileDTO.getGraduation());
+            lbirthdate    = new Label(profileDTO.getDateOfBirth().toString());
+            laddress      = new Label(profileDTO.getAddress().toString());
+            //lskills       = new Label(profileDTO.getSkills());
+            lemail        = new Label(profileDTO.getEmail());
+            lnumber       = new Label(profileDTO.getPhone());
+            //linterests    = new Label(profileDTO.getInterests());
+            //lwebsite      = new Label(profileDTO.getWebsite());
+            //laboutme      = new Label(profileDTO.getDescription());
+        }
+        createProfileView();
     }
 
-    Label firstname     = new Label("Vorname:");
-    Label lfirstname    = new Label(profileDTO.getFirstName());
-    Label lastname      = new Label("Nachname:");
-    Label llastname     = new Label(profileDTO.getLastName());
-    Label occupation    = new Label("Beruf:");
-    Label loccupation   = new Label(profileDTO.getGraduation());
-    Label birthdate     = new Label("Geburtsdatum:");
-    Label lbirthdate    = new Label(profileDTO.getDateOfBirth().toString());
-    Label address       = new Label("Adresse:");
-    Label laddress      = new Label(profileDTO.getAddress());
-    Label skills        = new Label("Skills:");
-    Label lskills       = new Label(profileDTO.getSkills());
-    Label email         = new Label("E-Mail:");
-    Label lemail        = new Label(profileDTO.getEmail());
-    Label number        = new Label("Telefon:");
-    Label lnumber       = new Label(profileDTO.getPhone());
-    Label interests     = new Label("Interessen:");
-    Label linterests    = new Label(profileDTO.getInterests());
-    Label website       = new Label("Webseite:");
-    Label lwebsite      = new Label(profileDTO.getWebsite());
-    Label aboutme       = new Label("Über mich:");
-    Label laboutme      = new Label(profileDTO.getDescription());
 
-    Div   div           = new Div();
-
-    public StudentProfileView() {
-
+    public void createProfileView() {
         //TODO: Methods for grabbing UserDTO data
 
         // Layout
@@ -123,6 +141,6 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
                 hskills, hemail, hnumber, hinterests, hwebsite, haboutme, button);
         add(div);
     }
-
 }
+
 

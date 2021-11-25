@@ -1,15 +1,11 @@
 package org.hbrs.se2.project.coll.entities;
 
-import org.hbrs.se2.project.coll.dtos.StellenausschreibungDTO;
-
 import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table( name= "col_tab_company", schema = "collhbrs")
 public class CompanyProfile {
-    private int ID;
+    private int id;
     private String companyName;
     private int address;
     private int faxNumber;
@@ -28,12 +24,12 @@ public class CompanyProfile {
             sequenceName = "collhbrs.col_seq_company_id"
     )
     @Column(name = "company_id")
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int id) {
-        this.ID = id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Basic

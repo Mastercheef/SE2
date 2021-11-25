@@ -20,7 +20,7 @@ public class Address {
             name = "address_id",
             sequenceName = "collhbrs.col_seq_address_id"
     )
-    @Column(name = "id")
+    @Column(name = "address_id")
     public int getId() {
         return id;
     }

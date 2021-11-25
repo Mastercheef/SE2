@@ -28,7 +28,7 @@ public class CompanyProfileRepositoryTest {
         companyProfile.setAddress(10000000);
         companyProfileRepository.save(companyProfile);
 
-        int tmpId = companyProfile.getID();
+        int tmpId = companyProfile.getId();
 
         //TODO Change this from CompanyProfileDTO to Optional<CompanyProfile>
         CompanyProfileDTO companyProfileAfterCreate = companyProfileRepository.findCompanyProfileById(tmpId);

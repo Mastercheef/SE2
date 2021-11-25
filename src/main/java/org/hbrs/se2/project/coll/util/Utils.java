@@ -17,4 +17,8 @@ public class Utils {
         return arr;
 
     }
+
+    public static boolean StringIsEmptyOrNull(String value) {
+        return value == null || value.equals("");
+    }
 }

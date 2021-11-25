@@ -32,7 +32,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     Label firstname     = new Label("Vorname:");
     //Label lfirstname    = new Label("Max");
-    Label lfirstname    = new Label(profileDTO.getCompanyName());
+    Label lfirstname    = new Label("Max");
     Label lastname      = new Label("Nachname:");
     Label llastname     = new Label("Mustermann");
     Label occupation    = new Label("Beruf:");

@@ -19,7 +19,7 @@ public class CompanyProfileFactory {
         //companyProfile.setOffers( companyProfileDTO.getOffers() );
 
         // TODO: Ändern
-        companyProfile.setID( companyProfile.getID() );
+        companyProfile.setId( companyProfile.getId() );
 
         return companyProfile;
     }

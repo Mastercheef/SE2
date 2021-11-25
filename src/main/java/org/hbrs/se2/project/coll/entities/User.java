@@ -7,33 +7,21 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "type")
+//@Inheritance(strategy = InheritanceType.JOINED)
+//@DiscriminatorColumn(name = "type")
 @Table( name ="col_tab_user" , schema = "collhbrs" )
 public class User {
-    private int id;
     private String firstName;
     private String lastName;
-    @ManyToOne
-    @JoinColumn(name = "address_id")
     private Address address;
     private String phone;
     private LocalDate dateOfBirth;
     private String email;
     private String password;
-    private String userid;
-    private List<Role> roles;
+    private int userid;
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    public int getId() {
-        return id;
-    }
+    //private List<Role> roles;
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Basic
     @Column(name = "first_name")
@@ -55,7 +43,8 @@ public class User {
         this.lastName = lastName;
     }
 
-    @Column(name = "address")
+    @ManyToOne
+    @JoinColumn(name = "address_id")
     public Address getAddress() {
         return address;
     }
@@ -65,7 +54,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "phone")
+    @Column(name = "phone_number")
     public String getPhone() {
         return phone;
     }
@@ -85,7 +74,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "email")
+    @Column(name = "mail_address")
     public String getEmail() {
         return email;
     }
@@ -104,17 +93,24 @@ public class User {
         this.password = password;
     }
 
-    @Basic
-    @Column(name = "userid")
-    public String getUserid() {
+    @Id
+    @GeneratedValue(
+            generator = "user_id"
+    )
+    @SequenceGenerator(
+            name = "user_id",
+            sequenceName = "collhbrs.col_seq_user_id"
+    )
+    @Column(name = "user_id")
+    public int getUserId() {
         return userid;
     }
 
-    public void setUserid(String userid) {
+    public void setUserId(int userid) {
         this.userid = userid;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    /*@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_to_rolle", catalog = "demouser",
             schema = "collhbrs",
             joinColumns = @JoinColumn(name = "userid", referencedColumnName = "id", nullable = false),
@@ -125,14 +121,14 @@ public class User {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id &&
+        return
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(address, user.address) &&
@@ -145,6 +141,6 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, address, phone, dateOfBirth, email, password, userid);
+        return Objects.hash( firstName, lastName, address, phone, dateOfBirth, email, password, userid);
     }
 }
