@@ -62,13 +62,14 @@ create table col_tab_contact_person (
      constraint col_pk_cp_user_id primary key (user_id));
 
 create table col_tab_user (
+     date_of_birth date not null,
      password varchar(20) not null,
      phone_number varchar(12) not null,
      address_id bigint not null,
      salutation varchar(10) not null,
      title varchar(16) not null,
      first_name varchar(16) not null,
-     surname varchar(16) not null,
+     last_name varchar(16) not null,
      mail_address varchar(32) not null,
      user_id bigint not null default nextval('col_seq_user_id'),
      constraint col_pk_u_user_id primary key (user_id));
@@ -79,8 +80,8 @@ create table col_tab_job_advertisement (
      working_hours numeric(2) not null default 0,
      requirements varchar(1024),
      address_id bigint not null,
-     start_of_work varchar(16),
-     end_of_work varchar(16),
+     start_of_work date,
+     end_of_work date,
      contact_person_id bigint not null,
      job_description varchar(1024),
      job_title varchar(64) not null,
