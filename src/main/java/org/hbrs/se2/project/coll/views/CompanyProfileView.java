@@ -8,17 +8,27 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.hbrs.se2.project.coll.control.CompanyProfileControl;
+import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 //TODO: Diese Seite sollte nur verfügbar sein, wenn man eingeloggt ist.
 //TODO: UserDTO für Daten auslesen und in Textfelder einfüllen
 @Route(value = "companyprofile", layout = MainLayout.class)
 @PageTitle("Profile")
-public class CompanyProfileView extends VerticalLayout {
+public class CompanyProfileView extends VerticalLayout implements HasUrlParameter<String> {
+
+    @Autowired
+    private CompanyProfileControl profileControl;
+
+    private CompanyProfileDTO profileDTO;
 
     Label firstname     = new Label("Vorname:");
     Label lfirstname    = new Label("Max");
@@ -45,7 +55,18 @@ public class CompanyProfileView extends VerticalLayout {
 
     Div   div           = new Div();
 
-    public CompanyProfileView() {
+    @Override
+    public void setParameter(BeforeEvent event,
+                             String parameter) {
+        if (parameter!="") {
+            profileDTO = profileControl.findCompanyProfileByCompanyID(Integer.parseInt(parameter));
+            System.out.println(profileDTO.getCompanyName());
+            lfirstname    = new Label(profileDTO.getCompanyName());
+            createProfile();
+        }
+    }
+
+    public void createProfile() {
 
         //TODO: Methods for grabbing UserDTO data
 
@@ -106,6 +127,13 @@ public class CompanyProfileView extends VerticalLayout {
         div.add(h2, profileImage, hfirstname, hlastname, hoccupation, hbirthdate, haddress,
                 hskills, hemail, hnumber, hinterests, hwebsite, haboutme, button);
         add(div);
+    }
+
+
+
+    public CompanyProfileView() {
+
+
     }
 
 }
