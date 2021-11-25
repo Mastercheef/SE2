@@ -1,5 +1,6 @@
 package org.hbrs.se2.project.coll.dtos;
 
+import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.Role;
 
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ public interface UserDTO {
     public int getId();
     public String getFirstName();
     public String getLastName();
-    public String getAddress();
+    public Address getAddress();
     public String getPhone();
     public LocalDate getDateOfBirth();
     public String getEmail();

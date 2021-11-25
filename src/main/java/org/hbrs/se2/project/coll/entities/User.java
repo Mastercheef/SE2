@@ -9,12 +9,14 @@ import java.util.Objects;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type")
-@Table( name ="user" , schema = "collhbrs" )
+@Table( name ="col_tab_user" , schema = "collhbrs" )
 public class User {
     private int id;
     private String firstName;
     private String lastName;
-    private String address;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
     private String phone;
     private LocalDate dateOfBirth;
     private String email;
@@ -53,13 +55,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    @Basic
     @Column(name = "address")
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 

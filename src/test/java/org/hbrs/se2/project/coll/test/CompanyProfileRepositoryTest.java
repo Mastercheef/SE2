@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -33,7 +31,7 @@ public class CompanyProfileRepositoryTest {
         int tmpId = companyProfile.getID();
 
         //TODO Change this from CompanyProfileDTO to Optional<CompanyProfile>
-        CompanyProfileDTO companyProfileAfterCreate = companyProfileRepository.findCompanyProfileByID(tmpId);
+        CompanyProfileDTO companyProfileAfterCreate = companyProfileRepository.findCompanyProfileById(tmpId);
         assertEquals(companyProfile.getCompanyName(), companyProfileAfterCreate.getCompanyName());
         assertEquals(companyProfile.getDescription(), companyProfileAfterCreate.getDescription());
         assertEquals(companyProfile.getDescription(), companyProfileAfterCreate.getDescription());
@@ -43,7 +41,7 @@ public class CompanyProfileRepositoryTest {
         companyProfileRepository.deleteById(tmpId);
 
         //TODO also here...
-        CompanyProfileDTO wrapper = companyProfileRepository.findCompanyProfileByID(tmpId);
+        CompanyProfileDTO wrapper = companyProfileRepository.findCompanyProfileById(tmpId);
         assertNull(wrapper);
     }
 

@@ -1,13 +1,18 @@
 package org.hbrs.se2.project.coll.control;
 
-import org.hbrs.se2.project.coll.dao.UserDAO;
 import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
+import org.hbrs.se2.project.coll.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class LoginControl {
+
+    @Autowired
+    private UserRepository repository;
 
     private UserDTO userDTO = null;
 
@@ -27,9 +32,8 @@ public class LoginControl {
 
     private UserDTO getUser(LoginResultDTO result, String username , String password ) {
         UserDTO userTmp;
-        UserDAO userDAO = new UserDAO();
         try {
-            userTmp = userDAO.findUserByUseridAndPassword(username, password);
+            userTmp = repository.findUserByUserIdAndPassword(username, password);
             result.setResult(true);
             result.setReason("LogIn erfolgreich");
         } catch ( org.springframework.dao.DataAccessResourceFailureException e ) {

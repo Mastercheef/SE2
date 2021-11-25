@@ -3,6 +3,7 @@ package org.hbrs.se2.project.coll.dtos.impl;
 //import org.hbrs.se2.project.coll.dtos.RolleDTO;
 import org.hbrs.se2.project.coll.dtos.RoleDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.entities.Address;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -17,7 +18,7 @@ public class UserDTOImpl implements UserDTO {
     private String lastname;
     private String graduation;
     private LocalDate dateOfBirth;
-    private String address;
+    private Address address;
     private String email;
     private String phone;
     private String password;
@@ -38,7 +39,7 @@ public class UserDTOImpl implements UserDTO {
 
     public void setDateOfBirth(LocalDate dateOfBirth) { this.dateOfBirth = dateOfBirth; }
 
-    public void setAddress(String address) { this.address = address; }
+    public void setAddress(Address address) { this.address = address; }
 
     public void setEmail(String email) { this.email = email; }
 
@@ -71,7 +72,7 @@ public class UserDTOImpl implements UserDTO {
     public LocalDate getDateOfBirth() { return this.dateOfBirth; }
 
     @Override
-    public String getAddress() { return this.address; }
+    public Address getAddress() { return this.address; }
 
     @Override
     public String getEmail() { return this.email; }

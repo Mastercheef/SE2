@@ -9,6 +9,15 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 @Component
+/**
+ * JPA-Repository für die Verwaltung von Autos (cars). Die Bezeichnung einer Methode
+ * bestimmt dabei die Selektionsbedingung (den WHERE-Teil). Der Rückgabewert einer
+ * Methode bestimmt den Projectionsbedingung (den SELECT-Teil).
+ * Mehr Information über die Entwicklung von Queries in JPA:
+ * https://www.baeldung.com/spring-data-jpa-projections
+ * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods
+ *
+ */
 public interface CompanyProfileRepository extends JpaRepository<CompanyProfile, Integer> {
 
     // TODO: Fehler beseitigen
@@ -16,9 +25,8 @@ public interface CompanyProfileRepository extends JpaRepository<CompanyProfile, 
     //List<CompanyProfileDTO> getUserByOccupation(String occupation );
     //List<CompanyProfileDTO>
 
-    //CompanyProfileDTO findCompanyById(int ID);
 
-    CompanyProfileDTO findCompanyProfileByID ( int id );
+    CompanyProfileDTO findCompanyProfileById(int id );
     CompanyProfileDTO findCompanyProfileByCompanyName(String name);
 }
 

@@ -15,7 +15,9 @@ public class CompanyProfile {
     private int faxNumber;
     private String website;
     private String description;
-    private List<StellenausschreibungDTO> offers;
+    //Wird in der Entity nicht benötigt
+    //Sollten wird besser über den Controler beim laden dem DTO hinzufügen
+    //private List<StellenausschreibungDTO> offers;
 
     @Id
     @GeneratedValue(

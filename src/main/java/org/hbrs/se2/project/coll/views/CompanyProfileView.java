@@ -30,12 +30,6 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     private CompanyProfileDTO profileDTO;
 
-    @Override
-    public void setParameter(BeforeEvent event,
-                             String parameter) {
-        profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
-    }
-
     Label firstname     = new Label("Vorname:");
     //Label lfirstname    = new Label("Max");
     Label lfirstname    = new Label(profileDTO.getCompanyName());
