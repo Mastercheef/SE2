@@ -12,6 +12,7 @@ public class CompanyProfileDTOImpl implements CompanyProfileDTO {
     private int ID;
     private String companyName;
     private int address;
+    private int phoneNumber;
     private int faxNumber;
     private String email;
     private String website;
@@ -24,18 +25,20 @@ public class CompanyProfileDTOImpl implements CompanyProfileDTO {
     public int      getID() { return this.ID; }
     public void     setID(int id) { this.ID = id; }
 
-    public String   getCompanyName() { return this.companyName; }
-    public void     setCompanyName(String name) { this.companyName = name; }
-    public int      getAddress() { return this.address; }
-    public void     setAddress(int address) { this.address = address; }
-    public int      getFaxNumber() { return this.faxNumber; }
-    public void     setFaxNumber(int faxNumber) { this.faxNumber = faxNumber; }
-    public String   getEmail() { return this.email; }
-    public void     setEmail(String email) { this.email = email; }
-    public String   getWebsite() { return this.website; }
-    public void     setWebsite(String website) { this.website = website; }
-    public String   getDescription() { return this.description; }
-    public void     setDescription(String descr) {this.description = descr; }
+    public String   getCompanyName()                { return this.companyName; }
+    public void     setCompanyName(String name)     { this.companyName = name; }
+    public int      getAddress()                    { return this.address; }
+    public void     setAddress(int address)         { this.address = address; }
+    public int      getPhoneNumber()                { return this.phoneNumber; }
+    public void     setPhoneNumber(int phone)       { this.phoneNumber = phone; }
+    public int      getFaxNumber()                  { return this.faxNumber; }
+    public void     setFaxNumber(int faxNumber)     { this.faxNumber = faxNumber; }
+    public String   getEmail()                      { return this.email; }
+    public void     setEmail(String email)          { this.email = email; }
+    public String   getWebsite()                    { return this.website; }
+    public void     setWebsite(String website)      { this.website = website; }
+    public String   getDescription()                { return this.description; }
+    public void     setDescription(String descr)    {this.description = descr; }
 
     public List<StellenausschreibungDTO>    getOffers() { return this.offers; }
     public void     setOffers(List<StellenausschreibungDTO> offers) { this.offers = offers; }

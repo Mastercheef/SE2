@@ -30,29 +30,21 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     private CompanyProfileDTO profileDTO;
 
-    Label firstname     = new Label("Vorname:");
-    //Label lfirstname    = new Label("Max");
-    Label lfirstname    = new Label("Max");
-    Label lastname      = new Label("Nachname:");
-    Label llastname     = new Label("Mustermann");
-    Label occupation    = new Label("Beruf:");
-    Label loccupation   = new Label("Student");
-    Label birthdate     = new Label("Geburtsdatum:");
-    Label lbirthdate    = new Label("01.01.1990");
+    Label companyname   = new Label("Firmenname:");
     Label address       = new Label("Adresse:");
-    Label laddress      = new Label("Musterstrasse 1, 12345 Musterstadt");
-    Label skills        = new Label("Skills:");
-    Label lskills       = new Label("HTML, CSS, JavaScript, C++");
     Label email         = new Label("E-Mail:");
-    Label lemail        = new Label("max.mustermann@googlemail.com");
-    Label number        = new Label("Telefon:");
-    Label lnumber       = new Label("0173/11111111");
-    Label interests     = new Label("Interessen:");
-    Label linterests    = new Label("Klettern, Kochen, Bier");
+    Label phone         = new Label("Telefon:");
+    Label fax           = new Label("Fax:");
     Label website       = new Label("Webseite:");
-    Label lwebsite      = new Label("http://www.maxmusterwebseite.de");
-    Label aboutme       = new Label("Über mich:");
-    Label laboutme      = new Label("Ich kann alles. Ruf mich an, baby");
+    Label description   = new Label("Beschreibung:");
+
+    Label lcompanyname  = new Label();
+    Label laddress      = new Label();
+    Label lemail        = new Label();
+    Label lphone        = new Label();
+    Label lfax          = new Label();
+    Label lwebsite      = new Label();
+    Label ldescription  = new Label();
 
     Div   div           = new Div();
 
@@ -62,9 +54,19 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         if (parameter!="") {
             profileDTO = profileControl.findCompanyProfileByCompanyID(Integer.parseInt(parameter));
             System.out.println(profileDTO.getCompanyName());
-            lfirstname    = new Label(profileDTO.getCompanyName());
+            initLabels(profileDTO);
             createProfile();
         }
+    }
+
+    public void initLabels(CompanyProfileDTO profileDTO) {
+        lcompanyname    = new Label(profileDTO.getCompanyName());
+        laddress        = new Label(String.valueOf(profileDTO.getAddress()));
+        lemail          = new Label(profileDTO.getEmail());
+        lphone          = new Label(String.valueOf(profileDTO.getPhoneNumber()));
+        lfax            = new Label(String.valueOf(profileDTO.getFaxNumber()));
+        lwebsite        = new Label(profileDTO.getWebsite());
+        ldescription    = new Label(profileDTO.getDescription());
     }
 
     public void createProfile() {
@@ -81,36 +83,27 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         profileImage.getElement().getStyle().set("border", "1px solid black");
 
         // Styling
-        for (Label label : new Label[]{ firstname, lastname, occupation, birthdate, address, skills, email,
-                number, interests, website, aboutme }) {
+        for (Label label : new Label[]{ companyname, address, email, phone, fax, website, description}) {
             label.getElement().getStyle().set("font-weight", "bold");
             label.getElement().getStyle().set("width", "200px");        // For alignment
         }
 
         // Profile Data
         // TODO: Get Data from UserDTO
-        HorizontalLayout hfirstname = new HorizontalLayout();
-        hfirstname.add(firstname, lfirstname);
-        HorizontalLayout hlastname = new HorizontalLayout();
-        hlastname.add(lastname, llastname);
-        HorizontalLayout hoccupation = new HorizontalLayout();
-        hoccupation.add(occupation, loccupation);
-        HorizontalLayout hbirthdate = new HorizontalLayout();
-        hbirthdate.add(birthdate, lbirthdate);
+        HorizontalLayout hcompanyname = new HorizontalLayout();
+        hcompanyname.add(companyname, lcompanyname);
         HorizontalLayout haddress = new HorizontalLayout();
         haddress.add(address, laddress);
-        HorizontalLayout hskills = new HorizontalLayout();
-        hskills.add(skills, lskills);
         HorizontalLayout hemail = new HorizontalLayout();
         hemail.add(email, lemail);
-        HorizontalLayout hnumber = new HorizontalLayout();
-        hnumber.add(number, lnumber);
-        HorizontalLayout hinterests = new HorizontalLayout();
-        hinterests.add(interests, linterests);
+        HorizontalLayout hphone = new HorizontalLayout();
+        hphone.add(phone, lphone);
+        HorizontalLayout hfax = new HorizontalLayout();
+        hfax.add(fax, lfax);
         HorizontalLayout hwebsite = new HorizontalLayout();
         hwebsite.add(website, lwebsite);
-        HorizontalLayout haboutme = new HorizontalLayout();
-        haboutme.add(aboutme, laboutme);
+        HorizontalLayout hdescription = new HorizontalLayout();
+        hdescription.add(description, ldescription);
 
         // Edit Profile Button
         HorizontalLayout hbuttons = new HorizontalLayout();
@@ -119,21 +112,18 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         hbuttons.add(button);
 
         // Alignment of profile information
-        for (HorizontalLayout HL : new HorizontalLayout[]{ hfirstname, hlastname, hoccupation, hbirthdate, haddress,
-                hskills, hemail, hnumber, hinterests, hwebsite, haboutme, hbuttons }) {
+        for (HorizontalLayout HL : new HorizontalLayout[]{ hcompanyname, haddress, hemail, hphone, hfax, hwebsite,
+                hdescription, hbuttons }) {
             HL.getElement().getStyle().set("margin-top", "11px");
         }
 
         // Append everything to the site
-        div.add(h2, profileImage, hfirstname, hlastname, hoccupation, hbirthdate, haddress,
-                hskills, hemail, hnumber, hinterests, hwebsite, haboutme, button);
+        div.add(h2, profileImage, hcompanyname, haddress,hemail, hphone, hfax, hwebsite,
+                hdescription, button);
         add(div);
     }
 
-
-
     public CompanyProfileView() {
-
 
     }
 

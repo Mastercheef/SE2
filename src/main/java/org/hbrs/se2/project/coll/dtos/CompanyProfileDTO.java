@@ -12,6 +12,8 @@ public interface CompanyProfileDTO {
 
     public String   getCompanyName();
     public int      getAddress();
+    public String   getEmail();
+    public int      getPhoneNumber();
     public int      getFaxNumber();
     public String   getWebsite();
     public String   getDescription();

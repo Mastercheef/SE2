@@ -8,12 +8,25 @@ public class CompanyProfile {
     private int id;
     private String companyName;
     private int address;
+    private int phoneNumber;
     private int faxNumber;
+    private String email;
     private String website;
     private String description;
     //Wird in der Entity nicht benötigt
     //Sollten wird besser über den Controler beim laden dem DTO hinzufügen
     //private List<StellenausschreibungDTO> offers;
+
+
+    @Basic
+    @Column(name = "company_description")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String descr) {
+        this.description = descr;
+    }
 
     @Id
     @GeneratedValue(
@@ -73,14 +86,16 @@ public class CompanyProfile {
     }
 
     @Basic
-    @Column(name = "company_description")
-    public String getDescription() {
-        return description;
-    }
+    @Column(name = "email")
+    public String getEmail() { return email; }
 
-    public void setDescription(String descr) {
-        this.description = descr;
-    }
+    public void setEmail(String mail) { this.email = mail; }
+
+    @Basic
+    @Column(name = "phone_number")
+    public int getPhoneNumber() { return phoneNumber; }
+
+    public void setPhoneNumber(int phone) { this.phoneNumber = phone; }
 
     // TODO: Jobangebote der passenden Firma rauspicken und anhängen (wenn Stellenausschreibung funktioniert? anpassen)
 /*
