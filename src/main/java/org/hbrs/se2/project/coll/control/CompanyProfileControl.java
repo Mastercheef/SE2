@@ -29,7 +29,7 @@ public class CompanyProfileControl {
         return repository.findCompanyProfileByCompanyName()
     }*/
 
-    public CompanyProfileDTO findCompanyProfileByCompanyID(int id) {
+    public CompanyProfileDTO findCompanyProfileByCompanyId(int id) {
         return repository.findCompanyProfileById(id);
     }
 

@@ -23,7 +23,7 @@ public class CompanyProfileDTOImpl implements CompanyProfileDTO {
 //    @OneToMany
     private List<StellenausschreibungDTO>  offers;
 
-    public int      getID() { return this.ID; }
+    public int      getId() { return this.ID; }
     public void     setID(int id) { this.ID = id; }
 
     public String   getCompanyName()                { return this.companyName; }

@@ -2,27 +2,23 @@ package org.hbrs.se2.project.coll.views;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.PageTitle;
 import org.hbrs.se2.project.coll.control.CompanyProfileControl;
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
-//TODO: Diese Seite sollte nur verfügbar sein, wenn man eingeloggt ist.
-@Route(value = "companyprofile", layout = MainLayout.class)
-@PageTitle("Profile")
-public class CompanyProfileView extends VerticalLayout implements HasUrlParameter<String> {
+@Route(value = "companyprofile_edit", layout = MainLayout.class)
+@PageTitle("Edit your Profile")
+public class CompanyProfileEditView extends VerticalLayout  implements HasUrlParameter<String> {
 
     @Autowired
     private CompanyProfileControl profileControl;
@@ -37,15 +33,15 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     Label website       = new Label("Webseite:");
     Label description   = new Label("Beschreibung:");
 
-    Label lcompanyname  = new Label();
-    Label laddress      = new Label();
-    Label lemail        = new Label();
-    Label lphone        = new Label();
-    Label lfax          = new Label();
-    Label lwebsite      = new Label();
-    Label ldescription  = new Label();
+    TextField lcompanyname  = new TextField();
+    TextField laddress      = new TextField();
+    TextField lemail        = new TextField();
+    TextField lphone        = new TextField();
+    TextField lfax          = new TextField();
+    TextField lwebsite      = new TextField();
+    TextField ldescription  = new TextField();
 
-    Div   div           = new Div();
+    Div div = new Div();
 
     @Override
     public void setParameter(BeforeEvent event,
@@ -59,20 +55,25 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     // Used to read DTO data and inject them into the labels
     public void initLabels(CompanyProfileDTO profileDTO) {
-        companyId       = profileDTO.getId();
-        lcompanyname    = new Label(profileDTO.getCompanyName());
-        laddress        = new Label(profileDTO.getAddress().toString());
-        lemail          = new Label(profileDTO.getEmail());
-        lphone          = new Label(String.valueOf(profileDTO.getPhoneNumber()));
-        lfax            = new Label(String.valueOf(profileDTO.getFaxNumber()));
-        lwebsite        = new Label(profileDTO.getWebsite());
-        ldescription    = new Label(profileDTO.getDescription());
+        companyId = profileDTO.getId();
+        lcompanyname.setPlaceholder(profileDTO.getCompanyName());
+        laddress.setPlaceholder(profileDTO.getAddress().toString());
+        lemail.setPlaceholder(profileDTO.getEmail());
+        lphone.setPlaceholder(String.valueOf(profileDTO.getPhoneNumber()));
+        lfax.setPlaceholder(String.valueOf(profileDTO.getFaxNumber()));
+        lwebsite.setPlaceholder(profileDTO.getWebsite());
+        ldescription.setPlaceholder(profileDTO.getDescription());
     }
+
+    // TODO: Profilbild
 
     public void createProfile() {
 
+        //TODO: Update UserDTO after editing
+
         // Layout
-        H2 h2 = new H2("Mein Profil");
+        H2 h2 = new H2("Editiere mein Firmenprofil");
+        //h2.getElement().getStyle().set("margin-top", "55px");
 
         // TODO: Get Image from Database
         // Profile Image
@@ -80,10 +81,17 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         profileImage.setWidth("200px");
         profileImage.getElement().getStyle().set("border", "1px solid black");
 
+
         // Styling
         for (Label label : new Label[]{ companyname, address, email, phone, fax, website, description}) {
             label.getElement().getStyle().set("font-weight", "bold");
             label.getElement().getStyle().set("width", "200px");        // For alignment
+        }
+
+        for (TextField textfield : new TextField[]{ lcompanyname, laddress, lemail, lphone, lfax,
+                lwebsite, ldescription}) {
+            textfield.getElement().getStyle().set("height", "20px");
+            textfield.getElement().getStyle().set("width", "300px");
         }
 
         // Profile Data
@@ -102,12 +110,17 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         HorizontalLayout hdescription = new HorizontalLayout();
         hdescription.add(description, ldescription);
 
-        // Edit Profile Button
-        HorizontalLayout hbuttons = new HorizontalLayout();
-        Button button = new Button("Profil editieren");
-        button.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_EDIT_VIEW +
+        // Buttons for saving/cancelling
+        HorizontalLayout hbuttons   = new HorizontalLayout();
+        Button saveButton           = new Button("Speichern");
+        Button cancelButton         = new Button("Abbrechen");
+
+        // TODO: save in ProfileDTO (o.ä.)
+        saveButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW +
                 companyId));
-        hbuttons.add(button);
+        cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW +
+                companyId));
+        hbuttons.add(saveButton, cancelButton);
 
         // Alignment of profile information
         for (HorizontalLayout HL : new HorizontalLayout[]{ hcompanyname, haddress, hemail, hphone, hfax, hwebsite,
@@ -119,11 +132,10 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         div.add(h2, profileImage, hcompanyname, haddress, hemail, hphone, hfax, hwebsite,
                 hdescription, hbuttons);
         add(div);
-    }
-
-    public CompanyProfileView() {
 
     }
 
+    public void StudentProfileEditView() {
+
+    }
 }
-

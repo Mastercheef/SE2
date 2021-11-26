@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CompanyProfileDTO {
 
-    public int      getID();
+    public int      getId();
 
     public String   getCompanyName();
     public Address  getAddress();
