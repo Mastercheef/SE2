@@ -13,13 +13,13 @@ public class StudentUser extends User {
     private String interests;
     private String website;
     private String description;
+    private String subjectField;
 
     @Basic
     @Column(name = "graduation")
     public String getGraduation() {
         return graduation;
     }
-
     public void setGraduation(String graduation) {
         this.graduation = graduation;
     }
@@ -29,7 +29,6 @@ public class StudentUser extends User {
     public String getSkills() {
         return skills;
     }
-
     public void setSkills(String skills) {
         this.skills = skills;
     }
@@ -39,7 +38,6 @@ public class StudentUser extends User {
     public String getInterests() {
         return interests;
     }
-
     public void setInterests(String interests) {
         this.interests = interests;
     }
@@ -49,7 +47,6 @@ public class StudentUser extends User {
     public String getWebsite() {
         return website;
     }
-
     public void setWebsite(String website) {
         this.website = website;
     }
@@ -59,8 +56,16 @@ public class StudentUser extends User {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Basic
+    @Column(name = "subject_field")
+    public String getSubjectField() {
+        return subjectField;
+    }
+    public void setSubjectField(String subjectField) {
+        this.subjectField = subjectField;
     }
 }

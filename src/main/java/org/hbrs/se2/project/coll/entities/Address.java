@@ -6,11 +6,11 @@ import javax.persistence.*;
 @Table( name ="col_tab_address" , schema = "collhbrs" )
 public class Address {
     private int id;
-    private String postalcode;
+    private String postalCode;
     private String city;
     private String country;
     private String street;
-    private String housenumber;
+    private String houseNumber;
 
     @Id
     @GeneratedValue(
@@ -30,11 +30,11 @@ public class Address {
 
     @Basic
     @Column(name = "postal_code")
-    public String getPostalcode() {
-        return postalcode;
+    public String getPostalCode() {
+        return postalCode;
     }
-    public void setPostalcode(String postalcode) {
-        this.postalcode = postalcode;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     @Basic
@@ -66,11 +66,18 @@ public class Address {
 
     @Basic
     @Column(name = "house_number")
-    public String getHousenumber() {
-        return housenumber;
+    public String getHouseNumber() {
+        return houseNumber;
     }
-    public void setHousenumber(String housenumber) {
-        this.housenumber = housenumber;
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    @Override
+    public String toString() {
+        return street + " "  + houseNumber + "\n"
+                + postalCode + " " + city + "\n"
+                + country;
     }
 
 }
