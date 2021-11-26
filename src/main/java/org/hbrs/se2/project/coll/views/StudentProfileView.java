@@ -30,7 +30,7 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     @Autowired
     private StudentProfileControl profileControl;
 
-    private UserDTO profileDTO;
+    private StudentUserDTO profileDTO;
 
     Label firstname     = new Label("Vorname:");
     Label lfirstname    = new Label("Vorname");
@@ -63,18 +63,18 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         System.out.println("Parameter: " + parameter);
         if (parameter != "") {
             profileDTO = profileControl.loadProfileDataByUserId(Integer.parseInt(parameter));
-            System.out.println(profileDTO.getFirstName());
+            System.out.println(profileControl);
             lfirstname    = new Label(profileDTO.getFirstName());
             llastname     = new Label(profileDTO.getLastName());
-            //loccupation   = new Label(profileDTO.getGraduation());
+            loccupation   = new Label(profileDTO.getGraduation());
             lbirthdate    = new Label(profileDTO.getDateOfBirth().toString());
             laddress      = new Label(profileDTO.getAddress().toString());
-            //lskills       = new Label(profileDTO.getSkills());
+            lskills       = new Label(profileDTO.getSkills());
             lemail        = new Label(profileDTO.getEmail());
             lnumber       = new Label(profileDTO.getPhone());
-            //linterests    = new Label(profileDTO.getInterests());
-            //lwebsite      = new Label(profileDTO.getWebsite());
-            //laboutme      = new Label(profileDTO.getDescription());
+            linterests    = new Label(profileDTO.getInterests());
+            lwebsite      = new Label(profileDTO.getWebsite());
+            laboutme      = new Label(profileDTO.getDescription());
         }
         createProfileView();
     }

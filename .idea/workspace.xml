@@ -4,9 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="SELECT col_tab_company (findCompanyProfileByID) is running now with JPA.">
+    <list default="true" id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="New Testdata added">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/repository/StudentUserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_11_57_[Changes]1/MainView.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_11_57_[Changes]1/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_11_57__Changes_1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/control/StudentProfileControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/control/StudentProfileControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/Address.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/StudentUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/StudentUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/views/StudentProfileView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/views/StudentProfileView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/sql/installation.ddl" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql/installation.ddl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/sql/testdata.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql/testdata.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +28,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -75,7 +87,7 @@
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/test/java" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="terminal" />
+    <property name="settings.editor.selected.configurable" value="IntelliLang.Configuration" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -93,7 +105,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Database Script.testdata.sql">
+  <component name="RunManager" selected="Spring Boot.CollApplication (1)">
     <configuration name="installation.ddl" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
       <script-file value="$PROJECT_DIR$/src/main/resources/sql/installation.ddl" />
       <script-mode>FILE</script-mode>
@@ -208,6 +220,8 @@
       <workItem from="1637666948314" duration="30000" />
       <workItem from="1637750300948" duration="7525000" />
       <workItem from="1637762689734" duration="4180000" />
+      <workItem from="1637911580263" duration="171000" />
+      <workItem from="1637911950962" duration="3596000" />
     </task>
     <task id="LOCAL-00001" summary="created Branch Stellenausschreibung">
       <created>1637238690955</created>
@@ -329,5 +343,9 @@
     <MESSAGE value="Added the Class JDBCConnection from carlook to the project. Implemented userDAO based on carlooks Version." />
     <MESSAGE value="SELECT col_tab_company (findCompanyProfileByID) is running now with JPA." />
     <option name="LAST_COMMIT_MESSAGE" value="SELECT col_tab_company (findCompanyProfileByID) is running now with JPA." />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

@@ -2,7 +2,7 @@ package org.hbrs.se2.project.coll.repository;
 
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
-import org.hbrs.se2.project.coll.entities.StudentUser;
+import org.hbrs.se2.project.coll.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ import java.util.List;
  * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods
  *
  */
-public interface UserRepository extends JpaRepository<StudentUser, Integer> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
     UserDTO findUserByUserIdAndPassword ( String userid, String password );
 

@@ -62,16 +62,17 @@ create table col_tab_contact_person (
      constraint col_pk_cp_user_id primary key (user_id));
 
 create table col_tab_user (
+     user_id bigint not null default nextval('col_seq_user_id'),
+     first_name varchar(16) not null,
+     last_name varchar(16) not null,
+     address_id bigint not null,
      date_of_birth date not null,
      password varchar(20) not null,
      phone_number varchar(12) not null,
-     address_id bigint not null,
      salutation varchar(10) not null,
      title varchar(16) not null,
-     first_name varchar(16) not null,
-     last_name varchar(16) not null,
      mail_address varchar(32) not null,
-     user_id bigint not null default nextval('col_seq_user_id'),
+     type varchar(2),
      constraint col_pk_u_user_id primary key (user_id));
 
 create table col_tab_job_advertisement (
@@ -96,7 +97,7 @@ create table col_tab_student (
      skills varchar(1024),
      interests varchar(512),
      user_id bigint not null,
-     subject_field varchar(16),
+     subject_field varchar(32),
      constraint col_pk_s_user_id primary key (user_id));
 
 create table col_tab_company (

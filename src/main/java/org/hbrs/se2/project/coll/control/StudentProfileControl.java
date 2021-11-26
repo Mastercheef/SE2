@@ -2,7 +2,7 @@ package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
-import org.hbrs.se2.project.coll.repository.UserRepository;
+import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class StudentProfileControl {
 
     @Autowired
-    private UserRepository repository;
+    private StudentUserRepository repository;
 
-    public UserDTO loadProfileDataByUserId(int userid) { return repository.findUserByUserId(userid); }
+    public StudentUserDTO loadProfileDataByUserId(int userid) { return repository.findStudentUserByUserId(userid); }
 }

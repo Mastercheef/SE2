@@ -1,13 +1,11 @@
 package org.hbrs.se2.project.coll.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue("student")
+@DiscriminatorValue("st")
+@Table( name ="col_tab_student" , schema = "collhbrs" )
 public class StudentUser extends User {
 
     private String graduation;
@@ -57,7 +55,7 @@ public class StudentUser extends User {
     }
 
     @Basic
-    @Column(name = "description")
+    @Column(name = "student_description")
     public String getDescription() {
         return description;
     }

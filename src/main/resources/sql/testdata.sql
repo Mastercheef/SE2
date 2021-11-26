@@ -6,4 +6,23 @@ values ('Nur ein Test...', default, 'https://test.com/awesome', 012398489, 'Erfo
         (SELECT MAX(address_id) FROM col_tab_address));
 
 insert into col_tab_user
-    values(to_date('05 Dec 2000', 'DD Mon YYYY'), 'password', '192345', (SELECT MAX(address_id) FROM col_tab_address), 'Herr', 'Professor', 'Frederick', 'Behringer', 'mail', default);
+    values(default,
+           'Frederick',
+           'Behringer',
+           (SELECT MAX(address_id) FROM col_tab_address),
+           to_date('05 Dec 2000', 'DD Mon YYYY'),
+           'password',
+           '192345',
+           'Herr',
+           '-',
+           'mail',
+           'st');
+
+insert into col_tab_student
+    values('Ich bin ein toller student!',
+           'paymoneytofredi.com',
+           'M.Sc. Informatik',
+           'Kann gut Klettern',
+           'Klettern, Datenbanken',
+           (SELECT MAX(user_id) FROM col_tab_user),
+           'Komplexe Softwaresysteme');
