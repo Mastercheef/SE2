@@ -13,6 +13,7 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
+import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
@@ -29,8 +30,8 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
 
     @Autowired
     private StudentProfileControl profileControl;
-
     private StudentUserDTO profileDTO;
+    int studentID;
 
     Label firstname     = new Label("Vorname:");
     Label lfirstname    = new Label("Vorname");
@@ -60,25 +61,23 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     @Override
     public void setParameter(BeforeEvent event,
                              String parameter) {
-        System.out.println("Parameter: " + parameter);
         if (parameter != "") {
-            profileDTO = profileControl.loadProfileDataByUserId(Integer.parseInt(parameter));
-            System.out.println(profileControl);
-            lfirstname    = new Label(profileDTO.getFirstName());
-            llastname     = new Label(profileDTO.getLastName());
-            loccupation   = new Label(profileDTO.getGraduation());
-            lbirthdate    = new Label(profileDTO.getDateOfBirth().toString());
-            laddress      = new Label(profileDTO.getAddress().toString());
-            lskills       = new Label(profileDTO.getSkills());
-            lemail        = new Label(profileDTO.getEmail());
-            lnumber       = new Label(profileDTO.getPhone());
-            linterests    = new Label(profileDTO.getInterests());
-            lwebsite      = new Label(profileDTO.getWebsite());
-            laboutme      = new Label(profileDTO.getDescription());
+            profileDTO  = profileControl.loadProfileDataByUserId(Integer.parseInt(parameter));
+            studentID   = profileDTO.getUserId();
+            lfirstname  = new Label(profileDTO.getFirstName());
+            llastname   = new Label(profileDTO.getLastName());
+            loccupation = new Label(profileDTO.getGraduation());
+            lbirthdate  = new Label(profileDTO.getDateOfBirth().toString());
+            laddress    = new Label(profileDTO.getAddress().toString());
+            lskills     = new Label(profileDTO.getSkills());
+            lemail      = new Label(profileDTO.getEmail());
+            lnumber     = new Label(profileDTO.getPhone());
+            linterests  = new Label(profileDTO.getInterests());
+            lwebsite    = new Label(profileDTO.getWebsite());
+            laboutme    = new Label(profileDTO.getDescription());
         }
         createProfileView();
     }
-
 
     public void createProfileView() {
         //TODO: Methods for grabbing UserDTO data
@@ -127,7 +126,8 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         // Edit Profile Button
         HorizontalLayout hbuttons = new HorizontalLayout();
         Button button = new Button("Profil editieren");
-        button.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_EDIT_VIEW));
+        button.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_EDIT_VIEW +
+                studentID));
         hbuttons.add(button);
 
         // Alignment of profile information

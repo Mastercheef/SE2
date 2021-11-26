@@ -6,14 +6,24 @@ import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
+import org.hbrs.se2.project.coll.control.StudentProfileControl;
+import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Route(value = "profile_edit", layout = MainLayout.class)
 @PageTitle("Edit your Profile")
-public class StudentProfileEditView extends VerticalLayout {
+public class StudentProfileEditView extends VerticalLayout implements HasUrlParameter<String> {
+
+    @Autowired
+    private StudentProfileControl profileControl;
+    private StudentUserDTO profileDTO;
+    int studentID;
 
     Label       firstname     = new Label("Vorname:");
     Label       lastname      = new Label("Nachname:");
@@ -42,19 +52,28 @@ public class StudentProfileEditView extends VerticalLayout {
 
     // TODO: Profilbild
 
-    public StudentProfileEditView() {
-        // TODO: get real Data as placeholders from UserDTO
-        lfirstname.setPlaceholder("Max");
-        llastname.setPlaceholder("Mustermann");
-        loccupation.setPlaceholder("Student");
-        lbirthdate.setPlaceholder("01.01.1990");
-        laddress.setPlaceholder("Musterstrasse 1, 12345 Musterstadt");
-        lskills.setPlaceholder("HTML, CSS, JavaScript, C++");
-        lemail.setPlaceholder("max.mustermann@googlemail.com");
-        lnumber.setPlaceholder("0173/11111111");
-        linterests.setPlaceholder("Klettern, Kochen, Bier");
-        lwebsite.setPlaceholder("http://www.maxmusterwebseite.de");
-        laboutme.setPlaceholder("Ich kann alles. Ruf mich an, baby");
+    @Override
+    public void setParameter(BeforeEvent event,
+                             String parameter) {
+        if (parameter != "") {
+            profileDTO  = profileControl.loadProfileDataByUserId(Integer.parseInt(parameter));
+            studentID   = profileDTO.getUserId();
+            lfirstname.setPlaceholder(profileDTO.getFirstName());
+            llastname.setPlaceholder(profileDTO.getLastName());
+            loccupation.setPlaceholder(profileDTO.getGraduation());
+            lbirthdate.setPlaceholder(profileDTO.getDateOfBirth().toString());
+            laddress.setPlaceholder(profileDTO.getAddress().toString());
+            lskills.setPlaceholder(profileDTO.getSkills());
+            lemail.setPlaceholder(profileDTO.getEmail());
+            lnumber.setPlaceholder(profileDTO.getPhone());
+            linterests.setPlaceholder(profileDTO.getInterests());
+            lwebsite.setPlaceholder(profileDTO.getWebsite());
+            laboutme.setPlaceholder(profileDTO.getDescription());
+        }
+        createProfileView();
+    }
+
+    public void createProfileView() {
 
         //TODO: Update UserDTO after editing
 
@@ -109,9 +128,11 @@ public class StudentProfileEditView extends VerticalLayout {
         // TODO: save in ProfileDTO (o.ä.)
         HorizontalLayout hbuttons = new HorizontalLayout();
         Button saveButton   = new Button("Speichern");
-        saveButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW));
+        saveButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW +
+                studentID));
         Button cancelButton = new Button("Abbrechen");
-        cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW));
+        cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW +
+                studentID));
         hbuttons.add(saveButton, cancelButton);
 
         // Alignment of profile information
@@ -125,6 +146,9 @@ public class StudentProfileEditView extends VerticalLayout {
                 hbirthdate, haddress, hskills, hemail, hnumber, hinterests,
                 hwebsite, haboutme, hbuttons);
         add(div);
+    }
+
+    public StudentProfileEditView() {
 
     }
 }

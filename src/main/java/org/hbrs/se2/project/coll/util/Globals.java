@@ -11,7 +11,7 @@ public class Globals {
         public static final String MENU_VIEW                    = "menu/";
         public static final String REGISTER_VIEW                = "register/";
         public static final String PROFILE_VIEW                 = "profile/";            // Student
-        public static final String PROFILE_EDIT_VIEW            = "edit/";
+        public static final String PROFILE_EDIT_VIEW            = "profile_edit/";
         public static final String COMPANYPROFILE_VIEW          = "companyprofile/";     // Company
         public static final String COMPANYPROFILE_EDIT_VIEW     = "companyprofile_edit/";
         public static final String OFFER_VIEW                   = "offer/";
