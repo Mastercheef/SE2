@@ -61,7 +61,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     public void initLabels(CompanyProfileDTO profileDTO) {
         lcompanyname    = new Label(profileDTO.getCompanyName());
-        laddress        = new Label(String.valueOf(profileDTO.getAddress()));
+        laddress        = new Label(profileDTO.getAddress().toString());
         lemail          = new Label(profileDTO.getEmail());
         lphone          = new Label(String.valueOf(profileDTO.getPhoneNumber()));
         lfax            = new Label(String.valueOf(profileDTO.getFaxNumber()));

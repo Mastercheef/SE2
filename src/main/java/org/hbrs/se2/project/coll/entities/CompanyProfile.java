@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class CompanyProfile {
     private int id;
     private String companyName;
-    private int address;
+    private Address address;
     private int phoneNumber;
     private int faxNumber;
     private String email;
@@ -55,15 +55,11 @@ public class CompanyProfile {
         this.companyName = name;
     }
 
-    @Basic
-    @Column(name = "address_id")
-    public int getAddress() {
-        return address;
-    }
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    public Address getAddress() { return address; }
 
-    public void setAddress(int addr) {
-        this.address = addr;
-    }
+    public void setAddress(Address addr) { this.address = addr; }
 
     @Basic
     @Column(name = "fax_number")

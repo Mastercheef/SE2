@@ -2,6 +2,7 @@ package org.hbrs.se2.project.coll.dtos.impl;
 
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.dtos.StellenausschreibungDTO;
+import org.hbrs.se2.project.coll.entities.Address;
 
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ public class CompanyProfileDTOImpl implements CompanyProfileDTO {
 
     private int ID;
     private String companyName;
-    private int address;
+    private Address address;
     private int phoneNumber;
     private int faxNumber;
     private String email;
@@ -27,8 +28,8 @@ public class CompanyProfileDTOImpl implements CompanyProfileDTO {
 
     public String   getCompanyName()                { return this.companyName; }
     public void     setCompanyName(String name)     { this.companyName = name; }
-    public int      getAddress()                    { return this.address; }
-    public void     setAddress(int address)         { this.address = address; }
+    public Address  getAddress()                    { return this.address; }
+    public void     setAddress(Address address)     { this.address = address; }
     public int      getPhoneNumber()                { return this.phoneNumber; }
     public void     setPhoneNumber(int phone)       { this.phoneNumber = phone; }
     public int      getFaxNumber()                  { return this.faxNumber; }

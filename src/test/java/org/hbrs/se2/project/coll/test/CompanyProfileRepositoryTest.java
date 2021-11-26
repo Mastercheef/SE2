@@ -1,6 +1,7 @@
 package org.hbrs.se2.project.coll.test;
 
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
+import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.CompanyProfile;
 import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
 import org.junit.jupiter.api.Test;
@@ -20,12 +21,15 @@ public class CompanyProfileRepositoryTest {
     @Test
     void createReadAndDeleteACompanyProfile(){
 
+        Address addr = new Address();
+        addr.setId(10000000);
+
         CompanyProfile companyProfile = new CompanyProfile();
         companyProfile.setCompanyName("Fancy Testing Company");
         companyProfile.setDescription("We are a fancy Company!");
         companyProfile.setWebsite("www.a-fancy-company.com");
         companyProfile.setFaxNumber(1093049);
-        companyProfile.setAddress(10000000);
+        companyProfile.setAddress(addr);
         companyProfileRepository.save(companyProfile);
 
         int tmpId = companyProfile.getId();
