@@ -12,13 +12,20 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
 import org.hbrs.se2.project.coll.control.CompanyProfileControl;
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
+import org.hbrs.se2.project.coll.entities.Address;
+import org.hbrs.se2.project.coll.entities.CompanyProfile;
 import org.hbrs.se2.project.coll.layout.MainLayout;
+import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Route(value = "companyprofile_edit", layout = MainLayout.class)
 @PageTitle("Edit your Profile")
 public class CompanyProfileEditView extends VerticalLayout  implements HasUrlParameter<String> {
+
+
+    @Autowired
+    private CompanyProfileRepository companyProfileRepository;
 
     @Autowired
     private CompanyProfileControl profileControl;
@@ -115,9 +122,12 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         Button saveButton           = new Button("Speichern");
         Button cancelButton         = new Button("Abbrechen");
 
+        // Create buttons to save in database and cancel progress
         // TODO: save in ProfileDTO (o.ä.)
-        saveButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW +
-                companyId));
+        saveButton.addClickListener(e -> {
+                    updateProfileData();
+                    UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+                });
         cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW +
                 companyId));
         hbuttons.add(saveButton, cancelButton);
@@ -134,6 +144,68 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         add(div);
 
     }
+
+    // Used to save modified data in the database
+    public void updateProfileData() {
+
+        // Only modify data if Textfields are not empty. Otherwise, use previous data.
+        CompanyProfile updatedProfile = new CompanyProfile();
+
+        // TODO: Can this be more dynamic somehow? Open for suggestions here.
+        // Company Name
+        if(lcompanyname.getValue() != "")
+            updatedProfile.setCompanyName(lcompanyname.getValue());
+        else
+            updatedProfile.setCompanyName(lcompanyname.getPlaceholder());
+
+        // Address
+        // TODO: We need a process to create/check adresses. Needs more input fields (postal code, street, house number)
+        /*if(laddress.getValue() != "")
+
+            {}
+            //updatedProfile.setAddress(laddress.getValue());
+        else
+            updatedProfile.setAddress(profileDTO.getAddress());*/
+
+        // Email
+        if(lemail.getValue() != "")
+            updatedProfile.setEmail(lemail.getValue());
+        else
+            updatedProfile.setEmail(lemail.getPlaceholder());
+
+        // Phone
+        if(lphone.getValue() != "")
+            updatedProfile.setPhoneNumber(Integer.parseInt(lphone.getValue()));
+        else
+            updatedProfile.setPhoneNumber(Integer.parseInt(lphone.getPlaceholder()));
+
+        // Fax
+        if(lfax.getValue() != "")
+            updatedProfile.setFaxNumber(Integer.parseInt(lfax.getValue()));
+        else
+            updatedProfile.setFaxNumber(Integer.parseInt(lfax.getPlaceholder()));
+
+        // Website
+        if(lwebsite.getValue() != "")
+            updatedProfile.setWebsite(lwebsite.getValue());
+        else
+            updatedProfile.setWebsite(lwebsite.getPlaceholder());
+
+        // Description
+        if(ldescription.getValue() != "")
+            updatedProfile.setDescription(ldescription.getValue());
+        else
+            updatedProfile.setDescription(ldescription.getPlaceholder());
+
+        // TODO: Change this later when creating a new address works.
+        Address addr = new Address();
+        addr.setId(10000000);
+        updatedProfile.setAddress(addr);
+        updatedProfile.setId(companyId);
+
+        companyProfileRepository.save(updatedProfile);
+    }
+
 
     public void StudentProfileEditView() {
 
