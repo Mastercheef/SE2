@@ -1,5 +1,6 @@
 package org.hbrs.se2.project.coll.util;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 public class Utils {
@@ -20,5 +21,11 @@ public class Utils {
 
     public static boolean StringIsEmptyOrNull(String value) {
         return value == null || value.equals("");
+    }
+
+    public static String convertToGermanDateFormat(LocalDate date) {
+        String dateString = "";
+        dateString += date.getDayOfMonth() + date.getMonthValue() + date.getYear();
+        return dateString;
     }
 }

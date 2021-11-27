@@ -20,8 +20,25 @@ public class User {
     private String password;
     private int userid;
 
+    private String type;
     //private List<Role> roles;
 
+    @Id
+    @GeneratedValue(
+            generator = "user_id"
+    )
+    @SequenceGenerator(
+            name = "user_id",
+            sequenceName = "collhbrs.col_seq_user_id"
+    )
+    @Column(name = "user_id")
+    public int getUserId() {
+        return userid;
+    }
+
+    public void setUserId(int userid) {
+        this.userid = userid;
+    }
 
     @Basic
     @Column(name = "first_name")
@@ -86,20 +103,13 @@ public class User {
         this.password = password;
     }
 
-    @Id
-    @GeneratedValue(
-            generator = "user_id"
-    )
-    @SequenceGenerator(
-            name = "user_id",
-            sequenceName = "collhbrs.col_seq_user_id"
-    )
-    @Column(name = "user_id")
-    public int getUserId() {
-        return userid;
+    @Basic
+    @Column(name = "type")
+    public String getType() {
+        return type;
     }
-    public void setUserId(int userid) {
-        this.userid = userid;
+    public void setType(String type) {
+        this.type = type;
     }
 
     /*@ManyToMany(fetch = FetchType.EAGER)

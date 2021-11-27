@@ -16,7 +16,6 @@ public class UserDTOImpl implements UserDTO {
     private int id;
     private String firstname;
     private String lastname;
-    private String graduation;
     private LocalDate dateOfBirth;
     private Address address;
     private String email;

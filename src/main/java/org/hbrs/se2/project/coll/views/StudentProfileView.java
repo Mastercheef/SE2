@@ -31,14 +31,13 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     @Autowired
     private StudentProfileControl profileControl;
     private StudentUserDTO profileDTO;
-    int studentID;
 
     Label firstname     = new Label("Vorname:");
     Label lfirstname    = new Label("Vorname");
     Label lastname      = new Label("Nachname:");
     Label llastname     = new Label("Nachname");
-    Label occupation    = new Label("Beruf:");
-    Label loccupation   = new Label("Beruf");
+    Label occupation    = new Label("Abschluss:");
+    Label loccupation   = new Label("Abschluss");
     Label birthdate     = new Label("Geburtsdatum:");
     Label lbirthdate    = new Label("Geburtsdatum");
     Label address       = new Label("Adresse:");
@@ -63,7 +62,6 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
                              String parameter) {
         if (parameter != "") {
             profileDTO  = profileControl.loadProfileDataByUserId(Integer.parseInt(parameter));
-            studentID   = profileDTO.getUserId();
             lfirstname  = new Label(profileDTO.getFirstName());
             llastname   = new Label(profileDTO.getLastName());
             loccupation = new Label(profileDTO.getGraduation());
@@ -127,7 +125,7 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         HorizontalLayout hbuttons = new HorizontalLayout();
         Button button = new Button("Profil editieren");
         button.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_EDIT_VIEW +
-                studentID));
+                profileDTO.getUserId()));
         hbuttons.add(button);
 
         // Alignment of profile information
