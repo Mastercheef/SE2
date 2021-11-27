@@ -1,6 +1,7 @@
 package org.hbrs.se2.project.coll.entities;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table( name= "col_tab_company", schema = "collhbrs")
@@ -13,6 +14,8 @@ public class CompanyProfile {
     private String email;
     private String website;
     private String description;
+    private Set<ContactPerson> contactPersons;
+    private Set<JobAdvertisement> advertisements;
     //Wird in der Entity nicht benötigt
     //Sollten wird besser über den Controler beim laden dem DTO hinzufügen
     //private List<StellenausschreibungDTO> offers;
@@ -23,7 +26,6 @@ public class CompanyProfile {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String descr) {
         this.description = descr;
     }
@@ -40,15 +42,15 @@ public class CompanyProfile {
     public int getId() {
         return id;
     }
-
-    public void setId(int id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Basic
     @Column(name = "company_name")
     public String getCompanyName() {
         return companyName;
     }
-
     public void setCompanyName(String name) {
         this.companyName = name;
     }
@@ -56,7 +58,6 @@ public class CompanyProfile {
     @ManyToOne
     @JoinColumn(name = "address_id")
     public Address getAddress() { return address; }
-
     public void setAddress(Address addr) { this.address = addr; }
 
     @Basic
@@ -64,7 +65,6 @@ public class CompanyProfile {
     public int getFaxNumber() {
         return faxNumber;
     }
-
     public void setFaxNumber(int faxNumber) {
         this.faxNumber = faxNumber;
     }
@@ -74,22 +74,27 @@ public class CompanyProfile {
     public String getWebsite() {
         return website;
     }
-
     public void setWebsite(String website) {
         this.website = website;
     }
 
     @Basic
-    @Column(name = "email")
+    @Column(name = "mail_address")
     public String getEmail() { return email; }
-
     public void setEmail(String mail) { this.email = mail; }
 
     @Basic
     @Column(name = "phone_number")
     public int getPhoneNumber() { return phoneNumber; }
-
     public void setPhoneNumber(int phone) { this.phoneNumber = phone; }
+
+    @OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
+    public Set<ContactPerson> getContactPersons() {
+        return contactPersons;
+    }
+    public void setContactPersons(Set<ContactPerson> contactPersons) {
+        this.contactPersons = contactPersons;
+    }
 
     // TODO: Jobangebote der passenden Firma rauspicken und anhängen (wenn Stellenausschreibung funktioniert? anpassen)
 /*

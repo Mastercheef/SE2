@@ -21,12 +21,12 @@ import java.util.List;
  */
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    UserDTO findUserByUserIdAndPassword ( String userid, String password );
+    UserDTO findUserByIdAndPassword ( String userid, String password );
 
     // SELECT *
     // FROM User p
     // WHERE p.userid = [StringValueOf( userid )]
-    UserDTO findUserByUserId ( int userid );
+    UserDTO findUserById ( int userid );
 
 
 }

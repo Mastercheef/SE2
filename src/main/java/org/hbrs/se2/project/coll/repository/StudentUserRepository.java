@@ -23,7 +23,7 @@ public interface StudentUserRepository extends JpaRepository<StudentUser, Intege
 
     // SELECT *
     // FROM User p
-    // WHERE p.userid = [StringValueOf( userid )]
-    StudentUserDTO findStudentUserByUserId ( int userid );
+    // WHERE p.userid = [StringValueOf( userid )]StudentUserDTO findStudentUserById(int userid);
+    StudentUserDTO findStudentUserById ( int id );
 
 }

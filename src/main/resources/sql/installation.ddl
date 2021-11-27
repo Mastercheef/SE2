@@ -4,6 +4,7 @@
 -- Drop Section
 -- _______________
 
+drop table col_tab_application;
 drop table col_tab_job_advertisement;
 drop table col_tab_contact_person;
 drop table col_tab_company;
@@ -86,7 +87,6 @@ create table col_tab_job_advertisement (
      contact_person_id bigint not null,
      job_description varchar(1024),
      job_title varchar(64) not null,
-     student_id bigint not null,
      advertisement_id bigint not null default nextval('col_seq_advertisement_id'),
      constraint col_pk_advertisement_id primary key (advertisement_id));
 
@@ -101,13 +101,19 @@ create table col_tab_student (
      constraint col_pk_s_user_id primary key (user_id));
 
 create table col_tab_company (
-     company_description varchar(1024) not null,
      company_id bigint not null default nextval('col_seq_company_id'),
+     company_description varchar(1024) not null,
      homepage varchar(32),
      fax_number varchar(12),
      company_name varchar(32) not null,
      address_id bigint not null,
+     mail_address varchar(32),
+     phone_number varchar(12),
      constraint col_pk_company_id primary key (company_id));
+
+create table col_tab_application (
+     user_id bigint not null,
+     advertisement_id bigint not null);
 
 -- Constraints Section
 -- ___________________
@@ -128,11 +134,6 @@ alter table col_tab_user
     references col_tab_address;
 
 alter table col_tab_job_advertisement
-    add constraint col_fk_student_id
-    foreign key (student_id)
-    references col_tab_student;
-
-alter table col_tab_job_advertisement
     add constraint col_fk_contact_person_id
     foreign key (contact_person_id)
     references col_tab_contact_person;
@@ -146,6 +147,16 @@ alter table col_tab_student
     add constraint col_fk_s_user_id
     foreign key (user_id)
     references col_tab_user;
+
+alter table col_tab_application
+    add constraint col_fk_a_user_id
+    foreign key (user_id)
+    references col_tab_student;
+
+alter table col_tab_application
+    add constraint col_fk_a_advertisement_id
+    foreign key (advertisement_id)
+    references col_tab_job_advertisement;
 
 alter table col_tab_company
     add constraint col_fk_c_address_id

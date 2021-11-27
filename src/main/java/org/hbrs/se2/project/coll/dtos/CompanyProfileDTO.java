@@ -5,7 +5,7 @@ import org.hbrs.se2.project.coll.dtos.StellenausschreibungDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 
 import javax.persistence.OneToMany;
-import java.util.List;
+import java.util.Set;
 
 public interface CompanyProfileDTO {
 
@@ -20,6 +20,6 @@ public interface CompanyProfileDTO {
     public String   getDescription();
 
     @OneToMany
-    public List<StellenausschreibungDTO> getOffers();
+    public Set<StellenausschreibungDTO> getAdvertisements();
 
 }

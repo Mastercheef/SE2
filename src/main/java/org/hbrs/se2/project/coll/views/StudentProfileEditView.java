@@ -61,7 +61,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     public void setParameter(BeforeEvent event,
                              String parameter) {
         if (!Utils.StringIsEmptyOrNull(parameter)) {
-            profileDTO = profileControl.loadProfileDataByUserId(Integer.parseInt(parameter));
+            profileDTO = profileControl.loadProfileDataById(Integer.parseInt(parameter));
             firstName.setValue(profileDTO.getFirstName());
             lastName.setValue(profileDTO.getLastName());
             graduation.setValue(profileDTO.getGraduation());
@@ -141,12 +141,12 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         saveButton.addClickListener(e -> {
             if (!checkForEmptyInput()) {
                 profileControl.saveStudentUser(createStudenUserDTOImpl());
-                UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + profileDTO.getUserId());
+                UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + profileDTO.getId());
             }
         });
         Button cancelButton = new Button("Abbrechen");
         cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW +
-                profileDTO.getUserId()));
+                profileDTO.getId()));
         hbuttons.add(saveButton, cancelButton);
 
         // Alignment of profile information
@@ -166,7 +166,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     public StudentUserDTOImpl createStudenUserDTOImpl() {
 
         StudentUserDTOImpl studentUserDTO = new StudentUserDTOImpl();
-        studentUserDTO.setUserId(profileDTO.getUserId());
+        studentUserDTO.setId(profileDTO.getId());
         studentUserDTO.setFirstname(firstName.getValue());
         studentUserDTO.setLastname(lastName.getValue());
         studentUserDTO.setGraduation(graduation.getValue());

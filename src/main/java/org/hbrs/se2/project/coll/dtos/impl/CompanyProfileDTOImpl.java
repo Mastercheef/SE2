@@ -6,7 +6,7 @@ import org.hbrs.se2.project.coll.entities.Address;
 
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 public class CompanyProfileDTOImpl implements CompanyProfileDTO {
 
@@ -21,7 +21,7 @@ public class CompanyProfileDTOImpl implements CompanyProfileDTO {
 
     // TODO: Annotation klären
 //    @OneToMany
-    private List<StellenausschreibungDTO>  offers;
+    private Set<StellenausschreibungDTO>  offers;
 
     public int      getId() { return this.ID; }
     public void     setID(int id) { this.ID = id; }
@@ -41,7 +41,7 @@ public class CompanyProfileDTOImpl implements CompanyProfileDTO {
     public String   getDescription()                { return this.description; }
     public void     setDescription(String descr)    {this.description = descr; }
 
-    public List<StellenausschreibungDTO>    getOffers() { return this.offers; }
-    public void     setOffers(List<StellenausschreibungDTO> offers) { this.offers = offers; }
+    public Set<StellenausschreibungDTO>    getAdvertisements() { return this.offers; }
+    public void     setAdvertisements(Set<StellenausschreibungDTO> offers) { this.offers = offers; }
 
 }

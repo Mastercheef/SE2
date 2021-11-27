@@ -3,7 +3,6 @@ package org.hbrs.se2.project.coll.entities;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -11,6 +10,8 @@ import java.util.Objects;
 @DiscriminatorColumn(name = "type")
 @Table( name ="col_tab_user" , schema = "collhbrs" )
 public class User {
+
+    private int id;
     private String firstName;
     private String lastName;
     private Address address;
@@ -18,27 +19,6 @@ public class User {
     private LocalDate dateOfBirth;
     private String email;
     private String password;
-    private int userid;
-
-    private String type;
-    //private List<Role> roles;
-
-    @Id
-    @GeneratedValue(
-            generator = "user_id"
-    )
-    @SequenceGenerator(
-            name = "user_id",
-            sequenceName = "collhbrs.col_seq_user_id"
-    )
-    @Column(name = "user_id")
-    public int getUserId() {
-        return userid;
-    }
-
-    public void setUserId(int userid) {
-        this.userid = userid;
-    }
 
     @Basic
     @Column(name = "first_name")
@@ -103,13 +83,20 @@ public class User {
         this.password = password;
     }
 
-    @Basic
-    @Column(name = "type")
-    public String getType() {
-        return type;
+    @Id
+    @GeneratedValue(
+            generator = "user_id"
+    )
+    @SequenceGenerator(
+            name = "user_id",
+            sequenceName = "collhbrs.col_seq_user_id"
+    )
+    @Column(name = "user_id")
+    public int getId() {
+        return id;
     }
-    public void setType(String type) {
-        this.type = type;
+    public void setId(int id) {
+        this.id = id;
     }
 
     /*@ManyToMany(fetch = FetchType.EAGER)
@@ -138,11 +125,11 @@ public class User {
                 Objects.equals(dateOfBirth, user.dateOfBirth) &&
                 Objects.equals(email, user.email) &&
                 Objects.equals(password, user.password) &&
-                Objects.equals(userid, user.userid);
+                Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( firstName, lastName, address, phone, dateOfBirth, email, password, userid);
+        return Objects.hash( firstName, lastName, address, phone, dateOfBirth, email, password, id);
     }
 }

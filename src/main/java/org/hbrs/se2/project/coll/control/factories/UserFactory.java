@@ -1,29 +1,26 @@
 package org.hbrs.se2.project.coll.control.factories;
 
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
-import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.StudentUser;
-import org.hbrs.se2.project.coll.entities.User;
 
 public class UserFactory {
 
-    public static StudentUser createStudentUser(StudentUserDTO studentDTO) {
-        StudentUser studentUser = new StudentUser();
-        studentUser.setUserId(studentDTO.getUserId());
-        studentUser.setFirstName(studentDTO.getFirstName());
-        studentUser.setLastName(studentDTO.getLastName());
-        studentUser.setAddress(studentDTO.getAddress());
-        studentUser.setPhone(studentDTO.getPhone());
-        studentUser.setDateOfBirth(studentDTO.getDateOfBirth());
-        studentUser.setEmail(studentDTO.getEmail());
-        studentUser.setPassword(studentDTO.getPassword());
-        studentUser.setGraduation(studentDTO.getGraduation());
-        studentUser.setSkills(studentDTO.getSkills());
-        studentUser.setInterests(studentDTO.getInterests());
-        studentUser.setWebsite(studentDTO.getWebsite());
-        studentUser.setDescription(studentDTO.getDescription());
+    public static StudentUser createNewStudentUser(StudentUserDTO studentDTO) {
+        StudentUser newStudentUser = new StudentUser();
+        newStudentUser.setFirstName(studentDTO.getFirstName());
+        newStudentUser.setLastName(studentDTO.getLastName());
+        newStudentUser.setAddress(studentDTO.getAddress());
+        newStudentUser.setPhone(studentDTO.getPhone());
+        //newStudentUser.setDateOfBirth(studentDTO.getDateOfBirth());
+        newStudentUser.setEmail(studentDTO.getEmail());
+        newStudentUser.setPassword(studentDTO.getPassword());
+        newStudentUser.setGraduation(studentDTO.getGraduation());
+        newStudentUser.setSkills(studentDTO.getSkills());
+        newStudentUser.setInterests(studentDTO.getInterests());
+        newStudentUser.setWebsite(studentDTO.getWebsite());
+        newStudentUser.setDescription(studentDTO.getDescription());
 
-        return studentUser;
+        return newStudentUser;
     }
 
 }

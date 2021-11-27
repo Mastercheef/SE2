@@ -21,7 +21,6 @@ public class UserDTOImpl implements UserDTO {
     private String email;
     private String phone;
     private String password;
-    private int userid;
     //private List<RoleDTO> roles;
 
     public void setFirstname(String firstname) {
@@ -40,7 +39,7 @@ public class UserDTOImpl implements UserDTO {
 
     public void setPassword(String password) { this.password = password; }
 
-    public void setUserId(int userid) { this.userid = userid; }
+    public void setId(int id) { this.id = id; }
 
     public void setPhone(String phone) { this.phone = phone; }
 
@@ -71,12 +70,12 @@ public class UserDTOImpl implements UserDTO {
     public String getPassword() { return this.password; }
 
     @Override
-    public int getUserId() { return this.userid; }
+    public int getId() { return this.id; }
 
     @Override
     public String toString() {
         return "UserDTOImpl{" +
-                "id=" + userid +
+                "id=" + id +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 //", roles=" + roles +

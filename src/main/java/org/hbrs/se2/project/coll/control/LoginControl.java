@@ -33,7 +33,7 @@ public class LoginControl {
     private UserDTO getUser(LoginResultDTO result, String username , String password ) {
         UserDTO userTmp;
         try {
-            userTmp = repository.findUserByUserIdAndPassword(username, password);
+            userTmp = repository.findUserByIdAndPassword(username, password);
             result.setResult(true);
             result.setReason("LogIn erfolgreich");
         } catch ( org.springframework.dao.DataAccessResourceFailureException e ) {

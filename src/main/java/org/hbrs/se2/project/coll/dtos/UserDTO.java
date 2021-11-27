@@ -12,6 +12,6 @@ public interface UserDTO {
     public LocalDate getDateOfBirth();
     public String getEmail();
     public String getPassword();
-    public int getUserId();
+    public int getId();
 
 }

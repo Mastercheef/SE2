@@ -30,6 +30,7 @@ public class CompanyProfileControl {
     }*/
 
     public CompanyProfileDTO findCompanyProfileByCompanyId(int id) {
+        System.out.println(repository.findById(id).get().getContactPersons());
         return repository.findCompanyProfileById(id);
     }
 

@@ -1,7 +1,6 @@
 package org.hbrs.se2.project.coll.entities;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @DiscriminatorValue("st")
