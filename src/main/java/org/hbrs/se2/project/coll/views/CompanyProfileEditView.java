@@ -15,10 +15,12 @@ import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.CompanyProfile;
 import org.hbrs.se2.project.coll.layout.MainLayout;
+import org.hbrs.se2.project.coll.repository.AddressRepository;
 import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Objects;
 
 @Route(value = "companyprofile_edit", layout = MainLayout.class)
@@ -30,7 +32,11 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     private CompanyProfileRepository companyProfileRepository;
 
     @Autowired
+    private AddressRepository addressRepository;
+
+    @Autowired
     private CompanyProfileControl profileControl;
+    List<Address> existingAddresses;
     Address addr = new Address();
     int companyId;
 
@@ -65,7 +71,15 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
                              String parameter) {
         if (!parameter.equals("")) {
             CompanyProfileDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
-            addr = profileDTO.getAddress();
+            existingAddresses            = addressRepository.getByIdAfter(0);
+
+            // Skip ID so one can be generated.
+            addr.setStreet(profileDTO.getAddress().getStreet());
+            addr.setHouseNumber(profileDTO.getAddress().getHouseNumber());
+            addr.setPostalCode(profileDTO.getAddress().getPostalCode());
+            addr.setCity(profileDTO.getAddress().getCity());
+            addr.setCountry(profileDTO.getAddress().getCountry());
+
             initLabels(profileDTO);
             createProfile();
         }
@@ -173,7 +187,9 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         // Only modify data if Textfields are not empty. Otherwise, use previous data.
         CompanyProfile updatedProfile = new CompanyProfile();
 
-        // TODO: Can this be more dynamic somehow? Open for suggestions here.
+        // ID
+        updatedProfile.setId(companyId);
+
         // Company Name
         if(!Objects.equals(lcompanyname.getValue(), ""))
             updatedProfile.setCompanyName(lcompanyname.getValue());
@@ -211,12 +227,14 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         else
             addr.setCountry(lcountry.getPlaceholder());
 
-        /* TODO: Think about another method of maybe scanning the DB for the new address and see if it already
-            exists. */
-        // Not optimal: edit old address
+        // Check DB for existing address
+        int newAddressID = checkAddressExistence(addr, existingAddresses);
+        if(newAddressID != -1) {
+            addr = addressRepository.getById(newAddressID);
+        } else {
+            addressRepository.save(addr);
+        }
         updatedProfile.setAddress(addr);
-        updatedProfile.setId(companyId);
-
 
         // Email
         if(!Objects.equals(lemail.getValue(), ""))
@@ -250,6 +268,26 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
         // Save in DB
         companyProfileRepository.save(updatedProfile);
+    }
+
+    /*  We have to check if the address we edited in the View already exists in the DB.
+        Return True  if it exists
+        Return False if it does not exist
+    */
+    public int checkAddressExistence(Address a, List<Address> addresses) {
+        int ID = -1;
+
+        for(Address b : addresses) {
+            if(Objects.equals(a.getStreet(), b.getStreet()) &&
+                    Objects.equals(a.getHouseNumber(), b.getHouseNumber()) &&
+                    Objects.equals(a.getPostalCode(), b.getPostalCode()) &&
+                    Objects.equals(a.getCity(), b.getCity()) &&
+                    Objects.equals(a.getCountry(), b.getCountry())) {
+                ID = b.getId();
+                break;
+            }
+        }
+        return ID;
     }
 
 }
