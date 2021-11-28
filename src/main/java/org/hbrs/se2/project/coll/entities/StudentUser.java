@@ -1,6 +1,7 @@
 package org.hbrs.se2.project.coll.entities;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @DiscriminatorValue("st")
@@ -13,6 +14,7 @@ public class StudentUser extends User {
     private String website;
     private String description;
     private String subjectField;
+    private Set<JobAdvertisement> applications;
 
     @Basic
     @Column(name = "graduation")
@@ -66,5 +68,14 @@ public class StudentUser extends User {
     }
     public void setSubjectField(String subjectField) {
         this.subjectField = subjectField;
+    }
+
+    @ManyToMany
+    @JoinTable(name = "col_tab_application")
+    public Set<JobAdvertisement> getApplications() {
+        return applications;
+    }
+    public void setApplications(Set<JobAdvertisement> applications) {
+        this.applications = applications;
     }
 }

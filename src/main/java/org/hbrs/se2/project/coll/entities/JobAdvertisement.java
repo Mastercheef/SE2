@@ -2,6 +2,7 @@ package org.hbrs.se2.project.coll.entities;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table( name ="col_tab_job_advertisement" , schema = "collhbrs" )
@@ -18,7 +19,7 @@ public class JobAdvertisement {
     private String jobDescription;
     private String jobTitle;
     private CompanyProfile company;
-    //TODO JOIN mit Studenten muss N:M sein und nicht 1:N
+    private Set<StudentUser> applicants;
 
     @Id
     @GeneratedValue(
@@ -127,5 +128,13 @@ public class JobAdvertisement {
     }
     public void setCompany(CompanyProfile company) {
         this.company = company;
+    }
+
+    @ManyToMany(mappedBy = "applications")
+    public Set<StudentUser> getApplicants() {
+        return applicants;
+    }
+    public void setApplicants(Set<StudentUser> applicants) {
+        this.applicants = applicants;
     }
 }

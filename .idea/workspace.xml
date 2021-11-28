@@ -4,21 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="New Testdata added">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/repository/StudentUserRepository.java" afterDir="false" />
+    <list default="true" id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="Added all entities! Only thing missing is a connection from JobAdvertisement to Company.">
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_11_57_[Changes]1/MainView.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_11_57_[Changes]1/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_11_57__Changes_1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/control/StudentProfileControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/control/StudentProfileControl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/Address.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/JobAdvertisement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/JobAdvertisement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/Role.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/StudentUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/StudentUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/views/StudentProfileView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/views/StudentProfileView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sql/installation.ddl" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql/installation.ddl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/sql/testdata.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/sql/testdata.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,8 +21,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -44,6 +37,14 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/CollApplication.java" root0="FORCE_HIGHLIGHTING" />
@@ -60,7 +61,7 @@
     </option>
     <option name="myId2Visible">
       <map>
-        <entry key="JPA Inspector" value="true" />
+        <entry key="JPA Inspector" value="false" />
         <entry key="JPA Palette" value="false" />
         <entry key="JPA Structure" value="false" />
       </map>
@@ -221,7 +222,12 @@
       <workItem from="1637750300948" duration="7525000" />
       <workItem from="1637762689734" duration="4180000" />
       <workItem from="1637911580263" duration="171000" />
-      <workItem from="1637911950962" duration="3596000" />
+      <workItem from="1637911950962" duration="3784000" />
+      <workItem from="1637921302724" duration="5187000" />
+      <workItem from="1638032376491" duration="8062000" />
+      <workItem from="1638098616535" duration="16000" />
+      <workItem from="1638099033422" duration="90000" />
+      <workItem from="1638099154211" duration="314000" />
     </task>
     <task id="LOCAL-00001" summary="created Branch Stellenausschreibung">
       <created>1637238690955</created>
@@ -300,7 +306,28 @@
       <option name="project" value="LOCAL" />
       <updated>1637757806288</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Student Profile is working now!">
+      <created>1637917152814</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1637917152814</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Some minor cleanups in entities, ready to create some more!">
+      <created>1637922088093</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1637922088093</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Added all entities! Only thing missing is a connection from JobAdvertisement to Company.">
+      <created>1638040501976</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1638040501976</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -342,7 +369,10 @@
     <MESSAGE value="created test branch + first test" />
     <MESSAGE value="Added the Class JDBCConnection from carlook to the project. Implemented userDAO based on carlooks Version." />
     <MESSAGE value="SELECT col_tab_company (findCompanyProfileByID) is running now with JPA." />
-    <option name="LAST_COMMIT_MESSAGE" value="SELECT col_tab_company (findCompanyProfileByID) is running now with JPA." />
+    <MESSAGE value="Student Profile is working now!" />
+    <MESSAGE value="Some minor cleanups in entities, ready to create some more!" />
+    <MESSAGE value="Added all entities! Only thing missing is a connection from JobAdvertisement to Company." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added all entities! Only thing missing is a connection from JobAdvertisement to Company." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
