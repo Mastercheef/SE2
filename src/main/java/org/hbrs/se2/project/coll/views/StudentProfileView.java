@@ -13,14 +13,13 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
-import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
-import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.hbrs.se2.project.coll.util.*;
+
+import java.util.Objects;
 
 //TODO: Diese Seite sollte nur verfügbar sein, wenn man eingeloggt ist.
 //TODO: UserDTO für Daten auslesen und in Textfelder einfüllen
@@ -33,26 +32,27 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     private StudentUserDTO profileDTO;
 
     Label firstname     = new Label("Vorname:");
-    Label lfirstname    = new Label("Vorname");
     Label lastname      = new Label("Nachname:");
-    Label llastname     = new Label("Nachname");
     Label occupation    = new Label("Abschluss:");
-    Label loccupation   = new Label("Abschluss");
     Label birthdate     = new Label("Geburtsdatum:");
-    Label lbirthdate    = new Label("Geburtsdatum");
     Label address       = new Label("Adresse:");
-    Label laddress      = new Label("Adresse");
     Label skills        = new Label("Skills:");
-    Label lskills       = new Label("Skills");
     Label email         = new Label("E-Mail:");
-    Label lemail        = new Label("E-Mail");
     Label number        = new Label("Telefon:");
-    Label lnumber       = new Label("Telefon");
     Label interests     = new Label("Interessen:");
-    Label linterests    = new Label("Interessen");
     Label website       = new Label("Webseite:");
-    Label lwebsite      = new Label("Webseite");
     Label aboutme       = new Label("Über mich:");
+
+    Label lfirstname    = new Label("Vorname");
+    Label llastname     = new Label("Nachname");
+    Label loccupation   = new Label("Abschluss");
+    Label lbirthdate    = new Label("Geburtsdatum");
+    Label laddress      = new Label("Adresse");
+    Label lskills       = new Label("Skills");
+    Label lemail        = new Label("E-Mail");
+    Label lnumber       = new Label("Telefon");
+    Label linterests    = new Label("Interessen");
+    Label lwebsite      = new Label("Webseite");
     Label laboutme      = new Label("Über mich");
 
     Div   div           = new Div();
@@ -60,7 +60,7 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     @Override
     public void setParameter(BeforeEvent event,
                              String parameter) {
-        if (parameter != "") {
+        if (!Objects.equals(parameter, "")) {
             profileDTO  = profileControl.loadProfileDataById(Integer.parseInt(parameter));
             lfirstname  = new Label(profileDTO.getFirstName());
             llastname   = new Label(profileDTO.getLastName());
@@ -98,27 +98,28 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
 
         // Profile Data
         // TODO: Get Data from UserDTO
-        HorizontalLayout hfirstname = new HorizontalLayout();
+        HorizontalLayout hfirstname     = new HorizontalLayout();
+        HorizontalLayout hlastname      = new HorizontalLayout();
+        HorizontalLayout hoccupation    = new HorizontalLayout();
+        HorizontalLayout hbirthdate     = new HorizontalLayout();
+        HorizontalLayout haddress       = new HorizontalLayout();
+        HorizontalLayout hskills        = new HorizontalLayout();
+        HorizontalLayout hemail         = new HorizontalLayout();
+        HorizontalLayout hnumber        = new HorizontalLayout();
+        HorizontalLayout hinterests     = new HorizontalLayout();
+        HorizontalLayout hwebsite       = new HorizontalLayout();
+        HorizontalLayout haboutme       = new HorizontalLayout();
+
         hfirstname.add(firstname, lfirstname);
-        HorizontalLayout hlastname = new HorizontalLayout();
         hlastname.add(lastname, llastname);
-        HorizontalLayout hoccupation = new HorizontalLayout();
         hoccupation.add(occupation, loccupation);
-        HorizontalLayout hbirthdate = new HorizontalLayout();
         hbirthdate.add(birthdate, lbirthdate);
-        HorizontalLayout haddress = new HorizontalLayout();
         haddress.add(address, laddress);
-        HorizontalLayout hskills = new HorizontalLayout();
         hskills.add(skills, lskills);
-        HorizontalLayout hemail = new HorizontalLayout();
         hemail.add(email, lemail);
-        HorizontalLayout hnumber = new HorizontalLayout();
         hnumber.add(number, lnumber);
-        HorizontalLayout hinterests = new HorizontalLayout();
         hinterests.add(interests, linterests);
-        HorizontalLayout hwebsite = new HorizontalLayout();
         hwebsite.add(website, lwebsite);
-        HorizontalLayout haboutme = new HorizontalLayout();
         haboutme.add(aboutme, laboutme);
 
         // Edit Profile Button

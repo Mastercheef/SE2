@@ -32,28 +32,29 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     //da address eigene Entity ist und kein String
     //private Binder<StudentUserDTOImpl> binder = new Binder(StudentUserDTOImpl.class);
 
-    Label       lfirstname     = new Label("Vorname:");
-    Label       llastname      = new Label("Nachname:");
-    Label       lgraduation = new Label("Abschluss:");
-    Label       ldateOfBirth = new Label("Geburtsdatum:");
-    Label       laddress       = new Label("Adresse:");
-    Label       lskills        = new Label("Skills:");
-    Label       lemail         = new Label("E-Mail:");
-    Label       lphone = new Label("Telefon:");
-    Label       linterests     = new Label("Interessen:");
-    Label       lwebsite       = new Label("Webseite:");
-    Label       ldescription = new Label("Über mich:");
-    TextField   firstName    = new TextField();
-    TextField   lastName     = new TextField();
-    TextField   graduation   = new TextField();
-    DatePicker   dateOfBirth    = new DatePicker();
-    TextField   address      = new TextField();
-    TextField   skills       = new TextField();
-    TextField   email        = new TextField();
-    TextField   phone       = new TextField();
-    TextField   interests    = new TextField();
-    TextField   website      = new TextField();
-    TextField   description      = new TextField();
+    Label       lfirstname      = new Label("Vorname:");
+    Label       llastname       = new Label("Nachname:");
+    Label       lgraduation     = new Label("Abschluss:");
+    Label       ldateOfBirth    = new Label("Geburtsdatum:");
+    Label       laddress        = new Label("Adresse:");
+    Label       lskills         = new Label("Skills:");
+    Label       lemail          = new Label("E-Mail:");
+    Label       lphone          = new Label("Telefon:");
+    Label       linterests      = new Label("Interessen:");
+    Label       lwebsite        = new Label("Webseite:");
+    Label       ldescription    = new Label("Über mich:");
+
+    TextField   firstName       = new TextField();
+    TextField   lastName        = new TextField();
+    TextField   graduation      = new TextField();
+    DatePicker  dateOfBirth     = new DatePicker();
+    TextField   address         = new TextField();
+    TextField   skills          = new TextField();
+    TextField   email           = new TextField();
+    TextField   phone           = new TextField();
+    TextField   interests       = new TextField();
+    TextField   website         = new TextField();
+    TextField   description     = new TextField();
 
     Div         div           = new Div();
 
@@ -111,36 +112,36 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         }
 
         // Profile Data
-        // TODO: Get Data from UserDTO
-        HorizontalLayout hfirstname = new HorizontalLayout();
+        HorizontalLayout hfirstname     = new HorizontalLayout();
+        HorizontalLayout hlastname      = new HorizontalLayout();
+        HorizontalLayout hoccupation    = new HorizontalLayout();
+        HorizontalLayout hbirthdate     = new HorizontalLayout();
+        HorizontalLayout haddress       = new HorizontalLayout();
+        HorizontalLayout hskills        = new HorizontalLayout();
+        HorizontalLayout hemail         = new HorizontalLayout();
+        HorizontalLayout hnumber        = new HorizontalLayout();
+        HorizontalLayout hinterests     = new HorizontalLayout();
+        HorizontalLayout hwebsite       = new HorizontalLayout();
+        HorizontalLayout haboutme       = new HorizontalLayout();
+
         hfirstname.add(lfirstname, firstName);
-        HorizontalLayout hlastname = new HorizontalLayout();
         hlastname.add(llastname, lastName);
-        HorizontalLayout hoccupation = new HorizontalLayout();
         hoccupation.add(lgraduation, graduation);
-        HorizontalLayout hbirthdate = new HorizontalLayout();
         hbirthdate.add(ldateOfBirth, dateOfBirth);
-        HorizontalLayout haddress = new HorizontalLayout();
         haddress.add(laddress, address);
-        HorizontalLayout hskills = new HorizontalLayout();
         hskills.add(lskills, skills);
-        HorizontalLayout hemail = new HorizontalLayout();
         hemail.add(lemail, email);
-        HorizontalLayout hnumber = new HorizontalLayout();
         hnumber.add(lphone, phone);
-        HorizontalLayout hinterests = new HorizontalLayout();
         hinterests.add(linterests, interests);
-        HorizontalLayout hwebsite = new HorizontalLayout();
         hwebsite.add(lwebsite, website);
-        HorizontalLayout haboutme = new HorizontalLayout();
         haboutme.add(ldescription, description);
 
-        // TODO: save in ProfileDTO (o.ä.)
+        // Create Save and Cancel Buttons
         HorizontalLayout hbuttons = new HorizontalLayout();
         Button saveButton   = new Button("Speichern");
         saveButton.addClickListener(e -> {
             if (!checkForEmptyInput()) {
-                profileControl.saveStudentUser(createStudenUserDTOImpl());
+                profileControl.saveStudentUser(createStudentUserDTOImpl());
                 UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + profileDTO.getId());
             }
         });
@@ -160,10 +161,9 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
                 hbirthdate, haddress, hskills, hemail, hnumber, hinterests,
                 hwebsite, haboutme, hbuttons);
         add(div);
-
     }
 
-    public StudentUserDTOImpl createStudenUserDTOImpl() {
+    public StudentUserDTOImpl createStudentUserDTOImpl() {
 
         StudentUserDTOImpl studentUserDTO = new StudentUserDTOImpl();
         studentUserDTO.setId(profileDTO.getId());
