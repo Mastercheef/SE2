@@ -23,10 +23,13 @@ public class StudentProfileControl {
 
         //Erzeuge ein neues Car-Entity konsistent über eine Factory
         StudentUser studentUser = UserFactory.createStudentUser(userDTO);
-        System.out.println("Created StudentUser Entity: " + studentUser.getId());
 
         // Abspeicherung des Entity in die DB
         this.repository.save( studentUser );
 
+        if (studentUser.getId() > 0)
+            System.out.println("Updated StudentUser profile: " + studentUser.getId());
+        else
+            System.out.println("Created new StudentUser: " + studentUser.getId());
     }
 }

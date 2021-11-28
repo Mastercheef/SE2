@@ -71,7 +71,7 @@ public class StudentUser extends User {
     }
 
     @ManyToMany
-    @JoinTable(name = "col_tab_application")
+    @JoinTable(name = "col_tab_application" , schema = "collhbrs", joinColumns = @JoinColumn(name = "user_id") )
     public Set<JobAdvertisement> getApplications() {
         return applications;
     }
