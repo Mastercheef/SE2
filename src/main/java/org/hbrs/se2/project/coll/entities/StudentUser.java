@@ -78,4 +78,24 @@ public class StudentUser extends User {
     public void setApplications(Set<JobAdvertisement> applications) {
         this.applications = applications;
     }
+
+    @Override
+    public String toString() {
+        return this.getId()  + ", " +
+                this.getSalutation() + ", " +
+                this.getTitle() + ", " +
+                this.getFirstName() + ", " +
+                this.getLastName() + ", " +
+                this.getDateOfBirth()  + ", " +
+                this.getPhone() + ", " +
+                this.getAddress() + ", " +
+                this.getEmail() + ", " +
+                this.getPassword() + ", " +
+                this.getGraduation() + ", " +
+                this.getSkills() + ", " +
+                this.getInterests() + ", " +
+                this.getWebsite() + ", " +
+                this.getDescription() + ", " +
+                this.getSubjectField();
+    }
 }

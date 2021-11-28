@@ -167,6 +167,8 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
 
         StudentUserDTOImpl studentUserDTO = new StudentUserDTOImpl();
         studentUserDTO.setId(profileDTO.getId());
+        studentUserDTO.setSalutation(profileDTO.getSalutation());
+        studentUserDTO.setTitle(profileDTO.getTitle());
         studentUserDTO.setFirstname(firstName.getValue());
         studentUserDTO.setLastname(lastName.getValue());
         studentUserDTO.setGraduation(graduation.getValue());
@@ -186,13 +188,8 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     public boolean checkForEmptyInput() {
         return checkForEmptyTextField(firstName) ||
                 checkForEmptyTextField(lastName) ||
-                checkForEmptyTextField(graduation) ||
-                checkForEmptyTextField(skills) ||
                 checkForEmptyTextField(email) ||
-                checkForEmptyTextField(phone) ||
-                checkForEmptyTextField(interests) ||
-                checkForEmptyTextField(website) ||
-                checkForEmptyTextField(description);
+                checkForEmptyTextField(phone);
     }
 
     public boolean checkForEmptyTextField(TextField textField) {

@@ -12,6 +12,8 @@ import java.util.Objects;
 public class User {
 
     private int id;
+    private String salutation;
+    private String title;
     private String firstName;
     private String lastName;
     private Address address;
@@ -19,6 +21,20 @@ public class User {
     private LocalDate dateOfBirth;
     private String email;
     private String password;
+
+    @Basic
+    @Column(name = "salutation")
+    public String getSalutation() {
+        return salutation;
+    }
+    public void setSalutation(String salutation) {
+        this.salutation = salutation;
+    }
+
+    @Basic
+    @Column(name = "title")
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
     @Basic
     @Column(name = "first_name")

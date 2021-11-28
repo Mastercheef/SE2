@@ -2,7 +2,6 @@ package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.factories.UserFactory;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
-import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class StudentProfileControl {
         // check( userDTO );
 
         //Erzeuge ein neues Car-Entity konsistent über eine Factory
-        StudentUser studentUser = UserFactory.createNewStudentUser(userDTO);
+        StudentUser studentUser = UserFactory.createStudentUser(userDTO);
         System.out.println("Created StudentUser Entity: " + studentUser.getId());
 
         // Abspeicherung des Entity in die DB

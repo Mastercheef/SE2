@@ -14,6 +14,8 @@ import java.util.List;
 public class UserDTOImpl implements UserDTO {
 
     private int id;
+    private String salutation;
+    private String title;
     private String firstname;
     private String lastname;
     private LocalDate dateOfBirth;
@@ -22,6 +24,12 @@ public class UserDTOImpl implements UserDTO {
     private String phone;
     private String password;
     //private List<RoleDTO> roles;
+
+    public void setSalutation(String salutation) {
+        this.salutation = salutation;
+    }
+
+    public void setTitle(String title) { this.title = title; }
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
@@ -43,6 +51,13 @@ public class UserDTOImpl implements UserDTO {
 
     public void setPhone(String phone) { this.phone = phone; }
 
+    @Override
+    public String getSalutation() {
+        return salutation;
+    }
+
+    @Override
+    public String getTitle() { return title; }
 
     @Override
     public String getFirstName() {

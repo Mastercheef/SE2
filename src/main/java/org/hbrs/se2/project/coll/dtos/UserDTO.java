@@ -5,6 +5,8 @@ import org.hbrs.se2.project.coll.entities.Address;
 import java.time.LocalDate;
 
 public interface UserDTO {
+    public String getSalutation();
+    public String getTitle();
     public String getFirstName();
     public String getLastName();
     public Address getAddress();
