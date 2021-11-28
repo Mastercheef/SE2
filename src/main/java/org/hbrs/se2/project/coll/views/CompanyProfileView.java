@@ -2,10 +2,7 @@ package org.hbrs.se2.project.coll.views;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEvent;
@@ -15,7 +12,10 @@ import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.CompanyProfileControl;
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.entities.Address;
+import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.layout.MainLayout;
+import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
+import org.hbrs.se2.project.coll.repository.UserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,6 +26,9 @@ import java.util.Objects;
 @Route(value = "companyprofile", layout = MainLayout.class)
 @PageTitle("Profile")
 public class CompanyProfileView extends VerticalLayout implements HasUrlParameter<String> {
+
+    @Autowired
+    private ContactPersonRepository contactPersonRepository;
 
     @Autowired
     private CompanyProfileControl profileControl;
@@ -57,6 +60,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     Label ldescription  = new Label();
 
     Div   div           = new Div();
+    Div   contact       = new Div();
+    Div   jobs          = new Div();
 
     @Override
     public void setParameter(BeforeEvent event,
@@ -141,10 +146,72 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
             HL.getElement().getStyle().set("margin-top", "11px");
         }
 
+        // Contact Person
+        contact = initContactPerson();
+
+        // Job offer Div
+        jobs = initJobOffers();
+
+        // Align Layout
+        HorizontalLayout finalLayout = new HorizontalLayout();
+        VerticalLayout jobsAndContact = new VerticalLayout();
+        jobsAndContact.add(contact, jobs);
+
         // Append everything to the site
         div.add(h2, profileImage, hcompanyname, hstreet, hstreetnumber, hpostalcode,
                 hcity, hcountry, hemail, hphone, hfax, hwebsite, hdescription, hbuttons);
-        add(div);
+
+        finalLayout.add(div, jobsAndContact);
+
+        add(finalLayout);
+    }
+
+    public Div initContactPerson() {
+        Div form = new Div();
+        ContactPerson contactPerson = contactPersonRepository.findContactPersonByCompany_Id(companyId);
+
+        // Labels
+        H3 contactHeadline  = new H3("Kontaktperson dieser Firma");
+        Label name          = new Label("Name:");
+        Label phone         = new Label("Telefon:");
+        Label email         = new Label("E-Mail:");
+        Label position      = new Label("Abteilung:");
+
+        Label lname         = new Label(contactPerson.getFirstName() + " " + contactPerson.getLastName());
+        Label lphone        = new Label(contactPerson.getPhone());
+        Label lemail        = new Label(contactPerson.getEmail());
+        Label lposition     = new Label(contactPerson.getRole());
+
+        // Styling
+        for (Label label : new Label[]{ name, phone, email, position }) {
+            label.getElement().getStyle().set("font-weight", "bold");
+            label.getElement().getStyle().set("width", "100px");        // For alignment
+        }
+
+        // Alignment
+        HorizontalLayout hname      = new HorizontalLayout();
+        HorizontalLayout hphone     = new HorizontalLayout();
+        HorizontalLayout hemail     = new HorizontalLayout();
+        HorizontalLayout hposition  = new HorizontalLayout();
+
+        hname.add(name, lname);
+        hphone.add(phone, lphone);
+        hemail.add(email, lemail);
+        hposition.add(position, lposition);
+
+        // Add to div
+        form.add(contactHeadline, hname, hphone, hemail, hposition);
+        return form;
+    }
+
+    public Div initJobOffers() {
+        Div form = new Div();
+
+        H3 jobHeadline  = new H3("Stellenangebote dieser Firma");
+        Label test      = new Label("hallo");
+        form.add(jobHeadline, test);
+
+        return form;
     }
 
     public CompanyProfileView() {
