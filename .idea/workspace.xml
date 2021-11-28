@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="Added all entities! Only thing missing is a connection from JobAdvertisement to Company.">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_11_57_[Changes]1/MainView.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_11_57_[Changes]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18_11_2021_11_57__Changes_1.xml" beforeDir="false" />
+    <list default="true" id="5f0ee0e2-dc4c-43b9-a83a-3310fc5dc0f1" name="Changes" comment="Added ManyToMany relationship between StudentUser and job advertisements.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/repository/JobAdvertisementRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/org/hbrs/se2/project/coll/test/JobAdvertisementRepositoryTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/JobAdvertisement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/JobAdvertisement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/Role.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/StudentUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/entities/StudentUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/repository/CompanyProfileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/hbrs/se2/project/coll/repository/CompanyProfileRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/hbrs/se2/project/coll/test/CompanyProfileRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/hbrs/se2/project/coll/test/CompanyProfileRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +104,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.CollApplication (1)">
+  <component name="RunManager" selected="JUnit.JobAdvertisementRepositoryTest">
     <configuration name="installation.ddl" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
       <script-file value="$PROJECT_DIR$/src/main/resources/sql/installation.ddl" />
       <script-mode>FILE</script-mode>
@@ -118,22 +116,6 @@
       <script-mode>FILE</script-mode>
       <data-source id="1f8d1c40-e218-4034-9bf1-e1542d3e4b06" namespace="database/&quot;houde2s&quot;/schema/&quot;collhbrs&quot;" />
       <method v="2" />
-    </configuration>
-    <configuration name="BasicUnitTest.demoTestMethod" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="SE" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.hbrs.se2.project.coll.test.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.hbrs.se2.project.coll.test" />
-      <option name="MAIN_CLASS_NAME" value="org.hbrs.se2.project.coll.test.BasicUnitTest" />
-      <option name="METHOD_NAME" value="demoTestMethod" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
     </configuration>
     <configuration name="CompanyProfileRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="coll" />
@@ -166,6 +148,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="JobAdvertisementRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="coll" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.hbrs.se2.project.coll.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.hbrs.se2.project.coll.test" />
+      <option name="MAIN_CLASS_NAME" value="org.hbrs.se2.project.coll.test.JobAdvertisementRepositoryTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CollApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="coll" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="org.hbrs.se2.project.coll.CollApplication" />
@@ -185,19 +182,19 @@
     <list>
       <item itemvalue="Database Script.installation.ddl" />
       <item itemvalue="Database Script.testdata.sql" />
-      <item itemvalue="JUnit.BasicUnitTest.demoTestMethod" />
       <item itemvalue="JUnit.CompanyProfileRepositoryTest.readCompany" />
       <item itemvalue="JUnit.CompanyProfileRepositoryTest" />
       <item itemvalue="Spring Boot.CollApplication" />
       <item itemvalue="Spring Boot.CollApplication (1)" />
+      <item itemvalue="JUnit.JobAdvertisementRepositoryTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.JobAdvertisementRepositoryTest" />
+        <item itemvalue="JUnit.CompanyProfileRepositoryTest" />
         <item itemvalue="Database Script.testdata.sql" />
         <item itemvalue="Database Script.installation.ddl" />
-        <item itemvalue="JUnit.CompanyProfileRepositoryTest" />
         <item itemvalue="JUnit.CompanyProfileRepositoryTest.readCompany" />
-        <item itemvalue="JUnit.BasicUnitTest.demoTestMethod" />
       </list>
     </recent_temporary>
   </component>
@@ -227,7 +224,7 @@
       <workItem from="1638032376491" duration="8062000" />
       <workItem from="1638098616535" duration="16000" />
       <workItem from="1638099033422" duration="90000" />
-      <workItem from="1638099154211" duration="314000" />
+      <workItem from="1638099154211" duration="3184000" />
     </task>
     <task id="LOCAL-00001" summary="created Branch Stellenausschreibung">
       <created>1637238690955</created>
@@ -327,7 +324,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638040501976</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Added ManyToMany relationship between StudentUser and job advertisements.">
+      <created>1638099742302</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1638099742302</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -372,7 +376,8 @@
     <MESSAGE value="Student Profile is working now!" />
     <MESSAGE value="Some minor cleanups in entities, ready to create some more!" />
     <MESSAGE value="Added all entities! Only thing missing is a connection from JobAdvertisement to Company." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added all entities! Only thing missing is a connection from JobAdvertisement to Company." />
+    <MESSAGE value="Added ManyToMany relationship between StudentUser and job advertisements." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added ManyToMany relationship between StudentUser and job advertisements." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

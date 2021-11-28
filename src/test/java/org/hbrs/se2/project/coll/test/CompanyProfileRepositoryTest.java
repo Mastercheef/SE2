@@ -1,6 +1,5 @@
 package org.hbrs.se2.project.coll.test;
 
-import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.CompanyProfile;
 import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
@@ -8,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class CompanyProfileRepositoryTest {
@@ -21,21 +20,22 @@ public class CompanyProfileRepositoryTest {
     @Test
     void createReadAndDeleteACompanyProfile(){
 
-        Address addr = new Address();
-        addr.setId(10000000);
+        Address address = new Address();
+        address.setId(10000000);
 
         CompanyProfile companyProfile = new CompanyProfile();
         companyProfile.setCompanyName("Fancy Testing Company");
         companyProfile.setDescription("We are a fancy Company!");
         companyProfile.setWebsite("www.a-fancy-company.com");
         companyProfile.setFaxNumber(1093049);
-        companyProfile.setAddress(addr);
+        companyProfile.setAddress(address);
         companyProfileRepository.save(companyProfile);
 
         int tmpId = companyProfile.getId();
 
-        //TODO Change this from CompanyProfileDTO to Optional<CompanyProfile>
-        CompanyProfileDTO companyProfileAfterCreate = companyProfileRepository.findCompanyProfileById(tmpId);
+        Optional<CompanyProfile> wrapper = companyProfileRepository.findById(tmpId);
+        assertTrue(wrapper.isPresent());
+        CompanyProfile companyProfileAfterCreate = wrapper.get();
         assertEquals(companyProfile.getCompanyName(), companyProfileAfterCreate.getCompanyName());
         assertEquals(companyProfile.getDescription(), companyProfileAfterCreate.getDescription());
         assertEquals(companyProfile.getDescription(), companyProfileAfterCreate.getDescription());
@@ -44,9 +44,8 @@ public class CompanyProfileRepositoryTest {
 
         companyProfileRepository.deleteById(tmpId);
 
-        //TODO also here...
-        CompanyProfileDTO wrapper = companyProfileRepository.findCompanyProfileById(tmpId);
-        assertNull(wrapper);
+        wrapper = companyProfileRepository.findById(tmpId);
+        assertFalse(wrapper.isPresent());
     }
 
 }
