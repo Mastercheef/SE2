@@ -20,14 +20,9 @@ import java.util.List;
  */
 public interface CompanyProfileRepository extends JpaRepository<CompanyProfile, Integer> {
 
-    // TODO: Fehler beseitigen
-    /* Ja */
-    //List<CompanyProfileDTO> getUserByOccupation(String occupation );
-    //List<CompanyProfileDTO>
-
-
     CompanyProfileDTO findCompanyProfileById(int id );
     CompanyProfileDTO findCompanyProfileByCompanyName(String name);
+    //List<CompanyProfileDTO> getUserByOccupation(String occupation );
 }
 
 

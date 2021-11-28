@@ -14,9 +14,12 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.CompanyProfileControl;
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
+import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Objects;
 
 
 //TODO: Diese Seite sollte nur verfügbar sein, wenn man eingeloggt ist.
@@ -26,11 +29,15 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     @Autowired
     private CompanyProfileControl profileControl;
-    private CompanyProfileDTO profileDTO;
+    Address addr = new Address();
     int companyId;
 
     Label companyname   = new Label("Firmenname:");
-    Label address       = new Label("Adresse:");
+    Label street        = new Label("Strasse:");
+    Label streetnumber  = new Label("Hausnummer:");
+    Label postalcode    = new Label("PLZ:");
+    Label city          = new Label("Ort:");
+    Label country       = new Label("Land:");
     Label email         = new Label("E-Mail:");
     Label phone         = new Label("Telefon:");
     Label fax           = new Label("Fax:");
@@ -38,7 +45,11 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     Label description   = new Label("Beschreibung:");
 
     Label lcompanyname  = new Label();
-    Label laddress      = new Label();
+    Label lstreet       = new Label();
+    Label lstreetnumber = new Label();
+    Label lpostalcode   = new Label();
+    Label lcity         = new Label();
+    Label lcountry      = new Label();
     Label lemail        = new Label();
     Label lphone        = new Label();
     Label lfax          = new Label();
@@ -50,8 +61,9 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     @Override
     public void setParameter(BeforeEvent event,
                              String parameter) {
-        if (parameter != "") {
-            profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
+        if (!Objects.equals(parameter, "")) {
+            CompanyProfileDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
+            addr = profileDTO.getAddress();
             initLabels(profileDTO);
             createProfile();
         }
@@ -61,7 +73,11 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     public void initLabels(CompanyProfileDTO profileDTO) {
         companyId       = profileDTO.getId();
         lcompanyname    = new Label(profileDTO.getCompanyName());
-        laddress        = new Label(profileDTO.getAddress().toString());
+        lstreet         = new Label(addr.getStreet());
+        lstreetnumber   = new Label(addr.getHouseNumber());
+        lpostalcode     = new Label(addr.getPostalCode());
+        lcity           = new Label(addr.getCity());
+        lcountry        = new Label(addr.getCountry());
         lemail          = new Label(profileDTO.getEmail());
         lphone          = new Label(String.valueOf(profileDTO.getPhoneNumber()));
         lfax            = new Label(String.valueOf(profileDTO.getFaxNumber()));
@@ -81,25 +97,35 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         profileImage.getElement().getStyle().set("border", "1px solid black");
 
         // Styling
-        for (Label label : new Label[]{ companyname, address, email, phone, fax, website, description}) {
+        for (Label label : new Label[]{ companyname, street, streetnumber, postalcode, city, country, email,
+                phone, fax, website, description}) {
             label.getElement().getStyle().set("font-weight", "bold");
             label.getElement().getStyle().set("width", "200px");        // For alignment
         }
 
         // Profile Data
-        HorizontalLayout hcompanyname = new HorizontalLayout();
+        HorizontalLayout hcompanyname   = new HorizontalLayout();
+        HorizontalLayout hstreet        = new HorizontalLayout();
+        HorizontalLayout hstreetnumber  = new HorizontalLayout();
+        HorizontalLayout hpostalcode    = new HorizontalLayout();
+        HorizontalLayout hcity          = new HorizontalLayout();
+        HorizontalLayout hcountry       = new HorizontalLayout();
+        HorizontalLayout hemail         = new HorizontalLayout();
+        HorizontalLayout hphone         = new HorizontalLayout();
+        HorizontalLayout hfax           = new HorizontalLayout();
+        HorizontalLayout hwebsite       = new HorizontalLayout();
+        HorizontalLayout hdescription   = new HorizontalLayout();
+
         hcompanyname.add(companyname, lcompanyname);
-        HorizontalLayout haddress = new HorizontalLayout();
-        haddress.add(address, laddress);
-        HorizontalLayout hemail = new HorizontalLayout();
+        hstreet.add(street, lstreet);
+        hstreetnumber.add(streetnumber, lstreetnumber);
+        hpostalcode.add(postalcode, lpostalcode);
+        hcity.add(city, lcity);
+        hcountry.add(country, lcountry);
         hemail.add(email, lemail);
-        HorizontalLayout hphone = new HorizontalLayout();
         hphone.add(phone, lphone);
-        HorizontalLayout hfax = new HorizontalLayout();
         hfax.add(fax, lfax);
-        HorizontalLayout hwebsite = new HorizontalLayout();
         hwebsite.add(website, lwebsite);
-        HorizontalLayout hdescription = new HorizontalLayout();
         hdescription.add(description, ldescription);
 
         // Edit Profile Button
@@ -110,14 +136,14 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         hbuttons.add(button);
 
         // Alignment of profile information
-        for (HorizontalLayout HL : new HorizontalLayout[]{ hcompanyname, haddress, hemail, hphone, hfax, hwebsite,
-                hdescription, hbuttons }) {
+        for (HorizontalLayout HL : new HorizontalLayout[]{ hcompanyname, hstreet, hstreetnumber, hpostalcode,
+                hcity, hcountry, hemail, hphone, hfax, hwebsite, hdescription, hbuttons }) {
             HL.getElement().getStyle().set("margin-top", "11px");
         }
 
         // Append everything to the site
-        div.add(h2, profileImage, hcompanyname, haddress, hemail, hphone, hfax, hwebsite,
-                hdescription, hbuttons);
+        div.add(h2, profileImage, hcompanyname, hstreet, hstreetnumber, hpostalcode,
+                hcity, hcountry, hemail, hphone, hfax, hwebsite, hdescription, hbuttons);
         add(div);
     }
 
