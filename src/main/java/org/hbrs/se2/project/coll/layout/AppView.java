@@ -11,6 +11,7 @@ import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.menubar.MenuBar;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -19,10 +20,16 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.server.VaadinService;
+import com.vaadin.flow.server.VaadinServletRequest;
+import org.apache.tomcat.jni.Global;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.views.StudentProfileView;
+import org.springframework.data.domain.Page;
 
+import java.net.URI;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -108,8 +115,10 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     }
 
     private void navigateToUserProfile() {
+        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
         String currentUserId = Integer.toString(getCurrentUser().getId());
-        UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + currentUserId);
+        if(!Objects.equals(currentLocation, Globals.Pages.PROFILE_VIEW + currentUserId))
+            UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + currentUserId);
     }
 
     private void logoutUser() {
@@ -117,6 +126,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         ui.getSession().close();
         ui.getPage().setLocation("/");
     }
+
 
     /**
      * Hinzufügen der vertikalen Leiste (Drawer)
