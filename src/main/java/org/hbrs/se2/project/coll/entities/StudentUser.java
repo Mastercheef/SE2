@@ -96,6 +96,7 @@ public class StudentUser extends User {
                 this.getInterests() + ", " +
                 this.getWebsite() + ", " +
                 this.getDescription() + ", " +
-                this.getSubjectField();
+                this.getSubjectField()  + ", " +
+                this.getType();
     }
 }

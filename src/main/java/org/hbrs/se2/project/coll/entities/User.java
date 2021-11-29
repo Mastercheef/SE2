@@ -21,6 +21,7 @@ public class User {
     private LocalDate dateOfBirth;
     private String email;
     private String password;
+    private String type;
 
     @Basic
     @Column(name = "salutation")
@@ -98,6 +99,11 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Basic
+    @Column(name = "type")
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
 
     @Id
     @GeneratedValue(

@@ -13,6 +13,7 @@ import org.hbrs.se2.project.coll.control.CompanyProfileControl;
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
+import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.UserRepository;
@@ -21,9 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
 
-
-//TODO: Diese Seite sollte nur verfügbar sein, wenn man eingeloggt ist.
-@Route(value = "companyprofile", layout = MainLayout.class)
+@Route(value = "companyprofile", layout = AppView.class)
 @PageTitle("Profile")
 public class CompanyProfileView extends VerticalLayout implements HasUrlParameter<String> {
 
@@ -162,7 +161,6 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 hcity, hcountry, hemail, hphone, hfax, hwebsite, hdescription, hbuttons);
 
         finalLayout.add(div, jobsAndContact);
-
         add(finalLayout);
     }
 

@@ -14,6 +14,7 @@ import org.hbrs.se2.project.coll.control.CompanyProfileControl;
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.CompanyProfile;
+import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
 import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
@@ -23,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Objects;
 
-@Route(value = "companyprofile_edit", layout = MainLayout.class)
+@Route(value = "companyprofile_edit", layout = AppView.class)
 @PageTitle("Edit your Profile")
 public class CompanyProfileEditView extends VerticalLayout  implements HasUrlParameter<String> {
 

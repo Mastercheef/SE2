@@ -23,9 +23,13 @@ import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinServletRequest;
 import org.apache.tomcat.jni.Global;
+import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.entities.ContactPerson;
+import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.views.StudentProfileView;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
 import java.net.URI;
@@ -43,6 +47,9 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     private Tabs menu;
     private H1 viewTitle;
     private H1 helloUser;
+
+    @Autowired
+    private ContactPersonRepository contactPersonRepository;
 
     public AppView() {
         if (getCurrentUser() == null) {
@@ -106,7 +113,14 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         // Logout-Button am rechts-oberen Rand.
         MenuBar bar = new MenuBar();
-        MenuItem useritem = bar.addItem("Mein Profil" , e -> navigateToUserProfile());
+
+        /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
+        MenuItem useritem;
+        String currentUserType = getCurrentUser().getType();
+        if(Objects.equals(currentUserType, "st"))
+            useritem = bar.addItem("Mein Profil" , e -> navigateToUserProfile());
+        else if(Objects.equals(currentUserType, "cp"))
+            useritem = bar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
         MenuItem item = bar.addItem("Logout" , e -> logoutUser());
         topRightPanel.add(bar);
 
@@ -119,6 +133,13 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         String currentUserId = Integer.toString(getCurrentUser().getId());
         if(!Objects.equals(currentLocation, Globals.Pages.PROFILE_VIEW + currentUserId))
             UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + currentUserId);
+    }
+
+    private void navigateToCompanyProfile() {
+        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
+        String currentCompanyId = Integer.toString(getContactPersonsCompanyId());
+        if(!Objects.equals(currentLocation, Globals.Pages.COMPANYPROFILE_VIEW + currentCompanyId))
+            UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + currentCompanyId);
     }
 
     private void logoutUser() {
@@ -226,6 +247,12 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private UserDTO getCurrentUser() {
         return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
+    }
+
+    private int getContactPersonsCompanyId() {
+        int contactPersonId = getCurrentUser().getId();
+        ContactPerson contactPerson = contactPersonRepository.findContactPersonById(contactPersonId);
+        return contactPerson.getCompany().getId();
     }
 
 

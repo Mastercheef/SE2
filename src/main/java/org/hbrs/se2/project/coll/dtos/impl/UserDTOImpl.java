@@ -23,6 +23,7 @@ public class UserDTOImpl implements UserDTO {
     private String email;
     private String phone;
     private String password;
+    private String type;
     //private List<RoleDTO> roles;
 
     public void setSalutation(String salutation) {
@@ -46,6 +47,8 @@ public class UserDTOImpl implements UserDTO {
     public void setEmail(String email) { this.email = email; }
 
     public void setPassword(String password) { this.password = password; }
+
+    public void setType(String type) { this.type = type; }
 
     public void setId(int id) { this.id = id; }
 
@@ -83,6 +86,9 @@ public class UserDTOImpl implements UserDTO {
 
     @Override
     public String getPassword() { return this.password; }
+
+    @Override
+    public String getType() { return this.type; }
 
     @Override
     public int getId() { return this.id; }
