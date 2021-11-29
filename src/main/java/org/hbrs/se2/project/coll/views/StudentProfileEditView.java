@@ -181,6 +181,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         studentUserDTO.setInterests(interests.getValue());
         studentUserDTO.setWebsite(website.getValue());
         studentUserDTO.setDescription(description.getValue());
+        studentUserDTO.setType("st");
 
         return studentUserDTO;
     }
