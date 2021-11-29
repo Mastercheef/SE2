@@ -1,27 +1,27 @@
 package org.hbrs.se2.project.coll.views;
 
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.*;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.StudentUserDTOImpl;
+import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "profile_edit", layout = MainLayout.class)
+@Route(value = "profile_edit", layout = AppView.class)
 @PageTitle("Edit your Profile")
-public class StudentProfileEditView extends VerticalLayout implements HasUrlParameter<String>  {
+public class StudentProfileEditView extends VerticalLayout implements HasUrlParameter<String>, BeforeEnterObserver {
 
     @Autowired
     private StudentProfileControl profileControl;
@@ -201,5 +201,36 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
             textField.setInvalid(false);
         }
         return empty;
+    }
+
+    private boolean checkIfUserIsLoggedIn() {
+        // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
+        UserDTO userDTO = this.getCurrentUser();
+        if (userDTO == null) {
+            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
+            return false;
+        }
+        return true;
+    }
+
+    private UserDTO getCurrentUser() {
+        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
+    }
+
+    @Override
+    /**
+     * Methode wird vor der eigentlichen Darstellung der UI-Components aufgerufen.
+     * Hier kann man die finale Darstellung noch abbrechen, wenn z.B. der Nutzer nicht eingeloggt ist
+     * Dann erfolgt hier ein ReDirect auf die Login-Seite. Eine Navigation (Methode navigate)
+     * ist hier nicht möglich, da die finale Navigation noch nicht stattgefunden hat.
+     * Diese Methode in der AppLayout sichert auch den un-authorisierten Zugriff auf die innerliegenden
+     * Views (hier: ShowCarsView und EnterCarView) ab.
+     *
+     */
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        if (getCurrentUser() == null){
+            beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
+        }
+
     }
 }

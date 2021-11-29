@@ -13,6 +13,7 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
+import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
@@ -23,7 +24,7 @@ import java.util.Objects;
 
 //TODO: Diese Seite sollte nur verfügbar sein, wenn man eingeloggt ist.
 //TODO: UserDTO für Daten auslesen und in Textfelder einfüllen
-@Route(value = "profile", layout = MainLayout.class)
+@Route(value = "profile", layout = AppView.class)
 @PageTitle("Profile")
 public class StudentProfileView extends VerticalLayout implements HasUrlParameter<String> {
 
