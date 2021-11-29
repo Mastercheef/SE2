@@ -10,6 +10,7 @@ import org.hbrs.se2.project.coll.control.LoginControl;
 import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * View zur Darstellung der Startseite. Diese zeigt dem Benutzer ein Login-Formular an.
@@ -18,6 +19,7 @@ import org.hbrs.se2.project.coll.util.Globals;
 @Route(value = "login" )
 public class LoginView extends VerticalLayout {
 
+    @Autowired
     private LoginControl loginControl;
 
     public LoginView() {

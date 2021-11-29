@@ -21,7 +21,9 @@ import java.util.List;
  */
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    UserDTO findUserByIdAndPassword ( String userid, String password );
+    UserDTO findUserByIdAndPassword ( int userid, String password );
+
+    UserDTO findUserByEmailAndPassword ( String email, String password );
 
     // SELECT *
     // FROM User p

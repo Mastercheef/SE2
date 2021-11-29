@@ -13,6 +13,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.textfield.TextField;
+import org.hbrs.se2.project.coll.util.Globals;
 
 @Route(value = "" )
 @PWA(name = "Coll@HBRS", shortName = "Coll")
@@ -28,7 +29,9 @@ public class MainView extends VerticalLayout {
 
     private void createHeader() {
         Button student = new Button("Student Button");
+        student.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW));
         Button arbeitgeber = new Button("Arbeitgeber Button");
+        arbeitgeber.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW));
 
         MenuBar menuBar = new MenuBar();
         menuBar.addThemeVariants(MenuBarVariant.LUMO_TERTIARY);
