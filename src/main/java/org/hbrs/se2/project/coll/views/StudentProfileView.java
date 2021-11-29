@@ -13,6 +13,7 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
@@ -22,8 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
 
-//TODO: Diese Seite sollte nur verfügbar sein, wenn man eingeloggt ist.
-//TODO: UserDTO für Daten auslesen und in Textfelder einfüllen
 @Route(value = "profile", layout = AppView.class)
 @PageTitle("Profile")
 public class StudentProfileView extends VerticalLayout implements HasUrlParameter<String> {
@@ -79,7 +78,6 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     }
 
     public void createProfileView() {
-        //TODO: Methods for grabbing UserDTO data
 
         // Layout
         H2 h2 = new H2("Mein Profil");
@@ -138,8 +136,17 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
 
         // Append everything to the site
         div.add(h2, profileImage, hfirstname, hlastname, hoccupation, hbirthdate, haddress,
-                hskills, hemail, hnumber, hinterests, hwebsite, haboutme, button);
+                hskills, hemail, hnumber, hinterests, hwebsite, haboutme);
+
+        // Add Edit Button ONLY when the logged-in user is the owner of this profile
+        int currentUserId = getCurrentUser().getId();
+        if(Objects.equals(profileDTO.getId(), currentUserId))
+            div.add(hbuttons);
         add(div);
+    }
+
+    private UserDTO getCurrentUser() {
+        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
 }
 
