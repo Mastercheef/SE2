@@ -13,7 +13,9 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
+import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
@@ -30,12 +32,19 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     @Autowired
     private StudentProfileControl profileControl;
     private StudentUserDTO profileDTO;
+    Address addr = new Address();
 
+    Label salutation    = new Label("Anrede:");
+    Label title         = new Label("Titel:");
     Label firstname     = new Label("Vorname:");
     Label lastname      = new Label("Nachname:");
     Label occupation    = new Label("Abschluss:");
     Label birthdate     = new Label("Geburtsdatum:");
-    Label address       = new Label("Adresse:");
+    Label street        = new Label("Strasse:");
+    Label streetnumber  = new Label("Hausnummer:");
+    Label postalcode    = new Label("PLZ:");
+    Label city          = new Label("Ort:");
+    Label country       = new Label("Land:");
     Label skills        = new Label("Skills:");
     Label email         = new Label("E-Mail:");
     Label number        = new Label("Telefon:");
@@ -43,11 +52,17 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     Label website       = new Label("Webseite:");
     Label aboutme       = new Label("Über mich:");
 
+    Label lsalutation   = new Label("Anrede");
+    Label ltitle        = new Label("Titel");
     Label lfirstname    = new Label("Vorname");
     Label llastname     = new Label("Nachname");
     Label loccupation   = new Label("Abschluss");
     Label lbirthdate    = new Label("Geburtsdatum");
-    Label laddress      = new Label("Adresse");
+    Label lstreet       = new Label("Strasse");
+    Label lstreetnumber = new Label("1");
+    Label lpostalcode   = new Label("12345");
+    Label lcity         = new Label("Stadt");
+    Label lcountry      = new Label("Land");
     Label lskills       = new Label("Skills");
     Label lemail        = new Label("E-Mail");
     Label lnumber       = new Label("Telefon");
@@ -62,20 +77,32 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
                              String parameter) {
         if (!Objects.equals(parameter, "")) {
             profileDTO  = profileControl.loadProfileDataById(Integer.parseInt(parameter));
-            lfirstname  = new Label(profileDTO.getFirstName());
-            llastname   = new Label(profileDTO.getLastName());
-            loccupation = new Label(profileDTO.getGraduation());
-            lbirthdate  = new Label(profileDTO.getDateOfBirth().toString());
-            laddress    = new Label(profileDTO.getAddress().toString());
-            lskills     = new Label(profileDTO.getSkills());
-            lemail      = new Label(profileDTO.getEmail());
-            lnumber     = new Label(profileDTO.getPhone());
-            linterests  = new Label(profileDTO.getInterests());
-            lwebsite    = new Label(profileDTO.getWebsite());
-            laboutme    = new Label(profileDTO.getDescription());
+            addr = profileDTO.getAddress();
+            initLabels(profileDTO);
         }
         createProfileView();
     }
+    // Used to read DTO data and inject them into the labels
+    public void initLabels(StudentUserDTO profileDTO) {
+        lsalutation     = new Label(profileDTO.getSalutation());
+        ltitle          = new Label(profileDTO.getTitle());
+        lfirstname      = new Label(profileDTO.getFirstName());
+        llastname       = new Label(profileDTO.getLastName());
+        loccupation     = new Label(profileDTO.getGraduation());
+        lbirthdate      = new Label(profileDTO.getDateOfBirth().toString());
+        lstreet         = new Label(addr.getStreet());
+        lstreetnumber   = new Label(addr.getHouseNumber());
+        lpostalcode     = new Label(addr.getPostalCode());
+        lcity           = new Label(addr.getCity());
+        lcountry        = new Label(addr.getCountry());
+        lskills         = new Label(profileDTO.getSkills());
+        lemail          = new Label(profileDTO.getEmail());
+        lnumber         = new Label(profileDTO.getPhone());
+        linterests      = new Label(profileDTO.getInterests());
+        lwebsite        = new Label(profileDTO.getWebsite());
+        laboutme        = new Label(profileDTO.getDescription());
+    }
+
 
     public void createProfileView() {
 
@@ -89,19 +116,25 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         profileImage.getElement().getStyle().set("border", "1px solid black");
 
         // Styling
-        for (Label label : new Label[]{ firstname, lastname, occupation, birthdate, address, skills, email,
-                number, interests, website, aboutme }) {
+        for (Label label : new Label[]{ salutation, title, firstname, lastname, occupation, birthdate, street,
+                streetnumber, postalcode, city, country, skills, email, number, interests, website, aboutme }) {
             label.getElement().getStyle().set("font-weight", "bold");
             label.getElement().getStyle().set("width", "200px");        // For alignment
         }
 
         // Profile Data
         // TODO: Get Data from UserDTO
+        HorizontalLayout hsalutation    = new HorizontalLayout();
+        HorizontalLayout htitle         = new HorizontalLayout();
         HorizontalLayout hfirstname     = new HorizontalLayout();
         HorizontalLayout hlastname      = new HorizontalLayout();
         HorizontalLayout hoccupation    = new HorizontalLayout();
         HorizontalLayout hbirthdate     = new HorizontalLayout();
-        HorizontalLayout haddress       = new HorizontalLayout();
+        HorizontalLayout hstreet        = new HorizontalLayout();
+        HorizontalLayout hstreetnumber  = new HorizontalLayout();
+        HorizontalLayout hpostalcode    = new HorizontalLayout();
+        HorizontalLayout hcity          = new HorizontalLayout();
+        HorizontalLayout hcountry       = new HorizontalLayout();
         HorizontalLayout hskills        = new HorizontalLayout();
         HorizontalLayout hemail         = new HorizontalLayout();
         HorizontalLayout hnumber        = new HorizontalLayout();
@@ -109,11 +142,17 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         HorizontalLayout hwebsite       = new HorizontalLayout();
         HorizontalLayout haboutme       = new HorizontalLayout();
 
+        hsalutation.add(salutation, lsalutation);
+        htitle.add(title, ltitle);
         hfirstname.add(firstname, lfirstname);
         hlastname.add(lastname, llastname);
         hoccupation.add(occupation, loccupation);
         hbirthdate.add(birthdate, lbirthdate);
-        haddress.add(address, laddress);
+        hstreet.add(street, lstreet);
+        hstreetnumber.add(streetnumber, lstreetnumber);
+        hpostalcode.add(postalcode, lpostalcode);
+        hcity.add(city, lcity);
+        hcountry.add(country, lcountry);
         hskills.add(skills, lskills);
         hemail.add(email, lemail);
         hnumber.add(number, lnumber);
@@ -129,14 +168,15 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         hbuttons.add(button);
 
         // Alignment of profile information
-        for (HorizontalLayout HL : new HorizontalLayout[]{ hfirstname, hlastname, hoccupation, hbirthdate, haddress,
-                hskills, hemail, hnumber, hinterests, hwebsite, haboutme, hbuttons }) {
+        for (HorizontalLayout HL : new HorizontalLayout[]{ hsalutation, htitle, hfirstname, hlastname, hoccupation,
+                hbirthdate, hstreet, hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail, hnumber, hinterests,
+                hwebsite, haboutme, hbuttons }) {
             HL.getElement().getStyle().set("margin-top", "11px");
         }
 
         // Append everything to the site
-        div.add(h2, profileImage, hfirstname, hlastname, hoccupation, hbirthdate, haddress,
-                hskills, hemail, hnumber, hinterests, hwebsite, haboutme);
+        div.add(h2, profileImage, hsalutation, htitle, hfirstname, hlastname, hoccupation, hbirthdate, hstreet,
+                hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail, hnumber, hinterests, hwebsite, haboutme);
 
         // Add Edit Button ONLY when the logged-in user is the owner of this profile
         int currentUserId = getCurrentUser().getId();

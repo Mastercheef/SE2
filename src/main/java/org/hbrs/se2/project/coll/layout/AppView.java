@@ -60,6 +60,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     }
 
     public void setUpUI() {
+        getElement().getStyle().set("background-color", "#fffdeb");
         // Anzeige des Toggles über den Drawer
         setPrimarySection(Section.DRAWER);
 
