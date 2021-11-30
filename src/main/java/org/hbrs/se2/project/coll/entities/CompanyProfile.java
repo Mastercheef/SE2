@@ -15,11 +15,6 @@ public class CompanyProfile {
     private String website;
     private String description;
     private Set<ContactPerson> contactPersons;
-    private Set<JobAdvertisement> advertisements;
-    //Wird in der Entity nicht benötigt
-    //Sollten wird besser über den Controler beim laden dem DTO hinzufügen
-    //private List<StellenausschreibungDTO> offers;
-
 
     @Basic
     @Column(name = "company_description")
@@ -95,39 +90,4 @@ public class CompanyProfile {
     public void setContactPersons(Set<ContactPerson> contactPersons) {
         this.contactPersons = contactPersons;
     }
-
-    // TODO: Jobangebote der passenden Firma rauspicken und anhängen (wenn Stellenausschreibung funktioniert? anpassen)
-/*
-    @ElementCollection
-    @Column(name = "Offers")
-    public List<StellenausschreibungDTO> getOffers() {
-        return offers;
-    }
-
-    public void setOffers(List<StellenausschreibungDTO> dto) {
-        this.offers = dto;
-    }*/
-/*
-    @Override
-    public boolean equals(Object o) {
-
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        // TODO: Offers anhängen
-        CompanyProfile company = (CompanyProfile) o;
-        return ID == company.ID &&
-                Objects.equals(companyName, company.companyName) &&
-                Objects.equals(address, company.address) &&
-                Objects.equals(telephone, company.telephone) &&
-                Objects.equals(email, company.email) &&
-                Objects.equals(website, company.website) &&
-                Objects.equals(description, company.description); //&&
-                //Objects.equals(offers, company.offers);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(ID, companyName, address, telephone, email, website, description);//, offers);
-    }*/
 }

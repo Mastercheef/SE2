@@ -15,7 +15,6 @@ import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.CompanyProfile;
 import org.hbrs.se2.project.coll.layout.AppView;
-import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
 import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
 import org.hbrs.se2.project.coll.util.Globals;
@@ -38,7 +37,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     @Autowired
     private CompanyProfileControl profileControl;
     List<Address> existingAddresses;
-    Address addr = new Address();
+    Address address = new Address();
     int companyId;
 
     Label companyname   = new Label("Firmenname:");
@@ -74,27 +73,27 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
             CompanyProfileDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
             existingAddresses            = addressRepository.getByIdAfter(0);
 
-            // Skip ID so one can be generated.
-            addr.setStreet(profileDTO.getAddress().getStreet());
-            addr.setHouseNumber(profileDTO.getAddress().getHouseNumber());
-            addr.setPostalCode(profileDTO.getAddress().getPostalCode());
-            addr.setCity(profileDTO.getAddress().getCity());
-            addr.setCountry(profileDTO.getAddress().getCountry());
+            // Skip ID so one can be generated. Important for saving new Addresses in DB.
+            address.setStreet(profileDTO.getAddress().getStreet());
+            address.setHouseNumber(profileDTO.getAddress().getHouseNumber());
+            address.setPostalCode(profileDTO.getAddress().getPostalCode());
+            address.setCity(profileDTO.getAddress().getCity());
+            address.setCountry(profileDTO.getAddress().getCountry());
 
             initLabels(profileDTO);
             createProfile();
         }
     }
 
-    // Used to read DTO data and inject them into the labels
+    // Used to read DTO data and inject it into the labels
     public void initLabels(CompanyProfileDTO profileDTO) {
         companyId = profileDTO.getId();
         lcompanyname.setPlaceholder(profileDTO.getCompanyName());
-        lstreet.setPlaceholder(addr.getStreet());
-        lstreetnumber.setPlaceholder(addr.getHouseNumber());
-        lpostalcode.setPlaceholder(addr.getPostalCode());
-        lcity.setPlaceholder(addr.getCity());
-        lcountry.setPlaceholder(addr.getCountry());
+        lstreet.setPlaceholder(address.getStreet());
+        lstreetnumber.setPlaceholder(address.getHouseNumber());
+        lpostalcode.setPlaceholder(address.getPostalCode());
+        lcity.setPlaceholder(address.getCity());
+        lcountry.setPlaceholder(address.getCountry());
         lemail.setPlaceholder(profileDTO.getEmail());
         lphone.setPlaceholder(String.valueOf(profileDTO.getPhoneNumber()));
         lfax.setPlaceholder(String.valueOf(profileDTO.getFaxNumber()));
@@ -103,19 +102,15 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     }
 
     // TODO: Profilbild
-
+    // Build profile content
     public void createProfile() {
-
-        // Layout
         H2 h2 = new H2("Editiere mein Firmenprofil");
-        //h2.getElement().getStyle().set("margin-top", "55px");
 
         // TODO: Get Image from Database
         // Profile Image
         Image profileImage = new Image("https://thispersondoesnotexist.com/image", "placeholder");
         profileImage.setWidth("200px");
         profileImage.getElement().getStyle().set("border", "1px solid black");
-
 
         // Styling
         for (Label label : new Label[]{ companyname, street, streetnumber, postalcode, city, country,
@@ -131,29 +126,17 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         }
 
         // Profile Data
-        HorizontalLayout hcompanyname   = new HorizontalLayout();
-        HorizontalLayout hstreet        = new HorizontalLayout();
-        HorizontalLayout hstreetnumber  = new HorizontalLayout();
-        HorizontalLayout hpostalcode    = new HorizontalLayout();
-        HorizontalLayout hcity          = new HorizontalLayout();
-        HorizontalLayout hcountry       = new HorizontalLayout();
-        HorizontalLayout hemail         = new HorizontalLayout();
-        HorizontalLayout hphone         = new HorizontalLayout();
-        HorizontalLayout hfax           = new HorizontalLayout();
-        HorizontalLayout hwebsite       = new HorizontalLayout();
-        HorizontalLayout hdescription   = new HorizontalLayout();
-
-        hcompanyname.add(companyname, lcompanyname);
-        hstreet.add(street, lstreet);
-        hstreetnumber.add(streetnumber, lstreetnumber);
-        hpostalcode.add(postalcode, lpostalcode);
-        hcity.add(city, lcity);
-        hcountry.add(country, lcountry);
-        hemail.add(email, lemail);
-        hphone.add(phone, lphone);
-        hfax.add(fax, lfax);
-        hwebsite.add(website, lwebsite);
-        hdescription.add(description, ldescription);
+        HorizontalLayout hcompanyname   = new HorizontalLayout(companyname, lcompanyname);
+        HorizontalLayout hstreet        = new HorizontalLayout(street, lstreet);
+        HorizontalLayout hstreetnumber  = new HorizontalLayout(streetnumber, lstreetnumber);
+        HorizontalLayout hpostalcode    = new HorizontalLayout(postalcode, lpostalcode);
+        HorizontalLayout hcity          = new HorizontalLayout(city, lcity);
+        HorizontalLayout hcountry       = new HorizontalLayout(country, lcountry);
+        HorizontalLayout hemail         = new HorizontalLayout(email, lemail);
+        HorizontalLayout hphone         = new HorizontalLayout(phone, lphone);
+        HorizontalLayout hfax           = new HorizontalLayout(fax, lfax);
+        HorizontalLayout hwebsite       = new HorizontalLayout(website, lwebsite);
+        HorizontalLayout hdescription   = new HorizontalLayout(description, ldescription);
 
         // Buttons for saving/cancelling
         HorizontalLayout hbuttons   = new HorizontalLayout();
@@ -179,7 +162,6 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         div.add(h2, profileImage, hcompanyname, hstreet, hstreetnumber, hpostalcode,
                 hcity, hcountry, hemail, hphone, hfax, hwebsite, hdescription, hbuttons);
         add(div);
-
     }
 
     // Used to save modified data in the database
@@ -200,42 +182,42 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         // Address
         // Street
         if(!Objects.equals(lstreet.getValue(), ""))
-            addr.setStreet(lstreet.getValue());
+            address.setStreet(lstreet.getValue());
         else
-            addr.setStreet(lstreet.getPlaceholder());
+            address.setStreet(lstreet.getPlaceholder());
 
         // Streetnumber
         if(!Objects.equals(lstreetnumber.getValue(), ""))
-            addr.setHouseNumber(lstreetnumber.getValue());
+            address.setHouseNumber(lstreetnumber.getValue());
         else
-            addr.setHouseNumber(lstreetnumber.getPlaceholder());
+            address.setHouseNumber(lstreetnumber.getPlaceholder());
 
         // Postalcode
         if(!Objects.equals(lpostalcode.getValue(), ""))
-            addr.setPostalCode(lpostalcode.getValue());
+            address.setPostalCode(lpostalcode.getValue());
         else
-            addr.setPostalCode(lpostalcode.getPlaceholder());
+            address.setPostalCode(lpostalcode.getPlaceholder());
 
         // City
         if(!Objects.equals(lcity.getValue(), ""))
-            addr.setCity(lcity.getValue());
+            address.setCity(lcity.getValue());
         else
-            addr.setCity(lcity.getPlaceholder());
+            address.setCity(lcity.getPlaceholder());
 
         // Country
         if(!Objects.equals(lcountry.getValue(), ""))
-            addr.setCountry(lcountry.getValue());
+            address.setCountry(lcountry.getValue());
         else
-            addr.setCountry(lcountry.getPlaceholder());
+            address.setCountry(lcountry.getPlaceholder());
 
         // Check DB for existing address
-        int newAddressID = checkAddressExistence(addr, existingAddresses);
+        int newAddressID = checkAddressExistence(address, existingAddresses);
         if(newAddressID != -1) {
-            addr = addressRepository.getById(newAddressID);
+            address = addressRepository.getById(newAddressID);
         } else {
-            addressRepository.save(addr);
+            addressRepository.save(address);
         }
-        updatedProfile.setAddress(addr);
+        updatedProfile.setAddress(address);
 
         // Email
         if(!Objects.equals(lemail.getValue(), ""))
@@ -290,5 +272,4 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         }
         return ID;
     }
-
 }
