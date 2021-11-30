@@ -18,6 +18,7 @@ import org.hbrs.se2.project.coll.entities.CompanyProfile;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
 import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
+import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,6 +35,9 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    ContactPersonRepository contactPersonRepository;
 
     @Autowired
     private CompanyProfileControl profileControl;
@@ -73,23 +77,26 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         if (!parameter.equals("")) {
             checkIfUserIsLoggedIn();
             CompanyProfileDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
-            existingAddresses            = addressRepository.getByIdAfter(0);
+            companyId = profileDTO.getId();
+            boolean ownership = checkIfUserIsProfileOwner();
+            if(ownership) {
+                existingAddresses            = addressRepository.getByIdAfter(0);
 
-            // Skip ID so one can be generated. Important for saving new Addresses in DB.
-            address.setStreet(profileDTO.getAddress().getStreet());
-            address.setHouseNumber(profileDTO.getAddress().getHouseNumber());
-            address.setPostalCode(profileDTO.getAddress().getPostalCode());
-            address.setCity(profileDTO.getAddress().getCity());
-            address.setCountry(profileDTO.getAddress().getCountry());
+                // Skip ID so one can be generated. Important for saving new Addresses in DB.
+                address.setStreet(profileDTO.getAddress().getStreet());
+                address.setHouseNumber(profileDTO.getAddress().getHouseNumber());
+                address.setPostalCode(profileDTO.getAddress().getPostalCode());
+                address.setCity(profileDTO.getAddress().getCity());
+                address.setCountry(profileDTO.getAddress().getCountry());
 
-            initLabels(profileDTO);
-            createProfile();
+                initLabels(profileDTO);
+                createProfile();
+            }
         }
     }
 
     // Used to read DTO data and inject it into the labels
     public void initLabels(CompanyProfileDTO profileDTO) {
-        companyId = profileDTO.getId();
         lcompanyname.setPlaceholder(profileDTO.getCompanyName());
         lstreet.setPlaceholder(address.getStreet());
         lstreetnumber.setPlaceholder(address.getHouseNumber());
@@ -275,8 +282,8 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         return ID;
     }
 
+    // If the user is not logged in, they get redirected to the login page
     private boolean checkIfUserIsLoggedIn() {
-        // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
         UserDTO userDTO = this.getCurrentUser();
         if (userDTO == null) {
             UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
@@ -284,6 +291,24 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         }
         return true;
     }
+
+    // If the user is not the owner of this profile, they get redirected to the profile
+    private boolean checkIfUserIsProfileOwner() {
+        int userId = this.getCurrentUser().getId();
+        int contactPersonId = contactPersonRepository.findContactPersonByCompany_Id(companyId).getId();
+
+        if(userId == contactPersonId)
+            return true;
+        else if(userId == companyId)
+            return true;
+        else
+        {
+            UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+            UI.getCurrent().getPage().reload();
+            return false;
+        }
+    }
+
     private UserDTO getCurrentUser() {
         return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
