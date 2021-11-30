@@ -12,6 +12,7 @@ public class JobAdvertisement {
     private boolean temporaryEmployment;
     private short workingHours;
     private String requirements;
+    private String typeOfEmployment;
     private Address workingLocation;
     private LocalDate startOfWork;
     private LocalDate endOfWork;
@@ -39,12 +40,17 @@ public class JobAdvertisement {
 
     @Basic
     @Column(name = "temporary_employment")
-    public boolean getTemporaryEmployment() {
-        return temporaryEmployment;
-    }
+    public boolean getTemporaryEmployment() { return temporaryEmployment; }
     public void setTemporaryEmployment(boolean temporaryEmployment) {
         this.temporaryEmployment = temporaryEmployment;
     }
+
+    @Basic
+    @Column(name = "type_of_employment")
+    public String getTypeOfEmployment() {
+        return typeOfEmployment;
+    }
+    public void setTypeOfEmployment(String type) { this.typeOfEmployment = type; }
 
     @Basic
     @Column(name = "working_hours")
@@ -117,19 +123,16 @@ public class JobAdvertisement {
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
-
+/*
     @ManyToOne
-    @JoinTable(
-            name = "col_tab_contact_person",
-            joinColumns = @JoinColumn(name = "company_id")
-    )
+    @JoinTable(name = "col_tab_contact_person", schema = "collhbrs", joinColumns = @JoinColumn(name = "company_id"))
     public CompanyProfile getCompany() {
         return company;
     }
     public void setCompany(CompanyProfile company) {
         this.company = company;
     }
-
+*/
     @ManyToMany(mappedBy = "applications")
     public Set<StudentUser> getApplicants() {
         return applicants;

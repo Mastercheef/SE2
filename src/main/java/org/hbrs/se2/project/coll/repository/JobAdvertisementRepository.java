@@ -4,10 +4,14 @@ import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public interface JobAdvertisementRepository extends JpaRepository<JobAdvertisement, Integer> {
+
+    JobAdvertisement findJobAdvertisementByJobDescription(String string);
 
     /* Finds all JobAdvertisements from a given CompanyId
     */

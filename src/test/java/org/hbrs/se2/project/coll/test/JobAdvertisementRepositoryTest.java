@@ -1,5 +1,6 @@
 package org.hbrs.se2.project.coll.test;
 
+import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
@@ -20,7 +22,22 @@ public class JobAdvertisementRepositoryTest {
     @Test
     void findJobAdvertisementsByCompanyId() {
         List<JobAdvertisement> jobAdvertisement = repository.findJobAdvertisementsByCompanyId(40000000);
-        assertNotNull(jobAdvertisement);
+
+        for(JobAdvertisement job : jobAdvertisement) {
+            assertNotNull(job);
+            System.out.println(job.getJobTitle());
+        }
+    }
+
+    @Test
+    void findJobAdvertisementById() {
+        JobAdvertisement job = repository.findJobAdvertisementByJobDescription("Praktikum als Webdesigner.");
+        short hours = 20;
+        assertNotNull(job);
+        assertEquals(job.getJobTitle(), "Praktikum im Bereich Webdesign");
+        assertEquals(job.getTypeOfEmployment(), "Praktikum");
+        assertEquals(job.getWorkingHours(), hours);
+        assertEquals(job.getRequirements(), "Kenntnisse in HTML, JS, CSS");
     }
 
 }
