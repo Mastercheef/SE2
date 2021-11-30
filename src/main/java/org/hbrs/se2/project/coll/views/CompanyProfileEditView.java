@@ -12,6 +12,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
 import org.hbrs.se2.project.coll.control.CompanyProfileControl;
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.CompanyProfile;
 import org.hbrs.se2.project.coll.layout.AppView;
@@ -70,6 +71,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     public void setParameter(BeforeEvent event,
                              String parameter) {
         if (!parameter.equals("")) {
+            checkIfUserIsLoggedIn();
             CompanyProfileDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
             existingAddresses            = addressRepository.getByIdAfter(0);
 
@@ -271,5 +273,18 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
             }
         }
         return ID;
+    }
+
+    private boolean checkIfUserIsLoggedIn() {
+        // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
+        UserDTO userDTO = this.getCurrentUser();
+        if (userDTO == null) {
+            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
+            return false;
+        }
+        return true;
+    }
+    private UserDTO getCurrentUser() {
+        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
 }

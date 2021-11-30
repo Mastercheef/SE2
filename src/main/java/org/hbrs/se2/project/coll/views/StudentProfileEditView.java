@@ -1,7 +1,6 @@
 package org.hbrs.se2.project.coll.views;
 
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.*;
@@ -9,27 +8,19 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
-import org.apache.tomcat.jni.Local;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
-import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.StudentUserDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
-import org.hbrs.se2.project.coll.entities.CompanyProfile;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.layout.AppView;
-import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
-import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.server.DelegatingServerHttpResponse;
 
-import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -136,19 +127,9 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         description.setPlaceholder(profileDTO.getDescription());
     }
 
-    // TODO: Profilbild
-
-    public StudentProfileEditView() {
-
-    }
-
+    // Build profile content
     public void createProfileEditView() {
-
-        //binder.bindInstanceFields(this);
-
-        // Layout
         H2 h2 = new H2("Editiere mein Profil");
-        //h2.getElement().getStyle().set("margin-top", "55px");
 
         // TODO: Get Image from Database
         // Profile Image
@@ -171,41 +152,23 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         }
 
         // Profile Data
-        HorizontalLayout hsalutation    = new HorizontalLayout();
-        HorizontalLayout htitle         = new HorizontalLayout();
-        HorizontalLayout hfirstname     = new HorizontalLayout();
-        HorizontalLayout hlastname      = new HorizontalLayout();
-        HorizontalLayout hoccupation    = new HorizontalLayout();
-        HorizontalLayout hbirthdate     = new HorizontalLayout();
-        HorizontalLayout hstreet        = new HorizontalLayout();
-        HorizontalLayout hstreetnumber  = new HorizontalLayout();
-        HorizontalLayout hpostalcode    = new HorizontalLayout();
-        HorizontalLayout hcity          = new HorizontalLayout();
-        HorizontalLayout hcountry       = new HorizontalLayout();
-        HorizontalLayout hskills        = new HorizontalLayout();
-        HorizontalLayout hemail         = new HorizontalLayout();
-        HorizontalLayout hnumber        = new HorizontalLayout();
-        HorizontalLayout hinterests     = new HorizontalLayout();
-        HorizontalLayout hwebsite       = new HorizontalLayout();
-        HorizontalLayout haboutme       = new HorizontalLayout();
-
-        hsalutation.add(lsalutation, salutation);
-        htitle.add(ltitle, title);
-        hfirstname.add(lfirstname, firstName);
-        hlastname.add(llastname, lastName);
-        hoccupation.add(lgraduation, graduation);
-        hbirthdate.add(ldateOfBirth, dateOfBirth);
-        hstreet.add(lstreet, street);
-        hstreetnumber.add(lstreetnumber, streetnumber);
-        hpostalcode.add(lpostalcode, postalcode);
-        hcity.add(lcity, city);
-        hcountry.add(lcountry, country);
-        hskills.add(lskills, skills);
-        hemail.add(lemail, email);
-        hnumber.add(lphone, phone);
-        hinterests.add(linterests, interests);
-        hwebsite.add(lwebsite, website);
-        haboutme.add(ldescription, description);
+        HorizontalLayout hsalutation    = new HorizontalLayout(lsalutation, salutation);
+        HorizontalLayout htitle         = new HorizontalLayout(ltitle, title);
+        HorizontalLayout hfirstname     = new HorizontalLayout(lfirstname, firstName);
+        HorizontalLayout hlastname      = new HorizontalLayout(llastname, lastName);
+        HorizontalLayout hoccupation    = new HorizontalLayout(lgraduation, graduation);
+        HorizontalLayout hbirthdate     = new HorizontalLayout(ldateOfBirth, dateOfBirth);
+        HorizontalLayout hstreet        = new HorizontalLayout(lstreet, street);
+        HorizontalLayout hstreetnumber  = new HorizontalLayout(lstreetnumber, streetnumber);
+        HorizontalLayout hpostalcode    = new HorizontalLayout(lpostalcode, postalcode);
+        HorizontalLayout hcity          = new HorizontalLayout(lcity, city);
+        HorizontalLayout hcountry       = new HorizontalLayout(lcountry, country);
+        HorizontalLayout hskills        = new HorizontalLayout(lskills, skills);
+        HorizontalLayout hemail         = new HorizontalLayout(lemail, email);
+        HorizontalLayout hnumber        = new HorizontalLayout(lphone, phone);
+        HorizontalLayout hinterests     = new HorizontalLayout(linterests, interests);
+        HorizontalLayout hwebsite       = new HorizontalLayout(lwebsite, website);
+        HorizontalLayout haboutme       = new HorizontalLayout(ldescription, description);
 
         // Create Save and Cancel Buttons
         HorizontalLayout hbuttons = new HorizontalLayout();
@@ -213,7 +176,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         Button cancelButton       = new Button("Abbrechen");
 
         saveButton.addClickListener(e -> {
-                //profileControl.saveStudentUser(createStudentUserDTOImpl());
                 updateProfileData();
                 UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
         });
@@ -275,8 +237,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
             updatedProfile.setGraduation(graduation.getPlaceholder());
 
         // Date of Birth
-
-        if(Objects.equals(dateOfBirth.getValue(), ""))
+        if(Objects.equals(dateOfBirth.getValue().toString(), ""))
             updatedProfile.setDateOfBirth(dateOfBirth.getValue());
         else
             updatedProfile.setDateOfBirth(profileDTO.getDateOfBirth());
@@ -456,5 +417,9 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         if (getCurrentUser() == null){
             beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
         }
+    }
+
+    public StudentProfileEditView() {
+
     }
 }

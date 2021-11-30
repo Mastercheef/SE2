@@ -52,23 +52,9 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     Label website       = new Label("Webseite:");
     Label aboutme       = new Label("Über mich:");
 
-    Label lsalutation   = new Label("Anrede");
-    Label ltitle        = new Label("Titel");
-    Label lfirstname    = new Label("Vorname");
-    Label llastname     = new Label("Nachname");
-    Label loccupation   = new Label("Abschluss");
-    Label lbirthdate    = new Label("Geburtsdatum");
-    Label lstreet       = new Label("Strasse");
-    Label lstreetnumber = new Label("1");
-    Label lpostalcode   = new Label("12345");
-    Label lcity         = new Label("Stadt");
-    Label lcountry      = new Label("Land");
-    Label lskills       = new Label("Skills");
-    Label lemail        = new Label("E-Mail");
-    Label lnumber       = new Label("Telefon");
-    Label linterests    = new Label("Interessen");
-    Label lwebsite      = new Label("Webseite");
-    Label laboutme      = new Label("Über mich");
+    Label lsalutation, ltitle, lfirstname, llastname, loccupation, lbirthdate, lstreet,
+            lstreetnumber, lpostalcode, lcity, lcountry, lskills, lemail, lnumber,
+            linterests, lwebsite, laboutme;
 
     Div   div           = new Div();
 
@@ -124,41 +110,23 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
 
         // Profile Data
         // TODO: Get Data from UserDTO
-        HorizontalLayout hsalutation    = new HorizontalLayout();
-        HorizontalLayout htitle         = new HorizontalLayout();
-        HorizontalLayout hfirstname     = new HorizontalLayout();
-        HorizontalLayout hlastname      = new HorizontalLayout();
-        HorizontalLayout hoccupation    = new HorizontalLayout();
-        HorizontalLayout hbirthdate     = new HorizontalLayout();
-        HorizontalLayout hstreet        = new HorizontalLayout();
-        HorizontalLayout hstreetnumber  = new HorizontalLayout();
-        HorizontalLayout hpostalcode    = new HorizontalLayout();
-        HorizontalLayout hcity          = new HorizontalLayout();
-        HorizontalLayout hcountry       = new HorizontalLayout();
-        HorizontalLayout hskills        = new HorizontalLayout();
-        HorizontalLayout hemail         = new HorizontalLayout();
-        HorizontalLayout hnumber        = new HorizontalLayout();
-        HorizontalLayout hinterests     = new HorizontalLayout();
-        HorizontalLayout hwebsite       = new HorizontalLayout();
-        HorizontalLayout haboutme       = new HorizontalLayout();
-
-        hsalutation.add(salutation, lsalutation);
-        htitle.add(title, ltitle);
-        hfirstname.add(firstname, lfirstname);
-        hlastname.add(lastname, llastname);
-        hoccupation.add(occupation, loccupation);
-        hbirthdate.add(birthdate, lbirthdate);
-        hstreet.add(street, lstreet);
-        hstreetnumber.add(streetnumber, lstreetnumber);
-        hpostalcode.add(postalcode, lpostalcode);
-        hcity.add(city, lcity);
-        hcountry.add(country, lcountry);
-        hskills.add(skills, lskills);
-        hemail.add(email, lemail);
-        hnumber.add(number, lnumber);
-        hinterests.add(interests, linterests);
-        hwebsite.add(website, lwebsite);
-        haboutme.add(aboutme, laboutme);
+        HorizontalLayout hsalutation    = new HorizontalLayout(salutation, lsalutation);
+        HorizontalLayout htitle         = new HorizontalLayout(title, ltitle);
+        HorizontalLayout hfirstname     = new HorizontalLayout(firstname, lfirstname);
+        HorizontalLayout hlastname      = new HorizontalLayout(lastname, llastname);
+        HorizontalLayout hoccupation    = new HorizontalLayout(occupation, loccupation);
+        HorizontalLayout hbirthdate     = new HorizontalLayout(birthdate, lbirthdate);
+        HorizontalLayout hstreet        = new HorizontalLayout(street, lstreet);
+        HorizontalLayout hstreetnumber  = new HorizontalLayout(streetnumber, lstreetnumber);
+        HorizontalLayout hpostalcode    = new HorizontalLayout(postalcode, lpostalcode);
+        HorizontalLayout hcity          = new HorizontalLayout(city, lcity);
+        HorizontalLayout hcountry       = new HorizontalLayout(country, lcountry);
+        HorizontalLayout hskills        = new HorizontalLayout(skills, lskills);
+        HorizontalLayout hemail         = new HorizontalLayout(email, lemail);
+        HorizontalLayout hnumber        = new HorizontalLayout(number, lnumber);
+        HorizontalLayout hinterests     = new HorizontalLayout(interests, linterests);
+        HorizontalLayout hwebsite       = new HorizontalLayout(website, lwebsite);
+        HorizontalLayout haboutme       = new HorizontalLayout(aboutme, laboutme);
 
         // Edit Profile Button
         HorizontalLayout hbuttons = new HorizontalLayout();
@@ -184,7 +152,6 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
             if(Objects.equals(profileDTO.getId(), currentUserId))
                 div.add(hbuttons);
         }
-
         add(div);
     }
 
