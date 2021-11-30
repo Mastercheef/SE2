@@ -179,9 +179,12 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
                 hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail, hnumber, hinterests, hwebsite, haboutme);
 
         // Add Edit Button ONLY when the logged-in user is the owner of this profile
-        int currentUserId = getCurrentUser().getId();
-        if(Objects.equals(profileDTO.getId(), currentUserId))
-            div.add(hbuttons);
+        if (getCurrentUser() != null) {
+            int currentUserId = getCurrentUser().getId();
+            if(Objects.equals(profileDTO.getId(), currentUserId))
+                div.add(hbuttons);
+        }
+
         add(div);
     }
 
