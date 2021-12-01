@@ -47,17 +47,18 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     Address address = new Address();
     int companyId;
 
-    Label companyname   = new Label("Firmenname:");
-    Label street        = new Label("Strasse:");
-    Label streetnumber  = new Label("Hausnummer:");
-    Label postalcode    = new Label("PLZ:");
-    Label city          = new Label("Ort:");
-    Label country       = new Label("Land:");
-    Label email         = new Label("E-Mail:");
-    Label phone         = new Label("Telefon:");
-    Label fax           = new Label("Fax:");
-    Label website       = new Label("Webseite:");
-    Label description   = new Label("Beschreibung:");
+    Label infoText      = new Label("Mit (*) markierte Felder sind notwendig.");
+    Label companyname   = new Label("Firmenname (*):");
+    Label street        = new Label("Strasse (*):");
+    Label streetnumber  = new Label("Hausnummer (*):");
+    Label postalcode    = new Label("PLZ (*):");
+    Label city          = new Label("Ort (*):");
+    Label country       = new Label("Land (*):");
+    Label email         = new Label("E-Mail (*):");
+    Label phone         = new Label("Telefon (*):");
+    Label fax           = new Label("Fax (*):");
+    Label website       = new Label("Webseite (*):");
+    Label description   = new Label("Beschreibung (*):");
 
     TextField lcompanyname  = new TextField();
     TextField lstreet       = new TextField();
@@ -134,9 +135,11 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
                 lemail, lphone, lfax, lwebsite, ldescription}) {
             textfield.getElement().getStyle().set("height", "20px");
             textfield.getElement().getStyle().set("width", "300px");
+            textfield.setRequired(true);
         }
 
         // Profile Data
+        HorizontalLayout hinfotext      = new HorizontalLayout(infoText);
         HorizontalLayout hcompanyname   = new HorizontalLayout(companyname, lcompanyname);
         HorizontalLayout hstreet        = new HorizontalLayout(street, lstreet);
         HorizontalLayout hstreetnumber  = new HorizontalLayout(streetnumber, lstreetnumber);
@@ -166,13 +169,13 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         hbuttons.add(saveButton, cancelButton);
 
         // Alignment of profile information
-        for (HorizontalLayout HL : new HorizontalLayout[]{ hcompanyname, hstreet, hstreetnumber, hpostalcode,
+        for (HorizontalLayout HL : new HorizontalLayout[]{ hinfotext, hcompanyname, hstreet, hstreetnumber, hpostalcode,
                 hcity, hcountry, hemail, hphone, hfax, hwebsite, hdescription, hbuttons }) {
             HL.getElement().getStyle().set("margin-top", "11px");
         }
 
         // Append everything to the site
-        div.add(h2, profileImage, hcompanyname, hstreet, hstreetnumber, hpostalcode,
+        div.add(h2, profileImage, hinfotext, hcompanyname, hstreet, hstreetnumber, hpostalcode,
                 hcity, hcountry, hemail, hphone, hfax, hwebsite, hdescription, hbuttons);
         add(div);
     }

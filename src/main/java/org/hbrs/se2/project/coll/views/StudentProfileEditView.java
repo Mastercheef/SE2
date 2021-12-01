@@ -47,20 +47,21 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     //da address eigene Entity ist und kein String
     //private Binder<StudentUserDTOImpl> binder = new Binder(StudentUserDTOImpl.class);
 
-    Label       lsalutation     = new Label("Anrede:");
+    Label       infoText        = new Label("Mit (*) markierte Felder sind notwendig.");
+    Label       lsalutation     = new Label("Anrede (*):");
     Label       ltitle          = new Label("Titel:");
-    Label       lfirstname      = new Label("Vorname:");
-    Label       llastname       = new Label("Nachname:");
+    Label       lfirstname      = new Label("Vorname (*):");
+    Label       llastname       = new Label("Nachname (*):");
     Label       lgraduation     = new Label("Abschluss:");
-    Label       ldateOfBirth    = new Label("Geburtsdatum:");
-    Label       lstreet         = new Label("Strasse:");
-    Label       lstreetnumber   = new Label("Hausnummer:");
-    Label       lpostalcode     = new Label("PLZ:");
-    Label       lcity           = new Label("Ort:");
-    Label       lcountry        = new Label("Land:");
+    Label       ldateOfBirth    = new Label("Geburtsdatum (*):");
+    Label       lstreet         = new Label("Strasse (*):");
+    Label       lstreetnumber   = new Label("Hausnummer (*):");
+    Label       lpostalcode     = new Label("PLZ (*):");
+    Label       lcity           = new Label("Ort (*):");
+    Label       lcountry        = new Label("Land (*):");
     Label       lskills         = new Label("Skills:");
-    Label       lemail          = new Label("E-Mail:");
-    Label       lphone          = new Label("Telefon:");
+    Label       lemail          = new Label("E-Mail (*):");
+    Label       lphone          = new Label("Telefon (*):");
     Label       linterests      = new Label("Interessen:");
     Label       lwebsite        = new Label("Webseite:");
     Label       ldescription    = new Label("Über mich:");
@@ -157,6 +158,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         }
 
         // Profile Data
+        HorizontalLayout hinfotext      = new HorizontalLayout(infoText);
         HorizontalLayout hsalutation    = new HorizontalLayout(lsalutation, salutation);
         HorizontalLayout htitle         = new HorizontalLayout(ltitle, title);
         HorizontalLayout hfirstname     = new HorizontalLayout(lfirstname, firstName);
@@ -191,16 +193,16 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         hbuttons.add(saveButton, cancelButton);
 
         // Alignment of profile information
-        for (HorizontalLayout HL : new HorizontalLayout[]{ hsalutation, htitle, hfirstname, hlastname, hoccupation,
-                hbirthdate, hstreet, hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail, hnumber, hinterests,
-                hwebsite, haboutme, hbuttons }) {
+        for (HorizontalLayout HL : new HorizontalLayout[]{ hinfotext, hsalutation, htitle, hfirstname, hlastname,
+                hoccupation, hbirthdate, hstreet, hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail,
+                hnumber, hinterests, hwebsite, haboutme, hbuttons }) {
             HL.getElement().getStyle().set("margin-top", "10px");
         }
 
         // Append everything to the site
-        div.add(h2, profileImage, hsalutation, htitle, hfirstname, hlastname, hoccupation, hbirthdate, hstreet,
-                hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail, hnumber, hinterests, hwebsite, haboutme,
-                hbuttons);
+        div.add(h2, profileImage, hinfotext, hsalutation, htitle, hfirstname, hlastname, hoccupation, hbirthdate,
+                hstreet, hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail, hnumber, hinterests, hwebsite,
+                haboutme, hbuttons);
         add(div);
     }
 
@@ -292,7 +294,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
 
     public boolean checkForEmptyDatePicker(DatePicker datePicker) {
         boolean empty = datePicker.isEmpty();
-        System.out.println(empty);
         if (empty) {
             datePicker.setInvalid(true);
             Notification notification = new Notification("Bitte geben Sie in das markierte Feld einen " +

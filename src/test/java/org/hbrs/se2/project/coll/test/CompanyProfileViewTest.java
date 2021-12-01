@@ -68,7 +68,7 @@ public class CompanyProfileViewTest {
         assertTrue(wrapper.isPresent());
         CompanyProfile companyProfileAfterCreate = wrapper.get();
         assertEquals(companyProfile.getCompanyName(), companyProfileAfterCreate.getCompanyName());
-        assertEquals(companyProfile.getDescription(), companyProfileAfterCreate.getDescription());
+        assertEquals(companyProfile.getEmail(), companyProfileAfterCreate.getEmail());
         assertEquals(companyProfile.getDescription(), companyProfileAfterCreate.getDescription());
 
         assertNotSame(companyProfile, companyProfileAfterCreate);
