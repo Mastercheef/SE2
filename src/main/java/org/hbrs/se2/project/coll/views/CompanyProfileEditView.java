@@ -3,6 +3,7 @@ package org.hbrs.se2.project.coll.views;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -20,6 +21,7 @@ import org.hbrs.se2.project.coll.repository.AddressRepository;
 import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -97,6 +99,19 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
     // Used to read DTO data and inject it into the labels
     public void initLabels(CompanyProfileDTO profileDTO) {
+        lcompanyname.setValue(profileDTO.getCompanyName());
+        lstreet.setValue(address.getStreet());
+        lstreetnumber.setValue(address.getHouseNumber());
+        lpostalcode.setValue(address.getPostalCode());
+        lcity.setValue(address.getCity());
+        lcountry.setValue(address.getCountry());
+        lemail.setValue(profileDTO.getEmail());
+        lphone.setValue(String.valueOf(profileDTO.getPhoneNumber()));
+        lfax.setValue(String.valueOf(profileDTO.getFaxNumber()));
+        lwebsite.setValue(profileDTO.getWebsite());
+        ldescription.setValue(profileDTO.getDescription());
+
+        /*
         lcompanyname.setPlaceholder(profileDTO.getCompanyName());
         lstreet.setPlaceholder(address.getStreet());
         lstreetnumber.setPlaceholder(address.getHouseNumber());
@@ -107,7 +122,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         lphone.setPlaceholder(String.valueOf(profileDTO.getPhoneNumber()));
         lfax.setPlaceholder(String.valueOf(profileDTO.getFaxNumber()));
         lwebsite.setPlaceholder(profileDTO.getWebsite());
-        ldescription.setPlaceholder(profileDTO.getDescription());
+        ldescription.setPlaceholder(profileDTO.getDescription());*/
     }
 
     // TODO: Profilbild
@@ -154,9 +169,11 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
         // Create buttons to save in database and cancel progress
         saveButton.addClickListener(e -> {
-                    updateProfileData();
-                    UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
-                });
+            if(!checkForEmptyInput()) {
+                updateProfileData();
+                UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+            }
+        });
         cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW +
                 companyId));
         hbuttons.add(saveButton, cancelButton);
@@ -173,51 +190,23 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         add(div);
     }
 
-    // Used to save modified data in the database
+    // Used to save modified data in the database. Empty fields get marked as soon as save button is clicked.
     public void updateProfileData() {
-
-        // Only modify data if Textfields are not empty. Otherwise, use previous data.
         CompanyProfile updatedProfile = new CompanyProfile();
-
-        // ID
         updatedProfile.setId(companyId);
-
-        // Company Name
-        if(!Objects.equals(lcompanyname.getValue(), ""))
-            updatedProfile.setCompanyName(lcompanyname.getValue());
-        else
-            updatedProfile.setCompanyName(lcompanyname.getPlaceholder());
+        updatedProfile.setCompanyName(lcompanyname.getValue());
+        updatedProfile.setEmail(lemail.getValue());
+        updatedProfile.setPhoneNumber(Integer.parseInt(lphone.getValue()));
+        updatedProfile.setFaxNumber(Integer.parseInt(lfax.getValue()));
+        updatedProfile.setWebsite(lwebsite.getValue());
+        updatedProfile.setDescription(ldescription.getValue());
 
         // Address
-        // Street
-        if(!Objects.equals(lstreet.getValue(), ""))
-            address.setStreet(lstreet.getValue());
-        else
-            address.setStreet(lstreet.getPlaceholder());
-
-        // Streetnumber
-        if(!Objects.equals(lstreetnumber.getValue(), ""))
-            address.setHouseNumber(lstreetnumber.getValue());
-        else
-            address.setHouseNumber(lstreetnumber.getPlaceholder());
-
-        // Postalcode
-        if(!Objects.equals(lpostalcode.getValue(), ""))
-            address.setPostalCode(lpostalcode.getValue());
-        else
-            address.setPostalCode(lpostalcode.getPlaceholder());
-
-        // City
-        if(!Objects.equals(lcity.getValue(), ""))
-            address.setCity(lcity.getValue());
-        else
-            address.setCity(lcity.getPlaceholder());
-
-        // Country
-        if(!Objects.equals(lcountry.getValue(), ""))
-            address.setCountry(lcountry.getValue());
-        else
-            address.setCountry(lcountry.getPlaceholder());
+        address.setStreet(lstreet.getValue());
+        address.setHouseNumber(lstreetnumber.getValue());
+        address.setPostalCode(lpostalcode.getValue());
+        address.setCity(lcity.getValue());
+        address.setCountry(lcountry.getValue());
 
         // Check DB for existing address
         int newAddressID = checkAddressExistence(address, existingAddresses);
@@ -227,36 +216,6 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
             addressRepository.save(address);
         }
         updatedProfile.setAddress(address);
-
-        // Email
-        if(!Objects.equals(lemail.getValue(), ""))
-            updatedProfile.setEmail(lemail.getValue());
-        else
-            updatedProfile.setEmail(lemail.getPlaceholder());
-
-        // Phone
-        if(!Objects.equals(lphone.getValue(), ""))
-            updatedProfile.setPhoneNumber(Integer.parseInt(lphone.getValue()));
-        else
-            updatedProfile.setPhoneNumber(Integer.parseInt(lphone.getPlaceholder()));
-
-        // Fax
-        if(!Objects.equals(lfax.getValue(), ""))
-            updatedProfile.setFaxNumber(Integer.parseInt(lfax.getValue()));
-        else
-            updatedProfile.setFaxNumber(Integer.parseInt(lfax.getPlaceholder()));
-
-        // Website
-        if(!Objects.equals(lwebsite.getValue(), ""))
-            updatedProfile.setWebsite(lwebsite.getValue());
-        else
-            updatedProfile.setWebsite(lwebsite.getPlaceholder());
-
-        // Description
-        if(!Objects.equals(ldescription.getValue(), ""))
-            updatedProfile.setDescription(ldescription.getValue());
-        else
-            updatedProfile.setDescription(ldescription.getPlaceholder());
 
         // Save in DB
         companyProfileRepository.save(updatedProfile);
@@ -282,14 +241,38 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         return ID;
     }
 
+    public boolean checkForEmptyInput() {
+        return checkForEmptyTextField(lcompanyname) ||
+                checkForEmptyTextField(lstreet) ||
+                checkForEmptyTextField(lstreetnumber) ||
+                checkForEmptyTextField(lpostalcode) ||
+                checkForEmptyTextField(lcity) ||
+                checkForEmptyTextField(lcountry) ||
+                checkForEmptyTextField(lemail) ||
+                checkForEmptyTextField(lphone) ||
+                checkForEmptyTextField(lfax) ||
+                checkForEmptyTextField(lwebsite) ||
+                checkForEmptyTextField(ldescription);
+    }
+    public boolean checkForEmptyTextField(TextField textField) {
+        boolean empty = Utils.StringIsEmptyOrNull(textField.getValue());
+        if (empty) {
+            textField.setInvalid(true);
+            Notification notification = new Notification("Bitte geben Sie in das markierte Feld einen " +
+                    "gültigen Wert ein.", 3000);
+            notification.open();
+        } else {
+            textField.setInvalid(false);
+        }
+        return empty;
+    }
+
     // If the user is not logged in, they get redirected to the login page
-    private boolean checkIfUserIsLoggedIn() {
+    private void checkIfUserIsLoggedIn() {
         UserDTO userDTO = this.getCurrentUser();
         if (userDTO == null) {
             UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
-            return false;
         }
-        return true;
     }
 
     // If the user is not the owner of this profile, they get redirected to the profile

@@ -61,11 +61,16 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     // Profiles can only be accesses via ID
     @Override
     public void setParameter(BeforeEvent event, String parameter) {
-        if (!Objects.equals(parameter, "")) {
-            CompanyProfileDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
-            address = profileDTO.getAddress();
-            initLabels(profileDTO);
-            createProfile();
+        try {
+            if (!Objects.equals(parameter, "")) {
+                CompanyProfileDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
+                address = profileDTO.getAddress();
+                initLabels(profileDTO);
+                createProfile();
+            }
+        } catch (Exception e) {
+            System.out.println("An exception has occured.");
+            e.printStackTrace();
         }
     }
 
