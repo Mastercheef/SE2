@@ -8,6 +8,7 @@ public class UserFactory {
     public static StudentUser createStudentUser(StudentUserDTO studentDTO) {
         StudentUser studentUser = new StudentUser();
         studentUser.setId(studentDTO.getId());
+        studentUser.setType(studentDTO.getType());
         studentUser.setSalutation(studentDTO.getSalutation());
         studentUser.setTitle(studentDTO.getTitle());
         studentUser.setFirstName(studentDTO.getFirstName());
