@@ -208,7 +208,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
 
     // Used to save modified data in the database. Empty fields get marked as soon as save button is clicked.
     public void updateProfileData() {
-        StudentUser updatedProfile = new StudentUser();
+        StudentUserDTOImpl updatedProfile = new StudentUserDTOImpl();
         updatedProfile.setId(studentId);
         updatedProfile.setType("st");
         updatedProfile.setPassword(profileDTO.getPassword());
@@ -232,17 +232,10 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         addr.setCity(city.getValue());
         addr.setCountry(country.getValue());
 
-        // Check DB for existing address
-        int newAddressID = checkAddressExistence(addr, existingAddresses);
-        if(newAddressID != -1) {
-            addr = addressRepository.getById(newAddressID);
-        } else {
-            addressRepository.save(addr);
-        }
         updatedProfile.setAddress(addr);
 
-        // Save in DB
-        studentUserRepository.save(updatedProfile);
+        profileControl.saveStudentUser(updatedProfile);
+
     }
 
     /*  We have to check if the address we edited in the View already exists in the DB.
@@ -315,8 +308,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
 
     // If the user is not the owner of this profile, they get redirected to the profile
     private boolean checkIfUserIsProfileOwner() {
-        int userId = this.getCurrentUser().getId();
-        if(userId != studentId)
+        if(this.getCurrentUser() != null && this.getCurrentUser().getId() != studentId)
         {
             UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
             UI.getCurrent().getPage().reload();

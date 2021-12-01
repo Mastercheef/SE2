@@ -32,11 +32,11 @@ public class UserDTOImpl implements UserDTO {
 
     public void setTitle(String title) { this.title = title; }
 
-    public void setFirstname(String firstname) {
+    public void setFirstName(String firstname) {
         this.firstname = firstname;
     }
 
-    public void setLastname(String lastname) {
+    public void setLastName(String lastname) {
         this.lastname = lastname;
     }
 
