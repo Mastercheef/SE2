@@ -4,6 +4,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -112,24 +113,23 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     // Used to read DTO data and inject them into the labels
     public void initLabels(StudentUserDTO profileDTO) {
         studentId = profileDTO.getId();
-        salutation.setPlaceholder(profileDTO.getSalutation());
-        title.setPlaceholder(profileDTO.getTitle());
-        firstName.setPlaceholder(profileDTO.getFirstName());
-        lastName.setPlaceholder(profileDTO.getLastName());
-        graduation.setPlaceholder(profileDTO.getGraduation());
+        salutation.setValue(profileDTO.getSalutation());
+        title.setValue(profileDTO.getTitle());
+        firstName.setValue(profileDTO.getFirstName());
+        lastName.setValue(profileDTO.getLastName());
+        graduation.setValue(profileDTO.getGraduation());
         dateOfBirth.setValue(profileDTO.getDateOfBirth());
-        //dateOfBirth.setPlaceholder(profileDTO.getDateOfBirth().toString());
-        street.setPlaceholder(addr.getStreet());
-        streetnumber.setPlaceholder(addr.getHouseNumber());
-        postalcode.setPlaceholder(addr.getPostalCode());
-        city.setPlaceholder(addr.getCity());
-        country.setPlaceholder(addr.getCountry());
-        skills.setPlaceholder(profileDTO.getSkills());
-        email.setPlaceholder(profileDTO.getEmail());
-        phone.setPlaceholder(profileDTO.getPhone());
-        interests.setPlaceholder(profileDTO.getInterests());
-        website.setPlaceholder(profileDTO.getWebsite());
-        description.setPlaceholder(profileDTO.getDescription());
+        street.setValue(addr.getStreet());
+        streetnumber.setValue(addr.getHouseNumber());
+        postalcode.setValue(addr.getPostalCode());
+        city.setValue(addr.getCity());
+        country.setValue(addr.getCountry());
+        skills.setValue(profileDTO.getSkills());
+        email.setValue(profileDTO.getEmail());
+        phone.setValue(profileDTO.getPhone());
+        interests.setValue(profileDTO.getInterests());
+        website.setValue(profileDTO.getWebsite());
+        description.setValue(profileDTO.getDescription());
     }
 
     // Build profile content
@@ -181,8 +181,10 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         Button cancelButton       = new Button("Abbrechen");
 
         saveButton.addClickListener(e -> {
+            if(!checkForEmptyInput()) {
                 updateProfileData();
                 UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
+            }
         });
         cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW +
                 studentId));
@@ -202,81 +204,31 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         add(div);
     }
 
-    // Used to save modified data in the database
+    // Used to save modified data in the database. Empty fields get marked as soon as save button is clicked.
     public void updateProfileData() {
-
-        // Only modify data if Textfields are not empty. Otherwise, use previous data.
         StudentUser updatedProfile = new StudentUser();
-
-        // ID
         updatedProfile.setId(studentId);
-
-        // Salutation
-        if(!Objects.equals(salutation.getValue(), ""))
-            updatedProfile.setSalutation(salutation.getValue());
-        else
-            updatedProfile.setSalutation(salutation.getPlaceholder());
-
-        // Title
-        if(!Objects.equals(title.getValue(), ""))
-            updatedProfile.setTitle(title.getValue());
-        else
-            updatedProfile.setTitle(title.getPlaceholder());
-
-        // First Name
-        if(!Objects.equals(firstName.getValue(), ""))
-            updatedProfile.setFirstName(firstName.getValue());
-        else
-            updatedProfile.setFirstName(firstName.getPlaceholder());
-
-        // Last Name
-        if(!Objects.equals(lastName.getValue(), ""))
-            updatedProfile.setLastName(lastName.getValue());
-        else
-            updatedProfile.setLastName(lastName.getPlaceholder());
-
-        // Graduation
-        if(!Objects.equals(graduation.getValue(), ""))
-            updatedProfile.setGraduation(graduation.getValue());
-        else
-            updatedProfile.setGraduation(graduation.getPlaceholder());
-
-        // Date of Birth
-        if(Objects.equals(dateOfBirth.getValue().toString(), ""))
-            updatedProfile.setDateOfBirth(dateOfBirth.getValue());
-        else
-            updatedProfile.setDateOfBirth(profileDTO.getDateOfBirth());
+        updatedProfile.setType("st");
+        updatedProfile.setPassword(profileDTO.getPassword());
+        updatedProfile.setSalutation(salutation.getValue());
+        updatedProfile.setTitle(title.getValue());
+        updatedProfile.setFirstName(firstName.getValue());
+        updatedProfile.setLastName(lastName.getValue());
+        updatedProfile.setGraduation(graduation.getValue());
+        updatedProfile.setDateOfBirth(dateOfBirth.getValue());
+        updatedProfile.setSkills(skills.getValue());
+        updatedProfile.setEmail(email.getValue());
+        updatedProfile.setPhone(phone.getValue());
+        updatedProfile.setInterests(interests.getValue());
+        updatedProfile.setWebsite(website.getValue());
+        updatedProfile.setDescription(description.getValue());
 
         // Address
-        // Street
-        if(!Objects.equals(street.getValue(), ""))
-            addr.setStreet(street.getValue());
-        else
-            addr.setStreet(street.getPlaceholder());
-
-        // Street Number
-        if(!Objects.equals(streetnumber.getValue(), ""))
-            addr.setHouseNumber(streetnumber.getValue());
-        else
-            addr.setHouseNumber(streetnumber.getPlaceholder());
-
-        // Postalcode
-        if(!Objects.equals(postalcode.getValue(), ""))
-            addr.setPostalCode(postalcode.getValue());
-        else
-            addr.setPostalCode(postalcode.getPlaceholder());
-
-        // City
-        if(!Objects.equals(city.getValue(), ""))
-            addr.setCity(city.getValue());
-        else
-            addr.setCity(city.getPlaceholder());
-
-        // Country
-        if(!Objects.equals(country.getValue(), ""))
-            addr.setCountry(country.getValue());
-        else
-            addr.setCountry(country.getPlaceholder());
+        addr.setStreet(street.getValue());
+        addr.setHouseNumber(streetnumber.getValue());
+        addr.setPostalCode(postalcode.getValue());
+        addr.setCity(city.getValue());
+        addr.setCountry(country.getValue());
 
         // Check DB for existing address
         int newAddressID = checkAddressExistence(addr, existingAddresses);
@@ -286,48 +238,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
             addressRepository.save(addr);
         }
         updatedProfile.setAddress(addr);
-
-        // Skills
-        if(!Objects.equals(skills.getValue(), ""))
-            updatedProfile.setSkills(skills.getValue());
-        else
-            updatedProfile.setSkills(skills.getPlaceholder());
-
-        // Email
-        if(!Objects.equals(email.getValue(), ""))
-            updatedProfile.setEmail(email.getValue());
-        else
-            updatedProfile.setEmail(email.getPlaceholder());
-
-        // Phone
-        if(!Objects.equals(phone.getValue(), ""))
-            updatedProfile.setPhone(phone.getValue());
-        else
-            updatedProfile.setPhone(phone.getPlaceholder());
-
-        // Interests
-        if(!Objects.equals(interests.getValue(), ""))
-            updatedProfile.setInterests(interests.getValue());
-        else
-            updatedProfile.setInterests(interests.getPlaceholder());
-
-        // Website
-        if(!Objects.equals(website.getValue(), ""))
-            updatedProfile.setWebsite(website.getValue());
-        else
-            updatedProfile.setWebsite(website.getPlaceholder());
-
-        // Description
-        if(!Objects.equals(description.getValue(), ""))
-            updatedProfile.setDescription(description.getValue());
-        else
-            updatedProfile.setDescription(description.getPlaceholder());
-
-        // Password
-        updatedProfile.setPassword(profileDTO.getPassword());
-
-        // Type
-        updatedProfile.setType("st");
 
         // Save in DB
         studentUserRepository.save(updatedProfile);
@@ -353,32 +263,16 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         return ID;
     }
 
-    public StudentUserDTOImpl createStudentUserDTOImpl() {
-
-        StudentUserDTOImpl studentUserDTO = new StudentUserDTOImpl();
-        studentUserDTO.setId(profileDTO.getId());
-        studentUserDTO.setSalutation(profileDTO.getSalutation());
-        studentUserDTO.setTitle(profileDTO.getTitle());
-        studentUserDTO.setFirstname(firstName.getValue());
-        studentUserDTO.setLastname(lastName.getValue());
-        studentUserDTO.setGraduation(graduation.getValue());
-        studentUserDTO.setDateOfBirth(dateOfBirth.getValue());
-        studentUserDTO.setAddress(profileDTO.getAddress());
-        studentUserDTO.setSkills(skills.getValue());
-        studentUserDTO.setEmail(email.getValue());
-        studentUserDTO.setPassword(profileDTO.getPassword());
-        studentUserDTO.setPhone(phone.getValue());
-        studentUserDTO.setInterests(interests.getValue());
-        studentUserDTO.setWebsite(website.getValue());
-        studentUserDTO.setDescription(description.getValue());
-        studentUserDTO.setType("st");
-
-        return studentUserDTO;
-    }
-
     public boolean checkForEmptyInput() {
-        return checkForEmptyTextField(firstName) ||
+        return checkForEmptyTextField(salutation) ||
+                checkForEmptyTextField(firstName) ||
                 checkForEmptyTextField(lastName) ||
+                checkForEmptyTextField(street) ||
+                checkForEmptyTextField(streetnumber) ||
+                checkForEmptyTextField(postalcode) ||
+                checkForEmptyTextField(city) ||
+                checkForEmptyDatePicker(dateOfBirth) ||
+                checkForEmptyTextField(country) ||
                 checkForEmptyTextField(email) ||
                 checkForEmptyTextField(phone);
     }
@@ -387,9 +281,25 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         boolean empty = Utils.StringIsEmptyOrNull(textField.getValue());
         if (empty) {
             textField.setInvalid(true);
-            textField.setErrorMessage("Bitte gib einen Wert ein");
+            Notification notification = new Notification("Bitte geben Sie in das markierte Feld einen " +
+                    "gültigen Wert ein.", 3000);
+            notification.open();
         } else {
             textField.setInvalid(false);
+        }
+        return empty;
+    }
+
+    public boolean checkForEmptyDatePicker(DatePicker datePicker) {
+        boolean empty = datePicker.isEmpty();
+        System.out.println(empty);
+        if (empty) {
+            datePicker.setInvalid(true);
+            Notification notification = new Notification("Bitte geben Sie in das markierte Feld einen " +
+                    "gültigen Wert ein.", 3000);
+            notification.open();
+        } else {
+            datePicker.setInvalid(false);
         }
         return empty;
     }
@@ -405,7 +315,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     // If the user is not the owner of this profile, they get redirected to the profile
     private boolean checkIfUserIsProfileOwner() {
         int userId = this.getCurrentUser().getId();
-
         if(userId != studentId)
         {
             UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
@@ -414,7 +323,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         }
         else
             return true;
-
     }
 
     private UserDTO getCurrentUser() {
@@ -432,13 +340,10 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
      *
      */
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-
         if (getCurrentUser() == null){
             beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
         }
     }
 
-    public StudentProfileEditView() {
-
-    }
+    public StudentProfileEditView() {}
 }

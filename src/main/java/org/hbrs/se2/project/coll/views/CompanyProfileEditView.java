@@ -110,19 +110,6 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         lfax.setValue(String.valueOf(profileDTO.getFaxNumber()));
         lwebsite.setValue(profileDTO.getWebsite());
         ldescription.setValue(profileDTO.getDescription());
-
-        /*
-        lcompanyname.setPlaceholder(profileDTO.getCompanyName());
-        lstreet.setPlaceholder(address.getStreet());
-        lstreetnumber.setPlaceholder(address.getHouseNumber());
-        lpostalcode.setPlaceholder(address.getPostalCode());
-        lcity.setPlaceholder(address.getCity());
-        lcountry.setPlaceholder(address.getCountry());
-        lemail.setPlaceholder(profileDTO.getEmail());
-        lphone.setPlaceholder(String.valueOf(profileDTO.getPhoneNumber()));
-        lfax.setPlaceholder(String.valueOf(profileDTO.getFaxNumber()));
-        lwebsite.setPlaceholder(profileDTO.getWebsite());
-        ldescription.setPlaceholder(profileDTO.getDescription());*/
     }
 
     // TODO: Profilbild
