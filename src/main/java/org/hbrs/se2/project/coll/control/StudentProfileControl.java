@@ -31,7 +31,7 @@ public class StudentProfileControl {
             //Erzeuge ein neues Car-Entity konsistent über eine Factory
             StudentUser studentUser = UserFactory.createStudentUser(userDTO);
             // Prüfen, ob eingetragene Adresse bereits als Datensatz vorhanden ist. Wenn ja, wird Datensatz der Adresse
-            // aus DB geholt und der erzeugtzen Entity zugewiesen
+            // aus DB geholt und der erzeugten Entity zugewiesen
             studentUser.setAddress(this.checkAddressExistence(studentUser.getAddress()));
 
             // Abspeicherung des Entity in die DB
@@ -44,7 +44,6 @@ public class StudentProfileControl {
         } catch (Error error) {
             // return resultdto mit Fehler
         }
-
     }
 
     public Address checkAddressExistence(Address address) {

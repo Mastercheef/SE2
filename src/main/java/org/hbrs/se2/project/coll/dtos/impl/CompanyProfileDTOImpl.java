@@ -24,7 +24,7 @@ public class CompanyProfileDTOImpl implements CompanyProfileDTO {
     private Set<StellenausschreibungDTO>  offers;
 
     public int      getId() { return this.ID; }
-    public void     setID(int id) { this.ID = id; }
+    public void     setId(int id) { this.ID = id; }
 
     public String   getCompanyName()                { return this.companyName; }
     public void     setCompanyName(String name)     { this.companyName = name; }

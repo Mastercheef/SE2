@@ -14,23 +14,17 @@ import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.StudentUserDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
-import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
-import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Objects;
 
 @Route(value = "profile_edit", layout = AppView.class)
 @PageTitle("Edit your Profile")
 public class StudentProfileEditView extends VerticalLayout implements HasUrlParameter<String>, BeforeEnterObserver {
-
-    @Autowired
-    private StudentUserRepository studentUserRepository;
 
     @Autowired
     private StudentProfileControl profileControl;
@@ -231,31 +225,9 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         addr.setPostalCode(postalcode.getValue());
         addr.setCity(city.getValue());
         addr.setCountry(country.getValue());
-
         updatedProfile.setAddress(addr);
 
         profileControl.saveStudentUser(updatedProfile);
-
-    }
-
-    /*  We have to check if the address we edited in the View already exists in the DB.
-        Return True  if it exists
-        Return False if it does not exist
-    */
-    public int checkAddressExistence(Address a, List<Address> addresses) {
-        int ID = -1;
-
-        for(Address b : addresses) {
-            if(Objects.equals(a.getStreet(), b.getStreet()) &&
-                    Objects.equals(a.getHouseNumber(), b.getHouseNumber()) &&
-                    Objects.equals(a.getPostalCode(), b.getPostalCode()) &&
-                    Objects.equals(a.getCity(), b.getCity()) &&
-                    Objects.equals(a.getCountry(), b.getCountry())) {
-                ID = b.getId();
-                break;
-            }
-        }
-        return ID;
     }
 
     public boolean checkForEmptyInput() {

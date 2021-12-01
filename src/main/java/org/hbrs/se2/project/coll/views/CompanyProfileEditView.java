@@ -14,26 +14,20 @@ import com.vaadin.flow.router.PageTitle;
 import org.hbrs.se2.project.coll.control.CompanyProfileControl;
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.dtos.impl.CompanyProfileDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
-import org.hbrs.se2.project.coll.entities.CompanyProfile;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
-import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Objects;
 
 @Route(value = "companyprofile_edit", layout = AppView.class)
 @PageTitle("Edit your Profile")
 public class CompanyProfileEditView extends VerticalLayout  implements HasUrlParameter<String> {
-
-
-    @Autowired
-    private CompanyProfileRepository companyProfileRepository;
 
     @Autowired
     private AddressRepository addressRepository;
@@ -113,7 +107,6 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         ldescription.setValue(profileDTO.getDescription());
     }
 
-    // TODO: Profilbild
     // Build profile content
     public void createProfile() {
         H2 h2 = new H2("Editiere mein Firmenprofil");
@@ -182,7 +175,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
     // Used to save modified data in the database. Empty fields get marked as soon as save button is clicked.
     public void updateProfileData() {
-        CompanyProfile updatedProfile = new CompanyProfile();
+        CompanyProfileDTOImpl updatedProfile = new CompanyProfileDTOImpl();
         updatedProfile.setId(companyId);
         updatedProfile.setCompanyName(lcompanyname.getValue());
         updatedProfile.setEmail(lemail.getValue());
@@ -197,39 +190,16 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         address.setPostalCode(lpostalcode.getValue());
         address.setCity(lcity.getValue());
         address.setCountry(lcountry.getValue());
-
-        // Check DB for existing address
-        int newAddressID = checkAddressExistence(address, existingAddresses);
-        if(newAddressID != -1) {
-            address = addressRepository.getById(newAddressID);
-        } else {
-            addressRepository.save(address);
-        }
         updatedProfile.setAddress(address);
 
         // Save in DB
-        companyProfileRepository.save(updatedProfile);
+        profileControl.saveCompanyProfile(updatedProfile);
     }
 
     /*  We have to check if the address we edited in the View already exists in the DB.
         Return True  if it exists
         Return False if it does not exist
     */
-    public int checkAddressExistence(Address a, List<Address> addresses) {
-        int ID = -1;
-
-        for(Address b : addresses) {
-            if(Objects.equals(a.getStreet(), b.getStreet()) &&
-                    Objects.equals(a.getHouseNumber(), b.getHouseNumber()) &&
-                    Objects.equals(a.getPostalCode(), b.getPostalCode()) &&
-                    Objects.equals(a.getCity(), b.getCity()) &&
-                    Objects.equals(a.getCountry(), b.getCountry())) {
-                ID = b.getId();
-                break;
-            }
-        }
-        return ID;
-    }
 
     public boolean checkForEmptyInput() {
         return checkForEmptyTextField(lcompanyname) ||
