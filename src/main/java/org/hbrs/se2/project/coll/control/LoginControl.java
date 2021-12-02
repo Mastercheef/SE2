@@ -12,6 +12,8 @@ public class LoginControl {
 
     @Autowired
     private UserRepository repository;
+    
+    private UserDTO uso = null;
 
     private UserDTO userDTO = null;
 
