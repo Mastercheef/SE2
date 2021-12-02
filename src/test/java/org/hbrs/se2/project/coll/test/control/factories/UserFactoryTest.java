@@ -33,8 +33,8 @@ public class UserFactoryTest {
         studentUserDTO.setId(1);
         studentUserDTO.setSalutation("Herr");
         studentUserDTO.setTitle("Dr.");
-        studentUserDTO.setFirstname("Hans");
-        studentUserDTO.setLastname("Meier");
+        studentUserDTO.setFirstName("Hans");
+        studentUserDTO.setLastName("Meier");
         studentUserDTO.setAddress(address);
         studentUserDTO.setDateOfBirth(LocalDate.of(2000, 1, 1));
         studentUserDTO.setPhone("123456789");
