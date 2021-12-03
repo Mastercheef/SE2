@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "type")
+//@DiscriminatorColumn(name = "type")
 @Table( name ="col_tab_user" , schema = "collhbrs" )
 public class User {
 
@@ -57,12 +57,8 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "address_id")
-    public Address getAddress() {
-        return address;
-    }
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+    public Address getAddress() { return address; }
+    public void setAddress(Address address) { this.address = address; }
 
     @Basic
     @Column(name = "phone_number")
@@ -153,5 +149,20 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash( firstName, lastName, address, phone, dateOfBirth, email, password, id);
+    }
+
+    @Override
+    public String toString() {
+        return this.getId()  + ", " +
+                this.getSalutation() + ", " +
+                this.getTitle() + ", " +
+                this.getFirstName() + ", " +
+                this.getLastName() + ", " +
+                this.getDateOfBirth()  + ", " +
+                this.getPhone() + ", " +
+                this.getAddress() + ", " +
+                this.getEmail() + ", " +
+                this.getPassword() + ", " +
+                this.getType();
     }
 }
