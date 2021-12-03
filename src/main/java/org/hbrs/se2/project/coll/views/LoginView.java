@@ -4,6 +4,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 import org.hbrs.se2.project.coll.control.LoginControl;
 import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
@@ -36,7 +37,7 @@ public class LoginView extends VerticalLayout {
         });
 
         add(component);
-        //add(new RouterLink("Don't have an account yet? Register here.", RegisterView.class));
+        add(new RouterLink("Don't have an account yet? Register here.", RegistrationView.class));
         this.setAlignItems( Alignment.CENTER );
     }
 

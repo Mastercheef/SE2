@@ -1,60 +1,45 @@
 package org.hbrs.se2.project.coll.views;
-
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.menubar.MenuBar;
-import com.vaadin.flow.component.menubar.MenuBarVariant;
+
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.textfield.TextField;
-import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.layout.LayoutAlternative;
 
-@Route(value = "" )
+@Route(value = "" , layout = LayoutAlternative.class)
 @PWA(name = "Coll@HBRS", shortName = "Coll")
-
 public class MainView extends VerticalLayout {
 
+    @Id("main")
+    VerticalLayout main;
+    HorizontalLayout temporaryLinks = new HorizontalLayout();
+
     public MainView()  {
-        createHeader();
-        createBody();
-        createFooter();
+        setSizeFull();
 
+        main = createBody();
+        main.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
+        add(main);
+
+        add(temporaryLinks);
     }
 
-    private void createHeader() {
-        Button student = new Button("Student Button");
-        student.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW));
-        Button arbeitgeber = new Button("Arbeitgeber Button");
-        arbeitgeber.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW));
-
-        MenuBar menuBar = new MenuBar();
-        menuBar.addThemeVariants(MenuBarVariant.LUMO_TERTIARY);
-        menuBar.addItem(student);
-        menuBar.addItem(arbeitgeber);
-
-        HorizontalLayout header = new HorizontalLayout(menuBar);
-        header.setSpacing(false);
-        header.setWidthFull();
-        header.setJustifyContentMode(JustifyContentMode.END);
-        add(header);
-    }
-
-    private void createBody() {
-
+    private VerticalLayout createBody() {
         Image logo = new Image("https://www.imgur.com/UJYNMct.png", "logoImage");
+        logo.setWidth("400px");
+        logo.getElement().getStyle().set("border", "1px solid black");
         H2 slogan = new H2("Über 1 Milliarden vermittelte Stellen");
         H1 suchenText = new H1("Was suchen Sie");
         VerticalLayout start = new VerticalLayout();
         start.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         start.add(logo,slogan,suchenText);
         start.setAlignSelf(Alignment.BASELINE);
-
 
         TextField textField = new TextField();
         textField.getElement().setAttribute("aria-label", "search");
@@ -63,7 +48,8 @@ public class MainView extends VerticalLayout {
         textField.setPrefixComponent(VaadinIcon.SEARCH.create());
         add(textField);
 
-        ComboBox<String> comboBox = new ComboBox("Arbeit");
+        ComboBox<String> comboBox;
+        comboBox = new ComboBox<>("Arbeit");
         comboBox.setItems("Job" , "Praktikum");
 
         comboBox.setAllowCustomValue(false);
@@ -75,24 +61,9 @@ public class MainView extends VerticalLayout {
         hl.setWidthFull();
         hl.setJustifyContentMode(JustifyContentMode.CENTER);
         VerticalLayout body = new VerticalLayout(start,hl);
-        add(body);
+        body.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
+        body.setSizeFull();
 
-
-    }
-
-    private void createFooter() {
-        H2 copyright = new H2("Copyright 2021-2022");
-        Button kontakt = new Button("Kontakt Button");
-        Button impressum = new Button("Impressum Button");
-        Button datenschutz = new Button("Datenschutz Button");
-
-        MenuBar menuBar = new MenuBar();
-        menuBar.addItem(copyright);
-        menuBar.addItem(kontakt);
-        menuBar.addItem(impressum);
-        menuBar.addItem(datenschutz);
-
-        HorizontalLayout footer = new HorizontalLayout(menuBar);
-        add(footer);
+        return body;
     }
 }
