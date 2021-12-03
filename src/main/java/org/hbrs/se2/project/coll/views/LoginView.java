@@ -1,8 +1,6 @@
 package org.hbrs.se2.project.coll.views;
 
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -33,15 +31,12 @@ public class LoginView extends VerticalLayout {
                 grabAndSetUserIntoSession();
                 navigateToMainPage();
             } else {
-                Dialog dialog = new Dialog();
-                dialog.add(new Text( isAuthenticated.getReason()));
-                dialog.setWidth("400px");
-                dialog.setHeight("150px");
-                dialog.open();
+                component.setError(true);
             }
         });
 
         add(component);
+        //add(new RouterLink("Don't have an account yet? Register here.", RegisterView.class));
         this.setAlignItems( Alignment.CENTER );
     }
 
@@ -49,7 +44,6 @@ public class LoginView extends VerticalLayout {
         UserDTO userDTO = loginControl.getCurrentUser();
         UI.getCurrent().getSession().setAttribute( Globals.CURRENT_USER, userDTO );
     }
-
 
     private void navigateToMainPage() {
         UI.getCurrent().navigate(Globals.Pages.MENU_VIEW);

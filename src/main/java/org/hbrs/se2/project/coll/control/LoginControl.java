@@ -2,6 +2,7 @@ package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.dtos.impl.LoginResultDTOImpl;
 import org.hbrs.se2.project.coll.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,10 +16,10 @@ public class LoginControl {
 
     private UserDTO userDTO = null;
 
-    private LoginResultDTO loginResult = new LoginResultDTO();
+    //private LoginResultDTO loginResult = new LoginResultDTO();
+    private LoginResultDTOImpl loginResult = new LoginResultDTOImpl();
 
     public LoginResultDTO authentificate(String email, String password ) {
-
 
         // User wird per SQL ausgelesen
         this.userDTO = this.getUser(email , password );
