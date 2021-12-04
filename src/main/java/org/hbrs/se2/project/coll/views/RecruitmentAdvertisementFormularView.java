@@ -1,14 +1,15 @@
 package org.hbrs.se2.project.coll.views;
 
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEvent;
@@ -16,11 +17,18 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.CompanyProfileControl;
+import org.hbrs.se2.project.coll.control.RecruitmentAdvertisementControl;
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.dtos.impl.RecruitmentAdvertisingDTOImpl;
+import org.hbrs.se2.project.coll.entities.Address;
+import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.layout.AppView;
+import org.hbrs.se2.project.coll.repository.AddressRepository;
+import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
@@ -31,38 +39,38 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
 
     @Autowired
     ContactPersonRepository contactPersonRepository;
+
+    @Autowired
+    AddressRepository addressRepository;
+
+    @Autowired
+    CompanyProfileRepository companyProfileRepository;
+
     @Autowired
     private CompanyProfileControl profileControl;
     int companyId;
 
-    Label jobName                   = new Label("Jobtitel");
-    Label typeOfEmployment          = new Label("Typ");
-    Label formOfEmployment          = new Label("Arbeitszeit");
-    Label jobStart                  = new Label("Eintrittsdatum");
-    Label workingLocation           = new Label("Arbeitsort");
-    Label jobDescription            = new Label("Stellenbeschreibung");
-    Label requirementForApplicants  = new Label("Anforderungen");
-    Label businessAdress            = new Label("Adresse");
-    Label telephoneNumber           = new Label("Telefon");
-    Label temporaryEmployment       = new Label("kurzfristige Beschäftigung ");
-    Label contactPerson             = new Label("Kontaktperson");
-    Label emailAdress               = new Label("E-Mail");
+    @Autowired
+    private RecruitmentAdvertisementControl control;
 
-    TextField       ljobName                    = new TextField();
-    Select<String>  lTypeOfEmployment           = new Select<>();
-    Select<String>  lFormOfEmployment           = new Select<>();
-    DatePicker      lJobStart                   = new DatePicker ();
-    TextField       lWorkingLocation            = new TextField();
-    TextArea        lJobDescription             = new TextArea("Description");
-    TextArea        lRequirementForApplicants   = new TextArea("Description");
-    TextField       lStreet                     = new TextField("Straße");
-    TextField       lHouseNumber                = new TextField( "Hausnummer");
-    TextField       lPostalCode                 = new TextField("PLZ");
-    TextField       lCity                       = new TextField("Stadt");
-    NumberField     lTelephoneNumber            = new NumberField ("Nummer");
-    Select<String>  lTemporaryEmployment        = new Select<>();
-    TextField       lContactPerson              = new TextField();
-    TextField       lEmailAdress                = new TextField("email");
+    Label infoText              = new Label("Mit (*) markierte Felder sind notwendig.");
+    Label jobTitle              = new Label("Jobtitel (*)");
+    Label temporaryEmployment   = new Label("kurzfristige Beschäftigung (*)");
+    Label typeOfEmployment      = new Label("Typ (*)");
+    Label workingHours          = new Label("Stunden/Woche (*)");
+    Label requirements          = new Label("Anforderungen");
+    Label startOfWork           = new Label("Eintrittsdatum");
+    Label endOfWork             = new Label("Enddatum");
+    Label jobDescription        = new Label("Stellenbeschreibung (*)");
+
+    TextField       lJobTitle            = new TextField();
+    Select<String>  lTemporaryEmployment = new Select<>();
+    Select<String>  lTypeOfEmployment    = new Select<>();
+    TextField       lWorkingHours        = new TextField();
+    TextArea        lRequirements        = new TextArea();
+    DatePicker      lStartOfWork         = new DatePicker();
+    DatePicker      lEndOfWork           = new DatePicker();
+    TextArea        lJobDescription      = new TextArea();
 
     Div div           = new Div();
 
@@ -90,70 +98,74 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
         H2 h2 = new H2("Job Formular");
         setSizeFull();
 
-        for (Label label : new Label[]{jobName, typeOfEmployment, formOfEmployment, jobStart, workingLocation,
-                jobDescription, requirementForApplicants, businessAdress, telephoneNumber, temporaryEmployment,
-                contactPerson, emailAdress}) {
+        for (Label label : new Label[]{jobTitle, temporaryEmployment, typeOfEmployment, workingHours, requirements,
+                startOfWork, endOfWork, jobDescription}) {
             label.getElement().getStyle().set("font-weight", "bold");
         }
-        HorizontalLayout hJobName = new HorizontalLayout();
-        hJobName.add(jobName, ljobName);
-        hJobName.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
-        HorizontalLayout hlabelTypeOfEmployment = new HorizontalLayout();
 
-        lTypeOfEmployment.setItems("Vollzeit", "Teilzeit", "Minijob", "Praktiktum");
-        hlabelTypeOfEmployment.add(typeOfEmployment, lTypeOfEmployment);
+        // Title
+        HorizontalLayout hJobTitle = new HorizontalLayout(jobTitle, lJobTitle);
+        hJobTitle.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
 
-        HorizontalLayout hBeginnOfJob = new HorizontalLayout();
-        hBeginnOfJob.add(jobStart, lJobStart);
+        // Type
+        HorizontalLayout hTypeOfEmployment = new HorizontalLayout(typeOfEmployment, lTypeOfEmployment);
+        lTypeOfEmployment.setItems("Vollzeit", "Teilzeit", "Minijob", "Praktikum");
+        lTypeOfEmployment.setValue("Vollzeit"); // Default
 
-        HorizontalLayout hworkingLocation = new HorizontalLayout();
-        hworkingLocation.add(workingLocation, lWorkingLocation);
+        // Start/End of Job
+        HorizontalLayout hStartOfWork = new HorizontalLayout(startOfWork, lStartOfWork);
+        HorizontalLayout hEndOfWork   = new HorizontalLayout(endOfWork, lEndOfWork);
 
-        HorizontalLayout h1 = new HorizontalLayout();
-        h1.add(hJobName, hlabelTypeOfEmployment, hBeginnOfJob, hworkingLocation);
+        // Temporary - Yes/No
+        HorizontalLayout hTemporaryEmployment = new HorizontalLayout(temporaryEmployment, lTemporaryEmployment);
+        lTemporaryEmployment.setItems("Ja", "Nein");
+        lTemporaryEmployment.setValue("Nein"); // Default
 
+        // Working Hours per Week
+        HorizontalLayout hWorkingHours = new HorizontalLayout(workingHours, lWorkingHours);
 
-        VerticalLayout vJobDescription = new VerticalLayout();
+        // Append
+        HorizontalLayout first = new HorizontalLayout(hJobTitle, hTypeOfEmployment, hStartOfWork, hEndOfWork);
+        HorizontalLayout second = new HorizontalLayout(hTemporaryEmployment, hWorkingHours);
+
+        // Description
+        VerticalLayout vJobDescription = new VerticalLayout(jobDescription, lJobDescription);
         lJobDescription.setWidthFull();
-        lJobDescription.getStyle().set("minHeight", "150px");
-        vJobDescription.add(jobDescription, lJobDescription);
+        lJobDescription.setMinHeight("150px");
+        //lJobDescription.getElement().getStyle().set("height", "150px");
 
-        VerticalLayout vRequirementForApplicants = new VerticalLayout();
-        lRequirementForApplicants.setWidthFull();
-        lRequirementForApplicants.getStyle().set("minHeight", "150px");
-        vRequirementForApplicants.add(requirementForApplicants, lRequirementForApplicants);
+        // Requirements
+        VerticalLayout vRequirements = new VerticalLayout(requirements, lRequirements);
+        lRequirements.setWidthFull();
+        lRequirements.setMinHeight("150px");
 
-
-        HorizontalLayout hbusinessAdress = new HorizontalLayout();
-        hbusinessAdress.add(businessAdress, lStreet, lHouseNumber, lPostalCode, lCity);
-
-
-        HorizontalLayout htelephoneNumber = new HorizontalLayout();
-        lTelephoneNumber.setPlaceholder("0123456789");
-        htelephoneNumber.add(telephoneNumber, lTelephoneNumber);
-
-        HorizontalLayout hContactPerson = new HorizontalLayout();
-        lContactPerson.setPlaceholder("Max Mustermann");
-        hContactPerson.add(contactPerson, lContactPerson);
-
-        HorizontalLayout hEmailAdress = new HorizontalLayout();
-        hEmailAdress.add(emailAdress, lEmailAdress);
-
-        HorizontalLayout layout2 = new HorizontalLayout();
-        layout2.add(htelephoneNumber,hContactPerson,hEmailAdress);
-        for(HorizontalLayout hlayout : new HorizontalLayout[] {
-                hJobName,hlabelTypeOfEmployment,hBeginnOfJob,hworkingLocation,hbusinessAdress,
-                htelephoneNumber,hContactPerson,hEmailAdress,layout2
-        }) {
+        // Alignment
+        for(HorizontalLayout hlayout : new HorizontalLayout[] { hJobTitle, hTypeOfEmployment,
+                hStartOfWork, hEndOfWork, hTemporaryEmployment, hWorkingHours}) {
             hlayout.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
             hlayout.setJustifyContentMode(JustifyContentMode.START);
             hlayout.getElement().getStyle().set("margin-top", "10px");
         }
 
-        div.add(h2, h1,vJobDescription,
-                vRequirementForApplicants,hbusinessAdress,layout2);
-        div.setSizeFull();
 
+        // Buttons to save or cancel
+        HorizontalLayout hbuttons   = new HorizontalLayout();
+        Button saveButton           = new Button("Speichern");
+        Button cancelButton         = new Button("Abbrechen");
+
+        saveButton.addClickListener(e -> {
+            if(!checkForEmptyInput()) {
+                createAndSaveNewJob();
+                UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+            }
+        });
+        cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW +
+                companyId));
+        hbuttons.add(saveButton, cancelButton);
+
+        // Append to site
+        div.add(h2, infoText, first, second, vJobDescription, vRequirements, hbuttons);
+        div.setSizeFull();
         add(div);
     }
 
@@ -186,6 +198,64 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
 
     private UserDTO getCurrentUser() {
         return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
+    }
+
+    public boolean checkForEmptyInput() {
+        return checkForEmptyTextField(lJobTitle) ||
+                checkForEmptyTextField(lWorkingHours) ||
+                checkForEmptyTextArea(lJobDescription);
+    }
+    public boolean checkForEmptyTextField(TextField textField) {
+        boolean empty = Utils.StringIsEmptyOrNull(textField.getValue());
+        if (empty) {
+            textField.setInvalid(true);
+            Notification notification = new Notification("Bitte geben Sie in das markierte Feld einen " +
+                    "gültigen Wert ein.", 3000);
+            notification.open();
+        } else {
+            textField.setInvalid(false);
+        }
+        return empty;
+    }
+
+    public boolean checkForEmptyTextArea(TextArea textArea) {
+        boolean empty = Utils.StringIsEmptyOrNull(textArea.getValue());
+        if (empty) {
+            textArea.setInvalid(true);
+            Notification notification = new Notification("Bitte geben Sie in das markierte Feld einen " +
+                    "gültigen Wert ein.", 3000);
+            notification.open();
+        } else {
+            textArea.setInvalid(false);
+        }
+        return empty;
+    }
+
+    public void createAndSaveNewJob() {
+        RecruitmentAdvertisingDTOImpl newJob = new RecruitmentAdvertisingDTOImpl();
+        newJob.setJobTitle(lJobTitle.getValue());
+        newJob.setTypeOfEmployment(lTypeOfEmployment.getValue());
+        newJob.setWorkingHours(Short.parseShort(lWorkingHours.getValue()));
+        newJob.setRequirements(lRequirements.getValue());
+        newJob.setStartOfWork(lStartOfWork.getValue());
+        newJob.setEndOfWork(lEndOfWork.getValue());
+        newJob.setJobDescription(lJobDescription.getValue());
+
+        if(Objects.equals(lTemporaryEmployment.getValue(), "Ja"))
+            newJob.setTemporaryEmployment(true);
+        else
+            newJob.setTemporaryEmployment(false);
+
+        // Address
+        Address address = companyProfileRepository.findCompanyProfileById(companyId).getAddress();
+        newJob.setAddress(address);
+
+        // Contact Person Id
+        ContactPerson contactPerson = contactPersonRepository.findContactPersonByCompany_Id(companyId);
+        newJob.setContactPerson(contactPerson);
+
+        // Save in DB
+        control.saveAdvertisement(newJob);
     }
 
     public RecruitmentAdvertisementFormularView() {
