@@ -199,6 +199,20 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         H4 jobNumber;
         form.add(jobHeadline);
 
+        Button newJob = new Button("Neues Stellenangebot");
+        newJob.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.RECRUITMENT_VIEW +
+                companyId));
+        HorizontalLayout hbuttons = new HorizontalLayout(newJob);
+
+        // Add "New Job" Button ONLY when the logged-in user is the contact person of this company
+        int contactPersonId = contactPersonRepository.findContactPersonByCompany_Id(companyId).getId();
+
+        if (getCurrentUser() != null) {
+            int currentUserId = getCurrentUser().getId();
+            if(Objects.equals(contactPersonId, currentUserId))
+                form.add(hbuttons);
+        }
+
         // Find Job Advertisements for this company
         List<JobAdvertisement> jobAdvertisements =
                 jobAdvertisementRepository.findJobAdvertisementsByCompanyId(companyId);

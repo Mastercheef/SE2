@@ -16,6 +16,7 @@ public class Globals {
         public static final String COMPANYPROFILE_VIEW          = "companyprofile/";     // Company
         public static final String COMPANYPROFILE_EDIT_VIEW     = "companyprofile_edit/";
         public static final String OFFER_VIEW                   = "offer/";
+        public static final String RECRUITMENT_VIEW             = "recruitment_formular/";
         // TODO: Restliche Seiten
     }
 
