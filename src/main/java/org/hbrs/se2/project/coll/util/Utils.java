@@ -25,7 +25,7 @@ public class Utils {
 
     public static String convertToGermanDateFormat(LocalDate date) {
         String dateString = "";
-        dateString += date.getDayOfMonth() + date.getMonthValue() + date.getYear();
+        dateString += date.getDayOfMonth() +"." +  date.getMonthValue() + "."+  date.getYear();
         return dateString;
     }
 }
