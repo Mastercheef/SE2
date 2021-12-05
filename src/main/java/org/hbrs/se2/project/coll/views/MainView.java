@@ -31,7 +31,7 @@ public class MainView extends VerticalLayout {
     }
 
     private VerticalLayout createBody() {
-        Image logo = new Image("https://www.imgur.com/UJYNMct.png", "logoImage");
+        Image logo = new Image("/images/CollHBRSLogo.png", "logoImage");
         logo.setWidth("400px");
         logo.getElement().getStyle().set("border", "1px solid black");
         H2 slogan = new H2("Über 1 Milliarden vermittelte Stellen");
