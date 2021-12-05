@@ -1,11 +1,14 @@
 package org.hbrs.se2.project.coll.control.factories;
 
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
+import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -18,6 +21,9 @@ class UserFactoryTest {
 
     StudentUser studentUser;
 
+    @Mock
+    Address address;
+
     @Test
     void createStudentUser() {
         when(studentDTO.getId()).thenReturn(100);
@@ -26,7 +32,12 @@ class UserFactoryTest {
         when(studentDTO.getTitle()).thenReturn(null);
         when(studentDTO.getFirstName()).thenReturn("Max");
         when(studentDTO.getLastName()).thenReturn("Mustermann");
-        //TODO Mocking Student Address Object
+        when(studentDTO.getAddress()).thenReturn(address);
+        when(studentDTO.getAddress().getCity()).thenReturn("Mustermannstraße");
+        when(studentDTO.getAddress().getCountry()).thenReturn("DE");
+        when(studentDTO.getAddress().getHouseNumber()).thenReturn("2");
+        when(studentDTO.getAddress().getCity()).thenReturn("Mustermannstadt");
+        when(studentDTO.getAddress().getPostalCode()).thenReturn("12345");
         when(studentDTO.getPhone()).thenReturn("0123456789");
         //TODO Mocking Student Birth LocalDAte Object
         when(studentDTO.getEmail()).thenReturn("max@mustermann.de");
@@ -46,9 +57,13 @@ class UserFactoryTest {
         assertNull(studentUser.getTitle(), "Title is not set correctly,should be null");
         assertEquals("Max",studentUser.getFirstName(),"First name is not set correctly,should be Max");
         assertEquals("Mustermann",studentUser.getLastName(),"Last Name is not set correctly,should be Mustermann");
-        //TODO Address
+        assertEquals("Mustermannstadt",studentUser.getAddress().getCity());
+        assertEquals("DE",studentUser.getAddress().getCountry());
+        assertEquals( Integer.valueOf(2),Integer.valueOf(studentUser.getAddress().getHouseNumber()));
+        assertEquals("Mustermannstadt",studentUser.getAddress().getCity());
+        assertEquals("12345",studentUser.getAddress().getPostalCode());
         assertEquals("0123456789" , studentUser.getPhone(),"Phone is not set correctly,should be 0123456789");
-        //TODO Learn how to mock Adress
+        //TODO Learn how to mock LocalDate
         assertEquals("max@mustermann.de", studentUser.getEmail(),"Email is not set correctly,should be max@mustermann.de");
         assertEquals("password1234",studentUser.getPassword() ,"Password is not set correctly,should be password1234");
         assertEquals("1.1.2000",studentUser.getGraduation(),"Graduation is not set correctly,should be: 1.1.2000");
@@ -61,6 +76,10 @@ class UserFactoryTest {
 
     }
 
+    @Test
+    void testAddress() {
+        Address address2;
+    }
 
     @Test
     //TODO Create test
