@@ -80,13 +80,12 @@ class UserFactoryTest {
         assertEquals("Viele",studentUser.getInterests(),"Interests is not set correctly,should be Viele");
         assertEquals("www.mustermann.de",studentUser.getWebsite(),"Website is not set correctly,should be www.mustermann.de");
         assertEquals("Mustermann Description",studentUser.getDescription(),"Description is not set correctly,should be Mustermann Description");
-
+        assertEquals("2000-01-23" , studentUser.getDateOfBirth().toString());
 
 
     }
     
     @Test
-    //TODO Create test
     void createUser() {
 
         when(userDTO.getId()).thenReturn(100);
@@ -95,7 +94,6 @@ class UserFactoryTest {
         when(userDTO.getTitle()).thenReturn(null);
         when(userDTO.getFirstName()).thenReturn("Max");
         when(userDTO.getLastName()).thenReturn("Mustermann");
-        //TODO Mocking Student Birth LocalDAte Object
         when(userDTO.getEmail()).thenReturn("max@mustermann.de");
         when(userDTO.getPassword()).thenReturn("password1234");
 
