@@ -1,4 +1,4 @@
-package org.hbrs.se2.project.coll.test;
+package org.hbrs.se2.project.coll.views;
 
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.CompanyProfile;

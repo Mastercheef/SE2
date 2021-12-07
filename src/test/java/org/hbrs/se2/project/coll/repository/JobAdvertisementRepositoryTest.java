@@ -1,4 +1,4 @@
-package org.hbrs.se2.project.coll.test;
+package org.hbrs.se2.project.coll.repository;
 
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
