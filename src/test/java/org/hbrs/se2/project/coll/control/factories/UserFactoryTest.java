@@ -1,8 +1,10 @@
 package org.hbrs.se2.project.coll.control.factories;
 
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.StudentUser;
+import org.hbrs.se2.project.coll.entities.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -23,6 +25,11 @@ class UserFactoryTest {
 
     @Mock
     Address address;
+    
+    @Mock
+    UserDTO userDTO;
+
+    User user;
 
     @Test
     void createStudentUser() {
@@ -33,7 +40,7 @@ class UserFactoryTest {
         when(studentDTO.getFirstName()).thenReturn("Max");
         when(studentDTO.getLastName()).thenReturn("Mustermann");
         when(studentDTO.getAddress()).thenReturn(address);
-        when(studentDTO.getAddress().getCity()).thenReturn("Mustermannstraße");
+        when(studentDTO.getAddress().getStreet()).thenReturn("Mustermannstraße");
         when(studentDTO.getAddress().getCountry()).thenReturn("DE");
         when(studentDTO.getAddress().getHouseNumber()).thenReturn("2");
         when(studentDTO.getAddress().getCity()).thenReturn("Mustermannstadt");
@@ -57,7 +64,7 @@ class UserFactoryTest {
         assertNull(studentUser.getTitle(), "Title is not set correctly,should be null");
         assertEquals("Max",studentUser.getFirstName(),"First name is not set correctly,should be Max");
         assertEquals("Mustermann",studentUser.getLastName(),"Last Name is not set correctly,should be Mustermann");
-        assertEquals("Mustermannstadt",studentUser.getAddress().getCity());
+        assertEquals("Mustermannstraße",studentUser.getAddress().getStreet());
         assertEquals("DE",studentUser.getAddress().getCountry());
         assertEquals( Integer.valueOf(2),Integer.valueOf(studentUser.getAddress().getHouseNumber()));
         assertEquals("Mustermannstadt",studentUser.getAddress().getCity());
@@ -75,14 +82,34 @@ class UserFactoryTest {
 
 
     }
-
-    @Test
-    void testAddress() {
-        Address address2;
-    }
-
+    
     @Test
     //TODO Create test
     void createUser() {
+
+        when(userDTO.getId()).thenReturn(100);
+        when(userDTO.getType()).thenReturn("st");
+        when(userDTO.getSalutation()).thenReturn("Herr");
+        when(userDTO.getTitle()).thenReturn(null);
+        when(userDTO.getFirstName()).thenReturn("Max");
+        when(userDTO.getLastName()).thenReturn("Mustermann");
+        //TODO Mocking Student Birth LocalDAte Object
+        when(userDTO.getEmail()).thenReturn("max@mustermann.de");
+        when(userDTO.getPassword()).thenReturn("password1234");
+
+        user = UserFactory.createUser(userDTO);
+
+        assertEquals(100 , user.getId(),"ID is not set correctly,should be 100");
+        assertEquals("st",user.getType(),"Type is not set correctly,should be st");
+        assertEquals("Herr",user.getSalutation(),"Salutation is not set correctly,should be Herr");
+        assertNull(user.getTitle(), "Title is not set correctly,should be null");
+        assertTrue(user.getAddress() instanceof  Address);
+        assertEquals("Max",user.getFirstName(),"First name is not set correctly,should be Max");
+        assertEquals("Mustermann",user.getLastName(),"Last Name is not set correctly,should be Mustermann");
+        assertEquals("00000000" , user.getPhone(),"Phone is not set correctly,should be 0123456789");
+        //TODO Learn how to mock LocalDate
+        assertEquals("max@mustermann.de", user.getEmail(),"Email is not set correctly,should be max@mustermann.de");
+        assertEquals("password1234",user.getPassword() ,"Password is not set correctly,should be password1234");
+
     }
 }
