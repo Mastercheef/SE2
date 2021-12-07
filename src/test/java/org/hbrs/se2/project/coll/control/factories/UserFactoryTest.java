@@ -107,7 +107,6 @@ class UserFactoryTest {
         assertEquals("Max",user.getFirstName(),"First name is not set correctly,should be Max");
         assertEquals("Mustermann",user.getLastName(),"Last Name is not set correctly,should be Mustermann");
         assertEquals("00000000" , user.getPhone(),"Phone is not set correctly,should be 0123456789");
-        //TODO Learn how to mock LocalDate
         assertEquals("max@mustermann.de", user.getEmail(),"Email is not set correctly,should be max@mustermann.de");
         assertEquals("password1234",user.getPassword() ,"Password is not set correctly,should be password1234");
 
