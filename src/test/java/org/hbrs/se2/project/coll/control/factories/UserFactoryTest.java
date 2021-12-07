@@ -9,28 +9,25 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserFactoryTest {
 
     @Mock
-    StudentUserDTO studentDTO;
+    private StudentUserDTO studentDTO;
 
-    StudentUser studentUser;
+    private StudentUser studentUser;
 
     @Mock
-    Address address;
-    
-    @Mock
-    UserDTO userDTO;
+    private Address address;
 
-    User user;
+    @Mock
+    private UserDTO userDTO;
+
+    private User user;
 
     private final LocalDate localDate = LocalDate.of(2000, 1, 23);
 
@@ -59,32 +56,32 @@ class UserFactoryTest {
         when(studentDTO.getDescription()).thenReturn("Mustermann Description");
 
         studentUser = UserFactory.createStudentUser(studentDTO);
-        assertTrue(studentUser instanceof StudentUser ,"Returned type is not a studentUser");
+        assertTrue(studentUser instanceof StudentUser, "Returned type is not a studentUser");
 
-        assertEquals(100 , studentUser.getId(),"ID is not set correctly,should be 100");
-        assertEquals("st",studentUser.getType(),"Type is not set correctly,should be st");
-        assertEquals("Herr",studentUser.getSalutation(),"Salutation is not set correctly,should be Herr");
+        assertEquals(100, studentUser.getId(), "ID is not set correctly,should be 100");
+        assertEquals("st", studentUser.getType(), "Type is not set correctly,should be st");
+        assertEquals("Herr", studentUser.getSalutation(), "Salutation is not set correctly,should be Herr");
         assertNull(studentUser.getTitle(), "Title is not set correctly,should be null");
-        assertEquals("Max",studentUser.getFirstName(),"First name is not set correctly,should be Max");
-        assertEquals("Mustermann",studentUser.getLastName(),"Last Name is not set correctly,should be Mustermann");
-        assertEquals("Mustermannstraße",studentUser.getAddress().getStreet());
-        assertEquals("DE",studentUser.getAddress().getCountry());
-        assertEquals( Integer.valueOf(2),Integer.valueOf(studentUser.getAddress().getHouseNumber()));
-        assertEquals("Mustermannstadt",studentUser.getAddress().getCity());
-        assertEquals("12345",studentUser.getAddress().getPostalCode());
-        assertEquals("0123456789" , studentUser.getPhone(),"Phone is not set correctly,should be 0123456789");
-        assertEquals("max@mustermann.de", studentUser.getEmail(),"Email is not set correctly,should be max@mustermann.de");
-        assertEquals("password1234",studentUser.getPassword() ,"Password is not set correctly,should be password1234");
-        assertEquals("1.1.2000",studentUser.getGraduation(),"Graduation is not set correctly,should be: 1.1.2000");
-        assertEquals("Java",studentUser.getSkills(),"Skills is not set correctly,should be:Java");
-        assertEquals("Viele",studentUser.getInterests(),"Interests is not set correctly,should be Viele");
-        assertEquals("www.mustermann.de",studentUser.getWebsite(),"Website is not set correctly,should be www.mustermann.de");
-        assertEquals("Mustermann Description",studentUser.getDescription(),"Description is not set correctly,should be Mustermann Description");
-        assertEquals("2000-01-23" , studentUser.getDateOfBirth().toString());
+        assertEquals("Max", studentUser.getFirstName(), "First name is not set correctly,should be Max");
+        assertEquals("Mustermann", studentUser.getLastName(), "Last Name is not set correctly,should be Mustermann");
+        assertEquals("Mustermannstraße", studentUser.getAddress().getStreet());
+        assertEquals("DE", studentUser.getAddress().getCountry());
+        assertEquals(Integer.valueOf(2), Integer.valueOf(studentUser.getAddress().getHouseNumber()));
+        assertEquals("Mustermannstadt", studentUser.getAddress().getCity());
+        assertEquals("12345", studentUser.getAddress().getPostalCode());
+        assertEquals("0123456789", studentUser.getPhone(), "Phone is not set correctly,should be 0123456789");
+        assertEquals("max@mustermann.de", studentUser.getEmail(), "Email is not set correctly,should be max@mustermann.de");
+        assertEquals("password1234", studentUser.getPassword(), "Password is not set correctly,should be password1234");
+        assertEquals("1.1.2000", studentUser.getGraduation(), "Graduation is not set correctly,should be: 1.1.2000");
+        assertEquals("Java", studentUser.getSkills(), "Skills is not set correctly,should be:Java");
+        assertEquals("Viele", studentUser.getInterests(), "Interests is not set correctly,should be Viele");
+        assertEquals("www.mustermann.de", studentUser.getWebsite(), "Website is not set correctly,should be www.mustermann.de");
+        assertEquals("Mustermann Description", studentUser.getDescription(), "Description is not set correctly,should be Mustermann Description");
+        assertEquals("2000-01-23", studentUser.getDateOfBirth().toString());
 
 
     }
-    
+
     @Test
     void createUser() {
 
@@ -99,16 +96,16 @@ class UserFactoryTest {
 
         user = UserFactory.createUser(userDTO);
 
-        assertEquals(100 , user.getId(),"ID is not set correctly,should be 100");
-        assertEquals("st",user.getType(),"Type is not set correctly,should be st");
-        assertEquals("Herr",user.getSalutation(),"Salutation is not set correctly,should be Herr");
+        assertEquals(100, user.getId(), "ID is not set correctly,should be 100");
+        assertEquals("st", user.getType(), "Type is not set correctly,should be st");
+        assertEquals("Herr", user.getSalutation(), "Salutation is not set correctly,should be Herr");
         assertNull(user.getTitle(), "Title is not set correctly,should be null");
-        assertTrue(user.getAddress() instanceof  Address);
-        assertEquals("Max",user.getFirstName(),"First name is not set correctly,should be Max");
-        assertEquals("Mustermann",user.getLastName(),"Last Name is not set correctly,should be Mustermann");
-        assertEquals("00000000" , user.getPhone(),"Phone is not set correctly,should be 0123456789");
-        assertEquals("max@mustermann.de", user.getEmail(),"Email is not set correctly,should be max@mustermann.de");
-        assertEquals("password1234",user.getPassword() ,"Password is not set correctly,should be password1234");
+        assertTrue(user.getAddress() instanceof Address);
+        assertEquals("Max", user.getFirstName(), "First name is not set correctly,should be Max");
+        assertEquals("Mustermann", user.getLastName(), "Last Name is not set correctly,should be Mustermann");
+        assertEquals("00000000", user.getPhone(), "Phone is not set correctly,should be 0123456789");
+        assertEquals("max@mustermann.de", user.getEmail(), "Email is not set correctly,should be max@mustermann.de");
+        assertEquals("password1234", user.getPassword(), "Password is not set correctly,should be password1234");
 
     }
 }
