@@ -32,6 +32,8 @@ class UserFactoryTest {
 
     User user;
 
+    private final LocalDate localDate = LocalDate.of(2000, 1, 23);
+
     @Test
     void createStudentUser() {
         when(studentDTO.getId()).thenReturn(100);
@@ -40,6 +42,7 @@ class UserFactoryTest {
         when(studentDTO.getTitle()).thenReturn(null);
         when(studentDTO.getFirstName()).thenReturn("Max");
         when(studentDTO.getLastName()).thenReturn("Mustermann");
+        when(studentDTO.getDateOfBirth()).thenReturn(localDate);
         when(studentDTO.getAddress()).thenReturn(address);
         when(studentDTO.getAddress().getStreet()).thenReturn("Mustermannstraße");
         when(studentDTO.getAddress().getCountry()).thenReturn("DE");
@@ -47,7 +50,6 @@ class UserFactoryTest {
         when(studentDTO.getAddress().getCity()).thenReturn("Mustermannstadt");
         when(studentDTO.getAddress().getPostalCode()).thenReturn("12345");
         when(studentDTO.getPhone()).thenReturn("0123456789");
-        when(studentDTO.getDateOfBirth()).thenReturn(mock(LocalDate.class));
         when(studentDTO.getEmail()).thenReturn("max@mustermann.de");
         when(studentDTO.getPassword()).thenReturn("password1234");
         when(studentDTO.getGraduation()).thenReturn("1.1.2000");
