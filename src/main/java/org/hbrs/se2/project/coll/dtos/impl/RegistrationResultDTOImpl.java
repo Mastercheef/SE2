@@ -7,9 +7,9 @@ public class RegistrationResultDTOImpl implements RegistrationResultDTO {
     private boolean result = false;
     private String reason = "";
 
-    public void RegistrationResult(boolean result_, String reason_){
-        this.setResult(result_);
-        this.setReason(reason_);
+    public void RegistrationResult(boolean result, String reason){
+        this.setResult(result);
+        this.setReason(reason);
     }
 
     public boolean getResult(){

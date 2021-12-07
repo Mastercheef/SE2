@@ -90,9 +90,9 @@ public class CompanyProfileViewTest {
         address.setCountry("Deutschland");
 
         List<Address> existingAddresses = addressRepository.getByIdAfter(0);
-        int Id = checkAddressExistence(address, existingAddresses);
+        int id = checkAddressExistence(address, existingAddresses);
 
-        assertEquals(Id, 10000001);
+        assertEquals(id, 10000001);
     }
 
     @Test
@@ -139,7 +139,7 @@ public class CompanyProfileViewTest {
     }
 
     public int checkAddressExistence(Address a, List<Address> addresses) {
-        int Id = -1;
+        int id = -1;
 
         for(Address b : addresses) {
             if(Objects.equals(a.getStreet(), b.getStreet()) &&
@@ -147,10 +147,10 @@ public class CompanyProfileViewTest {
                     Objects.equals(a.getPostalCode(), b.getPostalCode()) &&
                     Objects.equals(a.getCity(), b.getCity()) &&
                     Objects.equals(a.getCountry(), b.getCountry())) {
-                Id = b.getId();
+                id = b.getId();
                 break;
             }
         }
-        return Id;
+        return id;
     }
 }

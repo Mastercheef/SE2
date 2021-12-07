@@ -113,7 +113,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         for (Label label : new Label[]{ companyname, street, streetnumber, postalcode, city, country, email,
                 phone, fax, website, description}) {
             label.getElement().getStyle().set("font-weight", "bold");
-            label.getElement().getStyle().set("width", "200px");        // For alignment
+            label.setWidth("200px");
         }
 
         // Profile Data
@@ -188,7 +188,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Styling
         for (Label label : new Label[]{ name, phone, email, position }) {
             label.getElement().getStyle().set("font-weight", "bold");
-            label.getElement().getStyle().set("width", "100px");        // For alignment
+            label.setWidth("100px");
         }
 
         // Alignment
@@ -259,7 +259,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 for (Label label : new Label[]{ jobTitle, jobType, jobHours, jobRequirements, jobDescription, jobStart,
                         jobEnd, jobTemporary }) {
                     label.getElement().getStyle().set("font-weight", "bold");
-                    label.getElement().getStyle().set("width", "200px");        // For alignment
+                    label.setWidth("200px");
                 }
 
                 // Count Job offers

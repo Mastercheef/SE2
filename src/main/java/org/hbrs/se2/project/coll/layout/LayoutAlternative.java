@@ -23,9 +23,8 @@ import java.util.Objects;
 public class LayoutAlternative extends VerticalLayout implements RouterLayout {
 
     // Header Variables
-    private Label collathbrs   = new Label("Coll@HBRS");
-    private Button login = new Button("Login");
-
+    private Label   collathbrs  = new Label("Coll@HBRS");
+    private Button  login       = new Button("Login");
 
     // Footer Variables
     private Label copyright = new Label("Copyright © 2021-2022");
@@ -40,13 +39,14 @@ public class LayoutAlternative extends VerticalLayout implements RouterLayout {
 
     public LayoutAlternative() {
 
+
         // Misc. Styling
         //logout.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW));
         login.getElement().getStyle().set("margin-left", "auto");
         getElement().getStyle().set("background-color", "#fffdeb");
         setSizeFull();
-
         login.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW));
+
         // Header
         HorizontalLayout header = new HorizontalLayout(collathbrs, login);
         header.setAlignItems(FlexComponent.Alignment.END);
