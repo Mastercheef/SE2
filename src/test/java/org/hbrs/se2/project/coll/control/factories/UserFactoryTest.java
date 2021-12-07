@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,7 +47,7 @@ class UserFactoryTest {
         when(studentDTO.getAddress().getCity()).thenReturn("Mustermannstadt");
         when(studentDTO.getAddress().getPostalCode()).thenReturn("12345");
         when(studentDTO.getPhone()).thenReturn("0123456789");
-        //TODO Mocking Student Birth LocalDAte Object
+        when(studentDTO.getDateOfBirth()).thenReturn(mock(LocalDate.class));
         when(studentDTO.getEmail()).thenReturn("max@mustermann.de");
         when(studentDTO.getPassword()).thenReturn("password1234");
         when(studentDTO.getGraduation()).thenReturn("1.1.2000");
@@ -70,7 +71,6 @@ class UserFactoryTest {
         assertEquals("Mustermannstadt",studentUser.getAddress().getCity());
         assertEquals("12345",studentUser.getAddress().getPostalCode());
         assertEquals("0123456789" , studentUser.getPhone(),"Phone is not set correctly,should be 0123456789");
-        //TODO Learn how to mock LocalDate
         assertEquals("max@mustermann.de", studentUser.getEmail(),"Email is not set correctly,should be max@mustermann.de");
         assertEquals("password1234",studentUser.getPassword() ,"Password is not set correctly,should be password1234");
         assertEquals("1.1.2000",studentUser.getGraduation(),"Graduation is not set correctly,should be: 1.1.2000");
