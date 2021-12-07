@@ -19,20 +19,18 @@ class UserFactoryTest {
     @Mock
     private StudentUserDTO studentDTO;
 
-    private StudentUser studentUser;
-
     @Mock
     private Address address;
 
     @Mock
     private UserDTO userDTO;
 
-    private User user;
-
     private final LocalDate localDate = LocalDate.of(2000, 1, 23);
 
     @Test
     void createStudentUser() {
+        StudentUser studentUser;
+
         when(studentDTO.getId()).thenReturn(100);
         when(studentDTO.getType()).thenReturn("st");
         when(studentDTO.getSalutation()).thenReturn("Herr");
@@ -84,6 +82,7 @@ class UserFactoryTest {
 
     @Test
     void createUser() {
+        User user;
 
         when(userDTO.getId()).thenReturn(100);
         when(userDTO.getType()).thenReturn("st");

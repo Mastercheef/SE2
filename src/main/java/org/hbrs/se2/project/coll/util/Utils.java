@@ -19,7 +19,7 @@ public class Utils {
 
     }
 
-    public static boolean StringIsEmptyOrNull(String value) {
+    public static boolean stringIsEmptyOrNull(String value) {
         return value == null || value.equals("");
     }
 

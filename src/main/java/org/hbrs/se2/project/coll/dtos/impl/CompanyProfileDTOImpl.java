@@ -4,13 +4,11 @@ import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.dtos.StellenausschreibungDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 
-import javax.persistence.OneToMany;
-import java.time.LocalDate;
 import java.util.Set;
 
 public class CompanyProfileDTOImpl implements CompanyProfileDTO {
 
-    private int ID;
+    private int id;
     private String companyName;
     private Address address;
     private int phoneNumber;
@@ -23,8 +21,8 @@ public class CompanyProfileDTOImpl implements CompanyProfileDTO {
 //    @OneToMany
     private Set<StellenausschreibungDTO>  offers;
 
-    public int      getId() { return this.ID; }
-    public void     setId(int id) { this.ID = id; }
+    public int      getId() { return this.id; }
+    public void     setId(int id) { this.id = id; }
 
     public String   getCompanyName()                { return this.companyName; }
     public void     setCompanyName(String name)     { this.companyName = name; }

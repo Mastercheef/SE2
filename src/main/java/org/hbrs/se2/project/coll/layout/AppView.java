@@ -4,14 +4,12 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.menubar.MenuBar;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -19,20 +17,13 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.*;
-import com.vaadin.flow.server.PWA;
-import com.vaadin.flow.server.VaadinService;
-import com.vaadin.flow.server.VaadinServletRequest;
-import org.apache.tomcat.jni.Global;
-import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.views.StudentProfileView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 
-import java.net.URI;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -116,13 +107,12 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         MenuBar bar = new MenuBar();
 
         /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
-        MenuItem useritem;
         String currentUserType = getCurrentUser().getType();
         if(Objects.equals(currentUserType, "st"))
-            useritem = bar.addItem("Mein Profil" , e -> navigateToUserProfile());
+            bar.addItem("Mein Profil" , e -> navigateToUserProfile());
         else if(Objects.equals(currentUserType, "cp"))
-            useritem = bar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
-        MenuItem item = bar.addItem("Logout" , e -> logoutUser());
+            bar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
+        bar.addItem("Logout" , e -> logoutUser());
         topRightPanel.add(bar);
 
         layout.add( topRightPanel );
@@ -201,11 +191,10 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
        // und dem Tabs-Array hinzugefügt. In der Methode createTab wird ein (Key, Value)-Pair übergeben:
         // Key: der sichtbare String des Menu-Items
         // Value: Die UI-Component, die nach dem Klick auf das Menuitem angezeigt wird.
-       Tab[] tabs = new Tab[]{ createTab( "Profil", StudentProfileView.class) };
+       return new Tab[]{ createTab( "Profil", StudentProfileView.class) };
 
        // ToDo für die Teams: Weitere Tabs aus ihrem Projekt hier einfügen!
 
-       return tabs;
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {

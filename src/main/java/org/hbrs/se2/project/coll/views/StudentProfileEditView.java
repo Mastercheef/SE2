@@ -83,7 +83,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     @Override
     public void setParameter(BeforeEvent event,
                              String parameter) {
-        if (!Utils.StringIsEmptyOrNull(parameter)) {
+        if (!Utils.stringIsEmptyOrNull(parameter)) {
             checkIfUserIsLoggedIn();
             profileDTO = profileControl.loadProfileDataById(Integer.parseInt(parameter));
             studentId  = profileDTO.getId();
@@ -245,7 +245,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     }
 
     public boolean checkForEmptyTextField(TextField textField) {
-        boolean empty = Utils.StringIsEmptyOrNull(textField.getValue());
+        boolean empty = Utils.stringIsEmptyOrNull(textField.getValue());
         if (empty) {
             textField.setInvalid(true);
             Notification notification = new Notification("Bitte geben Sie in das markierte Feld einen " +

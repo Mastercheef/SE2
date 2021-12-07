@@ -1,8 +1,6 @@
 package org.hbrs.se2.project.coll.repository;
 
-import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
-import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

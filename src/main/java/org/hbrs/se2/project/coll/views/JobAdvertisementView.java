@@ -30,7 +30,6 @@ public class JobAdvertisementView {
     Div div           = new Div();
 
     public JobAdvertisementView() {
-        H2 h2 = new H2("Job1");
         HorizontalLayout firstRow = new HorizontalLayout();
         firstRow.add(labelCompanyName);
 

@@ -1,13 +1,9 @@
 package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.factories.CompanyProfileFactory;
-import org.hbrs.se2.project.coll.control.factories.UserFactory;
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
-import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
-import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.CompanyProfile;
-import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
 import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;

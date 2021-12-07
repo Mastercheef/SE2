@@ -1,7 +1,5 @@
 package org.hbrs.se2.project.coll.dtos;
 
-import com.vaadin.flow.component.html.Label;
-import org.hbrs.se2.project.coll.dtos.StellenausschreibungDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 
 import javax.persistence.OneToMany;

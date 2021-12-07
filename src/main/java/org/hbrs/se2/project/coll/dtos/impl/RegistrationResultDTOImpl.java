@@ -16,8 +16,8 @@ public class RegistrationResultDTOImpl implements RegistrationResultDTO {
         return this.result;
     }
 
-    public boolean setResult(boolean result_){
-        this.result = result_;
+    public boolean setResult(boolean result){
+        this.result = result;
         return this.result;
     }
 
@@ -26,8 +26,8 @@ public class RegistrationResultDTOImpl implements RegistrationResultDTO {
     }
 
 
-    public String setReason(String reason_){
-        this.reason = reason_;
+    public String setReason(String reason){
+        this.reason = reason;
         return this.reason;
     }
 

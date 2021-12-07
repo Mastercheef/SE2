@@ -182,7 +182,7 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
     // If the user is not the owner of this profile, they get redirected to the profile
     private boolean checkIfUserIsProfileOwner(int parameter) {
         int userId = this.getCurrentUser().getId();
-        int contactPersonId = contactPersonRepository.findContactPersonByCompany_Id(parameter).getId();
+        int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(parameter).getId();
 
         if(userId == contactPersonId)
             return true;
@@ -206,7 +206,7 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
                 checkForEmptyTextArea(lJobDescription);
     }
     public boolean checkForEmptyTextField(TextField textField) {
-        boolean empty = Utils.StringIsEmptyOrNull(textField.getValue());
+        boolean empty = Utils.stringIsEmptyOrNull(textField.getValue());
         if (empty) {
             textField.setInvalid(true);
             Notification notification = new Notification("Bitte geben Sie in das markierte Feld einen " +
@@ -219,7 +219,7 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
     }
 
     public boolean checkForEmptyTextArea(TextArea textArea) {
-        boolean empty = Utils.StringIsEmptyOrNull(textArea.getValue());
+        boolean empty = Utils.stringIsEmptyOrNull(textArea.getValue());
         if (empty) {
             textArea.setInvalid(true);
             Notification notification = new Notification("Bitte geben Sie in das markierte Feld einen " +
@@ -241,17 +241,14 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
         newJob.setEndOfWork(lEndOfWork.getValue());
         newJob.setJobDescription(lJobDescription.getValue());
 
-        if(Objects.equals(lTemporaryEmployment.getValue(), "Ja"))
-            newJob.setTemporaryEmployment(true);
-        else
-            newJob.setTemporaryEmployment(false);
+        newJob.setTemporaryEmployment(Objects.equals(lTemporaryEmployment.getValue(), "Ja"));
 
         // Address
         Address address = companyProfileRepository.findCompanyProfileById(companyId).getAddress();
         newJob.setAddress(address);
 
         // Contact Person Id
-        ContactPerson contactPerson = contactPersonRepository.findContactPersonByCompany_Id(companyId);
+        ContactPerson contactPerson = contactPersonRepository.findContactPersonByCompanyId(companyId);
         newJob.setContactPerson(contactPerson);
 
         // Save in DB

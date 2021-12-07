@@ -1,8 +1,6 @@
 package org.hbrs.se2.project.coll.control.factories;
 
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
-import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.CompanyProfile;
 
 public class CompanyProfileFactory {

@@ -17,10 +17,9 @@ class CompanyProfileFactoryTest {
     @Mock
     private CompanyProfileDTO companyProfileDTO;
 
-    private CompanyProfile companyProfile;
-
     @Test
     void createCompanyProfile() {
+        CompanyProfile companyProfile;
 
         when(companyProfileDTO.getCompanyName()).thenReturn("Mustermann Corp.");
         when(companyProfileDTO.getAddress()).thenReturn(mock(Address.class));

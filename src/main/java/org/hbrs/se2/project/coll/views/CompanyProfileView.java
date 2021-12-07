@@ -51,8 +51,17 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     Label website       = new Label("Webseite:");
     Label description   = new Label("Beschreibung:");
 
-    Label lcompanyname, lstreet, lstreetnumber, lpostalcode, lcity, lcountry, lemail, lphone, lfax,
-            lwebsite, ldescription;
+    Label lcompanyname;
+    Label lstreet;
+    Label lstreetnumber;
+    Label lpostalcode;
+    Label lcity;
+    Label lcountry;
+    Label lemail;
+    Label lphone;
+    Label lfax;
+    Label lwebsite;
+    Label ldescription;
 
     Div   div       = new Div();
     Div   contact   = new Div();
@@ -149,7 +158,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 hcity, hcountry, hemail, hphone, hfax, hwebsite, hdescription);
 
         // Add Edit Button ONLY when the logged-in user is the contact person of this company
-        int contactPersonId = contactPersonRepository.findContactPersonByCompany_Id(companyId).getId();
+        int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
 
         if (getCurrentUser() != null) {
             int currentUserId = getCurrentUser().getId();
@@ -162,7 +171,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     public Div initContactPerson() {
         Div form = new Div();
-        ContactPerson contactPerson = contactPersonRepository.findContactPersonByCompany_Id(companyId);
+        ContactPerson contactPerson = contactPersonRepository.findContactPersonByCompanyId(companyId);
 
         // Labels
         H3 contactHeadline  = new H3("Kontaktperson dieser Firma");
@@ -205,7 +214,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         HorizontalLayout hbuttons = new HorizontalLayout(newJob);
 
         // Add "New Job" Button ONLY when the logged-in user is the contact person of this company
-        int contactPersonId = contactPersonRepository.findContactPersonByCompany_Id(companyId).getId();
+        int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
 
         if (getCurrentUser() != null) {
             int currentUserId = getCurrentUser().getId();
@@ -237,8 +246,14 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 Label jobEnd            = new Label("Ende der Tätigkeit:");
                 Label jobTemporary      = new Label("Temporäre Beschäftigung:");
 
-                Label lJobTitle, lJobType, lJobHours, lJobRequirements, lJobDescription, lJobStart,
-                        lJobEnd, lJobTemporary;
+                Label lJobTitle;
+                Label lJobType;
+                Label lJobHours;
+                Label lJobRequirements;
+                Label lJobDescription;
+                Label lJobStart;
+                Label lJobEnd;
+                Label lJobTemporary;
 
                 // Styling
                 for (Label label : new Label[]{ jobTitle, jobType, jobHours, jobRequirements, jobDescription, jobStart,
