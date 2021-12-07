@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -23,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestEntityManager
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
 class AddressRepositoryTest {
 
     @Autowired
@@ -39,7 +41,6 @@ class AddressRepositoryTest {
         entityManager.flush();
         entityManager.clear();
         addressRepository.flush();
-
     }
 
     @Test
@@ -53,6 +54,7 @@ class AddressRepositoryTest {
         address.setPostalCode("12345");
 
         entityManager.persist(address);
+        System.out.println(address.getId());
         address2 = addressRepository.findById(address.getId());
 
         assertEquals("Landgraben", address2.get().getStreet());
