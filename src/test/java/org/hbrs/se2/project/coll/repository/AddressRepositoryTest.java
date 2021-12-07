@@ -22,8 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @AutoConfigureTestEntityManager
 @DataJpaTest
-@AutoConfigureTestDatabase( replace = AutoConfigureTestDatabase.Replace.NONE )
-
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AddressRepositoryTest {
 
     @Autowired
@@ -54,7 +53,6 @@ class AddressRepositoryTest {
         address.setPostalCode("12345");
 
         entityManager.persist(address);
-
         address2 = addressRepository.findById(address.getId());
 
         assertEquals("Landgraben", address2.get().getStreet());
