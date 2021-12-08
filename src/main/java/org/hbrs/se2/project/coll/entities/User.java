@@ -162,7 +162,6 @@ public class User {
                 this.getPhone() + ", " +
                 this.getAddress() + ", " +
                 this.getEmail() + ", " +
-                this.getPassword() + ", " +
                 this.getType();
     }
 }
