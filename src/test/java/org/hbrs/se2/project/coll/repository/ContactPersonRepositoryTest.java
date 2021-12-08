@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,8 +34,8 @@ class ContactPersonRepositoryTest {
     }
 
     @Test
-    void findContactPersonByCompany_Id() {
-        contactPerson = contactPersonRepository.findContactPersonByCompany_Id(40000003);
+    void findContactPersonByCompanyId() {
+        contactPerson = contactPersonRepository.findContactPersonByCompanyId(40000003);
         assertEquals("CEO und Vorstand" , contactPerson.getRole());
     }
 }

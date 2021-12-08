@@ -24,10 +24,10 @@ class StudentUserRepositoryTest {
     @Autowired
     private StudentUserRepository studentUserRepository;
 
-    private StudentUserDTO studentUserDTO;
 
     @Test
     void findStudentUserById() {
+        StudentUserDTO studentUserDTO;
         studentUserDTO = studentUserRepository.findStudentUserById(20000017);
         assertEquals("muster@muster.de" ,studentUserDTO.getEmail());
     }

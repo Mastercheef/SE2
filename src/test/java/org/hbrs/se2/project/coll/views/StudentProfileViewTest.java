@@ -1,10 +1,6 @@
 package org.hbrs.se2.project.coll.views;
 
-import org.checkerframework.checker.units.qual.A;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
-import org.hbrs.se2.project.coll.entities.ContactPerson;
-import org.hbrs.se2.project.coll.entities.StudentUser;
-import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

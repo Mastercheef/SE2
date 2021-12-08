@@ -13,11 +13,9 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
-import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
-import org.hbrs.se2.project.coll.layout.MainLayout;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +50,25 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     Label website       = new Label("Webseite:");
     Label aboutme       = new Label("Über mich:");
 
-    Label lsalutation, ltitle, lfirstname, llastname, loccupation, lbirthdate, lstreet,
-            lstreetnumber, lpostalcode, lcity, lcountry, lskills, lemail, lnumber,
-            linterests, lwebsite, laboutme;
+    Label lsalutation;
+    Label ltitle;
+    Label lfirstname;
+    Label llastname;
+    Label loccupation;
+    Label lbirthdate;
+    Label lstreet;
+    Label lstreetnumber;
+    Label lpostalcode;
+    Label lcity;
+    Label lcountry;
+    Label lskills;
+    Label lemail;
+    Label lnumber;
+    Label linterests;
+    Label lwebsite;
+    Label laboutme;
 
-    Div   div           = new Div();
+    Div   div = new Div();
 
     @Override
     public void setParameter(BeforeEvent event,

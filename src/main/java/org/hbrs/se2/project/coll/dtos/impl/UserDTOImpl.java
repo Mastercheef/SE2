@@ -1,15 +1,10 @@
 package org.hbrs.se2.project.coll.dtos.impl;
 
-//import org.hbrs.se2.project.coll.dtos.RolleDTO;
-import org.hbrs.se2.project.coll.dtos.RoleDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
-//import java.util.List;
 
 public class UserDTOImpl implements UserDTO {
 

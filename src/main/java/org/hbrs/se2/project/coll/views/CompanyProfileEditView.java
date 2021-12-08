@@ -215,7 +215,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
                 checkForEmptyTextField(ldescription);
     }
     public boolean checkForEmptyTextField(TextField textField) {
-        boolean empty = Utils.StringIsEmptyOrNull(textField.getValue());
+        boolean empty = Utils.stringIsEmptyOrNull(textField.getValue());
         if (empty) {
             textField.setInvalid(true);
             Notification notification = new Notification("Bitte geben Sie in das markierte Feld einen " +
@@ -238,7 +238,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     // If the user is not the owner of this profile, they get redirected to the profile
     private boolean checkIfUserIsProfileOwner() {
         int userId = this.getCurrentUser().getId();
-        int contactPersonId = contactPersonRepository.findContactPersonByCompany_Id(companyId).getId();
+        int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
 
         if(userId == contactPersonId)
             return true;

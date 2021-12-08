@@ -25,10 +25,9 @@ class UtilsTest {
     }
 
     @Test
-    void stringIsEmpt() {
+    void stringIsEmpty() {
         String emptyString = "";
-        String nullString = null;
-        assertTrue(Utils.StringIsEmptyOrNull(emptyString));
+        assertTrue(Utils.stringIsEmptyOrNull(emptyString));
 
     }
     @Test

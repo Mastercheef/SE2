@@ -1,7 +1,6 @@
 package org.hbrs.se2.project.coll.views;
 
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -30,7 +29,6 @@ public class JobAdvertisementView {
     Div div           = new Div();
 
     public JobAdvertisementView() {
-        H2 h2 = new H2("Job1");
         HorizontalLayout firstRow = new HorizontalLayout();
         firstRow.add(labelCompanyName);
 

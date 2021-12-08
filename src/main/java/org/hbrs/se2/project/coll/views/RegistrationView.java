@@ -100,8 +100,8 @@ public class RegistrationView extends Div {
         tabs.addThemeVariants(TabsVariant.LUMO_CENTERED);
 
         RegisterForm form = new RegisterForm();
-        Button register_button = new Button("Registrieren");
-        section.add(h1, tabs, form, register_button);
+        Button registerButton = new Button("Registrieren");
+        section.add(h1, tabs, form, registerButton);
 
         section.setPadding(true);
         section.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -115,7 +115,7 @@ public class RegistrationView extends Div {
 
         siteLayout.add(section);
 
-        register_button.addClickListener(e -> {
+        registerButton.addClickListener(e -> {
             UserDTOImpl dto = form.createNewUserDTO();
             boolean exists  = control.checkUserExistence(dto);
 
