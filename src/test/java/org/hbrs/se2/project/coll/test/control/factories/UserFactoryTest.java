@@ -15,7 +15,7 @@ public class UserFactoryTest {
     private UserFactory userFactory = null;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp()  {
         userFactory = new UserFactory();
     }
 
