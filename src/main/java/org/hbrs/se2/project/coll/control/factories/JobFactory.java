@@ -5,6 +5,10 @@ import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 
 public class JobFactory {
 
+    private JobFactory() {
+        throw new IllegalStateException("Factory Class");
+    }
+
     public static JobAdvertisement createJob(RecruitmentAdvertisingDTO dto) {
         JobAdvertisement jobAdvertisement = new JobAdvertisement();
         jobAdvertisement.setId(dto.getId());

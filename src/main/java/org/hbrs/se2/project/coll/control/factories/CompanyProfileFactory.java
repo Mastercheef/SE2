@@ -6,7 +6,7 @@ import org.hbrs.se2.project.coll.entities.CompanyProfile;
 public class CompanyProfileFactory {
 
     private CompanyProfileFactory()  {
-            throw new IllegalStateException("Utility class");
+            throw new IllegalStateException("Factory Class");
     }
 
 
