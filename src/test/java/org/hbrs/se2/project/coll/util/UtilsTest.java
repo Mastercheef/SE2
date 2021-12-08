@@ -28,12 +28,22 @@ class UtilsTest {
     void stringIsEmpty() {
         String emptyString = "";
         assertTrue(Utils.stringIsEmptyOrNull(emptyString));
+    }
+    @Test
+    void stringIsNotEmpty() {
+        String notEmptyString ="String";
+        assertFalse(Utils.stringIsEmptyOrNull(notEmptyString));
+    }
 
+    @Test
+    void stringIsNotNull() {
+        String notNullString = "StringNotNull";
+        assertFalse(Utils.stringIsEmptyOrNull(notNullString));
     }
     @Test
     void stringIsNull() {
         String nullString = null;
-        assertNull(nullString);
+        assertTrue(Utils.stringIsEmptyOrNull(nullString));
     }
 
     @Test
