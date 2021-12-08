@@ -20,4 +20,3 @@ build/
 
 ### VS Code ###
 .vscode/
-/src/main/resources/META-INF/resources/driver/chromedriver.exe
