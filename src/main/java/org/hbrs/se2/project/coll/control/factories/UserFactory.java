@@ -10,10 +10,6 @@ import java.time.LocalDate;
 
 public class UserFactory {
 
-    private UserFactory() {
-
-    }
-
     public static StudentUser createStudentUser(StudentUserDTO studentDTO) {
         StudentUser studentUser = new StudentUser();
         studentUser.setId(studentDTO.getId());

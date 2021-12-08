@@ -5,10 +5,6 @@ import java.util.Arrays;
 
 public class Utils {
 
-
-    private Utils() {
-
-    }
     /**
      * Nützliche Methdode zur Erweiterung eines bestehendes Arrays
      * Oma hätte gesagt, so eine Methode 'fällt nicht durch' ;-)
