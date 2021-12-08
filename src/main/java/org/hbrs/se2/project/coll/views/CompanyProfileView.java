@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Route(value = "companyprofile", layout = AppView.class)
 @PageTitle("Profile")
@@ -38,6 +40,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     private CompanyProfileControl profileControl;
     Address address;
     int companyId;
+
+    private final static Logger LOGGER = Logger.getLogger(CompanyProfileView.class.getName());
 
     Label companyname   = new Label("Firmenname:");
     Label street        = new Label("Strasse:");
@@ -78,8 +82,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 createProfile();
             }
         } catch (Exception e) {
-            System.out.println("An exception has occured.");
-            e.printStackTrace();
+            LOGGER.log(Level.INFO,e.toString());
         }
     }
 

@@ -16,6 +16,7 @@ import org.hbrs.se2.project.coll.layout.LayoutAlternative;
 @PageTitle("Coll | Registration")
 public class RecruitmentAdvertisementView extends VerticalLayout{
 
+
     private RecruitmentAdvertisingDTO recruitmentAvertisingDTO;
 
     H2 headerJobName = new H2("Datenbank-Experte");

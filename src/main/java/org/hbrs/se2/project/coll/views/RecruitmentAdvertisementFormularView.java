@@ -32,10 +32,14 @@ import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Route(value = "recruitment_formular", layout = AppView.class)
 @PageTitle("Anlegen eines Stellenangebots")
 public class RecruitmentAdvertisementFormularView extends VerticalLayout implements HasUrlParameter<String> {
+
+    private final static Logger LOGGER = Logger.getLogger(CompanyProfileView.class.getName());
 
     @Autowired
     ContactPersonRepository contactPersonRepository;
@@ -89,8 +93,7 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
                 }
             }
         } catch (Exception e) {
-            System.out.println("An exception has occured.");
-            e.printStackTrace();
+            LOGGER.log(Level.INFO,e.toString());
         }
     }
 
