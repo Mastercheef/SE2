@@ -95,11 +95,16 @@ public class UserDTOImpl implements UserDTO {
 
     @Override
     public String toString() {
-        return "UserDTOImpl{" +
-                "id=" + id +
+        return
+                "id=" + id + '\'' +
+                ", salutation='" + salutation + '\'' +
+                ", title='" + title + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
-                //", roles=" + roles +
-                '}';
+                ", dateOfBirth=" + dateOfBirth +
+                ", address=" + address + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", type='" + type + '\'' ;
     }
 }
