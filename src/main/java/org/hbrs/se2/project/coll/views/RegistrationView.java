@@ -134,13 +134,16 @@ public class RegistrationView extends Div {
                         UI.getCurrent().navigate(Globals.Pages.REGISTRATION_SUCCESSFUL);
                         // TODO: Studentprofil muss direkt angelegt werden, sonst wird ein Nullpointer error geworfen ( bei Aufruf des Profils )
                     }
-                    else
+                    else {
                         triggerErrorMessage("Die angegebenen Passwörter stimmen nicht überein.");
-                else
+                    }
+                else {
                     triggerErrorMessage("Die angegebenen E-Mails stimmen nicht überein.");
-            else
+                }
+            else {
                 triggerErrorMessage("Ein Nutzer mit der angegebenen E-Mail-Adresse existiert bereits. " +
                         "Bitte wählen Sie eine andere E-Mail-Adresse.");
+            }
         });
         add(siteLayout);
     }

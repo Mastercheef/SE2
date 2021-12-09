@@ -310,5 +310,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         }
     }
 
-    public StudentProfileEditView() {}
+    public StudentProfileEditView() {
+        // Required for Vaadin
+    }
 }

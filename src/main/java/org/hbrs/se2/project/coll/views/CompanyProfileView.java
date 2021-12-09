@@ -41,6 +41,9 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     Address address;
     int companyId;
 
+    private static final String WIDTH = "200px";
+    private static final String FONT = "font-weight";
+
     private static final Logger LOGGER = Logger.getLogger(CompanyProfileView.class.getName());
 
     Label companyname   = new Label("Firmenname:");
@@ -109,14 +112,14 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // TODO: Get Image from Database
         // Profile Image
         Image profileImage = new Image("https://thispersondoesnotexist.com/image", "placeholder");
-        profileImage.setWidth("200px");
+        profileImage.setWidth(WIDTH);
         profileImage.getElement().getStyle().set("border", "1px solid black");
 
         // Styling
         for (Label label : new Label[]{ companyname, street, streetnumber, postalcode, city, country, email,
                 phone, fax, website, description}) {
-            label.getElement().getStyle().set("font-weight", "bold");
-            label.setWidth("200px");
+            label.getElement().getStyle().set(FONT, "bold");
+            label.setWidth(WIDTH);
         }
 
         // Profile Data
@@ -190,7 +193,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
         // Styling
         for (Label label : new Label[]{ name, phone, email, position }) {
-            label.getElement().getStyle().set("font-weight", "bold");
+            label.getElement().getStyle().set(FONT, "bold");
             label.setWidth("100px");
         }
 
@@ -230,7 +233,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 jobAdvertisementRepository.findJobAdvertisementsByCompanyId(companyId);
 
         // Only print them if they exist
-        if(jobAdvertisements.size() == 0){
+        if(jobAdvertisements.isEmpty()){
             Label noJobs = new Label("Diese Firma hat zur Zeit keine Stellenangebote.");
             form.add(noJobs);
         }
@@ -261,8 +264,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 // Styling
                 for (Label label : new Label[]{ jobTitle, jobType, jobHours, jobRequirements, jobDescription, jobStart,
                         jobEnd, jobTemporary }) {
-                    label.getElement().getStyle().set("font-weight", "bold");
-                    label.setWidth("200px");
+                    label.getElement().getStyle().set(FONT, "bold");
+                    label.setWidth(WIDTH);
                 }
 
                 // Count Job offers
@@ -308,7 +311,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     }
 
     public CompanyProfileView() {
-
+        //Required because of VAADIN
     }
 
 }

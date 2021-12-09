@@ -259,6 +259,6 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
     }
 
     public RecruitmentAdvertisementFormularView() {
-
+        //Required for Vaadin
     }
 }

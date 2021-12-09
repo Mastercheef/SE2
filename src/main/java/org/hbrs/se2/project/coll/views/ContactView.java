@@ -11,6 +11,6 @@ import org.hbrs.se2.project.coll.layout.LayoutAlternative;
 public class ContactView extends HorizontalLayout {
 
     public ContactView() {
-
+        //Required for Vaadin
     }
 }
