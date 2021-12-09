@@ -5,9 +5,7 @@ import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 
 public class JobFactory {
 
-    private JobFactory() {
-        throw new IllegalStateException("Utility class");
-    }
+
 
     public static JobAdvertisement createJob(RecruitmentAdvertisingDTO dto) {
         JobAdvertisement jobAdvertisement = new JobAdvertisement();
