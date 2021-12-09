@@ -41,7 +41,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     Address address;
     int companyId;
 
-    private final static Logger LOGGER = Logger.getLogger(CompanyProfileView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CompanyProfileView.class.getName());
 
     Label companyname   = new Label("Firmenname:");
     Label street        = new Label("Strasse:");
