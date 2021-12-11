@@ -9,6 +9,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
+import com.vaadin.flow.server.PWA;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
@@ -23,18 +24,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @Route(value = "profile_edit", layout = AppView.class)
-@PageTitle("Edit your Profile")
+@PageTitle("Coll@HBRS")
 public class StudentProfileEditView extends VerticalLayout implements HasUrlParameter<String>, BeforeEnterObserver {
 
     @Autowired
     private StudentProfileControl profileControl;
 
-    @Autowired
-    private AddressRepository addressRepository;
-
     private StudentUserDTO profileDTO;
-    List<Address> existingAddresses;
-    Address addr = new Address();
+    private Address addr = new Address();
     int studentId;
 
     //automatisches binding der Textfelder in ein DTO kann nicht durchgeführt werden,
@@ -88,17 +85,9 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
             profileDTO = profileControl.loadProfileDataById(Integer.parseInt(parameter));
             studentId  = profileDTO.getId();
 
-            existingAddresses   = addressRepository.getByIdAfter(0);
             boolean ownership = checkIfUserIsProfileOwner();
 
             if(ownership) {
-                // Skip ID so one can be generated.
-                addr.setStreet(profileDTO.getAddress().getStreet());
-                addr.setHouseNumber(profileDTO.getAddress().getHouseNumber());
-                addr.setPostalCode(profileDTO.getAddress().getPostalCode());
-                addr.setCity(profileDTO.getAddress().getCity());
-                addr.setCountry(profileDTO.getAddress().getCountry());
-
                 initLabels(profileDTO);
                 createProfileEditView();
             }
@@ -107,6 +96,14 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
 
     // Used to read DTO data and inject them into the labels
     public void initLabels(StudentUserDTO profileDTO) {
+
+        // Skip ID so one can be generated.
+        addr.setStreet(profileDTO.getAddress().getStreet());
+        addr.setHouseNumber(profileDTO.getAddress().getHouseNumber());
+        addr.setPostalCode(profileDTO.getAddress().getPostalCode());
+        addr.setCity(profileDTO.getAddress().getCity());
+        addr.setCountry(profileDTO.getAddress().getCountry());
+
         studentId = profileDTO.getId();
         salutation.setValue(profileDTO.getSalutation());
         title.setValue(profileDTO.getTitle());

@@ -1,8 +1,8 @@
 package org.hbrs.se2.project.coll.control.factories;
 
-import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
+import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.entities.Address;
-import org.hbrs.se2.project.coll.entities.CompanyProfile;
+import org.hbrs.se2.project.coll.entities.Company;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -12,25 +12,25 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
-class CompanyProfileFactoryTest {
+class CompanyFactoryTest {
 
     @Mock
-    private CompanyProfileDTO companyProfileDTO;
+    private CompanyDTO companyDTO;
 
     @Test
     void createCompanyProfile() {
-        CompanyProfile companyProfile;
+        Company companyProfile;
 
-        when(companyProfileDTO.getCompanyName()).thenReturn("Mustermann Corp.");
-        when(companyProfileDTO.getAddress()).thenReturn(mock(Address.class));
-        when(companyProfileDTO.getId()).thenReturn(100);
-        when(companyProfileDTO.getDescription()).thenReturn("Mustermann Description");
-        when(companyProfileDTO.getEmail()).thenReturn("musterman@email.de");
-        when(companyProfileDTO.getWebsite()).thenReturn("mustermann.de");
-        when(companyProfileDTO.getFaxNumber()).thenReturn(56789);
-        when(companyProfileDTO.getPhoneNumber()).thenReturn(01234);
+        when(companyDTO.getCompanyName()).thenReturn("Mustermann Corp.");
+        when(companyDTO.getAddress()).thenReturn(mock(Address.class));
+        when(companyDTO.getId()).thenReturn(100);
+        when(companyDTO.getDescription()).thenReturn("Mustermann Description");
+        when(companyDTO.getEmail()).thenReturn("musterman@email.de");
+        when(companyDTO.getWebsite()).thenReturn("mustermann.de");
+        when(companyDTO.getFaxNumber()).thenReturn(56789);
+        when(companyDTO.getPhoneNumber()).thenReturn(01234);
 
-        companyProfile = CompanyProfileFactory.createCompanyProfile(companyProfileDTO);
+        companyProfile = CompanyFactory.createCompany(companyDTO);
 
         assertEquals("Mustermann Corp." , companyProfile.getCompanyName());
         assertNotNull(companyProfile.getAddress());

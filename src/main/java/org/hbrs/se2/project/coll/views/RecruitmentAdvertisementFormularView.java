@@ -16,16 +16,16 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.hbrs.se2.project.coll.control.CompanyProfileControl;
+import org.hbrs.se2.project.coll.control.CompanyControl;
 import org.hbrs.se2.project.coll.control.RecruitmentAdvertisementControl;
-import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
+import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.RecruitmentAdvertisingDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
-import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
+import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
@@ -48,10 +48,10 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
     AddressRepository addressRepository;
 
     @Autowired
-    CompanyProfileRepository companyProfileRepository;
+    CompanyRepository companyRepository;
 
     @Autowired
-    private CompanyProfileControl profileControl;
+    private CompanyControl profileControl;
     int companyId;
 
     @Autowired
@@ -84,7 +84,7 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
         try {
             if (!Objects.equals(parameter, "")) {
                 if(checkIfUserIsLoggedIn()) {
-                    CompanyProfileDTO profileDTO = profileControl
+                    CompanyDTO profileDTO = profileControl
                             .findCompanyProfileByCompanyId(Integer.parseInt(parameter));
                     companyId = profileDTO.getId();
                     boolean ownership = checkIfUserIsProfileOwner(Integer.parseInt(parameter));
@@ -247,7 +247,7 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
         newJob.setTemporaryEmployment(Objects.equals(lTemporaryEmployment.getValue(), "Ja"));
 
         // Address
-        Address address = companyProfileRepository.findCompanyProfileById(companyId).getAddress();
+        Address address = companyRepository.findCompanyProfileById(companyId).getAddress();
         newJob.setAddress(address);
 
         // Contact Person Id

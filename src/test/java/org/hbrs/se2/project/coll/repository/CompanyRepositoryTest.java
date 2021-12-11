@@ -1,6 +1,6 @@
 package org.hbrs.se2.project.coll.repository;
 
-import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
+import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +17,24 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestEntityManager
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class CompanyProfileRepositoryTest {
+class CompanyRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
-    private CompanyProfileRepository companyProfileRepository;
+    private CompanyRepository companyRepository;
 
     @Test
     void findCompanyProfileById() {
-        CompanyProfileDTO dto = this.companyProfileRepository.findCompanyProfileById(40000003);
+        CompanyDTO dto = this.companyRepository.findCompanyProfileById(40000003);
         assertThat(dto.getCompanyName()).isEqualTo("Schuh und Mann GbR");
 
     }
 
     @Test
     void findCompanyProfileByCompanyName() {
-        CompanyProfileDTO dto = this.companyProfileRepository.findCompanyProfileByCompanyName("Schuh und Mann GbR");
+        CompanyDTO dto = this.companyRepository.findCompanyProfileByCompanyName("Schuh und Mann GbR");
         assertEquals(40000003 , dto.getId());
     }
 }

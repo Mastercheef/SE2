@@ -19,7 +19,7 @@ public class JobAdvertisement {
     private ContactPerson contactPerson;
     private String jobDescription;
     private String jobTitle;
-    private CompanyProfile company;
+    private Company company;
     private Set<StudentUser> applicants;
 
     @Id

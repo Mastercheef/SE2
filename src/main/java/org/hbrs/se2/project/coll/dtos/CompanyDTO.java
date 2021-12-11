@@ -5,7 +5,7 @@ import org.hbrs.se2.project.coll.entities.Address;
 import javax.persistence.OneToMany;
 import java.util.Set;
 
-public interface CompanyProfileDTO {
+public interface CompanyDTO {
 
     public int      getId();
 

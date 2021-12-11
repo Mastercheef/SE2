@@ -1,12 +1,12 @@
 package org.hbrs.se2.project.coll.dtos.impl;
 
-import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
+import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.StellenausschreibungDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 
 import java.util.Set;
 
-public class CompanyProfileDTOImpl implements CompanyProfileDTO {
+public class CompanyDTOImpl implements CompanyDTO {
 
     private int id;
     private String companyName;

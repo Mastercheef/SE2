@@ -9,8 +9,8 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.hbrs.se2.project.coll.control.CompanyProfileControl;
-import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
+import org.hbrs.se2.project.coll.control.CompanyControl;
+import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
@@ -37,7 +37,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     private JobAdvertisementRepository jobAdvertisementRepository;
 
     @Autowired
-    private CompanyProfileControl profileControl;
+    private CompanyControl profileControl;
     Address address;
     int companyId;
 
@@ -79,7 +79,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     public void setParameter(BeforeEvent event, String parameter) {
         try {
             if (!Objects.equals(parameter, "")) {
-                CompanyProfileDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
+                CompanyDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
                 address = profileDTO.getAddress();
                 initLabels(profileDTO);
                 createProfile();
@@ -90,7 +90,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     }
 
     // Used to read DTO data and inject it into the labels
-    public void initLabels(CompanyProfileDTO profileDTO) {
+    public void initLabels(CompanyDTO profileDTO) {
         companyId       = profileDTO.getId();
         lcompanyname    = new Label(profileDTO.getCompanyName());
         lstreet         = new Label(address.getStreet());

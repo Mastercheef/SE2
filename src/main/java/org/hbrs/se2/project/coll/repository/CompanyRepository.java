@@ -1,7 +1,7 @@
 package org.hbrs.se2.project.coll.repository;
 
-import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
-import org.hbrs.se2.project.coll.entities.CompanyProfile;
+import org.hbrs.se2.project.coll.dtos.CompanyDTO;
+import org.hbrs.se2.project.coll.entities.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
  * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods
  *
  */
-public interface CompanyProfileRepository extends JpaRepository<CompanyProfile, Integer> {
+public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
-    CompanyProfileDTO findCompanyProfileById(int id );
-    CompanyProfileDTO findCompanyProfileByCompanyName(String name);
+    CompanyDTO findCompanyProfileById(int id );
+    CompanyDTO findCompanyProfileByCompanyName(String name);
 }
 
 

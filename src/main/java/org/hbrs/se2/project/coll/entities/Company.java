@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table( name= "col_tab_company", schema = "collhbrs")
-public class CompanyProfile {
+public class Company {
     private int id;
     private String companyName;
     private Address address;

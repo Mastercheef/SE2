@@ -1,10 +1,10 @@
 package org.hbrs.se2.project.coll.views;
 
 import org.hbrs.se2.project.coll.entities.Address;
-import org.hbrs.se2.project.coll.entities.CompanyProfile;
+import org.hbrs.se2.project.coll.entities.Company;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
-import org.hbrs.se2.project.coll.repository.CompanyProfileRepository;
+import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +17,14 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class CompanyProfileViewTest {
+public class CompanyViewTest {
 
     @Autowired
     private AddressRepository addressRepository;
     @Autowired
     private ContactPersonRepository contactPersonRepository;
     @Autowired
-    private CompanyProfileRepository companyProfileRepository;
+    private CompanyRepository companyRepository;
 
     @Test
     void getContactPersonByUserId() {
@@ -54,28 +54,28 @@ public class CompanyProfileViewTest {
         Address address = new Address();
         address.setId(10000000);
 
-        CompanyProfile companyProfile = new CompanyProfile();
+        Company companyProfile = new Company();
         companyProfile.setCompanyName("Fancy Testing Company");
         companyProfile.setDescription("We are a fancy Company!");
         companyProfile.setWebsite("www.a-fancy-company.com");
         companyProfile.setFaxNumber(1093049);
         companyProfile.setAddress(address);
-        companyProfileRepository.save(companyProfile);
+        companyRepository.save(companyProfile);
 
         int tmpId = companyProfile.getId();
 
-        Optional<CompanyProfile> wrapper = companyProfileRepository.findById(tmpId);
+        Optional<Company> wrapper = companyRepository.findById(tmpId);
         assertTrue(wrapper.isPresent());
-        CompanyProfile companyProfileAfterCreate = wrapper.get();
+        Company companyProfileAfterCreate = wrapper.get();
         assertEquals(companyProfile.getCompanyName(), companyProfileAfterCreate.getCompanyName());
         assertEquals(companyProfile.getEmail(), companyProfileAfterCreate.getEmail());
         assertEquals(companyProfile.getDescription(), companyProfileAfterCreate.getDescription());
 
         assertNotSame(companyProfile, companyProfileAfterCreate);
 
-        companyProfileRepository.deleteById(tmpId);
+        companyRepository.deleteById(tmpId);
 
-        wrapper = companyProfileRepository.findById(tmpId);
+        wrapper = companyRepository.findById(tmpId);
         assertFalse(wrapper.isPresent());
     }
 
@@ -97,7 +97,7 @@ public class CompanyProfileViewTest {
 
     @Test
     void useExistingAddressForCompany() {
-        CompanyProfile  profile = new CompanyProfile();
+        Company profile = new Company();
         Address         address = addressRepository.getById(10000000);
 
         profile.setAddress(address);
@@ -107,7 +107,7 @@ public class CompanyProfileViewTest {
     @Test
     void editCompanyProfileParameters()
     {
-        CompanyProfile      editedProfile   = new CompanyProfile();
+        Company editedProfile   = new Company();
 
         String  newDescription = "Editierte Firma";
         String  newCompanyName = "TEST GmbH und Co. KG";

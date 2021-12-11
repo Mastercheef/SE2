@@ -88,8 +88,10 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         // Hinzufügen des Toogle ('Big Mac') zum Ein- und Ausschalten des Drawers
         //layout.add(new DrawerToggle());
-        viewTitle = new H1();
+        viewTitle = new H1("Coll@HBRS");
+        viewTitle.getElement().getClassList().add("pointer");
         viewTitle.setWidthFull();
+        viewTitle.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW));
         layout.add( viewTitle );
 
         // Interner Layout

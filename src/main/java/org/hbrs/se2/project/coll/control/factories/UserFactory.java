@@ -1,8 +1,10 @@
 package org.hbrs.se2.project.coll.control.factories;
 
+import org.hbrs.se2.project.coll.dtos.ContactPersonDTO;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
+import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.entities.User;
 
@@ -32,6 +34,25 @@ public class UserFactory {
         return studentUser;
     }
 
+    public static ContactPerson createContactPerson(ContactPersonDTO contactPersonDTO) {
+        ContactPerson contactPerson = new ContactPerson();
+        contactPerson.setId(contactPersonDTO.getId());
+        contactPerson.setType(contactPersonDTO.getType());
+        contactPerson.setSalutation(contactPersonDTO.getSalutation());
+        contactPerson.setTitle(contactPersonDTO.getTitle());
+        contactPerson.setFirstName(contactPersonDTO.getFirstName());
+        contactPerson.setLastName(contactPersonDTO.getLastName());
+        contactPerson.setAddress(contactPersonDTO.getAddress());
+        contactPerson.setPhone(contactPersonDTO.getPhone());
+        contactPerson.setDateOfBirth(contactPersonDTO.getDateOfBirth());
+        contactPerson.setEmail(contactPersonDTO.getEmail());
+        contactPerson.setPassword(contactPersonDTO.getPassword());
+        contactPerson.setCompany(contactPersonDTO.getCompany());
+        contactPerson.setRole(contactPersonDTO.getRole());
+
+        return contactPerson;
+    }
+
     public static User createUser(UserDTO userDTO) {
         User user = new User();
 
@@ -43,13 +64,8 @@ public class UserFactory {
         user.setType(userDTO.getType());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
+        user.setAddress(userDTO.getAddress());
 
-        // Standard Values for Registration Purposes
-        Address address = new Address();
-        address.setId(10000008);    // Musteradresse
-        user.setAddress(address);
-        user.setPhone("00000000");
-        user.setDateOfBirth(LocalDate.of(1900,1,1));
         return user;
     }
 
