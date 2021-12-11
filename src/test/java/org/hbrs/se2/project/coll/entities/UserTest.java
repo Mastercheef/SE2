@@ -61,6 +61,16 @@ class UserTest {
     }
 
     @Test
+    void testEqualNull() {
+        assertNotEquals(null, userOne);
+    }
+
+    @Test
+    void testOtherClass() {
+        assertNotEquals(userOne.getClass(), StudentUser.class);
+    }
+
+    @Test
     void testToString() {
         assertEquals("199, Herr, Dr., Max, Mustermann, 2000-01-01, 0123456789, Musterstrasse 1\n" +
                 "12345 Musterstadt\n" +
