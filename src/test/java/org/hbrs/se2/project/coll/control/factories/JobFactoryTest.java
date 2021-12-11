@@ -1,6 +1,4 @@
 package org.hbrs.se2.project.coll.control.factories;
-
-import org.hbrs.se2.project.coll.dtos.RecruitmentAdvertisingDTO;
 import org.hbrs.se2.project.coll.dtos.impl.RecruitmentAdvertisingDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
@@ -8,14 +6,10 @@ import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
 import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 class JobFactoryTest {
 
