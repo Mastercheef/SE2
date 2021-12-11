@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 @PageTitle("Anlegen eines Stellenangebots")
 public class RecruitmentAdvertisementFormularView extends VerticalLayout implements HasUrlParameter<String> {
 
-    private final static Logger LOGGER = Logger.getLogger(CompanyProfileView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RecruitmentAdvertisementFormularView.class.getName());
 
     @Autowired
     ContactPersonRepository contactPersonRepository;
