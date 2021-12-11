@@ -171,7 +171,7 @@ public class RegistrationControl {
     }
 
     private static final Pattern VALID_NAME_REGEX =
-            Pattern.compile("^[a-zA-ZßäöüÄÖÜ ,.'-]+$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^[a-zA-ZßäöüÄÖÜ ,.'-]+$", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 
     private boolean validateNameInput(String name) {
         Matcher matcher = VALID_NAME_REGEX.matcher(name);
