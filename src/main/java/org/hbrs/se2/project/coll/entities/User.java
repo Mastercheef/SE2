@@ -142,7 +142,6 @@ public class User {
                 Objects.equals(phone, user.phone) &&
                 Objects.equals(dateOfBirth, user.dateOfBirth) &&
                 Objects.equals(email, user.email) &&
-                Objects.equals(password, user.password) &&
                 Objects.equals(id, user.id);
     }
 
