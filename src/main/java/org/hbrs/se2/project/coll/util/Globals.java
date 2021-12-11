@@ -19,6 +19,11 @@ public class Globals {
         // TODO: Restliche Seiten
     }
 
+    public static class PageTitles {
+        public static final String REGISTER_PAGE_TITLE          = "Registration";
+        public static final String LOGIN_PAGE_TITLE             = "Registration";
+    }
+
     public static class Roles {
         public static final String ADMIN = "admin";
         public static final String STUDENT = "student";
