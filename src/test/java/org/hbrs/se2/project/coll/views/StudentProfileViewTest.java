@@ -22,7 +22,7 @@ public class StudentProfileViewTest {
         assertEquals(studentUser.getFirstName(), "Frederick");
         assertEquals(studentUser.getLastName(), "Behringer");
         assertEquals(studentUser.getPhone(), "192345");
-        assertEquals(studentUser.getEmail(), "eeemail@hbrs.de");
+        assertEquals(studentUser.getEmail(), "email@hbrs.de");
 
     }
 }

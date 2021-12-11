@@ -47,7 +47,7 @@ class StudentUserTest {
     }
     @Test
     void getSubjectField() {
-        assertEquals("Wow" , studentUser.getSubjectField());
+        assertEquals("Datenbank" , studentUser.getSubjectField());
     }
 
 

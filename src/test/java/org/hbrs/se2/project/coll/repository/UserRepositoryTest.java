@@ -28,8 +28,8 @@ class UserRepositoryTest {
 
     @Test
     void findUserByEmailAndPassword() {
-        userDTO = userRepository.findUserByEmailAndPassword("eeemail@hbrs.de" , "password");
-        assertEquals(20000000 , userDTO.getId());
+        userDTO = userRepository.findUserByEmailAndPassword("judithmeier@company.com" , "abc123");
+        assertEquals(20000012 , userDTO.getId());
     }
 
     @Test
