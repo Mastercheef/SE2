@@ -9,22 +9,18 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
-import com.vaadin.flow.server.PWA;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.StudentUserDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
-import org.hbrs.se2.project.coll.repository.AddressRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-
 @Route(value = "profile_edit", layout = AppView.class)
-@PageTitle("Coll@HBRS")
+@PageTitle("StudentProfileEdit")
 public class StudentProfileEditView extends VerticalLayout implements HasUrlParameter<String>, BeforeEnterObserver {
 
     @Autowired
@@ -109,19 +105,19 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         title.setValue(profileDTO.getTitle());
         firstName.setValue(profileDTO.getFirstName());
         lastName.setValue(profileDTO.getLastName());
-        graduation.setValue(profileDTO.getGraduation());
         dateOfBirth.setValue(profileDTO.getDateOfBirth());
         street.setValue(addr.getStreet());
         streetnumber.setValue(addr.getHouseNumber());
         postalcode.setValue(addr.getPostalCode());
         city.setValue(addr.getCity());
         country.setValue(addr.getCountry());
-        skills.setValue(profileDTO.getSkills());
-        email.setValue(profileDTO.getEmail());
-        phone.setValue(profileDTO.getPhone());
-        interests.setValue(profileDTO.getInterests());
-        website.setValue(profileDTO.getWebsite());
-        description.setValue(profileDTO.getDescription());
+        graduation.setValue(profileDTO.getGraduation() == null ? "" : profileDTO.getGraduation());
+        skills.setValue(profileDTO.getSkills() == null ? "" : profileDTO.getSkills());
+        email.setValue(profileDTO.getEmail() == null ? "" : profileDTO.getEmail());
+        phone.setValue(profileDTO.getPhone() == null ? "" : profileDTO.getPhone());
+        interests.setValue(profileDTO.getInterests() == null ? "" : profileDTO.getInterests());
+        website.setValue(profileDTO.getWebsite() == null ? "" : profileDTO.getWebsite());
+        description.setValue(profileDTO.getDescription() == null ? "" : profileDTO.getDescription());
     }
 
     // Build profile content
@@ -224,7 +220,12 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         addr.setCountry(country.getValue());
         updatedProfile.setAddress(addr);
 
-        profileControl.saveStudentUser(updatedProfile);
+        try {
+            profileControl.updateStudentProfile(updatedProfile);
+            // Fehlerbehandlung der einzelnen Textfields wie in RegistrationControl
+        } catch (Exception exception) {
+            // Rückmeldung über popup window
+        }
     }
 
     public boolean checkForEmptyInput() {
@@ -307,7 +308,4 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         }
     }
 
-    public StudentProfileEditView() {
-        // Required for Vaadin
-    }
 }
