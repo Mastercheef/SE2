@@ -70,6 +70,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
         HorizontalLayout hbuttons = new HorizontalLayout(saveButton, cancelButton);
 
         add(title, subtitle, textArea, hbuttons);
+
     }
 
     ContactingView() {
