@@ -3,6 +3,7 @@ package org.hbrs.se2.project.coll.views;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.textfield.*;
@@ -18,10 +19,12 @@ import com.vaadin.flow.component.tabs.*;
 import com.vaadin.flow.component.html.*;
 
 import org.hbrs.se2.project.coll.control.*;
+import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
 import org.hbrs.se2.project.coll.dtos.impl.*;
 import org.hbrs.se2.project.coll.entities.Address;
+import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.layout.LayoutAlternative;
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO.ReasonType;
 import org.hbrs.se2.project.coll.util.Globals;
@@ -30,8 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Objects;
 
-@Route(value = "register" , layout = LayoutAlternative.class)
-@PageTitle("Coll Registration")
+@Route(value = "register" , layout = AppView.class)
+@PageTitle(Globals.PageTitles.REGISTER_PAGE_TITLE)
 public class RegistrationView extends Div {
 
     @Autowired
@@ -59,11 +62,13 @@ public class RegistrationView extends Div {
     TextField   housenumber         = new TextField("Hausnummer");
     TextField   postalcode          = new TextField("PLZ");
     TextField   city                = new TextField("Stadt");
-    TextField   country             = new TextField("Land");
+    ComboBox<String>   country      = new ComboBox<>("Country");
 
     class RegisterForm extends Div {
 
         RegisterForm(){
+
+
 
             // Set required fields option
             salutation.setRequiredIndicatorVisible(true);
@@ -85,6 +90,8 @@ public class RegistrationView extends Div {
             // Set input length
             password.setMinLength(5);
             passwordRepeat.setMinLength(5);
+
+            country.setItems(Globals.Countries.getCountries());
 
             FormLayout formLayout = new FormLayout();
             formLayout.add(
@@ -144,6 +151,7 @@ public class RegistrationView extends Div {
         tabs.addThemeVariants(TabsVariant.LUMO_CENTERED);
 
         RegisterForm form = new RegisterForm();
+        form.getElement().getStyle().set("Margin", "30px");
         Button registerButton = new Button("Registrieren");
         section.add(h1, tabs, form, registerButton);
 
@@ -160,20 +168,26 @@ public class RegistrationView extends Div {
         siteLayout.add(section);
 
         registerButton.addClickListener(e -> {
-            UserDTOImpl userDTO = form.createNewUserDTO();
-            RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl(userDTO, emailRepeat.getValue(), passwordRepeat.getValue());
-            RegistrationResultDTO registrationResult = registrationControl.registerUser(registrationDTO);
+            try {
+                UserDTOImpl userDTO = form.createNewUserDTO();
+                RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl(userDTO, emailRepeat.getValue(), passwordRepeat.getValue());
+                RegistrationResultDTO registrationResult = registrationControl.registerUser(registrationDTO);
 
-            if (registrationResult.getResult() == true) {
-                // Success meldung
-                triggerDialogMessage("Die Registrierung war erfolgreich");
-                // automatischer Login
-                autoLoginAfterRegistration(userDTO);
-                // Routing auf main Seite
-                UI.getCurrent().navigate(Globals.Pages.MENU_VIEW);
-            } else {
-                // Fehlerbehandlung: Fehlerhafte TextFields mit Error Message versehen und auf invalid setzen
-                setErrorFields(registrationResult.getReasons());
+                if (registrationResult.getResult() == true) {
+                    // Success meldung
+                    triggerDialogMessage("Registrierung abgeschlossen", "Sie haben sich erfolgreich registriert");
+                    // automatischer Login
+                    autoLoginAfterRegistration(userDTO);
+                    // Routing auf main Seite
+                    UI.getCurrent().navigate(Globals.Pages.MENU_VIEW);
+                } else {
+                    // Fehlerbehandlung: Fehlerhafte TextFields mit Error Message versehen und auf invalid setzen
+                    setErrorFields(registrationResult.getReasons());
+                }
+            } catch (DatabaseUserException databaseUserException) {
+                triggerDialogMessage("Fehler","Während der Registrierung ist ein Fehler aufgetreten: " + databaseUserException.getReason());
+            } catch (Exception exception) {
+                triggerDialogMessage("Fehler","Während der Registrierung ist ein unerwarteter Fehler aufgetreten: " + exception);
             }
         });
         add(siteLayout);
@@ -184,14 +198,14 @@ public class RegistrationView extends Div {
         if (isAuthenticated.getResult()) {
             UI.getCurrent().getSession().setAttribute( Globals.CURRENT_USER, loginControl.getCurrentUser() );
         } else {
-            triggerDialogMessage("Fehler beim automatischen einloggen. Bitte kontaktieren Sie den Support");
+            triggerDialogMessage("Fehler","Fehler beim automatischen einloggen. Bitte versuchen Sie es erneut");
         }
     }
 
     public void setErrorFields(List<ReasonType> reasons) {
         for (ReasonType reason : reasons) {
             if (reason == ReasonType.UNEXPECTED_ERROR) {
-                triggerDialogMessage("Es ist ein unerwarteter Fehler aufgetreten");
+                triggerDialogMessage("Fehler", "Es ist ein unerwarteter Fehler aufgetreten");
             }
             if (reason == ReasonType.SALUTATION_MISSING) {
                 salutation.setErrorMessage("Bitte geben Sie eine Anrede ein");
@@ -267,14 +281,26 @@ public class RegistrationView extends Div {
                 passwordRepeat.setErrorMessage("Die eingegebenen Passwörter stimmen nicht überein");
                 passwordRepeat.setInvalid(true);
             }
+            if (reason == ReasonType.PASSWORD_MISSING) {
+                password.setErrorMessage("Bitte geben Sie eine gültiges Passwort ein");
+                password.setInvalid(true);
+                passwordRepeat.setErrorMessage("Bitte geben Sie eine gültiges Passwort ein");
+                passwordRepeat.setInvalid(true);
+            }
         }
     }
 
-    public void triggerDialogMessage(String message) {
+    public void triggerDialogMessage(String header, String message) {
         Dialog dialog = new Dialog();
-        dialog.add(new Text(message));
-        dialog.setWidth("400px");
-        dialog.setHeight("150px");
+        dialog.add(new H3(header));
+        dialog.add(new Text(message + "<br>"));
+        dialog.setWidth("600px");
+        dialog.setHeight("250px");
+        dialog.add(new Button("OK", e -> { dialog.close(); }));
+        dialog.getElement().getStyle().set("display", "flex");
+        dialog.getElement().getStyle().set("flex-direction", "column");
+        dialog.getElement().getStyle().set("align-items", "center");
+        dialog.getElement().getStyle().set("justify-content", "space-around");
         dialog.open();
     }
 

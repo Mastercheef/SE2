@@ -1,14 +1,10 @@
 package org.hbrs.se2.project.coll.control;
 
-import org.hbrs.se2.project.coll.control.factories.CompanyFactory;
-import org.hbrs.se2.project.coll.control.factories.UserFactory;
+import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.*;
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO.ReasonType;
 import org.hbrs.se2.project.coll.dtos.impl.RegistrationResultDTOImpl;
 import org.hbrs.se2.project.coll.entities.*;
-import org.hbrs.se2.project.coll.repository.CompanyRepository;
-import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
-import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.hbrs.se2.project.coll.repository.UserRepository;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +19,18 @@ public class RegistrationControl {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    StudentUserRepository studentUserRepository;
-    @Autowired
-    ContactPersonRepository contactPersonRepository;
-    @Autowired
     AddressControl addressControl;
     @Autowired
     CompanyControl companyControl;
+    @Autowired
+    StudentUserControl studentUserControl;
+    @Autowired
+    ContactPersonControl contactPersonControl;
 
     RegistrationDTO registrationDTO;
     RegistrationResultDTOImpl registrationResult;
 
-    public RegistrationResultDTO registerUser(RegistrationDTO registrationDTO) {
+    public RegistrationResultDTO registerUser(RegistrationDTO registrationDTO) throws DatabaseUserException {
         try {
             this.registrationResult = new RegistrationResultDTOImpl();
             this.registrationDTO = registrationDTO;
@@ -53,36 +49,15 @@ public class RegistrationControl {
                 validateRequiredCompanyInformation();
             }
 
-            // Address Handling: Überprüfen ob Addresse bereits existiert, wenn ja id holen
-            // Address Control anlegen und zentral prüfen
-/*
-            if(userDTO.getType() == "st") {
-                StudentUserDTOImpl studentProfile = new StudentUserDTOImpl();
-                studentProfile.setId(userDTO.getId());
-                studentProfile.setAddress(userDTO.getAddress());
-                studentProfile.setDateOfBirth(userDTO.getDateOfBirth());
-                control.saveStudentUser(studentProfile);
-            }*/
-
             if (registrationResult.getReasons().isEmpty()) {
 
-                // Prüfen, ob Adresse bereits existiert, wenn ja Datensatz aus DB holen, sonst neu anlegen
-                Address address = addressControl.checkAddressExistence(registrationDTO.getUserDTO().getAddress());
-
                 if (registrationDTO.getUserDTO().getType().equals("st")) {
-                    StudentUser studentUser = UserFactory.createStudentUser((StudentUserDTO) registrationDTO.getUserDTO());
-                    studentUser.setAddress(address);
-                    this.studentUserRepository.save(studentUser);
+                    StudentUser savedStudentUser = studentUserControl.createNewStudentUser(registrationDTO.getUserDTO());
                 }
 
                 if (registrationDTO.getUserDTO().getType().equals("cp")) {
                     Company savedCompany = companyControl.saveCompany(registrationDTO.getCompanyDTO());
-
-                    // set company for contact person
-                    ContactPerson newContactPerson = UserFactory.createContactPerson((ContactPersonDTO) registrationDTO.getUserDTO());
-                    newContactPerson.setAddress(address);
-                    newContactPerson.setCompany(savedCompany);
-                    this.userRepository.save(newContactPerson);
+                    ContactPerson savedContactPerson = contactPersonControl.createNewContactPerson(registrationDTO.getUserDTO(), savedCompany);
                 }
 
                 registrationResult.addReason(ReasonType.SUCCESS);
@@ -92,10 +67,11 @@ public class RegistrationControl {
             }
 
 
-        } catch (Error error) {
-            // TODO: Return resultDTO mit Fehler (return RegistrationResultDTO)
+        } catch (Exception exception) {
+            System.out.println("LOG : " + exception.getMessage());
             registrationResult.setResult(false);
             registrationResult.addReason(ReasonType.UNEXPECTED_ERROR);
+            throw exception;
         }
         return registrationResult;
     }
@@ -103,13 +79,13 @@ public class RegistrationControl {
     private void checkForRequiredUserInformation() {
         checkValueAndSetResponse(registrationDTO.getUserDTO().getSalutation(), RegistrationResultDTO.ReasonType.SALUTATION_MISSING);
         checkValueAndSetResponse(registrationDTO.getUserDTO().getTitle(), ReasonType.TITLE_MISSING);
-        checkValueAndSetResponse(registrationDTO.getUserDTO().getPhone(), ReasonType.PHONE_MISSING);
         checkValueAndSetResponse(registrationDTO.getUserDTO().getFirstName(), ReasonType.FIRSTNAME_MISSING);
         checkValueAndSetResponse(registrationDTO.getUserDTO().getLastName(), ReasonType.LASTNAME_MISSING);
-        checkValueAndSetResponse(registrationDTO.getUserDTO().getEmail(), ReasonType.EMAIL_MISSING);
-        checkValueAndSetResponse(registrationDTO.getUserDTO().getPassword(), ReasonType.PASSWORD_MISSING);
         if (registrationDTO.getUserDTO().getDateOfBirth() == null)
             registrationResult.addReason(ReasonType.DATEOFBIRTH_MISSING);
+        checkValueAndSetResponse(registrationDTO.getUserDTO().getPhone(), ReasonType.PHONE_MISSING);
+        checkValueAndSetResponse(registrationDTO.getUserDTO().getEmail(), ReasonType.EMAIL_MISSING);
+        checkValueAndSetResponse(registrationDTO.getUserDTO().getPassword(), ReasonType.PASSWORD_MISSING);
 
         checkValueAndSetResponse(registrationDTO.getUserDTO().getAddress().getStreet(), ReasonType.STREET_MISSING);
         checkValueAndSetResponse(registrationDTO.getUserDTO().getAddress().getHouseNumber(), ReasonType.HOUSENUMBER_MISSING);
