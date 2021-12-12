@@ -34,6 +34,23 @@ public class UserFactory {
         return studentUser;
     }
 
+    public static StudentUser createStudentUserFromBasicUser(UserDTO userDTO) {
+        StudentUser studentUser = new StudentUser();
+        studentUser.setId(userDTO.getId());
+        studentUser.setType(userDTO.getType());
+        studentUser.setSalutation(userDTO.getSalutation());
+        studentUser.setTitle(userDTO.getTitle());
+        studentUser.setFirstName(userDTO.getFirstName());
+        studentUser.setLastName(userDTO.getLastName());
+        studentUser.setAddress(userDTO.getAddress());
+        studentUser.setPhone(userDTO.getPhone());
+        studentUser.setDateOfBirth(userDTO.getDateOfBirth());
+        studentUser.setEmail(userDTO.getEmail());
+        studentUser.setPassword(userDTO.getPassword());
+
+        return studentUser;
+    }
+
     public static ContactPerson createContactPerson(ContactPersonDTO contactPersonDTO) {
         ContactPerson contactPerson = new ContactPerson();
         contactPerson.setId(contactPersonDTO.getId());
@@ -49,6 +66,23 @@ public class UserFactory {
         contactPerson.setPassword(contactPersonDTO.getPassword());
         contactPerson.setCompany(contactPersonDTO.getCompany());
         contactPerson.setRole(contactPersonDTO.getRole());
+
+        return contactPerson;
+    }
+
+    public static ContactPerson createContactPersonFromBasicUser(UserDTO userDTO) {
+        ContactPerson contactPerson = new ContactPerson();
+        contactPerson.setId(userDTO.getId());
+        contactPerson.setType(userDTO.getType());
+        contactPerson.setSalutation(userDTO.getSalutation());
+        contactPerson.setTitle(userDTO.getTitle());
+        contactPerson.setFirstName(userDTO.getFirstName());
+        contactPerson.setLastName(userDTO.getLastName());
+        contactPerson.setAddress(userDTO.getAddress());
+        contactPerson.setPhone(userDTO.getPhone());
+        contactPerson.setDateOfBirth(userDTO.getDateOfBirth());
+        contactPerson.setEmail(userDTO.getEmail());
+        contactPerson.setPassword(userDTO.getPassword());
 
         return contactPerson;
     }
