@@ -5,6 +5,7 @@ public class Globals {
     public static final String CURRENT_USER = "current_User";
 
     public static class Pages {
+        public static final String CONTACTING_VIEW              = "contacting/";
         public static final String MAIN_VIEW                    = "";
         public static final String LOGIN_VIEW                   = "login/";
         public static final String MENU_VIEW                    = "main/";
