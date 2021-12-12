@@ -47,7 +47,7 @@ public class RegistrationView extends Div {
     Tabs tabs       = new Tabs(studentUser, companyUser);
 
     // Basic User
-    TextField salutation = new TextField("Anrede");
+    TextField salutation            = new TextField("Anrede");
     TextField title                 = new TextField("Titel");
     EmailField email                = new EmailField("E-Mail");
     EmailField emailRepeat          = new EmailField("E-Mail wiederholen");
@@ -64,13 +64,82 @@ public class RegistrationView extends Div {
     TextField   city                = new TextField("Stadt");
     ComboBox<String>   country      = new ComboBox<>("Country");
 
+    // Company
+    TextField companyName           = new TextField("Name");
+    EmailField companyEmail         = new EmailField("E-Mail");
+    TextField companyPhone          = new TextField("Telefon");
+    TextField companyFax            = new TextField("Fax");
+    TextField companyHomepage       = new TextField("Webseite");
+    TextField companyDescription    = new TextField("Beschreibung");
+
+    // Company Address
+    TextField   companyStreet              = new TextField("Straße");
+    TextField   companyHouseNumber         = new TextField("Hausnummer");
+    TextField   companyPostalCode          = new TextField("PLZ");
+    TextField   companyCity                = new TextField("Stadt");
+    ComboBox<String>   companyCountry      = new ComboBox<>("Country");
+
+    class CompanyRegisterForm extends Div {
+        CompanyRegisterForm() {
+            // Company
+            companyName.setRequiredIndicatorVisible(true);
+            companyEmail.setRequiredIndicatorVisible(true);
+            companyPhone.setRequiredIndicatorVisible(true);
+            companyFax.setRequiredIndicatorVisible(true);
+            companyHomepage.setRequiredIndicatorVisible(true);
+            companyDescription.setRequiredIndicatorVisible(true);
+
+            // Company Address
+            companyStreet.setRequiredIndicatorVisible(true);
+            companyHouseNumber.setRequiredIndicatorVisible(true);
+            companyPostalCode.setRequiredIndicatorVisible(true);
+            companyCity.setRequiredIndicatorVisible(true);
+            companyCountry.setRequiredIndicatorVisible(true);
+
+            companyCountry.setItems(Globals.Countries.getCountries());
+
+            FormLayout companyFormLayout = new FormLayout();
+            companyFormLayout.add(
+                    companyName, companyEmail,
+                    companyPhone, companyFax,
+                    companyHomepage, companyDescription,
+                    companyStreet, companyHouseNumber,
+                    companyPostalCode, companyCity,
+                    companyCountry
+            );
+            // Stretch country textfield to full row width
+            companyFormLayout.setColspan(companyCountry, 2);
+            companyFormLayout.setSizeUndefined();
+            this.add(companyFormLayout);
+        }
+
+        public CompanyDTOImpl createNewCompanyDTO() {
+            CompanyDTOImpl newCompanyDTO = new CompanyDTOImpl();
+            newCompanyDTO.setCompanyName(companyName.getValue());
+            newCompanyDTO.setEmail(companyEmail.getValue());
+            newCompanyDTO.setPhoneNumber(Integer.parseInt(companyPhone.getValue()));
+            newCompanyDTO.setFaxNumber(Integer.parseInt(companyFax.getValue()));
+            newCompanyDTO.setWebsite(companyHomepage.getValue());
+            newCompanyDTO.setDescription(companyDescription.getValue());
+
+            Address companyAddress = new Address();
+            companyAddress.setStreet(companyStreet.getValue());
+            companyAddress.setHouseNumber(companyHouseNumber.getValue());
+            companyAddress.setPostalCode(companyPostalCode.getValue());
+            companyAddress.setCity(companyCity.getValue());
+            companyAddress.setCountry(companyCountry.getValue());
+
+            newCompanyDTO.setAddress(companyAddress);
+
+            return newCompanyDTO;
+        }
+    }
+
     class RegisterForm extends Div {
 
         RegisterForm(){
-
-
-
             // Set required fields option
+            // Basic User
             salutation.setRequiredIndicatorVisible(true);
             title.setRequiredIndicatorVisible(true);
             firstName.setRequiredIndicatorVisible(true);
@@ -104,7 +173,7 @@ public class RegistrationView extends Div {
                     email, emailRepeat,
                     password, passwordRepeat
             );
-            // Stretch countra textfield to full row width
+            // Stretch country textfield to full row width
             formLayout.setColspan(country, 2);
             formLayout.setSizeUndefined();
             this.add(formLayout);
@@ -150,6 +219,25 @@ public class RegistrationView extends Div {
         tabs.setSizeFull();
         tabs.addThemeVariants(TabsVariant.LUMO_CENTERED);
 
+        H3 companyHeadline = new H3("Informationen des Unternehmens");
+        H3 companyUserHeadline = new H3("Informationen des Administrators");
+        companyUserHeadline.getElement().getStyle().set("Margin-Bottom", "30px");
+
+        CompanyRegisterForm companyForm = new CompanyRegisterForm();
+        companyForm.getElement().getStyle().set("Margin", "30px");
+
+        companyUser.getElement().addEventListener("click", e -> {
+            section.addComponentAtIndex(2, companyHeadline);
+            section.addComponentAtIndex(3, companyForm);
+            section.addComponentAtIndex(4, companyUserHeadline);
+        });
+
+        studentUser.getElement().addEventListener("click", e -> {
+            section.remove(companyHeadline);
+            section.remove(companyForm);
+            section.remove(companyUserHeadline);
+        });
+
         RegisterForm form = new RegisterForm();
         form.getElement().getStyle().set("Margin", "30px");
         Button registerButton = new Button("Registrieren");
@@ -171,6 +259,12 @@ public class RegistrationView extends Div {
             try {
                 UserDTOImpl userDTO = form.createNewUserDTO();
                 RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl(userDTO, emailRepeat.getValue(), passwordRepeat.getValue());
+
+                if (Objects.equals(tabs.getSelectedTab().getLabel(), "Unternehmen")) {
+                    CompanyDTOImpl companyDTO = companyForm.createNewCompanyDTO();
+                    registrationDTO.setCompanyDTO(companyDTO);
+                }
+
                 RegistrationResultDTO registrationResult = registrationControl.registerUser(registrationDTO);
 
                 if (registrationResult.getResult() == true) {
@@ -287,13 +381,66 @@ public class RegistrationView extends Div {
                 passwordRepeat.setErrorMessage("Bitte geben Sie eine gültiges Passwort ein");
                 passwordRepeat.setInvalid(true);
             }
+
+            // Company Fields
+            if (reason == ReasonType.COMPANY_ALREADY_REGISTERED) {
+                triggerDialogMessage("Fehler", "Die angegebene Firma ist bereits registriert");
+            }
+            if (reason == ReasonType.COMPANY_NAME_MISSING) {
+                companyName.setErrorMessage("Bitte geben Sie eine Postleitzahl ein");
+                companyName.setInvalid(true);
+            }
+            if (reason == ReasonType.COMPANY_EMAIL_MISSING) {
+                companyEmail.setErrorMessage("Bitte geben Sie eine Email ein");
+                companyEmail.setInvalid(true);
+            }
+            if (reason == ReasonType.COMPANY_PHONE_MISSING) {
+                companyPhone.setErrorMessage("Bitte geben Sie eine Telefonnummer ein");
+                companyPhone.setInvalid(true);
+            }
+            if (reason == ReasonType.COMPANY_FAX_MISSING) {
+                companyFax.setErrorMessage("Bitte geben Sie eine Faxnummer ein");
+                companyFax.setInvalid(true);
+            }
+            if (reason == ReasonType.COMPANY_WEBSITE_MISSING) {
+                companyHomepage.setErrorMessage("Bitte geben Sie eine Webseite ein");
+                companyHomepage.setInvalid(true);
+            }
+            if (reason == ReasonType.COMPANY_DESCRIPTION_MISSING) {
+                companyDescription.setErrorMessage("Bitte geben Sie eine Beschreibung ein");
+                companyDescription.setInvalid(true);
+            }
+            if (reason == ReasonType.COMPANY_STREET_MISSING) {
+                companyStreet.setErrorMessage("Bitte geben Sie eine Straße ein");
+                companyStreet.setInvalid(true);
+            }
+            if (reason == ReasonType.COMPANY_HOUSENUMBER_MISSING) {
+                companyHouseNumber.setErrorMessage("Bitte geben Sie eine Hausnummer ein");
+                companyHouseNumber.setInvalid(true);
+            }
+            if (reason == ReasonType.COMPANY_POSTALCODE_MISSING) {
+                companyPostalCode.setErrorMessage("Bitte geben Sie eine Postleitzahl ein");
+                companyPostalCode.setInvalid(true);
+            }
+            if (reason == ReasonType.COMPANY_CITY_MISSING) {
+                companyCity.setErrorMessage("Bitte geben Sie eine Stadt ein");
+                companyCity.setInvalid(true);
+            }
+            if (reason == ReasonType.COMPANY_COUNTRY_MISSING) {
+                companyCountry.setErrorMessage("Bitte geben Sie ein land ein");
+                companyCountry.setInvalid(true);
+            }
+            if (reason == ReasonType.COMPANY_EMAIL_INVALID) {
+                companyEmail.setErrorMessage("Bitte geben Sie eine gültige Email-Adresse ein");
+                companyEmail.setInvalid(true);
+            }
         }
     }
 
     public void triggerDialogMessage(String header, String message) {
         Dialog dialog = new Dialog();
         dialog.add(new H3(header));
-        dialog.add(new Text(message + "<br>"));
+        dialog.add(new Text(message));
         dialog.setWidth("600px");
         dialog.setHeight("250px");
         dialog.add(new Button("OK", e -> { dialog.close(); }));

@@ -5,7 +5,9 @@ import org.hbrs.se2.project.coll.dtos.*;
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO.ReasonType;
 import org.hbrs.se2.project.coll.dtos.impl.RegistrationResultDTOImpl;
 import org.hbrs.se2.project.coll.entities.*;
+import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.UserRepository;
+import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,8 @@ public class RegistrationControl {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    CompanyRepository companyRepository;
     @Autowired
     AddressControl addressControl;
     @Autowired
@@ -47,17 +51,20 @@ public class RegistrationControl {
             if (registrationDTO.getUserDTO().getType().equals("cp")) {
                 checkForRequiredCompanyInformation();
                 validateRequiredCompanyInformation();
+                if (checkIfCompanyAlreadyRegistered(registrationDTO.getCompanyDTO())) {
+                    registrationResult.addReason(ReasonType.COMPANY_ALREADY_REGISTERED);
+                }
             }
 
             if (registrationResult.getReasons().isEmpty()) {
 
                 if (registrationDTO.getUserDTO().getType().equals("st")) {
-                    StudentUser savedStudentUser = studentUserControl.createNewStudentUser(registrationDTO.getUserDTO());
+                    studentUserControl.createNewStudentUser(registrationDTO.getUserDTO());
                 }
 
                 if (registrationDTO.getUserDTO().getType().equals("cp")) {
                     Company savedCompany = companyControl.saveCompany(registrationDTO.getCompanyDTO());
-                    ContactPerson savedContactPerson = contactPersonControl.createNewContactPerson(registrationDTO.getUserDTO(), savedCompany);
+                    contactPersonControl.createNewContactPerson(registrationDTO.getUserDTO(), savedCompany);
                 }
 
                 registrationResult.addReason(ReasonType.SUCCESS);
@@ -95,7 +102,18 @@ public class RegistrationControl {
     }
 
     private void checkForRequiredCompanyInformation() {
-        //check for empty inputs
+        checkValueAndSetResponse(registrationDTO.getCompanyDTO().getCompanyName(), ReasonType.COMPANY_NAME_MISSING);
+        checkValueAndSetResponse(registrationDTO.getCompanyDTO().getEmail(), ReasonType.COMPANY_EMAIL_MISSING);
+        checkValueAndSetResponse(String.valueOf(registrationDTO.getCompanyDTO().getPhoneNumber()), ReasonType.COMPANY_PHONE_MISSING);
+        checkValueAndSetResponse(String.valueOf(registrationDTO.getCompanyDTO().getFaxNumber()), ReasonType.COMPANY_FAX_MISSING);
+        checkValueAndSetResponse(registrationDTO.getCompanyDTO().getWebsite(), ReasonType.COMPANY_WEBSITE_MISSING);
+        checkValueAndSetResponse(registrationDTO.getCompanyDTO().getDescription(), ReasonType.COMPANY_DESCRIPTION_MISSING);
+
+        checkValueAndSetResponse(registrationDTO.getCompanyDTO().getAddress().getStreet(), ReasonType.COMPANY_STREET_MISSING);
+        checkValueAndSetResponse(registrationDTO.getCompanyDTO().getAddress().getHouseNumber(), ReasonType.COMPANY_HOUSENUMBER_MISSING);
+        checkValueAndSetResponse(registrationDTO.getCompanyDTO().getAddress().getPostalCode(), ReasonType.COMPANY_POSTALCODE_MISSING);
+        checkValueAndSetResponse(registrationDTO.getCompanyDTO().getAddress().getCity(), ReasonType.COMPANY_CITY_MISSING);
+        checkValueAndSetResponse(registrationDTO.getCompanyDTO().getAddress().getCountry(), ReasonType.COMPANY_COUNTRY_MISSING);
     }
 
     private void checkValueAndSetResponse(String value, ReasonType reason){
@@ -107,6 +125,15 @@ public class RegistrationControl {
     public boolean checkIfEmailAlreadyInUse(String email) {
         UserDTO existingUser = userRepository.findUserByEmail(email);
         return existingUser != null && existingUser.getId() > 0;
+    }
+
+    public boolean checkIfCompanyAlreadyRegistered(CompanyDTO companyDTO) {
+        CompanyDTO existingCompany = companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
+                companyDTO.getCompanyName(),
+                companyDTO.getEmail(),
+                companyDTO.getWebsite()
+        );
+        return existingCompany != null && existingCompany.getId() > 0;
     }
 
     public void checkRepeatedEmail() {
@@ -121,37 +148,21 @@ public class RegistrationControl {
         }
     }
 
-    private void validateRequiredCompanyInformation() {
-        // validate input
-    }
-
     private void validateRequiredUserInformation() {
-        if (!validateEmailInput(registrationDTO.getUserDTO().getEmail())) {
+        if (!Globals.Regex.validateEmailInput(registrationDTO.getUserDTO().getEmail())) {
             registrationResult.addReason(ReasonType.EMAIL_INVALID);
         }
-        if (!validateNameInput(registrationDTO.getUserDTO().getFirstName())) {
+        if (!Globals.Regex.validateNameInput(registrationDTO.getUserDTO().getFirstName())) {
             registrationResult.addReason(ReasonType.FIRSTNAME_INVALID);
         }
-        if (!validateNameInput(registrationDTO.getUserDTO().getLastName())) {
+        if (!Globals.Regex.validateNameInput(registrationDTO.getUserDTO().getLastName())) {
             registrationResult.addReason(ReasonType.LASTNAME_INVALID);
         }
     }
 
-    // REGEX for input validation
-    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
-    private boolean validateEmailInput(String email) {
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
-        return matcher.find();
+    private void validateRequiredCompanyInformation() {
+        if (!Globals.Regex.validateEmailInput(registrationDTO.getCompanyDTO().getEmail())) {
+            registrationResult.addReason(ReasonType.COMPANY_EMAIL_INVALID);
+        }
     }
-
-    private static final Pattern VALID_NAME_REGEX =
-            Pattern.compile("^[a-zA-ZßäöüÄÖÜ ,.'-]+$", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
-
-    private boolean validateNameInput(String name) {
-        Matcher matcher = VALID_NAME_REGEX.matcher(name);
-        return matcher.find();
-    }
-
 }

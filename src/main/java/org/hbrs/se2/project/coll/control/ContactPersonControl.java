@@ -47,9 +47,9 @@ public class ContactPersonControl {
             ContactPerson savedContactPerson = this.contactPersonRepository.save( contactPerson );
 
             if (contactPerson.getId() > 0)
-                System.out.println("LOG : Updated StudentUser profile with ID : " + contactPerson.getId());
+                System.out.println("LOG : Updated ContactPerson with ID : " + contactPerson.getId());
             else
-                System.out.println("LOG : Created new StudentUser: " + contactPerson.getId());
+                System.out.println("LOG : Created new ContactPerson: " + contactPerson.getId());
 
             return savedContactPerson;
         } catch (Exception exception) {
