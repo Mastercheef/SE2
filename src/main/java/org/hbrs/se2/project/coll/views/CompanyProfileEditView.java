@@ -193,7 +193,13 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         updatedProfile.setAddress(address);
 
         // Save in DB
-        profileControl.saveCompany(updatedProfile);
+        try {
+            profileControl.saveCompany(updatedProfile);
+        } catch (Exception exception) {
+            // TODO: Exception handling with popup missing
+            System.out.println("LOG : " + exception);
+        }
+
     }
 
     /*  We have to check if the address we edited in the View already exists in the DB.
