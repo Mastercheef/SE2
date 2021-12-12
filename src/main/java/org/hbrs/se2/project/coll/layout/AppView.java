@@ -8,6 +8,7 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -21,6 +22,9 @@ import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.views.ContactView;
+import org.hbrs.se2.project.coll.views.DataProtectionView;
+import org.hbrs.se2.project.coll.views.ImpressumView;
 import org.hbrs.se2.project.coll.views.StudentProfileView;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,13 +35,13 @@ import java.util.Optional;
  * The main view is a top-level placeholder for other views.
  */
 @CssImport("./styles/views/main/main-view.css")
-@Route("main")
 @JsModule("./styles/shared-styles.js")
 public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private Tabs menu;
     private H1 viewTitle;
     private H1 helloUser;
+    private Label copyright = new Label("Copyright © 2021-2022");
 
     @Autowired
     private ContactPersonRepository contactPersonRepository;
@@ -160,8 +164,22 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         logoLayout.add(new Image("images/logo.png", "HelloCar logo"));
         logoLayout.add(new H1("HelloCar"));
 
+        HorizontalLayout footer = new HorizontalLayout(copyright);
+        footer.add(new RouterLink("Kontakt", ContactView.class));
+        footer.add(new RouterLink("Impressum", ImpressumView.class));
+        footer.add(new RouterLink("Datenschutz", DataProtectionView.class));
+        footer.setJustifyContentMode(FlexComponent.JustifyContentMode.START);
+        footer.setWidth("100%");
+        footer.setPadding(true);
+        footer.getElement().getStyle().set("background-color", "#233348");
+        footer.getElement().getStyle().set("color", "white");
+        footer.getElement().getStyle().set("clear", "both");
+        footer.getElement().getStyle().set("bottom", "0");
+        footer.getElement().getStyle().set("left", "0");
+        footer.getElement().getStyle().set("position", "fixed");
+
         // Hinzufügen des Menus inklusive der Tabs
-        layout.add(logoLayout, menu);
+        layout.add(logoLayout, menu, footer);
         return layout;
     }
 
@@ -217,7 +235,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         getTabForComponent(getContent()).ifPresent(menu::setSelectedTab);
 
         // Setzen des aktuellen Names des Tabs
-        viewTitle.setText(getCurrentPageTitle());
+        //viewTitle.setText(getCurrentPageTitle());
         System.out.println(getCurrentPageTitle());
     }
 
@@ -241,7 +259,8 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         UserDTO userDTO = this.getCurrentUser();
         String pageTitle = getCurrentPageTitle();
         if (userDTO == null && !pageTitle.equals(Globals.PageTitles.REGISTER_PAGE_TITLE) &&
-                !pageTitle.equals(Globals.PageTitles.LOGIN_PAGE_TITLE)) {
+                !pageTitle.equals(Globals.PageTitles.LOGIN_PAGE_TITLE) &&
+                !pageTitle.equals(Globals.PageTitles.MAIN_PAGE_TITLE)) {
             UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
             //UI.getCurrent().getPage().reload();
             return false;
@@ -281,7 +300,8 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
      */
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if (getCurrentUser() == null){
-            beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
+            System.out.println("Reroute");
+            //beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
         }
 
     }
