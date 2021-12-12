@@ -9,18 +9,19 @@ public class Globals {
     public static final String CURRENT_USER = "current_User";
 
     public static class Pages {
-        public static final String CONTACTING_VIEW              = "contacting/";
-        public static final String MAIN_VIEW                    = "";
-        public static final String LOGIN_VIEW                   = "login/";
-        public static final String MENU_VIEW                    = "main/";
-        public static final String REGISTER_VIEW                = "register/";
-        public static final String REGISTRATION_SUCCESSFUL      = "registration_successful/";
-        public static final String PROFILE_VIEW                 = "profile/";            // Student
-        public static final String PROFILE_EDIT_VIEW            = "profile_edit/";
         public static final String COMPANYPROFILE_VIEW          = "companyprofile/";     // Company
         public static final String COMPANYPROFILE_EDIT_VIEW     = "companyprofile_edit/";
+        public static final String CONTACTING_VIEW              = "contacting/";
+        public static final String INBOX_VIEW                   = "inbox/";
+        public static final String LOGIN_VIEW                   = "login/";
+        public static final String MAIN_VIEW                    = "";
+        public static final String MENU_VIEW                    = "main/";
         public static final String OFFER_VIEW                   = "offer/";
+        public static final String PROFILE_VIEW                 = "profile/";            // Student
+        public static final String PROFILE_EDIT_VIEW            = "profile_edit/";
         public static final String RECRUITMENT_VIEW             = "recruitment_formular/";
+        public static final String REGISTER_VIEW                = "register/";
+        public static final String REGISTRATION_SUCCESSFUL      = "registration_successful/";
         // TODO: Restliche Seiten
     }
 

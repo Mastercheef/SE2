@@ -108,6 +108,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
                 bar.addItem("Mein Profil" , e -> navigateToUserProfile());
             else if(Objects.equals(currentUserType, "cp"))
                 bar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
+            bar.addItem("Posteingang", e -> navigateToMessages());
             bar.addItem("Logout" , e -> logoutUser());
         } else {
             bar.addItem("Registrieren" , e -> UI.getCurrent().navigate(Globals.Pages.REGISTER_VIEW));
@@ -132,6 +133,13 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         String currentCompanyId = Integer.toString(getContactPersonsCompanyId());
         if(!Objects.equals(currentLocation, Globals.Pages.COMPANYPROFILE_VIEW + currentCompanyId))
             UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + currentCompanyId);
+    }
+
+    private void navigateToMessages() {
+        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
+        String currentUserId = Integer.toString(getCurrentUser().getId());
+        if(!Objects.equals(currentLocation, Globals.Pages.INBOX_VIEW + currentUserId))
+            UI.getCurrent().navigate(Globals.Pages.INBOX_VIEW + currentUserId);
     }
 
     private void logoutUser() {
