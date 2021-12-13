@@ -8,6 +8,7 @@ drop table col_tab_application;
 drop table col_tab_job_advertisement;
 drop table col_tab_contact_person;
 drop table col_tab_company;
+drop table col_tab_message;
 drop table col_tab_student;
 drop table col_tab_user;
 drop table col_tab_address;
@@ -16,6 +17,7 @@ drop sequence col_seq_address_id;
 drop sequence col_seq_user_id;
 drop sequence col_seq_advertisement_id;
 drop sequence col_seq_company_id;
+drop sequence col_seq_message_id;
 
 -- Trigger Section
 -- _______________
@@ -44,6 +46,11 @@ create sequence col_seq_company_id
     minvalue 40000000
     maxvalue 49999999;
 
+create sequence col_seq_message_id
+    start with 50000000
+    increment by 1
+    minvalue 50000000
+    maxvalue 59999999;
 -- Table Section
 -- _____________
 
@@ -115,6 +122,14 @@ create table col_tab_application (
      user_id bigint not null,
      advertisement_id bigint not null);
 
+create table col_tab_message (
+    message_id bigint not null default nextval('col_seq_message_id'),
+    sender_id bigint not null,
+    recipient_id bigint not null,
+    content varchar not null,
+    subject_id bigint not null,
+    constraint col_pk_message_id primary key (message_id));
+
 -- Constraints Section
 -- ___________________
 
@@ -162,6 +177,17 @@ alter table col_tab_company
     add constraint col_fk_c_address_id
     foreign key (address_id)
     references col_tab_address;
+
+alter table col_tab_message
+    add constraint col_fk_m_r_user_id
+    foreign key (recipient_id)
+    references col_tab_user;
+
+alter table col_tab_message
+    add constraint col_fk_m_s_user_id
+    foreign key (sender_id)
+    references col_tab_user;
+
 
 --alter table col_tab_user add constraint
 --     check(exists(select * from col_tab_contact_person
