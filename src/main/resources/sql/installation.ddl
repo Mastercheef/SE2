@@ -188,6 +188,11 @@ alter table col_tab_message
     foreign key (sender_id)
     references col_tab_user;
 
+alter table col_tab_message
+    add constraint col_fk_m_advertisement_id
+    foreign key (subject_id)
+    references col_tab_job_advertisement;
+
 
 --alter table col_tab_user add constraint
 --     check(exists(select * from col_tab_contact_person
