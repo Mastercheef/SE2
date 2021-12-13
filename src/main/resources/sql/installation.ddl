@@ -86,6 +86,7 @@ create table col_tab_job_advertisement (
      end_of_work date,
      contact_person_id bigint not null,
      job_description varchar(1024),
+     salary int,
      job_title varchar(64) not null,
      advertisement_id bigint not null default nextval('col_seq_advertisement_id'),
      constraint col_pk_advertisement_id primary key (advertisement_id));
