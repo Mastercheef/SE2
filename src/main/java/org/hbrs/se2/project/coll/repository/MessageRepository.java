@@ -11,8 +11,7 @@ import java.util.List;
 public interface MessageRepository extends JpaRepository<Message, Integer> {
 
     MessageDTO findMessageById(int id);
-    MessageDTO findMessageBySender(int sender);
-    MessageDTO findMessageByRecipient(int recipient);
 
+    List<MessageDTO> findMessagesBySender(int sender);
     List<MessageDTO> findMessagesByRecipient(int recipient);
 }
