@@ -7,6 +7,7 @@ public class MessageDTOImpl implements MessageDTO {
     private int sender;
     private int recipient;
     private String content;
+    private int subject;
 
     public void setId(int id) { this.id = id; }
 
@@ -15,6 +16,8 @@ public class MessageDTOImpl implements MessageDTO {
     public void setRecipient(int recipient) { this.recipient = recipient; }
 
     public void setContent(String content) { this.content = content; }
+
+    public void setSubject(int subject) { this.subject = subject; }
 
     @Override
     public int getId() { return this.id; }
@@ -27,4 +30,7 @@ public class MessageDTOImpl implements MessageDTO {
 
     @Override
     public String getContent() { return this.content; }
+
+    @Override
+    public int getSubject() { return this.subject; }
 }

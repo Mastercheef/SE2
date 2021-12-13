@@ -12,6 +12,7 @@ public class MessageFactory {
         message.setRecipient(messageDTO.getRecipient());
         message.setSender(messageDTO.getSender());
         message.setContent(messageDTO.getContent());
+        message.setSubject(messageDTO.getSubject());
         return message;
     }
 }

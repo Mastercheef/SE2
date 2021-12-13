@@ -10,6 +10,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.*;
 import org.hbrs.se2.project.coll.control.ContactingControl;
+import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,15 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
 
     private String companyId = null;
     private String jobId = null;
+    private int userId;
+    private int contactPersonId;
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         event.getRouteParameters().get("companyId").ifPresent((value -> companyId = value));
         event.getRouteParameters().get("jobId").ifPresent((value -> jobId = value));
+        userId = getCurrentUser().getId();
+        contactPersonId = contactingControl.getContactPerson(Integer.parseInt(companyId));
         initContacting();
     }
 
@@ -56,10 +62,25 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
         Button cancelButton = new Button("Abbrechen");
         saveButton.addClickListener(e -> {
             if(textArea.getValue().length() >= textArea.getMinLength()) {
-                Dialog dialog = new Dialog();
-                dialog.add("Ihre Nachricht wurde versandt!");
-                dialog.open();
-                UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+                //String content, int sender, int recipient, int subject
+                try {
+                    contactingControl.sendMessage(
+                            textArea.getValue(),
+                            userId,
+                            contactPersonId,
+                            Integer.parseInt(jobId)
+                    );
+                    Dialog dialog = new Dialog();
+                    dialog.add("Ihre Nachricht wurde versandt!");
+                    dialog.open();
+                    UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+                } catch (DatabaseUserException ex) {
+                    ex.printStackTrace();
+                    Dialog dialog = new Dialog();
+                    dialog.add("Während dem Senden der Nachricht ist ein Fehler aufgetreten. Bitte kontaktieren" +
+                            "Sie den Administrator dieser Webseite.");
+                    dialog.open();
+                }
             }
             else
                 textArea.setInvalid(true);
@@ -71,6 +92,10 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
 
         add(title, subtitle, textArea, hbuttons);
 
+    }
+
+    public UserDTO getCurrentUser() {
+        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
 
     ContactingView() {

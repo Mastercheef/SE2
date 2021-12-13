@@ -5,4 +5,5 @@ public interface MessageDTO {
     public int getSender();
     public int getRecipient();
     public String getContent();
+    public int getSubject();
 }

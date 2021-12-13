@@ -56,7 +56,30 @@ public class InboxView extends VerticalLayout implements HasUrlParameter<String>
 
         grid = new Grid<>(MessageDTO.class, false);
         grid.setAllRowsVisible(true);
-        grid.addColumn(MessageDTO::getSender).setHeader("Absender");
+
+        // Resolution of Sender via control class
+        grid.addColumn(message -> {
+            try {
+                return inboxControl.getUserName(message.getSender());
+            } catch (DatabaseUserException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }).setHeader("Absender");
+
+        // Resolution of Subject via control class
+        grid.addColumn(message -> {
+            try {
+                return inboxControl.getSubject(message.getSubject());
+            } catch (DatabaseUserException e) {
+                e.printStackTrace();;
+            }
+            return null;
+        }).setHeader("Betreff");
+
+        // TODO: Datum
+
+        // TODO: Beim anklicken aufklappen und Nachricht anzeigen, Antwortfeld und Senden/Cancel Buttons hinzufügen dabei
         grid.addColumn(MessageDTO::getContent).setHeader("Nachricht");
         /*grid.addColumn(person -> person.getAddress().getPhone())
                 .setHeader("Phone");*/

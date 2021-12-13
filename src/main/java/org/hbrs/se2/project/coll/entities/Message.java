@@ -9,6 +9,7 @@ public class Message {
     private int sender;
     private int recipient;
     private String content;
+    private int subject;
 
     @Id
     @GeneratedValue(
@@ -44,5 +45,10 @@ public class Message {
     @Column(name = "content")
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
+
+    @Basic
+    @Column(name = "subject_id")
+    public int getSubject() { return subject; }
+    public void setSubject(int subject) { this.subject = subject; }
 
 }

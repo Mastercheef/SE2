@@ -28,6 +28,7 @@ public class MessageRepositoryTest {
         assertEquals(messageDTO.getContent(), message.getContent());
         assertEquals(messageDTO.getSender(), message.getSender());
         assertEquals(messageDTO.getRecipient(), message.getRecipient());
+        assertEquals(messageDTO.getSubject(), message.getSubject());
         messageRepository.delete(message);
     }
 
@@ -42,6 +43,7 @@ public class MessageRepositoryTest {
             assertEquals(messageDTOs.get(i).getId(), messages.get(i).getId());
             assertEquals(messageDTOs.get(i).getContent(), messages.get(i).getContent());
             assertEquals(messageDTOs.get(i).getRecipient(), messages.get(i).getRecipient());
+            assertEquals(messageDTOs.get(i).getSubject(), messages.get(i).getSubject());
         }
         messageRepository.deleteAll(messages);
     }
@@ -57,6 +59,23 @@ public class MessageRepositoryTest {
             assertEquals(messageDTOs.get(i).getId(), messages.get(i).getId());
             assertEquals(messageDTOs.get(i).getContent(), messages.get(i).getContent());
             assertEquals(messageDTOs.get(i).getSender(), messages.get(i).getSender());
+            assertEquals(messageDTOs.get(i).getSubject(), messages.get(i).getSubject());
+        }
+        messageRepository.deleteAll(messages);
+    }
+
+    @Test
+    void findMessagesBySubjectTest() {
+        List<Message> messages = initMessages();
+        messageRepository.saveAll(messages);
+
+        List<MessageDTO> messageDTOs = messageRepository.findMessagesBySubject(messages.get(0).getSubject());
+
+        for(int i = 0; i < messageDTOs.size(); i++) {
+            assertEquals(messageDTOs.get(i).getId(), messages.get(i).getId());
+            assertEquals(messageDTOs.get(i).getContent(), messages.get(i).getContent());
+            assertEquals(messageDTOs.get(i).getSender(), messages.get(i).getSender());
+            assertEquals(messageDTOs.get(i).getRecipient(), messages.get(i).getRecipient());
         }
         messageRepository.deleteAll(messages);
     }
@@ -66,6 +85,7 @@ public class MessageRepositoryTest {
         newMessage.setContent("Hallo, hierbei handelt es sich um eine Testnachricht. Großartig.");
         newMessage.setSender(20000012);
         newMessage.setRecipient(20000000);
+        newMessage.setSubject(30000000);
 
         return MessageFactory.createMessage(newMessage);
     }
@@ -77,11 +97,13 @@ public class MessageRepositoryTest {
         message1.setContent("Hallo, hierbei handelt es sich um eine Testnachricht. Großartig.");
         message1.setSender(20000012);
         message1.setRecipient(20000000);
+        message1.setSubject(30000000);
 
         MessageDTOImpl message2 = new MessageDTOImpl();
         message2.setContent("Eine weitere Nachricht für dich.");
         message2.setSender(20000012);
         message2.setRecipient(20000000);
+        message2.setSubject(30000000);
 
         messages.add(MessageFactory.createMessage(message1));
         messages.add(MessageFactory.createMessage(message2));
