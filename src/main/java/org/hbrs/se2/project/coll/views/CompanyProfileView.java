@@ -296,8 +296,9 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 HorizontalLayout hJobTemporary      = new HorizontalLayout(jobTemporary, lJobTemporary);
 
                 // Create Buttons to get in contact with the Company
-                // TODO: Kontaktformular nach Button Klick aufrufen (Sprint 2)
                 Button contactButton = new Button("Kontakt aufnehmen");
+                contactButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.CONTACTING_VIEW +
+                        companyId + "/" + job.getId()));
 
                 // Add everything to the container
                 form.add(jobNumber, hJobTitle, hJobType, hJobHours, hJobRequirements, hJobDescription, hJobStart,

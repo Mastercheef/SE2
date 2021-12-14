@@ -1,5 +1,6 @@
 package org.hbrs.se2.project.coll.control;
 
+import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.control.factories.CompanyFactory;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.entities.Address;
@@ -22,7 +23,7 @@ public class CompanyControl {
     }
 
     //TODO: ResultDTO mit Rückmeldung für View bei Fehler
-    public Company saveCompany(CompanyDTO companyDTO ) {
+    public Company saveCompany(CompanyDTO companyDTO )  throws DatabaseUserException {
         try {
             Company company = CompanyFactory.createCompany(companyDTO);
 
@@ -34,14 +35,18 @@ public class CompanyControl {
             Company savedCompany = this.repository.save( company );
 
             if (company.getId() > 0)
-                System.out.println("Updated Company profile: " + company.getId());
+                System.out.println("Updated Company profile with ID: " + company.getId());
             else
                 System.out.println("Created new CompanyProfile: " + company.getId());
 
             return savedCompany;
-        } catch (Error error) {
-            // return resultdto mit Fehler
-            return null;
+        } catch (Exception exception) {
+            System.out.println("LOG : " + exception);
+            if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
+                throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist ein Fehler aufgetreten.");
+            } else {
+                throw new DatabaseUserException("Es ist ein unerwarteter Fehler aufgetreten.");
+            }
         }
     }
 

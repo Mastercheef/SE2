@@ -12,6 +12,7 @@ import java.util.List;
 public interface JobAdvertisementRepository extends JpaRepository<JobAdvertisement, Integer> {
 
     JobAdvertisement findJobAdvertisementByJobDescription(String string);
+    JobAdvertisement findJobAdvertisementById(int id);
 
     /* Finds all JobAdvertisements from a given CompanyId
     */
