@@ -28,7 +28,7 @@ class StudentUserRepositoryTest {
     @Test
     void findStudentUserById() {
         StudentUserDTO studentUserDTO;
-        studentUserDTO = studentUserRepository.findStudentUserById(20000017);
-        assertEquals("muster@muster.de" ,studentUserDTO.getEmail());
+        studentUserDTO = studentUserRepository.findStudentUserById(20000000);
+        assertEquals("email@hbrs.de" ,studentUserDTO.getEmail());
     }
 }

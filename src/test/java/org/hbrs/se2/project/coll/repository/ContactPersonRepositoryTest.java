@@ -35,7 +35,7 @@ class ContactPersonRepositoryTest {
 
     @Test
     void findContactPersonByCompanyId() {
-        contactPerson = contactPersonRepository.findContactPersonByCompanyId(40000003);
-        assertEquals("CEO und Vorstand" , contactPerson.getRole());
+        contactPerson = contactPersonRepository.findContactPersonByCompanyId(40000000);
+        assertEquals("HR Department" , contactPerson.getRole());
     }
 }

@@ -27,14 +27,14 @@ class CompanyRepositoryTest {
 
     @Test
     void findCompanyProfileById() {
-        CompanyDTO dto = this.companyRepository.findCompanyProfileById(40000003);
-        assertThat(dto.getCompanyName()).isEqualTo("Schuh und Mann GbR");
+        CompanyDTO dto = this.companyRepository.findCompanyProfileById(40000000);
+        assertThat(dto.getCompanyName()).isEqualTo("Erfolgreiche Testfirma GmbH");
 
     }
 
     @Test
     void findCompanyProfileByCompanyName() {
-        CompanyDTO dto = this.companyRepository.findCompanyProfileByCompanyName("Schuh und Mann GbR");
-        assertEquals(40000003 , dto.getId());
+        CompanyDTO dto = this.companyRepository.findCompanyProfileByCompanyName("Erfolgreiche Testfirma GmbH");
+        assertEquals(40000000 , dto.getId());
     }
 }

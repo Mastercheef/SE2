@@ -29,13 +29,13 @@ public class JobAdvertisementRepositoryTest {
 
     @Test
     void findJobAdvertisementById() {
-        JobAdvertisement job = repository.findJobAdvertisementByJobDescription("Praktikum als Webdesigner.");
-        short hours = 20;
+        JobAdvertisement job = repository.findJobAdvertisementByJobDescription("Gesucht wird ein Student zum Neuaufsetzen unserer Webseite. Sollte über die angegebenen Skills verfügen. Bachelor wie auch Master willkommen.");
+        short hours = 16;
         assertNotNull(job);
-        assertEquals(job.getJobTitle(), "Praktikum im Bereich Webdesign");
-        assertEquals(job.getTypeOfEmployment(), "Praktikum");
-        assertEquals(job.getWorkingHours(), hours);
-        assertEquals(job.getRequirements(), "Kenntnisse in HTML, JS, CSS");
+        assertEquals("Web Engineer", job.getJobTitle());
+        assertEquals("Praktikum", job.getTypeOfEmployment());
+        assertEquals(hours, job.getWorkingHours());
+        assertEquals("HTML, CSS, JavaScript, TypeScript", job.getRequirements());
     }
 
 }
