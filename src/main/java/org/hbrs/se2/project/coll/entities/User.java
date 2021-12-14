@@ -1,6 +1,8 @@
 package org.hbrs.se2.project.coll.entities;
 
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -93,7 +95,10 @@ public class User {
         return password;
     }
     public void setPassword(String password) {
-        this.password = password;
+        this.password = hashPassword(password);
+    }
+    private String hashPassword(String plain) {
+        return BCrypt.hashpw(plain, BCrypt.gensalt());
     }
 
     @Basic

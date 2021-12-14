@@ -68,7 +68,7 @@ create table col_tab_user (
      last_name varchar(16) not null,
      address_id bigint not null,
      date_of_birth date not null,
-     password varchar(20) not null,
+     password varchar(255) not null,
      phone_number varchar(12) not null,
      salutation varchar(10) not null,
      title varchar(16) not null,
