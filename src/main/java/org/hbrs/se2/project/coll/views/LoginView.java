@@ -25,6 +25,10 @@ public class LoginView extends VerticalLayout {
         setSizeFull();
         LoginForm component = new LoginForm();
 
+        addClassName("login-view");
+        component.setAction("login");
+
+
         component.addLoginListener(e -> {
             LoginResultDTO isAuthenticated = loginControl.authentificate( e.getUsername() , e.getPassword() );
 
