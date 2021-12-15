@@ -1,6 +1,7 @@
 package org.hbrs.se2.project.coll.entities;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table( name ="col_tab_message" , schema = "collhbrs" )
@@ -10,6 +11,8 @@ public class Message {
     private int recipient;
     private String content;
     private int subject;
+    private LocalDate date;
+    private boolean read;
 
     @Id
     @GeneratedValue(
@@ -50,5 +53,15 @@ public class Message {
     @Column(name = "subject_id")
     public int getSubject() { return subject; }
     public void setSubject(int subject) { this.subject = subject; }
+
+    @Basic
+    @Column(name = "date")
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date; }
+
+    @Basic
+    @Column(name = "read")
+    public boolean getRead() { return read; }
+    public void setRead(boolean read) { this.read = read; }
 
 }

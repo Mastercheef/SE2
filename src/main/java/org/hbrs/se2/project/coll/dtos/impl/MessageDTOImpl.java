@@ -1,6 +1,9 @@
 package org.hbrs.se2.project.coll.dtos.impl;
 
+import org.apache.tomcat.jni.Local;
 import org.hbrs.se2.project.coll.dtos.MessageDTO;
+
+import java.time.LocalDate;
 
 public class MessageDTOImpl implements MessageDTO {
     private int id;
@@ -8,6 +11,8 @@ public class MessageDTOImpl implements MessageDTO {
     private int recipient;
     private String content;
     private int subject;
+    private LocalDate date;
+    private boolean read;
 
     public void setId(int id) { this.id = id; }
 
@@ -18,6 +23,10 @@ public class MessageDTOImpl implements MessageDTO {
     public void setContent(String content) { this.content = content; }
 
     public void setSubject(int subject) { this.subject = subject; }
+
+    public void setDate(LocalDate date) { this.date = date; }
+
+    public void setRead(boolean read) { this.read = read; }
 
     @Override
     public int getId() { return this.id; }
@@ -33,4 +42,10 @@ public class MessageDTOImpl implements MessageDTO {
 
     @Override
     public int getSubject() { return this.subject; }
+
+    @Override
+    public LocalDate getDate() { return this.date; }
+
+    @Override
+    public boolean getRead() { return this.read; }
 }

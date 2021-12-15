@@ -11,6 +11,8 @@ import org.hbrs.se2.project.coll.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class ContactingControl {
 
@@ -36,7 +38,8 @@ public class ContactingControl {
 
     public int getContactPerson(int id) { return contactPersonRepository.findContactPersonByCompanyId(id).getId(); }
 
-    public void sendMessage(String content, int sender, int recipient, int subject) throws DatabaseUserException {
+    public void sendMessage(String content, int sender, int recipient, int subject,
+                            LocalDate date) throws DatabaseUserException {
         try {
             // Create new message
             MessageDTOImpl newMessage = new MessageDTOImpl();
@@ -44,6 +47,7 @@ public class ContactingControl {
             newMessage.setSender(sender);
             newMessage.setRecipient(recipient);
             newMessage.setSubject(subject);
+            newMessage.setDate(date);
 
             // Send the message / save in DB
             Message message = MessageFactory.createMessage(newMessage);
