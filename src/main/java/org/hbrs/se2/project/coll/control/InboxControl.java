@@ -1,30 +1,28 @@
 package org.hbrs.se2.project.coll.control;
 
-import org.apache.tomcat.jni.Local;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
-import org.hbrs.se2.project.coll.control.factories.CompanyFactory;
 import org.hbrs.se2.project.coll.control.factories.MessageFactory;
 import org.hbrs.se2.project.coll.dtos.MessageDTO;
-import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
 import org.hbrs.se2.project.coll.dtos.impl.MessageDTOImpl;
-import org.hbrs.se2.project.coll.entities.Company;
 import org.hbrs.se2.project.coll.entities.Message;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.repository.MessageRepository;
 import org.hbrs.se2.project.coll.repository.UserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
-import org.hibernate.dialect.Database;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
 @Component
 public class InboxControl {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(InboxControl.class);
+
 
     @Autowired
     private MessageRepository messageRepository;
@@ -60,7 +58,7 @@ public class InboxControl {
             this.messageRepository.save(message);
 
         } catch (Exception exception) {
-            System.out.println("LOG: " + exception);
+            LOGGER.info("LOG: {}" , exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
                 throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist " +
                         "ein Fehler aufgetreten.");
@@ -77,7 +75,7 @@ public class InboxControl {
             this.messageRepository.delete(message);
 
         } catch (Exception exception) {
-            System.out.println("LOG: " + exception);
+            LOGGER.info("LOG: {}" , exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
                 throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist " +
                         "ein Fehler aufgetreten.");
@@ -93,7 +91,7 @@ public class InboxControl {
             return (this.userRepository.findUserById(id).getFirstName() + " " +
                     this.userRepository.findUserById(id).getLastName());
         } catch (Exception exception) {
-            System.out.println("LOG: " + exception);
+            LOGGER.info("LOG: {}" ,  exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
                 throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist " +
                         "ein Fehler aufgetreten.");
@@ -108,7 +106,7 @@ public class InboxControl {
             return this.jobAdvertisementRepository.findJobAdvertisementById(subject).getJobTitle();
 
         } catch (Exception exception) {
-            System.out.println("LOG: " + exception);
+            LOGGER.info("LOG: {}" ,  exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
                 throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist " +
                         "ein Fehler aufgetreten.");
@@ -131,7 +129,7 @@ public class InboxControl {
                         contactPersonRepository.findContactPersonById(id).getCompany().getId());
 
         } catch (Exception exception) {
-            System.out.println("LOG: " + exception);
+            LOGGER.info("LOG: {}" ,  exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
                 throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist " +
                         "ein Fehler aufgetreten.");
@@ -156,7 +154,7 @@ public class InboxControl {
             updatedMessage.setRead(true);
             messageRepository.save(updatedMessage);
         } catch (Exception exception) {
-            System.out.println("LOG: " + exception);
+            LOGGER.info("LOG: {}" ,  exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
                 throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist " +
                         "ein Fehler aufgetreten.");

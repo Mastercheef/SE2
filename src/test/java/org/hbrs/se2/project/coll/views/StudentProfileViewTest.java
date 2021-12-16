@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class StudentProfileViewTest {
+class StudentProfileViewTest {
     @Autowired
     private StudentUserRepository studentUserRepository;
 

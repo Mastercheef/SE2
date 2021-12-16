@@ -1,6 +1,5 @@
 package org.hbrs.se2.project.coll.dtos.impl;
 
-import org.apache.tomcat.jni.Local;
 import org.hbrs.se2.project.coll.dtos.MessageDTO;
 
 import java.time.LocalDate;

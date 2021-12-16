@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @SpringBootTest
-public class JobAdvertisementRepositoryTest {
+class JobAdvertisementRepositoryTest {
 
     @Autowired
     private JobAdvertisementRepository repository;
