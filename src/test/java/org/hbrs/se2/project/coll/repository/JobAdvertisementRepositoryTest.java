@@ -23,7 +23,6 @@ class JobAdvertisementRepositoryTest {
 
         for(JobAdvertisement job : jobAdvertisement) {
             assertNotNull(job);
-            System.out.println(job.getJobTitle());
         }
     }
 
