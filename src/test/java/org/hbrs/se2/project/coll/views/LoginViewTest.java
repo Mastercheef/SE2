@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class LoginViewTest {
 
 
-    @Test
+
     public void login()  {
 
 
@@ -32,8 +32,8 @@ class LoginViewTest {
 
         WebElement username=driver.findElement(By.id("vaadinLoginUsername"));
         WebElement password=driver.findElement(By.id("vaadinLoginPassword"));
-        username.sendKeys("judithmeier@company.com");
-        password.sendKeys("abc123");
+        username.sendKeys("admin2@firma.de");
+        password.sendKeys("password");
         WebElement element  = driver.findElement(By.xpath("/html/body/vaadin-vertical-layout/vaadin-login-form/vaadin-login-form-wrapper/form/vaadin-button"));
 
         Actions builder = new Actions(driver);
