@@ -17,8 +17,6 @@ public class CompanyDTOImpl implements CompanyDTO {
     private String website;
     private String description;
 
-    // TODO: Annotation klären
-//    @OneToMany
     private Set<StellenausschreibungDTO>  offers;
 
     public int      getId() { return this.id; }
@@ -37,7 +35,7 @@ public class CompanyDTOImpl implements CompanyDTO {
     public String   getWebsite()                    { return this.website; }
     public void     setWebsite(String website)      { this.website = website; }
     public String   getDescription()                { return this.description; }
-    public void     setDescription(String descr)    {this.description = descr; }
+    public void     setDescription(String description)    {this.description = description; }
 
     public Set<StellenausschreibungDTO>    getAdvertisements() { return this.offers; }
     public void     setAdvertisements(Set<StellenausschreibungDTO> offers) { this.offers = offers; }

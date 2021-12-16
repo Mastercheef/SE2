@@ -4,6 +4,7 @@ import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.LoginResultDTOImpl;
 import org.hbrs.se2.project.coll.repository.UserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,10 +20,10 @@ public class LoginControl {
     //private LoginResultDTO loginResult = new LoginResultDTO();
     private LoginResultDTOImpl loginResult = new LoginResultDTOImpl();
 
-    public LoginResultDTO authentificate(String email, String password ) {
+    public LoginResultDTO authentificate(String email, String plainTextPassword ) {
 
         // User wird per SQL ausgelesen
-        this.userDTO = this.getUser(email , password );
+        this.userDTO = this.getUser(email , plainTextPassword );
 
         if (this.userDTO == null) {
             loginResult.setResult(false);
@@ -37,12 +38,17 @@ public class LoginControl {
 
     }
 
-    private UserDTO getUser(String email , String password ) {
+    private UserDTO getUser(String email , String plainTextPassword ) {
         UserDTO userTmp = null;
         try {
-            userTmp = repository.findUserByEmailAndPassword(email, password);
-            loginResult.setResult(true);
-            loginResult.setReason("LogIn erfolgreich");
+            userTmp = repository.findUserByEmail(email);
+            if (BCrypt.checkpw(plainTextPassword, userTmp.getPassword())) {
+                loginResult.setResult(true);
+                loginResult.setReason("LogIn erfolgreich");
+            } else {
+                loginResult.setResult(false);
+                loginResult.setReason("Das eingegebene Password ist falsch!");
+            }
         } catch ( org.springframework.dao.DataAccessResourceFailureException e ) {
             loginResult.setResult(false);
             loginResult.setReason("Es ist ein Fehler während der Verbindung zur Datenbank aufgetreten: " + e);

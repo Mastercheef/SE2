@@ -18,10 +18,7 @@ import org.springframework.stereotype.Component;
  */
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    UserDTO findUserByIdAndPassword ( int userid, String password );
-
-    UserDTO findUserByEmailAndPassword ( String email, String password );
-
+    // password is encrypted in the database
     UserDTO findUserByEmail(String email);
 
     // SELECT *
