@@ -42,7 +42,7 @@ public class RegistrationView extends Div {
     private LoginControl loginControl;
 
     Tab studentUser = new Tab("Student");
-    Tab companyUser = new Tab("Unternehmen");
+    Tab companyUser = new Tab(Globals.View.COMPANY);
     Tabs tabs       = new Tabs(studentUser, companyUser);
 
     // Basic User
@@ -278,9 +278,9 @@ public class RegistrationView extends Div {
                     setErrorFields(registrationResult.getReasons());
                 }
             } catch (DatabaseUserException databaseUserException) {
-                triggerDialogMessage("Fehler","Während der Registrierung ist ein Fehler aufgetreten: " + databaseUserException.getReason());
+                triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein Fehler aufgetreten: " + databaseUserException.getReason());
             } catch (Exception exception) {
-                triggerDialogMessage("Fehler","Während der Registrierung ist ein unerwarteter Fehler aufgetreten: " + exception);
+                triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein unerwarteter Fehler aufgetreten: " + exception);
             }
         });
         add(siteLayout);
@@ -291,14 +291,14 @@ public class RegistrationView extends Div {
         if (isAuthenticated.getResult()) {
             UI.getCurrent().getSession().setAttribute( Globals.CURRENT_USER, loginControl.getCurrentUser() );
         } else {
-            triggerDialogMessage("Fehler","Fehler beim automatischen einloggen. Bitte versuchen Sie es erneut");
+            triggerDialogMessage(Globals.View.ERROR,"Fehler beim automatischen einloggen. Bitte versuchen Sie es erneut");
         }
     }
 
     public void setErrorFields(List<ReasonType> reasons) {
         for (ReasonType reason : reasons) {
             if (reason == ReasonType.UNEXPECTED_ERROR) {
-                triggerDialogMessage("Fehler", "Es ist ein unerwarteter Fehler aufgetreten");
+                triggerDialogMessage(Globals.View.ERROR, "Es ist ein unerwarteter Fehler aufgetreten");
             }
             if (reason == ReasonType.SALUTATION_MISSING) {
                 salutation.setErrorMessage("Bitte geben Sie eine Anrede ein");
@@ -333,7 +333,7 @@ public class RegistrationView extends Div {
                 housenumber.setInvalid(true);
             }
             if (reason == ReasonType.POSTALCODE_MISSING) {
-                postalcode.setErrorMessage("Bitte geben Sie eine Postleitzahl ein");
+                postalcode.setErrorMessage(Globals.View.POSTAL_CODE);
                 postalcode.setInvalid(true);
             }
             if (reason == ReasonType.CITY_MISSING) {
@@ -383,10 +383,10 @@ public class RegistrationView extends Div {
 
             // Company Fields
             if (reason == ReasonType.COMPANY_ALREADY_REGISTERED) {
-                triggerDialogMessage("Fehler", "Die angegebene Firma ist bereits registriert");
+                triggerDialogMessage(Globals.View.ERROR, "Die angegebene Firma ist bereits registriert");
             }
             if (reason == ReasonType.COMPANY_NAME_MISSING) {
-                companyName.setErrorMessage("Bitte geben Sie eine Postleitzahl ein");
+                companyName.setErrorMessage(Globals.View.POSTAL_CODE);
                 companyName.setInvalid(true);
             }
             if (reason == ReasonType.COMPANY_EMAIL_MISSING) {
@@ -418,7 +418,7 @@ public class RegistrationView extends Div {
                 companyHouseNumber.setInvalid(true);
             }
             if (reason == ReasonType.COMPANY_POSTALCODE_MISSING) {
-                companyPostalCode.setErrorMessage("Bitte geben Sie eine Postleitzahl ein");
+                companyPostalCode.setErrorMessage(Globals.View.POSTAL_CODE);
                 companyPostalCode.setInvalid(true);
             }
             if (reason == ReasonType.COMPANY_CITY_MISSING) {

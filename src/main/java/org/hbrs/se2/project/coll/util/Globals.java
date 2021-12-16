@@ -64,6 +64,9 @@ public class Globals {
             throw new IllegalStateException(ExceptionMessage.UTILITY);
         }
         public static final String BACKGROUND_COLOR = "background-color";
+        public static final String COMPANY = "Unternehmen";
+        public static final String ERROR = "Fehler";
+        public static final String POSTAL_CODE = "Bitte geben Sie eine Postleitzahl ein";
 
     }
 
