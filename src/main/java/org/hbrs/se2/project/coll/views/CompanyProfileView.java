@@ -48,17 +48,6 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     private static final Logger LOGGER = Logger.getLogger(CompanyProfileView.class.getName());
 
     LabelCompany labelCompany = new LabelCompany();
-    Label companyname   = new Label("Firmenname:");
-    Label street        = new Label("Strasse:");
-    Label streetnumber  = new Label("Hausnummer:");
-    Label postalcode    = new Label("PLZ:");
-    Label city          = new Label("Ort:");
-    Label country       = new Label("Land:");
-    Label email         = new Label("E-Mail:");
-    Label phone         = new Label("Telefon:");
-    Label fax           = new Label("Fax:");
-    Label website       = new Label("Webseite:");
-    Label description   = new Label("Beschreibung:");
 
     Label lcompanyname;
     Label lstreet;
@@ -118,11 +107,6 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         profileImage.getElement().getStyle().set("border", "1px solid black");
 
         // Styling
-        for (Label label : new Label[]{ companyname, street, streetnumber, postalcode, city, country, email,
-                phone, fax, website, description}) {
-            label.getElement().getStyle().set(FONT, "bold");
-            label.setWidth(WIDTH);
-        }
 
         // Profile Data
         HorizontalLayout hcompanyname   = new HorizontalLayout(labelCompany.getCompanyname(), lcompanyname);
