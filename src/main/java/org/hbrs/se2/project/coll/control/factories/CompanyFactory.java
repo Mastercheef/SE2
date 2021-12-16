@@ -6,6 +6,9 @@ import org.hbrs.se2.project.coll.entities.Company;
 public class CompanyFactory {
 
 
+    private CompanyFactory() {
+        throw new IllegalStateException("Factory Class");
+    }
 
     public static Company createCompany(CompanyDTO companyDTO) {
 

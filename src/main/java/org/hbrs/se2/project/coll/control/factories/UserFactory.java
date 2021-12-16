@@ -3,14 +3,15 @@ package org.hbrs.se2.project.coll.control.factories;
 import org.hbrs.se2.project.coll.dtos.ContactPersonDTO;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
-import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.entities.User;
 
-import java.time.LocalDate;
-
 public class UserFactory {
+
+    private UserFactory() {
+        throw new IllegalStateException("Factory Class");
+    }
 
     public static StudentUser createStudentUser(StudentUserDTO studentDTO) {
         StudentUser studentUser = new StudentUser();
