@@ -51,6 +51,6 @@ public class LoginView extends VerticalLayout {
     }
 
     private void navigateToMainPage() {
-        UI.getCurrent().navigate(Globals.Pages.MENU_VIEW);
+        UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW);
     }
 }
