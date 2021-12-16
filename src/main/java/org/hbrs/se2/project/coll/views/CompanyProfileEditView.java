@@ -20,6 +20,7 @@ import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.LabelCompany;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,8 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     List<Address> existingAddresses;
     Address address = new Address();
     int companyId;
+
+    LabelCompany labelCompany = new LabelCompany();
 
     Label infoText      = new Label("Mit (*) markierte Felder sind notwendig.");
     Label companyname   = new Label("Firmenname (*):");
