@@ -11,10 +11,10 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
-import org.hbrs.se2.project.coll.control.CompanyProfileControl;
-import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
+import org.hbrs.se2.project.coll.control.CompanyControl;
+import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
-import org.hbrs.se2.project.coll.dtos.impl.CompanyProfileDTOImpl;
+import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
@@ -36,7 +36,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     ContactPersonRepository contactPersonRepository;
 
     @Autowired
-    private CompanyProfileControl profileControl;
+    private CompanyControl profileControl;
     List<Address> existingAddresses;
     Address address = new Address();
     int companyId;
@@ -73,7 +73,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
                              String parameter) {
         if (!parameter.equals("")) {
             checkIfUserIsLoggedIn();
-            CompanyProfileDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
+            CompanyDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
             companyId = profileDTO.getId();
             boolean ownership = checkIfUserIsProfileOwner();
             if(ownership) {
@@ -93,7 +93,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     }
 
     // Used to read DTO data and inject it into the labels
-    public void initLabels(CompanyProfileDTO profileDTO) {
+    public void initLabels(CompanyDTO profileDTO) {
         lcompanyname.setValue(profileDTO.getCompanyName());
         lstreet.setValue(address.getStreet());
         lstreetnumber.setValue(address.getHouseNumber());
@@ -175,7 +175,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
     // Used to save modified data in the database. Empty fields get marked as soon as save button is clicked.
     public void updateProfileData() {
-        CompanyProfileDTOImpl updatedProfile = new CompanyProfileDTOImpl();
+        CompanyDTOImpl updatedProfile = new CompanyDTOImpl();
         updatedProfile.setId(companyId);
         updatedProfile.setCompanyName(lcompanyname.getValue());
         updatedProfile.setEmail(lemail.getValue());
@@ -193,7 +193,13 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         updatedProfile.setAddress(address);
 
         // Save in DB
-        profileControl.saveCompanyProfile(updatedProfile);
+        try {
+            profileControl.saveCompany(updatedProfile);
+        } catch (Exception exception) {
+            // TODO: Exception handling with popup missing
+            System.out.println("LOG : " + exception);
+        }
+
     }
 
     /*  We have to check if the address we edited in the View already exists in the DB.

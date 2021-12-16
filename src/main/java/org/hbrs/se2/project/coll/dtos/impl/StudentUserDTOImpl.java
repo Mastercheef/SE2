@@ -2,7 +2,7 @@ package org.hbrs.se2.project.coll.dtos.impl;
 
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 
-import java.util.*;
+
 
 public class StudentUserDTOImpl extends UserDTOImpl implements StudentUserDTO {
     private String graduation;

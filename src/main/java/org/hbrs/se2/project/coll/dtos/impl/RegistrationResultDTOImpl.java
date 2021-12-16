@@ -2,36 +2,31 @@ package org.hbrs.se2.project.coll.dtos.impl;
 
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class RegistrationResultDTOImpl implements RegistrationResultDTO {
-    private boolean result = false;
-    private String reason = "";
+    private boolean result;
+    private List<ReasonType> reasons;
 
-    public void RegistrationResult(boolean result, String reason){
-        this.setResult(result);
-        this.setReason(reason);
-    }
+    public RegistrationResultDTOImpl() { this.reasons = new ArrayList<>(); }
 
-    public boolean getResult(){
-        return this.result;
-    }
+    @Override
+    public boolean getResult() { return this.result; }
 
-    public boolean setResult(boolean result){
-        this.result = result;
-        return this.result;
-    }
+    public void setResult(boolean result) { this.result = result; }
 
-    public String getReason(){
-        return this.reason;
-    }
+    @Override
+    public List<ReasonType> getReasons() { return this.reasons; }
 
+    @Override
+    public void setReasons(List<ReasonType> reasons) { this.reasons = reasons; }
 
-    public String setReason(String reason){
-        this.reason = reason;
-        return this.reason;
-    }
+    @Override
+    public void addReason(ReasonType reason) { this.reasons.add(reason); }
 
     public String toString(){
-        return this.getReason();
+        return this.getReasons().toString();
     }
 }

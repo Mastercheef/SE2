@@ -28,6 +28,9 @@ class UserFactoryTest {
 
     private final LocalDate localDate = LocalDate.of(2000, 1, 23);
 
+    private final String name = "Mustermann";
+    private final String email = "max@mustermann.de";
+    private final String password = "password1234";
     @Test
     void createStudentUser() {
         StudentUser studentUser;
@@ -37,7 +40,7 @@ class UserFactoryTest {
         when(studentDTO.getSalutation()).thenReturn("Herr");
         when(studentDTO.getTitle()).thenReturn(null);
         when(studentDTO.getFirstName()).thenReturn("Max");
-        when(studentDTO.getLastName()).thenReturn("Mustermann");
+        when(studentDTO.getLastName()).thenReturn(name);
         when(studentDTO.getDateOfBirth()).thenReturn(localDate);
         when(studentDTO.getAddress()).thenReturn(address);
         when(studentDTO.getAddress().getStreet()).thenReturn("Mustermannstraße");
@@ -46,8 +49,8 @@ class UserFactoryTest {
         when(studentDTO.getAddress().getCity()).thenReturn("Mustermannstadt");
         when(studentDTO.getAddress().getPostalCode()).thenReturn("12345");
         when(studentDTO.getPhone()).thenReturn("0123456789");
-        when(studentDTO.getEmail()).thenReturn("max@mustermann.de");
-        when(studentDTO.getPassword()).thenReturn("password1234");
+        when(studentDTO.getEmail()).thenReturn(email);
+        when(studentDTO.getPassword()).thenReturn(password);
         when(studentDTO.getGraduation()).thenReturn("1.1.2000");
         when(studentDTO.getSkills()).thenReturn("Java");
         when(studentDTO.getInterests()).thenReturn("Viele");
@@ -62,15 +65,15 @@ class UserFactoryTest {
         assertEquals("Herr", studentUser.getSalutation(), "Salutation is not set correctly,should be Herr");
         assertNull(studentUser.getTitle(), "Title is not set correctly,should be null");
         assertEquals("Max", studentUser.getFirstName(), "First name is not set correctly,should be Max");
-        assertEquals("Mustermann", studentUser.getLastName(), "Last Name is not set correctly,should be Mustermann");
+        assertEquals("Mustermann", studentUser.getLastName(), "Last Name is not set correctly,should be " + name);
         assertEquals("Mustermannstraße", studentUser.getAddress().getStreet());
         assertEquals("DE", studentUser.getAddress().getCountry());
         assertEquals(Integer.valueOf(2), Integer.valueOf(studentUser.getAddress().getHouseNumber()));
         assertEquals("Mustermannstadt", studentUser.getAddress().getCity());
         assertEquals("12345", studentUser.getAddress().getPostalCode());
         assertEquals("0123456789", studentUser.getPhone(), "Phone is not set correctly,should be 0123456789");
-        assertEquals("max@mustermann.de", studentUser.getEmail(), "Email is not set correctly,should be max@mustermann.de");
-        assertTrue(BCrypt.checkpw("password1234", studentUser.getPassword()), "Password is not set correctly,should be password1234");
+        assertEquals(email, studentUser.getEmail(), "Email is not set correctly,should be " + email);        assertTrue(BCrypt.checkpw("password1234", studentUser.getPassword()), "Password is not set correctly,should be password1234");
+        assertTrue(BCrypt.checkpw(password, studentUser.getPassword()), "Password is not set correctly,should be " + password);
         assertEquals("1.1.2000", studentUser.getGraduation(), "Graduation is not set correctly,should be: 1.1.2000");
         assertEquals("Java", studentUser.getSkills(), "Skills is not set correctly,should be:Java");
         assertEquals("Viele", studentUser.getInterests(), "Interests is not set correctly,should be Viele");
@@ -90,10 +93,9 @@ class UserFactoryTest {
         when(userDTO.getSalutation()).thenReturn("Herr");
         when(userDTO.getTitle()).thenReturn(null);
         when(userDTO.getFirstName()).thenReturn("Max");
-        when(userDTO.getLastName()).thenReturn("Mustermann");
-        when(userDTO.getEmail()).thenReturn("max@mustermann.de");
-        when(userDTO.getPassword()).thenReturn("password1234");
-
+        when(userDTO.getLastName()).thenReturn(name);
+        when(userDTO.getEmail()).thenReturn(email);
+        when(userDTO.getPassword()).thenReturn(password);
         user = UserFactory.createUser(userDTO);
 
         assertEquals(100, user.getId(), "ID is not set correctly,should be 100");
@@ -102,10 +104,9 @@ class UserFactoryTest {
         assertNull(user.getTitle(), "Title is not set correctly,should be null");
         assertTrue(user.getAddress() instanceof Address);
         assertEquals("Max", user.getFirstName(), "First name is not set correctly,should be Max");
-        assertEquals("Mustermann", user.getLastName(), "Last Name is not set correctly,should be Mustermann");
-        assertEquals("00000000", user.getPhone(), "Phone is not set correctly,should be 0123456789");
-        assertEquals("max@mustermann.de", user.getEmail(), "Email is not set correctly,should be max@mustermann.de");
-        assertTrue(BCrypt.checkpw("password1234", user.getPassword()), "Password is not set correctly,should be password1234");
+        assertEquals(name, user.getLastName(), "Last Name is not set correctly,should be " + name);
+        assertEquals(email, user.getEmail(), "Email is not set correctly,should be " + email);
+        assertEquals(BCrypt.checkpw(password, user.getPassword()), "Password is not set correctly,should be " + password);
 
     }
 }

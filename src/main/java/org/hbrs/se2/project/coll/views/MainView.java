@@ -7,13 +7,20 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.polymertemplate.Id;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.textfield.TextField;
+import org.apache.tomcat.util.digester.Digester;
+import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.layout.LayoutAlternative;
+import org.hbrs.se2.project.coll.util.Globals;
 
-@Route(value = "" , layout = LayoutAlternative.class)
+@Route(value = "" , layout = AppView.class)
+@RouteAlias(value = "main" , layout = AppView.class)
 @PWA(name = "Coll@HBRS", shortName = "Coll")
+@PageTitle(Globals.PageTitles.MAIN_PAGE_TITLE)
 public class MainView extends VerticalLayout {
 
     @Id("main")

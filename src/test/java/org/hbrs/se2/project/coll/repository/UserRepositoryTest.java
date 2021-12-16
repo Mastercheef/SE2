@@ -1,7 +1,6 @@
 package org.hbrs.se2.project.coll.repository;
 
 import org.hbrs.se2.project.coll.dtos.UserDTO;
-import org.hbrs.se2.project.coll.entities.User;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mindrot.jbcrypt.BCrypt;

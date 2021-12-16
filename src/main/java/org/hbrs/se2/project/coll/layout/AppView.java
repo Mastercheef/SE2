@@ -8,10 +8,12 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
@@ -20,6 +22,9 @@ import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.views.ContactView;
+import org.hbrs.se2.project.coll.views.DataProtectionView;
+import org.hbrs.se2.project.coll.views.ImpressumView;
 import org.hbrs.se2.project.coll.views.StudentProfileView;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,13 +35,13 @@ import java.util.Optional;
  * The main view is a top-level placeholder for other views.
  */
 @CssImport("./styles/views/main/main-view.css")
-@Route("main")
 @JsModule("./styles/shared-styles.js")
 public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private Tabs menu;
     private H1 viewTitle;
     private H1 helloUser;
+    private Label copyright = new Label("Copyright © 2021-2022");
 
     @Autowired
     private ContactPersonRepository contactPersonRepository;
@@ -44,9 +49,8 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     public AppView() {
         if (getCurrentUser() == null) {
             System.out.println("LOG: In Constructor of App View - No User given!");
-        } else {
-            setUpUI();
         }
+        setUpUI();
     }
 
     public void setUpUI() {
@@ -60,16 +64,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         // Erstellung der vertikalen Navigationsleiste (Drawer)
         menu = createMenu();
         //addToDrawer(createDrawerContent(menu));
-    }
-
-    private boolean checkIfUserIsLoggedIn() {
-        // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
-        UserDTO userDTO = this.getCurrentUser();
-        if (userDTO == null) {
-            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -88,8 +82,10 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         // Hinzufügen des Toogle ('Big Mac') zum Ein- und Ausschalten des Drawers
         //layout.add(new DrawerToggle());
-        viewTitle = new H1();
+        viewTitle = new H1("Coll@HBRS");
+        viewTitle.getElement().getClassList().add("pointer");
         viewTitle.setWidthFull();
+        viewTitle.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW));
         layout.add( viewTitle );
 
         // Interner Layout
@@ -105,13 +101,20 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         // Logout-Button am rechts-oberen Rand.
         MenuBar bar = new MenuBar();
 
-        /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
-        String currentUserType = getCurrentUser().getType();
-        if(Objects.equals(currentUserType, "st"))
-            bar.addItem("Mein Profil" , e -> navigateToUserProfile());
-        else if(Objects.equals(currentUserType, "cp"))
-            bar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
-        bar.addItem("Logout" , e -> logoutUser());
+        if (checkIfUserIsLoggedIn()) {
+            /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
+            String currentUserType = getCurrentUser().getType();
+            if(Objects.equals(currentUserType, "st"))
+                bar.addItem("Mein Profil" , e -> navigateToUserProfile());
+            else if(Objects.equals(currentUserType, "cp"))
+                bar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
+            bar.addItem("Posteingang", e -> navigateToMessages());
+            bar.addItem("Logout" , e -> logoutUser());
+        } else {
+            bar.addItem("Registrieren" , e -> UI.getCurrent().navigate(Globals.Pages.REGISTER_VIEW));
+            bar.addItem("Login" , e -> UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW));
+        }
+
         topRightPanel.add(bar);
 
         layout.add( topRightPanel );
@@ -130,6 +133,13 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         String currentCompanyId = Integer.toString(getContactPersonsCompanyId());
         if(!Objects.equals(currentLocation, Globals.Pages.COMPANYPROFILE_VIEW + currentCompanyId))
             UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + currentCompanyId);
+    }
+
+    private void navigateToMessages() {
+        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
+        String currentUserId = Integer.toString(getCurrentUser().getId());
+        if(!Objects.equals(currentLocation, Globals.Pages.INBOX_VIEW + currentUserId))
+            UI.getCurrent().navigate(Globals.Pages.INBOX_VIEW + currentUserId);
     }
 
     private void logoutUser() {
@@ -162,8 +172,22 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         logoLayout.add(new Image("images/logo.png", "HelloCar logo"));
         logoLayout.add(new H1("HelloCar"));
 
+        HorizontalLayout footer = new HorizontalLayout(copyright);
+        footer.add(new RouterLink("Kontakt", ContactView.class));
+        footer.add(new RouterLink("Impressum", ImpressumView.class));
+        footer.add(new RouterLink("Datenschutz", DataProtectionView.class));
+        footer.setJustifyContentMode(FlexComponent.JustifyContentMode.START);
+        footer.setWidth("100%");
+        footer.setPadding(true);
+        footer.getElement().getStyle().set("background-color", "#233348");
+        footer.getElement().getStyle().set("color", "white");
+        footer.getElement().getStyle().set("clear", "both");
+        footer.getElement().getStyle().set("bottom", "0");
+        footer.getElement().getStyle().set("left", "0");
+        footer.getElement().getStyle().set("position", "fixed");
+
         // Hinzufügen des Menus inklusive der Tabs
-        layout.add(logoLayout, menu);
+        layout.add(logoLayout, menu, footer);
         return layout;
     }
 
@@ -186,13 +210,13 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private Component[] createMenuItems() {
 
-       // Jeder User sollte Autos sehen können, von daher wird dieser schon mal erzeugt und
-       // und dem Tabs-Array hinzugefügt. In der Methode createTab wird ein (Key, Value)-Pair übergeben:
+        // Jeder User sollte Autos sehen können, von daher wird dieser schon mal erzeugt und
+        // und dem Tabs-Array hinzugefügt. In der Methode createTab wird ein (Key, Value)-Pair übergeben:
         // Key: der sichtbare String des Menu-Items
         // Value: Die UI-Component, die nach dem Klick auf das Menuitem angezeigt wird.
-       return new Tab[]{ createTab( "Profil", StudentProfileView.class) };
+        return new Tab[]{ createTab( "Profil", StudentProfileView.class) };
 
-       // ToDo für die Teams: Weitere Tabs aus ihrem Projekt hier einfügen!
+        // ToDo für die Teams: Weitere Tabs aus ihrem Projekt hier einfügen!
 
     }
 
@@ -208,21 +232,48 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         super.afterNavigation();
 
         // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
-        if ( !checkIfUserIsLoggedIn() ) return;
+        navigateToLoginIfSessionNeeded();
+
+        if ( checkIfUserIsLoggedIn() ) {
+            // Setzen des Vornamens von dem aktuell eingeloggten Benutzer
+            helloUser.setText("Hallo "  + this.getCurrentNameOfUser() );
+        }
 
         // Der aktuell-selektierte Tab wird gehighlighted.
         getTabForComponent(getContent()).ifPresent(menu::setSelectedTab);
 
         // Setzen des aktuellen Names des Tabs
-        viewTitle.setText(getCurrentPageTitle());
-
-        // Setzen des Vornamens von dem aktuell eingeloggten Benutzer
-        helloUser.setText("Hallo "  + this.getCurrentNameOfUser() );
+        //viewTitle.setText(getCurrentPageTitle());
+        System.out.println(getCurrentPageTitle());
     }
 
     private Optional<Tab> getTabForComponent(Component component) {
         return menu.getChildren().filter(tab -> ComponentUtil.getData(tab, Class.class).equals(component.getClass()))
                 .findFirst().map(Tab.class::cast);
+    }
+
+    private boolean checkIfUserIsLoggedIn() {
+        // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
+        UserDTO userDTO = this.getCurrentUser();
+        if (userDTO == null) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean navigateToLoginIfSessionNeeded() {
+        // Falls der Benutzer nicht eingeloggt ist, und versucht eine interne Seite aufzurufen,
+        // dann wird er auf die Startseite gelenkt
+        UserDTO userDTO = this.getCurrentUser();
+        String pageTitle = getCurrentPageTitle();
+        if (userDTO == null && !pageTitle.equals(Globals.PageTitles.REGISTER_PAGE_TITLE) &&
+                !pageTitle.equals(Globals.PageTitles.LOGIN_PAGE_TITLE) &&
+                !pageTitle.equals(Globals.PageTitles.MAIN_PAGE_TITLE)) {
+            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
+            //UI.getCurrent().getPage().reload();
+            return false;
+        }
+        return true;
     }
 
     private String getCurrentPageTitle() {
@@ -257,7 +308,8 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
      */
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if (getCurrentUser() == null){
-            beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
+            System.out.println("Reroute");
+            //beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
         }
 
     }

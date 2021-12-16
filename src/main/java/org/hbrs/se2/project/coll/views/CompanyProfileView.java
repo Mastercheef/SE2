@@ -9,8 +9,8 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.hbrs.se2.project.coll.control.CompanyProfileControl;
-import org.hbrs.se2.project.coll.dtos.CompanyProfileDTO;
+import org.hbrs.se2.project.coll.control.CompanyControl;
+import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
@@ -37,11 +37,14 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     private JobAdvertisementRepository jobAdvertisementRepository;
 
     @Autowired
-    private CompanyProfileControl profileControl;
+    private CompanyControl profileControl;
     Address address;
     int companyId;
 
-    private final static Logger LOGGER = Logger.getLogger(CompanyProfileView.class.getName());
+    private static final String WIDTH = "200px";
+    private static final String FONT = "font-weight";
+
+    private static final Logger LOGGER = Logger.getLogger(CompanyProfileView.class.getName());
 
     Label companyname   = new Label("Firmenname:");
     Label street        = new Label("Strasse:");
@@ -76,7 +79,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     public void setParameter(BeforeEvent event, String parameter) {
         try {
             if (!Objects.equals(parameter, "")) {
-                CompanyProfileDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
+                CompanyDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
                 address = profileDTO.getAddress();
                 initLabels(profileDTO);
                 createProfile();
@@ -87,7 +90,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     }
 
     // Used to read DTO data and inject it into the labels
-    public void initLabels(CompanyProfileDTO profileDTO) {
+    public void initLabels(CompanyDTO profileDTO) {
         companyId       = profileDTO.getId();
         lcompanyname    = new Label(profileDTO.getCompanyName());
         lstreet         = new Label(address.getStreet());
@@ -109,14 +112,14 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // TODO: Get Image from Database
         // Profile Image
         Image profileImage = new Image("https://thispersondoesnotexist.com/image", "placeholder");
-        profileImage.setWidth("200px");
+        profileImage.setWidth(WIDTH);
         profileImage.getElement().getStyle().set("border", "1px solid black");
 
         // Styling
         for (Label label : new Label[]{ companyname, street, streetnumber, postalcode, city, country, email,
                 phone, fax, website, description}) {
-            label.getElement().getStyle().set("font-weight", "bold");
-            label.setWidth("200px");
+            label.getElement().getStyle().set(FONT, "bold");
+            label.setWidth(WIDTH);
         }
 
         // Profile Data
@@ -190,7 +193,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
         // Styling
         for (Label label : new Label[]{ name, phone, email, position }) {
-            label.getElement().getStyle().set("font-weight", "bold");
+            label.getElement().getStyle().set(FONT, "bold");
             label.setWidth("100px");
         }
 
@@ -230,7 +233,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 jobAdvertisementRepository.findJobAdvertisementsByCompanyId(companyId);
 
         // Only print them if they exist
-        if(jobAdvertisements.size() == 0){
+        if(jobAdvertisements.isEmpty()){
             Label noJobs = new Label("Diese Firma hat zur Zeit keine Stellenangebote.");
             form.add(noJobs);
         }
@@ -261,8 +264,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 // Styling
                 for (Label label : new Label[]{ jobTitle, jobType, jobHours, jobRequirements, jobDescription, jobStart,
                         jobEnd, jobTemporary }) {
-                    label.getElement().getStyle().set("font-weight", "bold");
-                    label.setWidth("200px");
+                    label.getElement().getStyle().set(FONT, "bold");
+                    label.setWidth(WIDTH);
                 }
 
                 // Count Job offers
@@ -293,8 +296,9 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 HorizontalLayout hJobTemporary      = new HorizontalLayout(jobTemporary, lJobTemporary);
 
                 // Create Buttons to get in contact with the Company
-                // TODO: Kontaktformular nach Button Klick aufrufen (Sprint 2)
                 Button contactButton = new Button("Kontakt aufnehmen");
+                contactButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.CONTACTING_VIEW +
+                        companyId + "/" + job.getId()));
 
                 // Add everything to the container
                 form.add(jobNumber, hJobTitle, hJobType, hJobHours, hJobRequirements, hJobDescription, hJobStart,
@@ -308,7 +312,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     }
 
     public CompanyProfileView() {
-
+        //Required because of VAADIN
     }
 
 }
