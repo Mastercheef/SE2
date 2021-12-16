@@ -31,6 +31,14 @@ public class Globals {
         public static final String MAIN_PAGE_TITLE              = "Main";
     }
 
+    public static class LogMessage {
+        public static final String LOG          = "LOG: {}";
+        public static final String CONNECTED = "Während der Verbindung zur Datenbank mit JPA ist \" +\n" +
+                "                        \"ein Fehler aufgetreten.";
+        public static final String ERROR              = "Es ist ein unerwarteter Fehler aufgetreten.";
+    }
+
+
     public static class Regex {
         // REGEX for input validation
         private static final Pattern VALID_EMAIL_ADDRESS_REGEX =

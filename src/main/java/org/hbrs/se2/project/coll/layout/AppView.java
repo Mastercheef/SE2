@@ -25,6 +25,8 @@ import org.hbrs.se2.project.coll.views.ContactView;
 import org.hbrs.se2.project.coll.views.DataProtectionView;
 import org.hbrs.se2.project.coll.views.ImpressumView;
 import org.hbrs.se2.project.coll.views.StudentProfileView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
@@ -37,6 +39,8 @@ import java.util.Optional;
 @JsModule("./styles/shared-styles.js")
 public class AppView extends AppLayout implements BeforeEnterObserver {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppView.class);
+
     private Tabs menu;
     private H1 homeIcon;
     private H1 helloUser;
@@ -47,7 +51,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     public AppView() {
         if (getCurrentUser() == null) {
-            System.out.println("LOG: In Constructor of App View - No User given!");
+            LOGGER.info("LOG: In Constructor of App View - No User given!");
         }
         setUpUI();
     }
@@ -251,7 +255,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         // Setzen des aktuellen Names des Tabs
         //viewTitle.setText(getCurrentPageTitle());
-        System.out.println(getCurrentPageTitle());
+        LOGGER.info(getCurrentPageTitle());
     }
 
     private Optional<Tab> getTabForComponent(Component component) {
@@ -315,7 +319,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
      */
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if (getCurrentUser() == null){
-            System.out.println("Reroute");
+            LOGGER.info("Reroute");
             //beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
         }
 
