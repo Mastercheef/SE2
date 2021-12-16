@@ -33,9 +33,5 @@ class LoginViewTest {
 
 
     }
-    public void loginFirefox() {
-        WebDriver driver = new FirefoxDriver();
-    }
-
 
 }
