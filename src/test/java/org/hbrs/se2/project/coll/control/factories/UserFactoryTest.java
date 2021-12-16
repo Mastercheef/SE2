@@ -7,6 +7,7 @@ import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.entities.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
@@ -69,7 +70,7 @@ class UserFactoryTest {
         assertEquals("12345", studentUser.getAddress().getPostalCode());
         assertEquals("0123456789", studentUser.getPhone(), "Phone is not set correctly,should be 0123456789");
         assertEquals("max@mustermann.de", studentUser.getEmail(), "Email is not set correctly,should be max@mustermann.de");
-        assertEquals("password1234", studentUser.getPassword(), "Password is not set correctly,should be password1234");
+        assertTrue(BCrypt.checkpw("password1234", studentUser.getPassword()), "Password is not set correctly,should be password1234");
         assertEquals("1.1.2000", studentUser.getGraduation(), "Graduation is not set correctly,should be: 1.1.2000");
         assertEquals("Java", studentUser.getSkills(), "Skills is not set correctly,should be:Java");
         assertEquals("Viele", studentUser.getInterests(), "Interests is not set correctly,should be Viele");
@@ -104,7 +105,7 @@ class UserFactoryTest {
         assertEquals("Mustermann", user.getLastName(), "Last Name is not set correctly,should be Mustermann");
         assertEquals("00000000", user.getPhone(), "Phone is not set correctly,should be 0123456789");
         assertEquals("max@mustermann.de", user.getEmail(), "Email is not set correctly,should be max@mustermann.de");
-        assertEquals("password1234", user.getPassword(), "Password is not set correctly,should be password1234");
+        assertTrue(BCrypt.checkpw("password1234", user.getPassword()), "Password is not set correctly,should be password1234");
 
     }
 }

@@ -6,6 +6,7 @@ import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,7 +58,7 @@ public class UserFactoryTest {
         assertEquals(studentUserDTO.getDateOfBirth(), studentUser.getDateOfBirth());
         assertEquals(studentUserDTO.getPhone(), studentUser.getPhone());
         assertEquals(studentUserDTO.getEmail(), studentUser.getEmail());
-        assertEquals(studentUserDTO.getPassword(), studentUser.getPassword());
+        assertTrue(BCrypt.checkpw(studentUserDTO.getPassword(), studentUser.getPassword()));
         assertEquals(studentUserDTO.getSkills(), studentUser.getSkills());
         assertEquals(studentUserDTO.getInterests(), studentUser.getInterests());
         assertEquals(studentUserDTO.getWebsite(), studentUser.getWebsite());
