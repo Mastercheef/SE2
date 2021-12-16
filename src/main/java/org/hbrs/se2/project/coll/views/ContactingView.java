@@ -16,6 +16,8 @@ import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
+
 
 @PageTitle("Kontaktaufnahme")
 @Route(value = "contacting/:companyId/:jobId", layout = AppView.class)
@@ -68,16 +70,17 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                             textArea.getValue(),
                             userId,
                             contactPersonId,
-                            Integer.parseInt(jobId)
+                            Integer.parseInt(jobId),
+                            LocalDate.now()
                     );
                     Dialog dialog = new Dialog();
-                    dialog.add("Ihre Nachricht wurde versandt!");
+                    dialog.add("Ihre Nachricht wurde gesendet!");
                     dialog.open();
                     UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
                 } catch (DatabaseUserException ex) {
                     ex.printStackTrace();
                     Dialog dialog = new Dialog();
-                    dialog.add("Während dem Senden der Nachricht ist ein Fehler aufgetreten. Bitte kontaktieren" +
+                    dialog.add("Während dem Senden der Nachricht ist ein Fehler aufgetreten. Bitte kontaktieren " +
                             "Sie den Administrator dieser Webseite.");
                     dialog.open();
                 }

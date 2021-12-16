@@ -128,6 +128,8 @@ create table col_tab_message (
     recipient_id bigint not null,
     content varchar not null,
     subject_id bigint not null,
+    date date not null,
+    read boolean not null default false,
     constraint col_pk_message_id primary key (message_id));
 
 -- Constraints Section
