@@ -6,9 +6,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Globals {
+
+    private Globals() {
+        throw new IllegalStateException(ExceptionMessage.UTILITY);
+    }
     public static final String CURRENT_USER = "current_User";
 
     public static class Pages {
+        private Pages() {
+            throw new IllegalStateException(ExceptionMessage.UTILITY);
+        }
         public static final String COMPANYPROFILE_VIEW          = "companyprofile/";     // Company
         public static final String COMPANYPROFILE_EDIT_VIEW     = "companyprofile_edit/";
         public static final String CONTACTING_VIEW              = "contacting/";
@@ -26,20 +33,34 @@ public class Globals {
     }
 
     public static class PageTitles {
+        private PageTitles() {
+            throw new IllegalStateException(ExceptionMessage.UTILITY);
+        }
         public static final String REGISTER_PAGE_TITLE          = "Registration";
         public static final String LOGIN_PAGE_TITLE             = "Login";
         public static final String MAIN_PAGE_TITLE              = "Main";
     }
 
     public static class LogMessage {
+        private LogMessage() {
+            throw new IllegalStateException(ExceptionMessage.UTILITY);
+        }
+
         public static final String LOG          = "LOG: {}";
         public static final String CONNECTED = "Während der Verbindung zur Datenbank mit JPA ist \" +\n" +
                 "                        \"ein Fehler aufgetreten.";
         public static final String ERROR              = "Es ist ein unerwarteter Fehler aufgetreten.";
     }
 
+    public static class ExceptionMessage {
+        private ExceptionMessage() {
+            throw new IllegalStateException(ExceptionMessage.UTILITY);
+        }
+        public static final String UTILITY = "Utility Class";
+    }
 
     public static class Regex {
+
         // REGEX for input validation
         private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
                 Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
@@ -59,19 +80,28 @@ public class Globals {
     }
 
     public static class Roles {
+        private Roles () {
+
+        }
         public static final String ADMIN = "admin";
         public static final String STUDENT = "student";
 
     }
 
     public static class Errors {
+        private Errors() {
+            throw new IllegalStateException(ExceptionMessage.UTILITY);
+        }
         public static final String NOUSERFOUND = "nouser";
         public static final String SQLERROR = "sql";
         public static final String DATABASE = "database";
     }
 
     public static class Countries {
-        private static List<String> countryNames = new ArrayList();
+        private Countries() {
+            throw new IllegalStateException(ExceptionMessage.UTILITY);
+        }
+        private static List<String> countryNames = new ArrayList<>();
         public static final List<String> getCountries() {
             for (String countryCode : Locale.getISOCountries()) {
                 Locale obj = new Locale("", countryCode);
