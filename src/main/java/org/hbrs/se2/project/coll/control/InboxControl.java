@@ -58,12 +58,11 @@ public class InboxControl {
             this.messageRepository.save(message);
 
         } catch (Exception exception) {
-            LOGGER.info("LOG: {}" , exception.toString());
+            LOGGER.info(Globals.LogMessage.LOG, exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
-                throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist " +
-                        "ein Fehler aufgetreten.");
+                throw new DatabaseUserException(Globals.LogMessage.CONNECTED);
             } else {
-                throw new DatabaseUserException("Es ist ein unerwarteter Fehler aufgetreten.");
+                throw new DatabaseUserException(Globals.LogMessage.ERROR);
             }
         }
     }
@@ -75,12 +74,11 @@ public class InboxControl {
             this.messageRepository.delete(message);
 
         } catch (Exception exception) {
-            LOGGER.info("LOG: {}" , exception.toString());
+            LOGGER.info(Globals.LogMessage.LOG, exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
-                throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist " +
-                        "ein Fehler aufgetreten.");
+                throw new DatabaseUserException(Globals.LogMessage.CONNECTED);
             } else {
-                throw new DatabaseUserException("Es ist ein unerwarteter Fehler aufgetreten.");
+                throw new DatabaseUserException(Globals.LogMessage.ERROR);
             }
         }
     }
@@ -91,12 +89,11 @@ public class InboxControl {
             return (this.userRepository.findUserById(id).getFirstName() + " " +
                     this.userRepository.findUserById(id).getLastName());
         } catch (Exception exception) {
-            LOGGER.info("LOG: {}" ,  exception.toString());
+            LOGGER.info(Globals.LogMessage.LOG,  exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
-                throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist " +
-                        "ein Fehler aufgetreten.");
+                throw new DatabaseUserException(Globals.LogMessage.CONNECTED);
             } else {
-                throw new DatabaseUserException("Es ist ein unerwarteter Fehler aufgetreten.");
+                throw new DatabaseUserException(Globals.LogMessage.ERROR);
             }
         }
     }
@@ -106,12 +103,11 @@ public class InboxControl {
             return this.jobAdvertisementRepository.findJobAdvertisementById(subject).getJobTitle();
 
         } catch (Exception exception) {
-            LOGGER.info("LOG: {}" ,  exception.toString());
+            LOGGER.info(Globals.LogMessage.LOG ,  exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
-                throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist " +
-                        "ein Fehler aufgetreten.");
+                throw new DatabaseUserException(Globals.LogMessage.CONNECTED);
             } else {
-                throw new DatabaseUserException("Es ist ein unerwarteter Fehler aufgetreten.");
+                throw new DatabaseUserException(Globals.LogMessage.ERROR);
             }
         }
     }
@@ -129,12 +125,11 @@ public class InboxControl {
                         contactPersonRepository.findContactPersonById(id).getCompany().getId());
 
         } catch (Exception exception) {
-            LOGGER.info("LOG: {}" ,  exception.toString());
+            LOGGER.info(Globals.LogMessage.LOG,  exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
-                throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist " +
-                        "ein Fehler aufgetreten.");
+                throw new DatabaseUserException(Globals.LogMessage.CONNECTED);
             } else {
-                throw new DatabaseUserException("Es ist ein unerwarteter Fehler aufgetreten.");
+                throw new DatabaseUserException(Globals.LogMessage.ERROR);
             }
         }
     }
@@ -154,12 +149,11 @@ public class InboxControl {
             updatedMessage.setRead(true);
             messageRepository.save(updatedMessage);
         } catch (Exception exception) {
-            LOGGER.info("LOG: {}" ,  exception.toString());
+            LOGGER.info(Globals.LogMessage.LOG ,  exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
-                throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist " +
-                        "ein Fehler aufgetreten.");
+                throw new DatabaseUserException(Globals.LogMessage.CONNECTED);
             } else {
-                throw new DatabaseUserException("Es ist ein unerwarteter Fehler aufgetreten.");
+                throw new DatabaseUserException(Globals.LogMessage.ERROR);
             }
         }
     }
