@@ -75,7 +75,7 @@ create table col_tab_user (
      last_name varchar(16) not null,
      address_id bigint not null,
      date_of_birth date not null,
-     password varchar(20) not null,
+     password varchar(255) not null,
      phone_number varchar(12) not null,
      salutation varchar(10) not null,
      title varchar(16) not null,
@@ -93,6 +93,7 @@ create table col_tab_job_advertisement (
      end_of_work date,
      contact_person_id bigint not null,
      job_description varchar(1024),
+     salary int,
      job_title varchar(64) not null,
      advertisement_id bigint not null default nextval('col_seq_advertisement_id'),
      constraint col_pk_advertisement_id primary key (advertisement_id));

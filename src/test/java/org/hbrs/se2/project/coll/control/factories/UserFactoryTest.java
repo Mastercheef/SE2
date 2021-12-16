@@ -7,6 +7,7 @@ import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.entities.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
@@ -71,8 +72,8 @@ class UserFactoryTest {
         assertEquals("Mustermannstadt", studentUser.getAddress().getCity());
         assertEquals("12345", studentUser.getAddress().getPostalCode());
         assertEquals("0123456789", studentUser.getPhone(), "Phone is not set correctly,should be 0123456789");
-        assertEquals(email, studentUser.getEmail(), "Email is not set correctly,should be " + email);
-        assertEquals(password, studentUser.getPassword(), "Password is not set correctly,should be " + password);
+        assertEquals(email, studentUser.getEmail(), "Email is not set correctly,should be " + email);        assertTrue(BCrypt.checkpw("password1234", studentUser.getPassword()), "Password is not set correctly,should be password1234");
+        assertTrue(BCrypt.checkpw(password, studentUser.getPassword()), "Password is not set correctly,should be " + password);
         assertEquals("1.1.2000", studentUser.getGraduation(), "Graduation is not set correctly,should be: 1.1.2000");
         assertEquals("Java", studentUser.getSkills(), "Skills is not set correctly,should be:Java");
         assertEquals("Viele", studentUser.getInterests(), "Interests is not set correctly,should be Viele");
@@ -101,10 +102,11 @@ class UserFactoryTest {
         assertEquals("st", user.getType(), "Type is not set correctly,should be st");
         assertEquals("Herr", user.getSalutation(), "Salutation is not set correctly,should be Herr");
         assertNull(user.getTitle(), "Title is not set correctly,should be null");
+        assertNotNull(user.getAddress());
         assertEquals("Max", user.getFirstName(), "First name is not set correctly,should be Max");
         assertEquals(name, user.getLastName(), "Last Name is not set correctly,should be " + name);
         assertEquals(email, user.getEmail(), "Email is not set correctly,should be " + email);
-        assertEquals(password, user.getPassword(), "Password is not set correctly,should be " + password);
+        assertTrue(BCrypt.checkpw(password, user.getPassword()), "Password is not set correctly,should be " + password);
 
     }
 }
