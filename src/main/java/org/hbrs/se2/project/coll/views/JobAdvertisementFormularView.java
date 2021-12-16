@@ -17,7 +17,7 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.CompanyControl;
-import org.hbrs.se2.project.coll.control.RecruitmentAdvertisementControl;
+import org.hbrs.se2.project.coll.control.JobAdvertisementControl;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.RecruitmentAdvertisingDTOImpl;
@@ -37,9 +37,9 @@ import java.util.logging.Logger;
 
 @Route(value = "recruitment_formular", layout = AppView.class)
 @PageTitle("Anlegen eines Stellenangebots")
-public class RecruitmentAdvertisementFormularView extends VerticalLayout implements HasUrlParameter<String> {
+public class JobAdvertisementFormularView extends VerticalLayout implements HasUrlParameter<String> {
 
-    private static final Logger LOGGER = Logger.getLogger(RecruitmentAdvertisementFormularView.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(JobAdvertisementFormularView.class.getName());
 
     @Autowired
     ContactPersonRepository contactPersonRepository;
@@ -55,7 +55,7 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
     int companyId;
 
     @Autowired
-    private RecruitmentAdvertisementControl control;
+    private JobAdvertisementControl control;
 
     Label infoText              = new Label("Mit (*) markierte Felder sind notwendig.");
     Label jobTitle              = new Label("Jobtitel (*)");
@@ -258,7 +258,7 @@ public class RecruitmentAdvertisementFormularView extends VerticalLayout impleme
         control.saveAdvertisement(newJob);
     }
 
-    public RecruitmentAdvertisementFormularView() {
+    public JobAdvertisementFormularView() {
         //Required for Vaadin
     }
 }

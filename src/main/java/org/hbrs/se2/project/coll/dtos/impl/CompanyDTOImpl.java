@@ -1,7 +1,7 @@
 package org.hbrs.se2.project.coll.dtos.impl;
 
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
-import org.hbrs.se2.project.coll.dtos.StellenausschreibungDTO;
+import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 
 import java.util.Set;
@@ -17,7 +17,7 @@ public class CompanyDTOImpl implements CompanyDTO {
     private String website;
     private String description;
 
-    private Set<StellenausschreibungDTO>  offers;
+    private Set<JobAdvertisementDTO>  offers;
 
     public int      getId() { return this.id; }
     public void     setId(int id) { this.id = id; }
@@ -37,7 +37,7 @@ public class CompanyDTOImpl implements CompanyDTO {
     public String   getDescription()                { return this.description; }
     public void     setDescription(String description)    {this.description = description; }
 
-    public Set<StellenausschreibungDTO>    getAdvertisements() { return this.offers; }
-    public void     setAdvertisements(Set<StellenausschreibungDTO> offers) { this.offers = offers; }
+    public Set<JobAdvertisementDTO>    getAdvertisements() { return this.offers; }
+    public void     setAdvertisements(Set<JobAdvertisementDTO> offers) { this.offers = offers; }
 
 }

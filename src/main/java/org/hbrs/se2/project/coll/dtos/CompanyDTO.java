@@ -18,6 +18,6 @@ public interface CompanyDTO {
     public String   getDescription();
 
     @OneToMany
-    public Set<StellenausschreibungDTO> getAdvertisements();
+    public Set<JobAdvertisementDTO> getAdvertisements();
 
 }

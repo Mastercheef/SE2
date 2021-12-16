@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RecruitmentAdvertisingDTOImplTest {
+class JobAdvertisementDTOImplTest {
 
     @Mock
     private Address address = new Address();
