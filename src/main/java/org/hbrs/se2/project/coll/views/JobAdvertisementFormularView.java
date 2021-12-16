@@ -82,15 +82,15 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
     @Override
     public void setParameter(BeforeEvent event, String parameter) {
         try {
-            if (!Objects.equals(parameter, "")) {
-                if(checkIfUserIsLoggedIn()) {
+            if ((!Objects.equals(parameter, "")) && (checkIfUserIsLoggedIn()) ) {
+
                     CompanyDTO profileDTO = profileControl
                             .findCompanyProfileByCompanyId(Integer.parseInt(parameter));
                     companyId = profileDTO.getId();
                     boolean ownership = checkIfUserIsProfileOwner(Integer.parseInt(parameter));
                     if (ownership)
                         initFormular();
-                }
+
             }
         } catch (Exception e) {
             LOGGER.log(Level.INFO,e.toString());
