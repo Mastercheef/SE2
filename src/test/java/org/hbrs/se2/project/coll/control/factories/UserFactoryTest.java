@@ -102,11 +102,11 @@ class UserFactoryTest {
         assertEquals("st", user.getType(), "Type is not set correctly,should be st");
         assertEquals("Herr", user.getSalutation(), "Salutation is not set correctly,should be Herr");
         assertNull(user.getTitle(), "Title is not set correctly,should be null");
-        assertTrue(user.getAddress() instanceof Address);
+        assertNotNull(user.getAddress());
         assertEquals("Max", user.getFirstName(), "First name is not set correctly,should be Max");
         assertEquals(name, user.getLastName(), "Last Name is not set correctly,should be " + name);
         assertEquals(email, user.getEmail(), "Email is not set correctly,should be " + email);
-        assertEquals(BCrypt.checkpw(password, user.getPassword()), "Password is not set correctly,should be " + password);
+        assertTrue(BCrypt.checkpw(password, user.getPassword()), "Password is not set correctly,should be " + password);
 
     }
 }

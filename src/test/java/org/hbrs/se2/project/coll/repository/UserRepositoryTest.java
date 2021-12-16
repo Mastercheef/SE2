@@ -1,6 +1,7 @@
 package org.hbrs.se2.project.coll.repository;
 
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.entities.User;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mindrot.jbcrypt.BCrypt;
@@ -26,14 +27,14 @@ class UserRepositoryTest {
 
     @Test
     void findUserByEmail() {
-        userDTO = userRepository.findUserByEmail("mail");
+        userDTO = userRepository.findUserByEmail("email@hbrs.de");
         assertEquals(USERID , userDTO.getId());
     }
 
     @Test
     void findUserById() {
         userDTO = userRepository.findUserById(USERID);
-        assertEquals("mail" , userDTO.getEmail());
+        assertEquals("email@hbrs.de" , userDTO.getEmail());
     }
 
     @Test
