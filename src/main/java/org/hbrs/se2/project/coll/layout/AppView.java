@@ -13,7 +13,6 @@ import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
@@ -39,7 +38,7 @@ import java.util.Optional;
 public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private Tabs menu;
-    private H1 viewTitle;
+    private H1 homeIcon;
     private H1 helloUser;
     private Label copyright = new Label("Copyright © 2021-2022");
 
@@ -72,53 +71,61 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
      */
     private Component   createHeaderContent() {
         // Ein paar Grund-Einstellungen. Alles wird in ein horizontales Layout gesteckt.
-        HorizontalLayout layout = new HorizontalLayout();
-        layout.setId("header");
-        layout.getThemeList().set("dark", true);
-        layout.setWidthFull();
-        layout.setSpacing(false);
-        layout.setAlignItems(FlexComponent.Alignment.CENTER);
-        layout.setJustifyContentMode( FlexComponent.JustifyContentMode.EVENLY );
+        HorizontalLayout headerLayout = new HorizontalLayout();
+        headerLayout.setId("header");
+        headerLayout.getThemeList().set("dark", true);
+        headerLayout.setWidthFull();
+        headerLayout.setSpacing(false);
+        headerLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+        headerLayout.setJustifyContentMode( FlexComponent.JustifyContentMode.EVENLY );
 
         // Hinzufügen des Toogle ('Big Mac') zum Ein- und Ausschalten des Drawers
         //layout.add(new DrawerToggle());
-        viewTitle = new H1("Coll@HBRS");
-        viewTitle.getElement().getClassList().add("pointer");
-        viewTitle.setWidthFull();
-        viewTitle.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW));
-        layout.add( viewTitle );
+        HorizontalLayout homeIconHorizontalLayout = new HorizontalLayout();
+        homeIconHorizontalLayout.setHeightFull();
+        homeIconHorizontalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+        homeIconHorizontalLayout.setJustifyContentMode( FlexComponent.JustifyContentMode.CENTER );
+        homeIconHorizontalLayout.setFlexGrow(1);
+        homeIconHorizontalLayout.setPadding(true);
+
+        homeIcon = new H1("Coll@HBRS");
+        homeIcon.getElement().getClassList().add("pointer");
+        homeIcon.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW));
+        homeIconHorizontalLayout.add(homeIcon);
+        headerLayout.add(homeIconHorizontalLayout);
 
         // Interner Layout
-        HorizontalLayout topRightPanel = new HorizontalLayout();
-        topRightPanel.setWidthFull();
-        topRightPanel.setJustifyContentMode( FlexComponent.JustifyContentMode.END );
-        topRightPanel.setAlignItems( FlexComponent.Alignment.CENTER );
+        HorizontalLayout headerNavigationPanel = new HorizontalLayout();
+        headerNavigationPanel.setWidthFull();
+        headerNavigationPanel.setJustifyContentMode( FlexComponent.JustifyContentMode.END );
+        headerNavigationPanel.setAlignItems( FlexComponent.Alignment.CENTER );
+        headerNavigationPanel.setFlexGrow(5);
 
         // Der Name des Users wird später reingesetzt, falls die Navigation stattfindet
         helloUser = new H1();
-        topRightPanel.add(helloUser);
+        headerNavigationPanel.add(helloUser);
 
         // Logout-Button am rechts-oberen Rand.
-        MenuBar bar = new MenuBar();
+        MenuBar navigationBar = new MenuBar();
 
         if (checkIfUserIsLoggedIn()) {
             /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
             String currentUserType = getCurrentUser().getType();
             if(Objects.equals(currentUserType, "st"))
-                bar.addItem("Mein Profil" , e -> navigateToUserProfile());
+                navigationBar.addItem("Mein Profil" , e -> navigateToUserProfile());
             else if(Objects.equals(currentUserType, "cp"))
-                bar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
-            bar.addItem("Posteingang", e -> navigateToMessages());
-            bar.addItem("Logout" , e -> logoutUser());
+                navigationBar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
+            navigationBar.addItem("Posteingang", e -> navigateToMessages());
+            navigationBar.addItem("Logout" , e -> logoutUser());
         } else {
-            bar.addItem("Registrieren" , e -> UI.getCurrent().navigate(Globals.Pages.REGISTER_VIEW));
-            bar.addItem("Login" , e -> UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW));
+            navigationBar.addItem("Registrieren" , e -> UI.getCurrent().navigate(Globals.Pages.REGISTER_VIEW));
+            navigationBar.addItem("Login" , e -> UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW));
         }
 
-        topRightPanel.add(bar);
+        headerNavigationPanel.add(navigationBar);
 
-        layout.add( topRightPanel );
-        return layout;
+        headerLayout.add( headerNavigationPanel );
+        return headerLayout;
     }
 
     private void navigateToUserProfile() {
