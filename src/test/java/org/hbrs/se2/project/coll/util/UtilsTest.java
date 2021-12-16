@@ -52,8 +52,4 @@ class UtilsTest {
         assertEquals("9.7.2001", Utils.convertToGermanDateFormat(date1));
     }
 
-    @Test
-    void getOSTest(){
-        assertEquals(Utils.OS.WINDOWS,Utils.getOS());
-    }
 }
