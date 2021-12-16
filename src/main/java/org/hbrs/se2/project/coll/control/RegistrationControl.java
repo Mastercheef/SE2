@@ -11,9 +11,7 @@ import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class RegistrationControl {
@@ -31,10 +29,12 @@ public class RegistrationControl {
     @Autowired
     ContactPersonControl contactPersonControl;
 
-    RegistrationDTO registrationDTO;
-    RegistrationResultDTOImpl registrationResult;
+    private RegistrationDTO registrationDTO;
+    private RegistrationResultDTOImpl registrationResult;
 
+    @Transactional
     public RegistrationResultDTO registerUser(RegistrationDTO registrationDTO) throws DatabaseUserException {
+        Company savedCompany = null;
         try {
             this.registrationResult = new RegistrationResultDTOImpl();
             this.registrationDTO = registrationDTO;
@@ -63,7 +63,7 @@ public class RegistrationControl {
                 }
 
                 if (registrationDTO.getUserDTO().getType().equals("cp")) {
-                    Company savedCompany = companyControl.saveCompany(registrationDTO.getCompanyDTO());
+                    savedCompany = companyControl.saveCompany(registrationDTO.getCompanyDTO());
                     contactPersonControl.createNewContactPerson(registrationDTO.getUserDTO(), savedCompany);
                 }
 

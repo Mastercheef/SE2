@@ -26,7 +26,7 @@ public class LoginView extends VerticalLayout {
         LoginForm component = new LoginForm();
 
         addClassName("login-view");
-        component.setAction("login");
+        //component.setAction("login");
 
 
         component.addLoginListener(e -> {
