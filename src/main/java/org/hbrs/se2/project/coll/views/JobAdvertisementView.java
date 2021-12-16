@@ -8,7 +8,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import org.hbrs.se2.project.coll.layout.LayoutAlternative;
 
 //TODO: UserDTO für Daten auslesen und in Textfelder einfüllen
 
