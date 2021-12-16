@@ -7,11 +7,15 @@ import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StudentUserControl {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudentUserControl.class);
 
     @Autowired
     private StudentUserRepository studentUserRepository;
@@ -44,13 +48,13 @@ public class StudentUserControl {
             StudentUser savedStudentUser = this.studentUserRepository.save( studentUser );
 
             if (studentUser.getId() > 0)
-                System.out.println("LOG : Updated StudentUser profile with ID : " + studentUser.getId());
+                LOGGER.info("LOG : Updated StudentUser profile with ID : {}" , studentUser.getId());
             else
-                System.out.println("LOG : Created new StudentUser: " + studentUser.getId());
+                LOGGER.info("LOG : Created new StudentUser: {}" , studentUser.getId());
 
             return savedStudentUser;
         } catch (Exception exception) {
-            System.out.println("LOG : " + exception);
+            LOGGER.info("LOG : {}" , exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
                 throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist ein Fehler aufgetreten.");
             } else {
