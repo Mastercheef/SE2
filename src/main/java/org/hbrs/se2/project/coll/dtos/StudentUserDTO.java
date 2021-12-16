@@ -1,6 +1,6 @@
 package org.hbrs.se2.project.coll.dtos;
 
-import java.util.*;
+
 
 public interface StudentUserDTO extends UserDTO{
     public String getGraduation();

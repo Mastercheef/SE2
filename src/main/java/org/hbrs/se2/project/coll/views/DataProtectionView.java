@@ -11,6 +11,6 @@ import org.hbrs.se2.project.coll.layout.LayoutAlternative;
 public class DataProtectionView extends HorizontalLayout {
 
     public DataProtectionView() {
-
+            //Required for Vaadin
     }
 }

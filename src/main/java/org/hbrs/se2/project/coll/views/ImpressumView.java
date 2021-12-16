@@ -10,6 +10,6 @@ import org.hbrs.se2.project.coll.layout.LayoutAlternative;
 public class ImpressumView extends HorizontalLayout {
 
     public ImpressumView() {
-
+        //Required for Vaadin
     }
 }

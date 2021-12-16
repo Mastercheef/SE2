@@ -10,7 +10,7 @@ public class ContactPerson extends User {
 
     //TODO Maybe change String to a custom Datatype or enum
     private String role;
-    private CompanyProfile company;
+    private Company company;
     private Set<JobAdvertisement> advertisements;
 
     @Basic
@@ -24,10 +24,10 @@ public class ContactPerson extends User {
 
     @ManyToOne
     @JoinColumn(name = "company_id")
-    public CompanyProfile getCompany() {
+    public Company getCompany() {
         return this.company;
     }
-    public void setCompany(CompanyProfile company) {
+    public void setCompany(Company company) {
         this.company = company;
     }
 

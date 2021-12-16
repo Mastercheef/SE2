@@ -12,6 +12,7 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.PWA;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
@@ -24,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Objects;
 
 @Route(value = "profile", layout = AppView.class)
-@PageTitle("Profile")
+@PageTitle("StudentProfile")
 public class StudentProfileView extends VerticalLayout implements HasUrlParameter<String> {
 
     @Autowired
@@ -86,19 +87,19 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         ltitle          = new Label(profileDTO.getTitle());
         lfirstname      = new Label(profileDTO.getFirstName());
         llastname       = new Label(profileDTO.getLastName());
-        loccupation     = new Label(profileDTO.getGraduation());
+        loccupation     = new Label(profileDTO.getGraduation() == null ? "" : profileDTO.getGraduation());
         lbirthdate      = new Label(profileDTO.getDateOfBirth().toString());
         lstreet         = new Label(addr.getStreet());
         lstreetnumber   = new Label(addr.getHouseNumber());
         lpostalcode     = new Label(addr.getPostalCode());
         lcity           = new Label(addr.getCity());
         lcountry        = new Label(addr.getCountry());
-        lskills         = new Label(profileDTO.getSkills());
-        lemail          = new Label(profileDTO.getEmail());
-        lnumber         = new Label(profileDTO.getPhone());
-        linterests      = new Label(profileDTO.getInterests());
-        lwebsite        = new Label(profileDTO.getWebsite());
-        laboutme        = new Label(profileDTO.getDescription());
+        lskills         = new Label(profileDTO.getSkills() == null ? "" : profileDTO.getSkills());
+        lemail          = new Label(profileDTO.getEmail() == null ? "" : profileDTO.getEmail());
+        lnumber         = new Label(profileDTO.getPhone() == null ? "" : profileDTO.getPhone());
+        linterests      = new Label(profileDTO.getInterests() == null ? "" : profileDTO.getInterests());
+        lwebsite        = new Label(profileDTO.getWebsite() == null ? "" : profileDTO.getWebsite());
+        laboutme        = new Label(profileDTO.getDescription() == null ? "" : profileDTO.getDescription());
     }
 
 

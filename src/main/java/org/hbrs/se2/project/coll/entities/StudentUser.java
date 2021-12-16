@@ -90,7 +90,6 @@ public class StudentUser extends User {
                 this.getPhone() + ", " +
                 this.getAddress() + ", " +
                 this.getEmail() + ", " +
-                this.getPassword() + ", " +
                 this.getGraduation() + ", " +
                 this.getSkills() + ", " +
                 this.getInterests() + ", " +

@@ -18,8 +18,9 @@ public class JobAdvertisement {
     private LocalDate endOfWork;
     private ContactPerson contactPerson;
     private String jobDescription;
+    private int salary;
     private String jobTitle;
-    private CompanyProfile company;
+    private Company company;
     private Set<StudentUser> applicants;
 
     @Id
@@ -113,6 +114,15 @@ public class JobAdvertisement {
     }
     public void setJobDescription(String jobDescription) {
         this.jobDescription = jobDescription;
+    }
+
+    @Basic
+    @Column(name = "salary")
+    public int getSalary() {
+        return salary;
+    }
+    public void setSalary(int salary) {
+        this.salary = salary;
     }
 
     @Basic
