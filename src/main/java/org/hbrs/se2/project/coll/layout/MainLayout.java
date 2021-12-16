@@ -8,6 +8,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
+import org.hbrs.se2.project.coll.util.Globals;
 
 import java.util.Objects;
 
@@ -34,7 +35,7 @@ public class MainLayout extends Div implements RouterLayout {
         // Misc. Styling
         //logout.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW));
         logout.getElement().getStyle().set("margin-left", "auto");
-        getElement().getStyle().set("background-color", "#fffdeb");
+        getElement().getStyle().set(Globals.View.BACKGROUND_COLOR, "#fffdeb");
         setSizeFull();
 
         // Header
@@ -44,7 +45,7 @@ public class MainLayout extends Div implements RouterLayout {
         header.setPadding(true);
         //header.setHeight("150px");
         header.getElement().getStyle().set("color", "white");
-        header.getElement().getStyle().set("background-color", "#233348");
+        header.getElement().getStyle().set(Globals.View.BACKGROUND_COLOR, "#233348");
         header.getElement().getStyle().set("font-size", "24px");
         header.getElement().getStyle().set("font-weight", "bold");
         header.getElement().getStyle().set("clear", "both");
@@ -59,7 +60,7 @@ public class MainLayout extends Div implements RouterLayout {
         footer.setJustifyContentMode(FlexComponent.JustifyContentMode.START);
         footer.setWidth("100%");
         footer.setPadding(true);
-        footer.getElement().getStyle().set("background-color", "#233348");
+        footer.getElement().getStyle().set(Globals.View.BACKGROUND_COLOR, "#233348");
         footer.getElement().getStyle().set("color", "white");
         footer.getElement().getStyle().set("clear", "both");
         footer.getElement().getStyle().set("bottom", "0");

@@ -59,6 +59,14 @@ public class Globals {
         public static final String UTILITY = "Utility Class";
     }
 
+    public static class View {
+        private View() {
+            throw new IllegalStateException(ExceptionMessage.UTILITY);
+        }
+        public static final String BACKGROUND_COLOR = "background-color";
+
+    }
+
     public static class Regex {
 
         // REGEX for input validation
