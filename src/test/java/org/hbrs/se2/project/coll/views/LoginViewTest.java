@@ -42,7 +42,7 @@ class LoginViewTest {
         if(os.equals(Utils.OS.WINDOWS)) {
             return "src/main/resources/selenium/chromedriver/windows/chromedriver.exe";
         } else {
-            return ("src/main/resources/selenium/chromedriver/" +  os.toString()   +"/chromedriver");
+            return ("src/main/resources/selenium/chromedriver/" +  os.toString().toLowerCase()   +"/chromedriver");
         }
     }
 }
