@@ -65,16 +65,14 @@ class UserTest {
 
     @Test
     void testEqualNull() {
-        assertNotEquals(null, userOne);
+        assertFalse(userOne.equals(null));
+        assertTrue(userOne.equals(Object.class));
     }
 
     @Test
-    void testOtherClass() {
-        assertNotEquals(userOne.getClass(), String.class);
-    }
-    @Test
     void testEqualClass() {
         assertFalse(userOne.equals(StudentUser.class));
+        assertFalse(userOne.equals(User.class));
     }
 
     @Test
