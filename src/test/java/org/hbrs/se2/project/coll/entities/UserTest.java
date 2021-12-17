@@ -53,8 +53,8 @@ class UserTest {
     }
     @Test
     void testEqualsSameUser() {
-        //Same user
-        assertEquals(userOne, userOne);
+        assertTrue(userOne.equals(userOne));
+        assertFalse(userOne.equals(userTwo));
     }
 
     @Test
