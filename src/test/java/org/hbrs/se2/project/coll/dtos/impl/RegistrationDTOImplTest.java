@@ -30,32 +30,51 @@ class RegistrationDTOImplTest {
     @Test
     void setRepeatedEmail() {
         registrationDTO.setRepeatedEmail(repeatedEmail);
+        assertEquals(repeatedEmail , registrationDTO.getRepeatedEmail());
     }
 
     @Test
     void setRepeatedPassword() {
         registrationDTO.setRepeatedPassword(repeatedPassword);
+        assertEquals(repeatedPassword , registrationDTO.getRepeatedPassword());
     }
 
     @Test
     void setCompanyDTO() {
-
         registrationDTO.setCompanyDTO(companyDTO);
+        assertNotNull(registrationDTO.getCompanyDTO());
     }
 
     @Test
     void getUserDTO() {
+        registrationDTO.setUserDTO(userDTO);
+        assertNotNull(registrationDTO.getUserDTO());
     }
 
     @Test
     void getRepeatedEmail() {
+        registrationDTO.setRepeatedEmail(repeatedEmail);
+        assertEquals(repeatedEmail , registrationDTO.getRepeatedEmail());
     }
 
     @Test
     void getRepeatedPassword() {
+        registrationDTO.setRepeatedPassword(repeatedPassword);
+        assertEquals(repeatedPassword , registrationDTO.getRepeatedPassword());
     }
 
     @Test
     void getCompanyDTO() {
+        registrationDTO.setCompanyDTO(companyDTO);
+        assertNotNull(registrationDTO.getCompanyDTO());
+    }
+
+    @Test
+    void testConstructor() {
+        RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl(userDTO , repeatedEmail, repeatedPassword);
+        assertNotNull(registrationDTO.getUserDTO());
+        assertEquals(repeatedEmail , registrationDTO.getRepeatedEmail());
+        assertEquals(repeatedPassword , registrationDTO.getRepeatedPassword());
+
     }
 }
