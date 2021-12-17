@@ -3,6 +3,7 @@ package org.hbrs.se2.project.coll.control.factories;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
+import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.entities.User;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
@@ -18,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class UserFactoryTest {
 
     private final String errorMessage = "class org.hbrs.se2.project.coll.control.factories.UserFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.UserFactory with modifiers \"private\"";
@@ -123,5 +127,48 @@ class UserFactoryTest {
         assertEquals(errorMessage, exceptionThatWasThrown.getMessage());
         constructor.setAccessible(true);
         assertThrows(ReflectiveOperationException.class,constructor::newInstance);
+    }
+
+    @Test
+    void createStudentUserFromBasicUser() {
+
+        ContactPerson contactPerson;
+        when(userDTO.getId()).thenReturn(100);
+        when(userDTO.getType()).thenReturn("st");
+        when(userDTO.getSalutation()).thenReturn("Herr");
+        when(userDTO.getTitle()).thenReturn("Dr.");
+        when(userDTO.getFirstName()).thenReturn("Max");
+        when(userDTO.getLastName()).thenReturn(name);
+        when(userDTO.getDateOfBirth()).thenReturn(localDate);
+        when(userDTO.getAddress()).thenReturn(address);
+        when(userDTO.getAddress().getStreet()).thenReturn("Mustermannstraße");
+        when(userDTO.getAddress().getCountry()).thenReturn("DE");
+        when(userDTO.getAddress().getHouseNumber()).thenReturn("2");
+        when(userDTO.getAddress().getCity()).thenReturn("Mustermannstadt");
+        when(userDTO.getAddress().getPostalCode()).thenReturn("12345");
+        when(userDTO.getPhone()).thenReturn("0123456789");
+        when(userDTO.getEmail()).thenReturn(email);
+        when(userDTO.getPassword()).thenReturn(password);
+
+        contactPerson = UserFactory.createContactPersonFromBasicUser(userDTO);
+
+        assertEquals(100 , contactPerson.getId());
+        assertEquals("st" , contactPerson.getType());
+        assertEquals("Herr" , contactPerson.getSalutation());
+        assertEquals("Dr." , contactPerson.getTitle());
+        assertEquals("Max" , contactPerson.getFirstName());
+        assertEquals("Mustermann" , contactPerson.getLastName());
+        assertEquals("0123456789" , contactPerson.getPhone());
+        assertEquals(LocalDate.of(2000, 1, 23), contactPerson.getDateOfBirth());
+        assertEquals(email ,contactPerson.getEmail());
+        assertTrue(BCrypt.checkpw(password, contactPerson.getPassword()));
+    }
+
+    @Test
+    void createContactPerson() {
+    }
+
+    @Test
+    void createContactPersonFromBasicUser() {
     }
 }
