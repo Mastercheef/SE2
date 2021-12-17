@@ -7,8 +7,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CollApplication.class)
-public class SpringBootApplicationTest {
+class SpringBootApplicationTest {
+
     @Test
-    public void contextLoads() {
+    void contextLoads() {
     }
 }

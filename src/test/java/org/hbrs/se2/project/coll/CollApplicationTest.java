@@ -7,7 +7,8 @@ import org.junit.Test;
 class CollApplicationTest {
 
     @org.junit.jupiter.api.Test
-    public void applicationStarts() {
+    void applicationStarts() {
         CollApplication.main(new String[] {});
+
     }
 }
