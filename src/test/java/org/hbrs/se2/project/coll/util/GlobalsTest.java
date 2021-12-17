@@ -121,6 +121,35 @@ class GlobalsTest {
         constructor.setAccessible(true);
         assertThrows(ReflectiveOperationException.class,constructor::newInstance);
     }
+    @Test
+    void validEmailInput() {
+       assertTrue(Globals.Regex.validateEmailInput("wow@gmx.de"));
+       assertTrue(Globals.Regex.validateEmailInput("studi@hbrs.de"));
+       assertTrue(Globals.Regex.validateEmailInput("admin@admin.de"));
+    }
 
+    @Test
+    void invalidEmailInput() {
+        assertFalse(Globals.Regex.validateEmailInput("wowgmx.de"));
+        assertFalse(Globals.Regex.validateEmailInput("@hbrs.de"));
+        assertFalse(Globals.Regex.validateEmailInput("hbrs.de"));
+        assertFalse(Globals.Regex.validateEmailInput("studi@hbrs"));
+        assertFalse(Globals.Regex.validateEmailInput("studihbrs.de"));
+    }
+
+    @Test
+    void validNameInput() {
+        assertTrue(Globals.Regex.validateNameInput("Dan"));
+        assertTrue(Globals.Regex.validateNameInput("Jordan"));
+        assertTrue(Globals.Regex.validateNameInput("Steve"));
+        assertTrue(Globals.Regex.validateNameInput("Emerick Jones"));
+        assertTrue(Globals.Regex.validateNameInput("Gary Allen"));
+    }
+    @Test
+    void invalidNameInput() {
+        assertFalse(Globals.Regex.validateNameInput("Steve P."));
+        assertFalse(Globals.Regex.validateNameInput("Sierra %O'Neil"));
+        assertFalse(Globals.Regex.validateNameInput("$John"));
+    }
 
 }

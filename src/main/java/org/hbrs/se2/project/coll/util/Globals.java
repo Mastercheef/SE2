@@ -86,7 +86,7 @@ public class Globals {
         }
 
         private static final Pattern VALID_NAME_REGEX =
-                Pattern.compile("^[a-zA-ZßäöüÄÖÜ ,.'-]+$", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+                Pattern.compile("^(\\s)*[A-Za-z]+((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*(\\s)*$", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
 
         public static boolean validateNameInput(String name) {
             Matcher matcher = VALID_NAME_REGEX.matcher(name);
