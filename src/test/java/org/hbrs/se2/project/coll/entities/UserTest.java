@@ -85,6 +85,14 @@ class UserTest {
         assertFalse(userOne.equals(userTwo));
         userTwo.setAddress(userOne.getAddress());
         assertFalse(userOne.equals(userTwo));
+        userTwo.setPhone(userOne.getPhone());
+        assertFalse(userOne.equals(userTwo));
+        userTwo.setDateOfBirth(userOne.getDateOfBirth());
+        assertFalse(userOne.equals(userTwo));
+        userTwo.setEmail(userOne.getEmail());
+        assertFalse(userOne.equals(userTwo));
+        userTwo.setId(userOne.getId());
+        assertTrue(userOne.equals(userTwo));
 
     }
     @Test
