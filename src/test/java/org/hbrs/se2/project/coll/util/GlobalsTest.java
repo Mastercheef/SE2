@@ -148,7 +148,7 @@ class GlobalsTest {
     }
     @Test
     void invalidNameInput() {
-        assertFalse(Globals.Regex.validateNameInput("Steve P."));
+        assertFalse(Globals.Regex.validateNameInput("Steve P)"));
         assertFalse(Globals.Regex.validateNameInput("Sierra %O'Neil"));
         assertFalse(Globals.Regex.validateNameInput("$John"));
     }
@@ -157,9 +157,5 @@ class GlobalsTest {
     void getCountries() {
         assertEquals(249 , Globals.Countries.getCountries().size());
         assertEquals("Andorra" , Globals.Countries.getCountries().get(0));
-
-
-
-
     }
 }
