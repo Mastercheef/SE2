@@ -48,8 +48,6 @@ class UserTest {
         userTwo.setEmail("maxina@gmx.de");
         userTwo.setType("!st");
         userTwo.setPassword("passwd2");
-
-
     }
     @Test
     void testEqualsSameUser() {
@@ -59,7 +57,6 @@ class UserTest {
 
     @Test
     void testEqualNull() {
-
         // The equals object is null
         assertFalse(userOne.equals(null));
         // The equals object is not null
@@ -92,7 +89,6 @@ class UserTest {
         assertFalse(userOne.equals(userTwo));
         userTwo.setId(userOne.getId());
         assertTrue(userOne.equals(userTwo));
-
     }
     @Test
     void testToString() {
