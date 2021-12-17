@@ -81,7 +81,7 @@ class UserTest {
     void testEqualsMethod() {
         assertNotEquals(userOne.getAddress(),userTwo.getAddress());
         assertFalse(userOne.equals(userTwo));
-        userTwo.setFirstName("Max");
+        userTwo.setFirstName(userOne.getFirstName());
         assertFalse(userOne.equals(userTwo));
         userTwo.setLastName(userOne.getLastName());
         assertFalse(userOne.equals(userTwo));
