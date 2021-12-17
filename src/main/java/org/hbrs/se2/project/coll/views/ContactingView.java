@@ -55,7 +55,6 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
         textArea.setWidthFull();
         textArea.setLabel("Geben Sie hier ihre Nachricht ein:");
         textArea.setMinHeight("250px");
-        textArea.setMinLength(100);
         textArea.setRequired(true);
         textArea.setErrorMessage("Bitte geben Sie eine Nachricht mit mindestens 100 Zeichen ein.");
 
