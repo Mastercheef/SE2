@@ -18,15 +18,10 @@ class UtilsTest {
         String errorMessage = "class org.hbrs.se2.project.coll.util.UtilsTest cannot access a member of class org.hbrs.se2.project.coll.util.Utils with modifiers \"private\"";
         Throwable exceptionThatWasThrown = assertThrows(IllegalAccessException.class, constructor::newInstance);
         assertEquals(errorMessage, exceptionThatWasThrown.getMessage());
-    }
-
-    @Test
-    void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor<Utils> constructor = Utils.class.getDeclaredConstructor();
-        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
         constructor.setAccessible(true);
         assertThrows(ReflectiveOperationException.class,constructor::newInstance);
     }
+
 
 
     @Test
