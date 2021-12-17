@@ -9,6 +9,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication
 public class CollApplication extends SpringBootServletInitializer {
 
+
     public static void main(String[] args) {
         SpringApplication.run(CollApplication.class, args);
     }
