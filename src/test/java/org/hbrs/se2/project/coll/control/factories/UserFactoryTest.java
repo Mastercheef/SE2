@@ -1,11 +1,9 @@
 package org.hbrs.se2.project.coll.control.factories;
 
+import org.hbrs.se2.project.coll.dtos.ContactPersonDTO;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
-import org.hbrs.se2.project.coll.entities.Address;
-import org.hbrs.se2.project.coll.entities.ContactPerson;
-import org.hbrs.se2.project.coll.entities.StudentUser;
-import org.hbrs.se2.project.coll.entities.User;
+import org.hbrs.se2.project.coll.entities.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mindrot.jbcrypt.BCrypt;
@@ -34,6 +32,12 @@ class UserFactoryTest {
 
     @Mock
     private UserDTO userDTO;
+
+    @Mock
+    private Company company;
+
+    @Mock
+    ContactPersonDTO contactPersonDTO;
 
     private final LocalDate localDate = LocalDate.of(2000, 1, 23);
 
@@ -166,9 +170,73 @@ class UserFactoryTest {
 
     @Test
     void createContactPerson() {
+        ContactPerson contactPerson ;
+        when(studentDTO.getId()).thenReturn(100);
+        when(studentDTO.getType()).thenReturn("st");
+        when(studentDTO.getSalutation()).thenReturn("Herr");
+        when(studentDTO.getTitle()).thenReturn(null);
+        when(studentDTO.getFirstName()).thenReturn("Max");
+        when(studentDTO.getLastName()).thenReturn(name);
+        when(studentDTO.getDateOfBirth()).thenReturn(localDate);
+        when(studentDTO.getAddress()).thenReturn(address);
+        when(studentDTO.getAddress().getStreet()).thenReturn("Mustermannstraße");
+        when(studentDTO.getAddress().getCountry()).thenReturn("DE");
+        when(studentDTO.getAddress().getHouseNumber()).thenReturn("2");
+        when(studentDTO.getAddress().getCity()).thenReturn("Mustermannstadt");
+        when(studentDTO.getAddress().getPostalCode()).thenReturn("12345");
+        when(studentDTO.getPhone()).thenReturn("0123456789");
+        when(studentDTO.getEmail()).thenReturn(email);
+        when(studentDTO.getPassword()).thenReturn(password);
+        when(studentDTO.getGraduation()).thenReturn("1.1.2000");
+        when(studentDTO.getSkills()).thenReturn("Java");
+        when(studentDTO.getInterests()).thenReturn("Viele");
+        when(studentDTO.getWebsite()).thenReturn("www.mustermann.de");
+        when(studentDTO.getDescription()).thenReturn("Mustermann Description");
+
     }
 
     @Test
     void createContactPersonFromBasicUser() {
+
+        ContactPerson contactPerson;
+
+        when(contactPersonDTO.getId()).thenReturn(100);
+        when(contactPersonDTO.getType()).thenReturn("st");
+        when(contactPersonDTO.getSalutation()).thenReturn("Herr");
+        when(contactPersonDTO.getTitle()).thenReturn("Dr.");
+        when(contactPersonDTO.getFirstName()).thenReturn("Max");
+        when(contactPersonDTO.getLastName()).thenReturn(name);
+        when(contactPersonDTO.getDateOfBirth()).thenReturn(localDate);
+        when(contactPersonDTO.getAddress()).thenReturn(address);
+        when(contactPersonDTO.getAddress().getStreet()).thenReturn("Mustermannstraße");
+        when(contactPersonDTO.getAddress().getCountry()).thenReturn("DE");
+        when(contactPersonDTO.getAddress().getHouseNumber()).thenReturn("2");
+        when(contactPersonDTO.getAddress().getCity()).thenReturn("Mustermannstadt");
+        when(contactPersonDTO.getAddress().getPostalCode()).thenReturn("12345");
+        when(contactPersonDTO.getPhone()).thenReturn("0123456789");
+        when(contactPersonDTO.getEmail()).thenReturn(email);
+        when(contactPersonDTO.getPassword()).thenReturn(password);
+        when(contactPersonDTO.getCompany()).thenReturn(company);
+        when(contactPersonDTO.getRole()).thenReturn("Datenbank-Experte");
+        contactPerson = UserFactory.createContactPerson(contactPersonDTO);
+        assertSame(contactPerson.getClass(), ContactPerson.class, "Returned type is not a ContactPerson");
+
+        assertEquals(100 , contactPerson.getId());
+        assertEquals("st" , contactPerson.getType());
+        assertEquals("Herr" , contactPerson.getSalutation());
+        assertEquals("Dr." , contactPerson.getTitle());
+        assertEquals("Max" , contactPerson.getFirstName());
+        assertEquals("Mustermann" , contactPerson.getLastName());
+        assertEquals("Mustermannstraße", contactPerson.getAddress().getStreet());
+        assertEquals("DE", contactPerson.getAddress().getCountry());
+        assertEquals(Integer.valueOf(2), Integer.valueOf(contactPerson.getAddress().getHouseNumber()));
+        assertEquals("Mustermannstadt", contactPerson.getAddress().getCity());
+        assertEquals("12345", contactPerson.getAddress().getPostalCode());
+        assertEquals("0123456789" , contactPerson.getPhone());
+        assertEquals(LocalDate.of(2000, 1, 23), contactPerson.getDateOfBirth());
+        assertEquals(email , contactPerson.getEmail());
+        assertTrue(BCrypt.checkpw(password, contactPerson.getPassword()));
+        assertNotNull(contactPerson.getCompany());
+        assertEquals("Datenbank-Experte" , contactPerson.getRole());
     }
 }
