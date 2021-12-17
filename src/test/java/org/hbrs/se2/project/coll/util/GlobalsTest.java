@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -156,7 +157,8 @@ class GlobalsTest {
     void getCountries() {
         assertEquals(249 , Globals.Countries.getCountries().size());
         assertEquals("Andorra" , Globals.Countries.getCountries().get(0));
-        assertEquals("Simbabwe" , Globals.Countries.getCountries().get(248));
+
+
 
 
     }
