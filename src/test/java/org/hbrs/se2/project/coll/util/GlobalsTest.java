@@ -152,4 +152,12 @@ class GlobalsTest {
         assertFalse(Globals.Regex.validateNameInput("$John"));
     }
 
+    @Test
+    void getCountries() {
+        assertEquals(249 , Globals.Countries.getCountries().size());
+        assertEquals("Andorra" , Globals.Countries.getCountries().get(0));
+        assertEquals("Simbabwe" , Globals.Countries.getCountries().get(248));
+
+
+    }
 }
