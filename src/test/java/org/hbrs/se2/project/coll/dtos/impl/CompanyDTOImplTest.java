@@ -54,4 +54,16 @@ class CompanyDTOImplTest {
         companyDTO.setEmail("max@mustermann.de");
         assertEquals("max@mustermann.de" , companyDTO.getEmail());
     }
+
+    @Test
+    void getWebsite() {
+        companyDTO.setWebsite("max.de");
+        assertEquals("max.de" , companyDTO.getWebsite());
+    }
+    @Test
+    void getDescription() {
+        companyDTO.setDescription("Coole Description");
+        assertEquals("Coole Description" , companyDTO.getDescription());
+    }
+
 }
