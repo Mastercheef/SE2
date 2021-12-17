@@ -10,6 +10,7 @@ class LabelCompanyTest {
     @Test
     void getCompanyname() {
         assertEquals("Firmenname:" , labelCompany.getCompanyname().getText());
+        assertEquals("200px" , labelCompany.getCompanyname().getWidth());
     }
 
 
