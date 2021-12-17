@@ -13,7 +13,7 @@ class CompanyDTOImplTest {
     private int id = 100;
     private String companyName = "Beispielfirma";
     @Mock
-    private Address address;
+    private Address address = new Address();
     @Test
     void getId() {
         companyDTO.setId(id);
@@ -28,29 +28,30 @@ class CompanyDTOImplTest {
 
     @Test
     void getAddress() {
+        companyDTO.setAddress(address);
+        assertNotNull(companyDTO.getAddress());
     }
 
-    @Test
-    void setAddress() {
-    }
-
+    //TODO Does this need to be int?
     @Test
     void getPhoneNumber() {
+        companyDTO.setPhoneNumber(012345);
+        assertEquals(012345 , companyDTO.getPhoneNumber());
+
     }
 
-    @Test
-    void setPhoneNumber() {
-    }
 
+    //TODO Does this need to be int?
     @Test
     void getFaxNumber() {
+        companyDTO.setFaxNumber(54321);
+        assertEquals(54321 , companyDTO.getFaxNumber());
     }
 
-    @Test
-    void setFaxNumber() {
-    }
 
     @Test
     void getEmail() {
+        companyDTO.setEmail("max@mustermann.de");
+        assertEquals("max@mustermann.de" , companyDTO.getEmail());
     }
 }
