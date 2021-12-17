@@ -8,11 +8,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CompanyFactoryTest {
+
+    private final String errorMessage = "class org.hbrs.se2.project.coll.control.factories.CompanyFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.CompanyFactory with modifiers \"private\"";
 
     @Mock
     private CompanyDTO companyDTO;
@@ -40,6 +45,15 @@ class CompanyFactoryTest {
         assertEquals("mustermann.de" , companyProfile.getWebsite());
         assertEquals(56789 , companyProfile.getFaxNumber());
         assertEquals(01234 , companyProfile.getPhoneNumber());
+    }
 
+    @Test
+    void itShouldThrowIllegalAccessExceptionWhenInstancingCompanyFactory() throws NoSuchMethodException {
+        Constructor<CompanyFactory> constructor = CompanyFactory.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        Throwable exceptionThatWasThrown = assertThrows(IllegalAccessException.class, constructor::newInstance);
+        assertEquals(errorMessage, exceptionThatWasThrown.getMessage());
+        constructor.setAccessible(true);
+        assertThrows(ReflectiveOperationException.class,constructor::newInstance);
     }
 }

@@ -10,12 +10,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserFactoryTest {
+
+    private final String errorMessage = "class org.hbrs.se2.project.coll.control.factories.UserFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.UserFactory with modifiers \"private\"";
 
     @Mock
     private StudentUserDTO studentDTO;
@@ -108,5 +113,15 @@ class UserFactoryTest {
         assertEquals(email, user.getEmail(), "Email is not set correctly,should be " + email);
         assertTrue(BCrypt.checkpw(password, user.getPassword()), "Password is not set correctly,should be " + password);
 
+    }
+
+    @Test
+    void itShouldThrowIllegalAccessExceptionWhenInstancingJobFactory() throws NoSuchMethodException {
+        Constructor<UserFactory> constructor = UserFactory.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        Throwable exceptionThatWasThrown = assertThrows(IllegalAccessException.class, constructor::newInstance);
+        assertEquals(errorMessage, exceptionThatWasThrown.getMessage());
+        constructor.setAccessible(true);
+        assertThrows(ReflectiveOperationException.class,constructor::newInstance);
     }
 }

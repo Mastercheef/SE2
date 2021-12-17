@@ -3,15 +3,21 @@ import org.hbrs.se2.project.coll.dtos.impl.RecruitmentAdvertisingDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
+import org.hbrs.se2.project.coll.util.Globals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
 
 class JobFactoryTest {
+
+    private final String errorMessage = "class org.hbrs.se2.project.coll.control.factories.JobFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.JobFactory with modifiers \"private\"";
 
     private RecruitmentAdvertisingDTOImpl dto;
 
@@ -61,9 +67,15 @@ class JobFactoryTest {
         assertNotNull(jobAdvertisement.getContactPerson());
         assertSame(contactPerson, jobAdvertisement.getContactPerson());
 
+    }
 
-
-
-
+    @Test
+    void itShouldThrowIllegalAccessExceptionWhenInstancingJobFactory() throws NoSuchMethodException {
+        Constructor<JobFactory> constructor = JobFactory.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        Throwable exceptionThatWasThrown = assertThrows(IllegalAccessException.class, constructor::newInstance);
+        assertEquals(errorMessage, exceptionThatWasThrown.getMessage());
+        constructor.setAccessible(true);
+        assertThrows(ReflectiveOperationException.class,constructor::newInstance);
     }
 }
