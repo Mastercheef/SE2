@@ -81,6 +81,11 @@ class UserTest {
         assertFalse(userOne.equals(userTwo));
         userTwo.setFirstName("Max");
         assertFalse(userOne.equals(userTwo));
+        userTwo.setLastName(userOne.getLastName());
+        assertFalse(userOne.equals(userTwo));
+        userTwo.setAddress(userOne.getAddress());
+        assertFalse(userOne.equals(userTwo));
+
     }
     @Test
     void testToString() {
