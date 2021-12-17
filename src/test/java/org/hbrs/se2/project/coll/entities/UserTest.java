@@ -11,7 +11,8 @@ class UserTest {
 
     private User userOne = new User();
     private User userTwo = new User();
-    private Address address = new Address();
+    private Address addressOne = new Address();
+    private Address addressTwo = new Address();
     @BeforeEach
     void setUp() {
         userOne.setId(197);
@@ -19,12 +20,12 @@ class UserTest {
         userOne.setTitle("Dr.");
         userOne.setFirstName("Max");
         userOne.setLastName("Mustermann");
-        address.setPostalCode("12345");
-        address.setStreet("Musterstrasse");
-        address.setCity("Musterstadt");
-        address.setCountry("Deutschland");
-        address.setHouseNumber("1");
-        userOne.setAddress(address);
+        addressOne.setPostalCode("12345");
+        addressOne.setStreet("Musterstrasse");
+        addressOne.setCity("Musterstadt");
+        addressOne.setCountry("Deutschland");
+        addressOne.setHouseNumber("1");
+        userOne.setAddress(addressOne);
         userOne.setPhone("0123456789");
         userOne.setDateOfBirth(LocalDate.of(2000,1,1));
         userOne.setEmail("max@gmx.de");
@@ -36,12 +37,12 @@ class UserTest {
         userTwo.setTitle("Dr.");
         userTwo.setFirstName("Maxina");
         userTwo.setLastName("Testermann");
-        address.setPostalCode("54321");
-        address.setStreet("Testerstraße");
-        address.setCity("Testerstadt");
-        address.setCountry("Schweiz");
-        address.setHouseNumber("2");
-        userTwo.setAddress(address);
+        addressTwo.setPostalCode("54321");
+        addressTwo.setStreet("Testerstraße");
+        addressTwo.setCity("Testerstadt");
+        addressTwo.setCountry("Schweiz");
+        addressTwo.setHouseNumber("2");
+        userTwo.setAddress(addressTwo);
         userTwo.setPhone("9876543210");
         userTwo.setDateOfBirth(LocalDate.of(2001,1,1));
         userTwo.setEmail("maxina@gmx.de");
@@ -78,6 +79,7 @@ class UserTest {
 
     @Test
     void testEqualsMethod() {
+        assertNotEquals(userOne.getAddress(),userTwo.getAddress());
         assertFalse(userOne.equals(userTwo));
         userTwo.setFirstName("Max");
         assertFalse(userOne.equals(userTwo));
