@@ -16,9 +16,9 @@ class RegistrationDTOImplTest {
     @Mock
     private UserDTO userDTO;
 
-    private String repeatedEmail;
+    private String repeatedEmail = "email@hbrs";
 
-    private String repeatedPassword;
+    private String repeatedPassword = "password";
     @Mock
     private CompanyDTO companyDTO;
 
@@ -29,14 +29,18 @@ class RegistrationDTOImplTest {
 
     @Test
     void setRepeatedEmail() {
+        registrationDTO.setRepeatedEmail(repeatedEmail);
     }
 
     @Test
     void setRepeatedPassword() {
+        registrationDTO.setRepeatedPassword(repeatedPassword);
     }
 
     @Test
     void setCompanyDTO() {
+
+        registrationDTO.setCompanyDTO(companyDTO);
     }
 
     @Test
