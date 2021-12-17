@@ -11,7 +11,6 @@ class UserTest {
 
     private User userOne = new User();
     private User userTwo = new User();
-    private User userThree = new User();
     private Address address = new Address();
     @BeforeEach
     void setUp() {
@@ -49,22 +48,6 @@ class UserTest {
         userTwo.setType("!st");
         userTwo.setPassword("passwd2");
 
-        userOne.setId(199);
-        userOne.setSalutation("Herr");
-        userOne.setTitle("Dr.");
-        userOne.setFirstName("Max");
-        userOne.setLastName("Mustermann");
-        address.setPostalCode("12345");
-        address.setStreet("Musterstrasse");
-        address.setCity("Musterstadt");
-        address.setCountry("Deutschland");
-        address.setHouseNumber("1");
-        userOne.setAddress(address);
-        userOne.setPhone("0123456789");
-        userOne.setDateOfBirth(LocalDate.of(2002,1,1));
-        userOne.setEmail("max@gmx.de");
-        userOne.setType("st");
-        userOne.setPassword("passwd");
 
     }
     @Test
@@ -91,8 +74,8 @@ class UserTest {
 
     @Test
     void testToString() {
-        assertEquals("199, Herr, Dr., Max, Mustermann, 2002-01-01, 0123456789, Musterstrasse 1\n" +
-                "12345 Musterstadt\n" +
-                "Deutschland, max@gmx.de, st", userOne.toString());
+        assertEquals("197, Herr, Dr., Max, Mustermann, 2000-01-01, 0123456789, Testerstraße 2\n" +
+                "54321 Testerstadt\n" +
+                "Schweiz, max@gmx.de, st", userOne.toString());
     }
 }

@@ -52,7 +52,6 @@ class AddressRepositoryTest {
         address.setPostalCode("12345");
 
         entityManager.persist(address);
-        System.out.println(address.getId());
         address2 = addressRepository.findById(address.getId());
 
         assertEquals("Landgraben", address2.get().getStreet());

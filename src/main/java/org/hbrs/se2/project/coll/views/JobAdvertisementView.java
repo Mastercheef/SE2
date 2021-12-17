@@ -1,23 +1,19 @@
 package org.hbrs.se2.project.coll.views;
 
+import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.hbrs.se2.project.coll.dtos.RecruitmentAdvertisingDTO;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import org.hbrs.se2.project.coll.layout.LayoutAlternative;
 
 //TODO: UserDTO für Daten auslesen und in Textfelder einfüllen
 
-@Route(value = "recruitment", layout = LayoutAlternative.class)
+@Route(value = "recruitment", layout = AppLayout.class)
 @PageTitle("Coll | Registration")
 public class JobAdvertisementView extends VerticalLayout{
-
-
-    private RecruitmentAdvertisingDTO recruitmentAvertisingDTO;
 
     H2 headerJobName = new H2("Datenbank-Experte");
 

@@ -8,6 +8,8 @@ import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.repository.MessageRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,8 @@ import java.time.LocalDate;
 
 @Component
 public class ContactingControl {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContactingControl.class);
 
     @Autowired
     private CompanyRepository companyRepository;
@@ -53,7 +57,7 @@ public class ContactingControl {
             Message message = MessageFactory.createMessage(newMessage);
             messageRepository.save(message);
         } catch (Exception exception) {
-            System.out.println("LOG: " + exception);
+            LOGGER.info("LOG: {}" , exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
                 throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist " +
                         "ein Fehler aufgetreten.");

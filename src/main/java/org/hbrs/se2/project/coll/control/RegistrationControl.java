@@ -9,12 +9,16 @@ import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.UserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class RegistrationControl {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationControl.class);
 
     @Autowired
     UserRepository userRepository;
@@ -75,10 +79,10 @@ public class RegistrationControl {
 
 
         } catch (Exception exception) {
-            System.out.println("LOG : " + exception.getMessage());
+            LOGGER.info("LOG : {}" , exception.getMessage());
             registrationResult.setResult(false);
             registrationResult.addReason(ReasonType.UNEXPECTED_ERROR);
-            throw exception;
+
         }
         return registrationResult;
     }

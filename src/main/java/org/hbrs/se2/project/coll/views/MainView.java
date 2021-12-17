@@ -12,9 +12,7 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.textfield.TextField;
-import org.apache.tomcat.util.digester.Digester;
 import org.hbrs.se2.project.coll.layout.AppView;
-import org.hbrs.se2.project.coll.layout.LayoutAlternative;
 import org.hbrs.se2.project.coll.util.Globals;
 
 @Route(value = "" , layout = AppView.class)

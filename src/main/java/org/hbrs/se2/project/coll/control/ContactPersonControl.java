@@ -3,16 +3,19 @@ package org.hbrs.se2.project.coll.control;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.control.factories.UserFactory;
 import org.hbrs.se2.project.coll.dtos.ContactPersonDTO;
-import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.*;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
-import org.hbrs.se2.project.coll.repository.StudentUserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ContactPersonControl {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContactPersonControl.class);
+
     @Autowired
     private ContactPersonRepository contactPersonRepository;
     @Autowired
@@ -47,13 +50,13 @@ public class ContactPersonControl {
             ContactPerson savedContactPerson = this.contactPersonRepository.save( contactPerson );
 
             if (contactPerson.getId() > 0)
-                System.out.println("LOG : Updated ContactPerson with ID : " + contactPerson.getId());
+                LOGGER.info("LOG : Updated ContactPerson with ID : {}" , contactPerson.getId());
             else
-                System.out.println("LOG : Created new ContactPerson: " + contactPerson.getId());
+                LOGGER.info("LOG : Created new ContactPerson: {}" , contactPerson.getId());
 
             return savedContactPerson;
         } catch (Exception exception) {
-            System.out.println("LOG : " + exception);
+            LOGGER.info("LOG : {}" , exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
                 throw new DatabaseUserException("Während der Verbindung zur Datenbank mit JPA ist ein Fehler aufgetreten.");
             } else {

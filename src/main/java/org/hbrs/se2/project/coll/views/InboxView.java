@@ -206,7 +206,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
                     splitLayout.setSplitterPosition(1000);
                     grid.deselectAll();
                     cleanSecondary();
-                    if(grid.getColumns().size() == 0)
+                    if(grid.getColumns().isEmpty())
                         splitLayout.addToPrimary(hint);
 
                 } catch (DatabaseUserException ex) {
@@ -297,7 +297,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     }
 
     private void refreshGrid() {
-        if (messages.size() > 0) {
+        if (!(messages.isEmpty())) {
             grid.setVisible(true);
             hint.setVisible(false);
             grid.getDataProvider().refreshAll();

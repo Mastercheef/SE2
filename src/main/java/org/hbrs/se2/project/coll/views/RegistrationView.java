@@ -25,7 +25,6 @@ import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
 import org.hbrs.se2.project.coll.dtos.impl.*;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
-import org.hbrs.se2.project.coll.layout.LayoutAlternative;
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO.ReasonType;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -267,7 +266,7 @@ public class RegistrationView extends Div {
 
                 RegistrationResultDTO registrationResult = registrationControl.registerUser(registrationDTO);
 
-                if (registrationResult.getResult() == true) {
+                if (registrationResult.getResult()) {
                     // Success meldung
                     triggerDialogMessage("Registrierung abgeschlossen", "Sie haben sich erfolgreich registriert");
                     // automatischer Login
@@ -443,7 +442,7 @@ public class RegistrationView extends Div {
         dialog.add(new Text(message));
         dialog.setWidth("600px");
         dialog.setHeight("250px");
-        dialog.add(new Button("OK", e -> { dialog.close(); }));
+        dialog.add(new Button("OK", e -> dialog.close()));
         dialog.getElement().getStyle().set("display", "flex");
         dialog.getElement().getStyle().set("flex-direction", "column");
         dialog.getElement().getStyle().set("align-items", "center");
