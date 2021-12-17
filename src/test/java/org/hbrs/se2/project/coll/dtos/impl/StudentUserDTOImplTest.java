@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class StudentUserDTOImplTest {
 
     StudentUserDTOImpl studentUserDTO = new StudentUserDTOImpl();
-
     private String graduation = "1.1.2077";
     private String skills = "Diagramme!";
     private String interests = "Viele!";
@@ -43,4 +42,7 @@ class StudentUserDTOImplTest {
         studentUserDTO.setDescription(description);
         assertEquals(description , studentUserDTO.getDescription());
     }
+
+
+
 }
