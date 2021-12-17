@@ -3,6 +3,7 @@ package org.hbrs.se2.project.coll.util;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.time.LocalDate;
 
@@ -11,14 +12,23 @@ import static org.junit.jupiter.api.Assertions.*;
 class UtilsTest {
 
     @Test
-    void itShouldThrowNullPointerExceptionWhenBlahBlah() throws NoSuchMethodException {
-        final Constructor<Utils> constructor = Utils.class.getDeclaredConstructor();
+    void itShouldThrowIllegalAccessExceptionWhenInstancing() throws NoSuchMethodException {
+        Constructor<Utils> constructor = Utils.class.getDeclaredConstructor();
         assertTrue(Modifier.isPrivate(constructor.getModifiers()));
-
+        String errorMessage = "class org.hbrs.se2.project.coll.util.UtilsTest cannot access a member of class org.hbrs.se2.project.coll.util.Utils with modifiers \"private\"";
         Throwable exceptionThatWasThrown = assertThrows(IllegalAccessException.class, constructor::newInstance);
-        assertEquals("class org.hbrs.se2.project.coll.util.UtilsTest cannot access a member of class org.hbrs.se2.project.coll.util.Utils with modifiers \"private\""
-                , exceptionThatWasThrown.getMessage());
+        assertEquals(errorMessage, exceptionThatWasThrown.getMessage());
     }
+
+    @Test
+    void testConstructorIsPrivate() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<Utils> constructor = Utils.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        constructor.setAccessible(true);
+        assertThrows(ReflectiveOperationException.class,constructor::newInstance);
+    }
+
+
     @Test
     void appendLength() {
         Integer[] numberArray = {1, 2, 3};
