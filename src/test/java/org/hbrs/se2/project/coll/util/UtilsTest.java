@@ -2,12 +2,23 @@ package org.hbrs.se2.project.coll.util;
 
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class UtilsTest {
 
+    @Test
+    void itShouldThrowNullPointerExceptionWhenBlahBlah() throws NoSuchMethodException {
+        final Constructor<Utils> constructor = Utils.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+
+        Throwable exceptionThatWasThrown = assertThrows(IllegalAccessException.class, constructor::newInstance);
+        assertEquals("class org.hbrs.se2.project.coll.util.UtilsTest cannot access a member of class org.hbrs.se2.project.coll.util.Utils with modifiers \"private\""
+                , exceptionThatWasThrown.getMessage());
+    }
     @Test
     void appendLength() {
         Integer[] numberArray = {1, 2, 3};
