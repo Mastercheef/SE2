@@ -19,6 +19,7 @@ import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.LabelCompany;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -46,17 +47,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     private static final Logger LOGGER = Logger.getLogger(CompanyProfileView.class.getName());
 
-    Label companyname   = new Label("Firmenname:");
-    Label street        = new Label("Strasse:");
-    Label streetnumber  = new Label("Hausnummer:");
-    Label postalcode    = new Label("PLZ:");
-    Label city          = new Label("Ort:");
-    Label country       = new Label("Land:");
-    Label email         = new Label("E-Mail:");
-    Label phone         = new Label("Telefon:");
-    Label fax           = new Label("Fax:");
-    Label website       = new Label("Webseite:");
-    Label description   = new Label("Beschreibung:");
+    LabelCompany labelCompany = new LabelCompany();
 
     Label lcompanyname;
     Label lstreet;
@@ -116,24 +107,19 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         profileImage.getElement().getStyle().set("border", "1px solid black");
 
         // Styling
-        for (Label label : new Label[]{ companyname, street, streetnumber, postalcode, city, country, email,
-                phone, fax, website, description}) {
-            label.getElement().getStyle().set(FONT, "bold");
-            label.setWidth(WIDTH);
-        }
 
         // Profile Data
-        HorizontalLayout hcompanyname   = new HorizontalLayout(companyname, lcompanyname);
-        HorizontalLayout hstreet        = new HorizontalLayout(street, lstreet);
-        HorizontalLayout hstreetnumber  = new HorizontalLayout(streetnumber, lstreetnumber);
-        HorizontalLayout hpostalcode    = new HorizontalLayout(postalcode, lpostalcode);
-        HorizontalLayout hcity          = new HorizontalLayout(city, lcity);
-        HorizontalLayout hcountry       = new HorizontalLayout(country, lcountry);
-        HorizontalLayout hemail         = new HorizontalLayout(email, lemail);
-        HorizontalLayout hphone         = new HorizontalLayout(phone, lphone);
-        HorizontalLayout hfax           = new HorizontalLayout(fax, lfax);
-        HorizontalLayout hwebsite       = new HorizontalLayout(website, lwebsite);
-        HorizontalLayout hdescription   = new HorizontalLayout(description, ldescription);
+        HorizontalLayout hcompanyname   = new HorizontalLayout(labelCompany.getCompanyname(), lcompanyname);
+        HorizontalLayout hstreet        = new HorizontalLayout(labelCompany.getStreet(), lstreet);
+        HorizontalLayout hstreetnumber  = new HorizontalLayout(labelCompany.getStreetnumber(), lstreetnumber);
+        HorizontalLayout hpostalcode    = new HorizontalLayout(labelCompany.getPostalcode(), lpostalcode);
+        HorizontalLayout hcity          = new HorizontalLayout(labelCompany.getCity(), lcity);
+        HorizontalLayout hcountry       = new HorizontalLayout(labelCompany.getCountry(), lcountry);
+        HorizontalLayout hemail         = new HorizontalLayout(labelCompany.getEmail(), lemail);
+        HorizontalLayout hphone         = new HorizontalLayout(labelCompany.getPhone(), lphone);
+        HorizontalLayout hfax           = new HorizontalLayout(labelCompany.getFax(), lfax);
+        HorizontalLayout hwebsite       = new HorizontalLayout(labelCompany.getWebsite(), lwebsite);
+        HorizontalLayout hdescription   = new HorizontalLayout(labelCompany.getDescription(), ldescription);
 
         // Edit Profile Button
         HorizontalLayout hbuttons = new HorizontalLayout();

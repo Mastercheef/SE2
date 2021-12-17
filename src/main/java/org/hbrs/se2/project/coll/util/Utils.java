@@ -5,15 +5,9 @@ import java.util.Arrays;
 
 public class Utils {
 
-
-    public enum OS {
-        WINDOWS, LINUX, MAC
+    private Utils() {
+        throw new IllegalStateException("Utility Class");
     }
-
-    private static OS os = null;
-
-
-    // Operating systems.
     /**
      * Nützliche Methdode zur Erweiterung eines bestehendes Arrays
      * Oma hätte gesagt, so eine Methode 'fällt nicht durch' ;-)
@@ -37,23 +31,6 @@ public class Utils {
         dateString += date.getDayOfMonth() +"." +  date.getMonthValue() + "."+  date.getYear();
         return dateString;
     }
-
-
-    public static OS getOS() {
-        if (os == null) {
-            String operSys = System.getProperty("os.name").toLowerCase();
-            if (operSys.contains("win")) {
-                os = OS.WINDOWS;
-            } else if (operSys.contains("nix") || operSys.contains("nux")
-                    || operSys.contains("aix")) {
-                os = OS.LINUX;
-            } else if (operSys.contains("mac")) {
-                os = OS.MAC;
-            }
-        }
-        return os;
-    }
-
 
 }
 
