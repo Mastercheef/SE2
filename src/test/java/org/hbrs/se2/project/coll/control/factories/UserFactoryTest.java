@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 @MockitoSettings(strictness = Strictness.LENIENT)
 class UserFactoryTest {
 
-    private final String errorMessage = "class org.hbrs.se2.project.coll.control.factories.UserFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.UserFactory with modifiers \"private\"";
+    private static final String errorMessage = "class org.hbrs.se2.project.coll.control.factories.UserFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.UserFactory with modifiers \"private\"";
 
     @Mock
     private StudentUserDTO studentDTO;
@@ -37,9 +37,9 @@ class UserFactoryTest {
 
     private final LocalDate localDate = LocalDate.of(2000, 1, 23);
 
-    private final String name = "Mustermann";
-    private final String email = "max@mustermann.de";
-    private final String password = "password1234";
+    private static final String name = "Mustermann";
+    private static final String email = "max@mustermann.de";
+    private static final String password = "password1234";
     @Test
     void createStudentUser() {
         StudentUser studentUser;

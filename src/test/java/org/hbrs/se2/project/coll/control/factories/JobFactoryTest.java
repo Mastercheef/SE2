@@ -17,7 +17,7 @@ import static org.mockito.Mockito.spy;
 
 class JobFactoryTest {
 
-    private final String errorMessage = "class org.hbrs.se2.project.coll.control.factories.JobFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.JobFactory with modifiers \"private\"";
+    private static final String errorMessage = "class org.hbrs.se2.project.coll.control.factories.JobFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.JobFactory with modifiers \"private\"";
 
     private RecruitmentAdvertisingDTOImpl dto;
 

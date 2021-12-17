@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.util.Locale;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class GlobalsTest {

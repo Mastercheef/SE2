@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MessageFactoryTest {
 
-    private final String errorMessage = "class org.hbrs.se2.project.coll.control.factories.MessageFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.MessageFactory with modifiers \"private\"";
+    private static final String errorMessage = "class org.hbrs.se2.project.coll.control.factories.MessageFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.MessageFactory with modifiers \"private\"";
     @Test
     void createMessage() {
     }

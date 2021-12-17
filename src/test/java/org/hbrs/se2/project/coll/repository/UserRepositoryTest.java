@@ -22,28 +22,28 @@ class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-    private final int USERID = 20000000;
+    private final int userId = 20000000;
     private UserDTO userDTO;
 
     @Test
     void findUserByEmail() {
         userDTO = userRepository.findUserByEmail("email@hbrs.de");
-        assertEquals(USERID , userDTO.getId());
+        assertEquals(userId, userDTO.getId());
     }
 
     @Test
     void findUserById() {
-        userDTO = userRepository.findUserById(USERID);
+        userDTO = userRepository.findUserById(userId);
         assertEquals("email@hbrs.de" , userDTO.getEmail());
     }
 
     @Test
     void passwordIsSavedEncrypted() {
-        Optional<User> wrapper = userRepository.findById(USERID);
+        Optional<User> wrapper = userRepository.findById(userId);
         assertTrue(wrapper.isPresent(), "The required Record is not in the Database!");
         User tmp = wrapper.get();
         tmp.setPassword("password");
         assertTrue(BCrypt.checkpw("password", tmp.getPassword()), "setPassword() does not encrypt!");
-        assertTrue(BCrypt.checkpw("password", userRepository.findById(USERID).get().getPassword()));
+        assertTrue(BCrypt.checkpw("password", userRepository.findById(userId).get().getPassword()));
     }
 }
