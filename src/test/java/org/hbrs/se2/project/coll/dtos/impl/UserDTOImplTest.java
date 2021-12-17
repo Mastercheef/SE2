@@ -106,6 +106,6 @@ class UserDTOImplTest {
 
     @Test
     void getId() {
-        assertEquals("12" ,userDTO.getId());
+        assertEquals(12 ,userDTO.getId());
     }
 }
