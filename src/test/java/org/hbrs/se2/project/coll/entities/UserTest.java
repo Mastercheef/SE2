@@ -69,9 +69,19 @@ class UserTest {
 
     @Test
     void testOtherClass() {
-        assertNotEquals(userOne.getClass(), StudentUser.class);
+        assertNotEquals(userOne.getClass(), String.class);
+    }
+    @Test
+    void testEqualClass() {
+        assertFalse(userOne.equals(StudentUser.class));
     }
 
+    @Test
+    void testEqualsMethod() {
+        assertFalse(userOne.equals(userTwo));
+        userTwo.setFirstName("Max");
+        assertFalse(userOne.equals(userTwo));
+    }
     @Test
     void testToString() {
         assertEquals("197, Herr, Dr., Max, Mustermann, 2000-01-01, 0123456789, Testerstraße 2\n" +
