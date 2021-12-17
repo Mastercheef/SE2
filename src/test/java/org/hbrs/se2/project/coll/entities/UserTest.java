@@ -53,25 +53,24 @@ class UserTest {
     }
     @Test
     void testEqualsSameUser() {
-
+        //Same user
         assertEquals(userOne, userOne);
     }
 
     @Test
-    void testEqualsDifferentUser() {
-
-        assertNotEquals(userOne, userTwo);
-    }
-
-    @Test
     void testEqualNull() {
+
+        // The equals object is null
         assertFalse(userOne.equals(null));
-        assertTrue(userOne.equals(Object.class));
+        // The equals object is not null
+        assertFalse(userOne.equals(Object.class));
     }
 
     @Test
     void testEqualClass() {
+        //The equals object is not a user class
         assertFalse(userOne.equals(StudentUser.class));
+        //The equals object is a a user class
         assertFalse(userOne.equals(User.class));
     }
 
@@ -97,8 +96,8 @@ class UserTest {
     }
     @Test
     void testToString() {
-        assertEquals("197, Herr, Dr., Max, Mustermann, 2000-01-01, 0123456789, Testerstraße 2\n" +
-                "54321 Testerstadt\n" +
-                "Schweiz, max@gmx.de, st", userOne.toString());
+        assertEquals("197, Herr, Dr., Max, Mustermann, 2000-01-01, 0123456789, Musterstrasse 1\n" +
+                "12345 Musterstadt\n" +
+                "Deutschland, max@gmx.de, st", userOne.toString());
     }
 }
