@@ -7,6 +7,21 @@ import java.util.regex.Pattern;
 
 public class Globals {
 
+    public enum ErrorCodes {
+        DATABASE_USER_EXCEPTION(422);
+
+        private int code;
+
+        ErrorCodes(int code) {
+            this.code = code;
+        }
+
+        public int getCode() {
+            return code;
+        }
+    }
+
+
     private Globals() {
         throw new IllegalStateException(ExceptionMessage.UTILITY);
     }

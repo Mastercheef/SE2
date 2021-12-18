@@ -278,7 +278,7 @@ public class RegistrationView extends Div {
                     setErrorFields(registrationResult.getReasons());
                 }
             } catch (DatabaseUserException databaseUserException) {
-                triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein Fehler aufgetreten: " + databaseUserException.getReason());
+                triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein Fehler aufgetreten: " + databaseUserException.getErrorCode());
             } catch (Exception exception) {
                 triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein unerwarteter Fehler aufgetreten: " + exception);
             }

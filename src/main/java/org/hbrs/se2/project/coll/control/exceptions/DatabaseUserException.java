@@ -1,19 +1,31 @@
 package org.hbrs.se2.project.coll.control.exceptions;
 
+import org.hbrs.se2.project.coll.util.Globals;
+
+import javax.xml.crypto.Data;
+
 public class DatabaseUserException extends Exception {
 
-    private String reason = null;
+    private static final long serialVersionUID = -8460356990632230194L;
 
-    public String getReason() {
-        return reason;
+    private Integer errorCode;
+
+    public DatabaseUserException(String message) {
+        super(message);
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public DatabaseUserException(String message, Throwable cause) {
+        super(message,cause);
     }
 
-    public DatabaseUserException( String reason ) {
-        this.reason = reason;
+    public DatabaseUserException(String message, Throwable cause, Globals.ErrorCodes errorCode) {
+        super(message, cause);
+        this.errorCode = errorCode.getCode();
     }
+
+    public Integer getErrorCode() {
+        return errorCode;
+    }
+
 
 }
