@@ -21,7 +21,6 @@ import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
-import org.hbrs.se2.project.coll.views.ContactView;
 import org.hbrs.se2.project.coll.views.DataProtectionView;
 import org.hbrs.se2.project.coll.views.ImpressumView;
 import org.hbrs.se2.project.coll.views.StudentProfileView;
@@ -184,7 +183,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         logoLayout.add(new H1("HelloCar"));
 
         HorizontalLayout footer = new HorizontalLayout(copyright);
-        footer.add(new RouterLink("Kontakt", ContactView.class));
         footer.add(new RouterLink("Impressum", ImpressumView.class));
         footer.add(new RouterLink("Datenschutz", DataProtectionView.class));
         footer.setJustifyContentMode(FlexComponent.JustifyContentMode.START);
