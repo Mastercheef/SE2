@@ -212,25 +212,24 @@ class UserFactoryTest {
 
         ContactPerson contactPerson;
 
-        when(contactPersonDTO.getId()).thenReturn(100);
-        when(contactPersonDTO.getType()).thenReturn("st");
-        when(contactPersonDTO.getSalutation()).thenReturn("Herr");
-        when(contactPersonDTO.getTitle()).thenReturn("Dr.");
-        when(contactPersonDTO.getFirstName()).thenReturn("Max");
-        when(contactPersonDTO.getLastName()).thenReturn(name);
-        when(contactPersonDTO.getDateOfBirth()).thenReturn(localDate);
-        when(contactPersonDTO.getAddress()).thenReturn(address);
-        when(contactPersonDTO.getAddress().getStreet()).thenReturn("Mustermannstraße");
-        when(contactPersonDTO.getAddress().getCountry()).thenReturn("DE");
-        when(contactPersonDTO.getAddress().getHouseNumber()).thenReturn("2");
-        when(contactPersonDTO.getAddress().getCity()).thenReturn("Mustermannstadt");
-        when(contactPersonDTO.getAddress().getPostalCode()).thenReturn("12345");
-        when(contactPersonDTO.getPhone()).thenReturn("0123456789");
-        when(contactPersonDTO.getEmail()).thenReturn(email);
-        when(contactPersonDTO.getPassword()).thenReturn(password);
-        when(contactPersonDTO.getCompany()).thenReturn(company);
-        when(contactPersonDTO.getRole()).thenReturn("Datenbank-Experte");
-        contactPerson = UserFactory.createContactPerson(contactPersonDTO);
+        when(userDTO.getId()).thenReturn(100);
+        when(userDTO.getType()).thenReturn("st");
+        when(userDTO.getSalutation()).thenReturn("Herr");
+        when(userDTO.getTitle()).thenReturn("Dr.");
+        when(userDTO.getFirstName()).thenReturn("Max");
+        when(userDTO.getLastName()).thenReturn(name);
+        when(userDTO.getDateOfBirth()).thenReturn(localDate);
+        when(userDTO.getAddress()).thenReturn(address);
+        when(userDTO.getAddress().getStreet()).thenReturn("Mustermannstraße");
+        when(userDTO.getAddress().getCountry()).thenReturn("DE");
+        when(userDTO.getAddress().getHouseNumber()).thenReturn("2");
+        when(userDTO.getAddress().getCity()).thenReturn("Mustermannstadt");
+        when(userDTO.getAddress().getPostalCode()).thenReturn("12345");
+        when(userDTO.getPhone()).thenReturn("0123456789");
+        when(userDTO.getEmail()).thenReturn(email);
+        when(userDTO.getPassword()).thenReturn(password);
+
+        contactPerson = UserFactory.createContactPersonFromBasicUser(userDTO);
         assertSame(contactPerson.getClass(), ContactPerson.class, "Returned type is not a ContactPerson");
 
         assertEquals(100 , contactPerson.getId());
@@ -248,7 +247,6 @@ class UserFactoryTest {
         assertEquals(LocalDate.of(2000, 1, 23), contactPerson.getDateOfBirth());
         assertEquals(email , contactPerson.getEmail());
         assertTrue(BCrypt.checkpw(password, contactPerson.getPassword()));
-        assertNotNull(contactPerson.getCompany());
-        assertEquals("Datenbank-Experte" , contactPerson.getRole());
+
     }
 }
