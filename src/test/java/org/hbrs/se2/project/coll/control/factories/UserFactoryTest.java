@@ -136,7 +136,8 @@ class UserFactoryTest {
     @Test
     void createStudentUserFromBasicUser() {
 
-        ContactPerson contactPerson;
+        StudentUser studentUser;
+
         when(userDTO.getId()).thenReturn(100);
         when(userDTO.getType()).thenReturn("st");
         when(userDTO.getSalutation()).thenReturn("Herr");
@@ -154,18 +155,18 @@ class UserFactoryTest {
         when(userDTO.getEmail()).thenReturn(email);
         when(userDTO.getPassword()).thenReturn(password);
 
-        contactPerson = UserFactory.createContactPersonFromBasicUser(userDTO);
+        studentUser = UserFactory.createStudentUserFromBasicUser(userDTO);
 
-        assertEquals(100 , contactPerson.getId());
-        assertEquals("st" , contactPerson.getType());
-        assertEquals("Herr" , contactPerson.getSalutation());
-        assertEquals("Dr." , contactPerson.getTitle());
-        assertEquals("Max" , contactPerson.getFirstName());
-        assertEquals("Mustermann" , contactPerson.getLastName());
-        assertEquals("0123456789" , contactPerson.getPhone());
-        assertEquals(LocalDate.of(2000, 1, 23), contactPerson.getDateOfBirth());
-        assertEquals(email ,contactPerson.getEmail());
-        assertTrue(BCrypt.checkpw(password, contactPerson.getPassword()));
+        assertEquals(100 , studentUser.getId());
+        assertEquals("st" , studentUser.getType());
+        assertEquals("Herr" , studentUser.getSalutation());
+        assertEquals("Dr." , studentUser.getTitle());
+        assertEquals("Max" , studentUser.getFirstName());
+        assertEquals("Mustermann" , studentUser.getLastName());
+        assertEquals("0123456789" , studentUser.getPhone());
+        assertEquals(LocalDate.of(2000, 1, 23), studentUser.getDateOfBirth());
+        assertEquals(email ,studentUser.getEmail());
+        assertTrue(BCrypt.checkpw(password, studentUser.getPassword()));
     }
 
     @Test
