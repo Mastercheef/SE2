@@ -3,6 +3,8 @@ package org.hbrs.se2.project.coll.entities;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,13 +56,18 @@ class StudentUserTest {
     @Test
     //TODO Implement
     void getApplications() {
+        JobAdvertisement jobAdvertisementOne = new JobAdvertisement();
+        JobAdvertisement jobAdvertisementTwo = new JobAdvertisement();
+        Set<JobAdvertisement> setJob = new HashSet<JobAdvertisement>();
+        setJob.add(jobAdvertisementOne);
+        setJob.add(jobAdvertisementTwo);
+        studentUser.setApplications(setJob);
+
+        assertEquals(2 , studentUser.getApplications().size());
     }
 
 
-    //TODO Implement
-    @Test
-    void setApplications() {
-    }
+
 
     @Test
     void testToString() {
