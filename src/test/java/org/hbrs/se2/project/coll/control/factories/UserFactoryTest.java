@@ -205,9 +205,6 @@ class UserFactoryTest {
         assertTrue(BCrypt.checkpw(password, contactPerson.getPassword()));
         assertNotNull(contactPerson.getCompany());
         assertEquals("Datenbank-Experte" , contactPerson.getRole());
-
-
-
     }
 
     @Test
