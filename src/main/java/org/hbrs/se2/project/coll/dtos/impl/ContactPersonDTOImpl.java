@@ -7,7 +7,7 @@ public class ContactPersonDTOImpl extends UserDTOImpl implements ContactPersonDT
     private Company company;
     private String role;
 
-    public void setCompanyDTO(Company companyDTO) { this.company = company; }
+    public void setCompanyDTO(Company companyDTO) { this.company = companyDTO; }
 
     public void setRole(String role) { this.role = role; }
 
