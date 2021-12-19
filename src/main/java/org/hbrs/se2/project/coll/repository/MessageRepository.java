@@ -17,4 +17,5 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
     List<MessageDTO> findMessagesByRecipient(int recipient);
     List<MessageDTO> findMessagesBySubject(int subject);
     List<MessageDTO> findMessagesBySubjectAndDate(int subject, LocalDate date);
+    List<MessageDTO> findMessagesByRecipientAndRead(int recipient, boolean read);
 }

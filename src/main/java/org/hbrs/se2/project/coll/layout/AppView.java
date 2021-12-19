@@ -9,6 +9,8 @@ import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -17,17 +19,22 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.*;
+import org.hbrs.se2.project.coll.dtos.MessageDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
+import org.hbrs.se2.project.coll.entities.Message;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
+import org.hbrs.se2.project.coll.repository.MessageRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.views.DataProtectionView;
 import org.hbrs.se2.project.coll.views.ImpressumView;
 import org.hbrs.se2.project.coll.views.StudentProfileView;
+import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -44,9 +51,13 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     private H1 homeIcon;
     private H1 helloUser;
     private Label copyright = new Label("Copyright © 2021-2022");
+    MenuBar navigationBar = new MenuBar();
 
     @Autowired
     private ContactPersonRepository contactPersonRepository;
+
+    @Autowired
+    private MessageRepository messageRepository;
 
     public AppView() {
         if (getCurrentUser() == null) {
@@ -108,27 +119,41 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         helloUser = new H1();
         headerNavigationPanel.add(helloUser);
 
-        // Logout-Button am rechts-oberen Rand.
-        MenuBar navigationBar = new MenuBar();
-
-        if (checkIfUserIsLoggedIn()) {
-            /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
-            String currentUserType = getCurrentUser().getType();
-            if(Objects.equals(currentUserType, "st"))
-                navigationBar.addItem("Mein Profil" , e -> navigateToUserProfile());
-            else if(Objects.equals(currentUserType, "cp"))
-                navigationBar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
-            navigationBar.addItem("Posteingang", e -> navigateToMessages());
-            navigationBar.addItem("Logout" , e -> logoutUser());
-        } else {
+        // If user is not logged in, show Login/Register Buttons
+        if(!checkIfUserIsLoggedIn()) {
             navigationBar.addItem("Registrieren" , e -> UI.getCurrent().navigate(Globals.Pages.REGISTER_VIEW));
             navigationBar.addItem("Login" , e -> UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW));
         }
-
         headerNavigationPanel.add(navigationBar);
-
         headerLayout.add( headerNavigationPanel );
         return headerLayout;
+    }
+
+    private void initNavigationBar(boolean unreadMessages) {
+        /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
+        String currentUserType = getCurrentUser().getType();
+        if (Objects.equals(currentUserType, "st"))
+            navigationBar.addItem("Mein Profil", e -> navigateToUserProfile());
+        else if (Objects.equals(currentUserType, "cp"))
+            navigationBar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
+
+        if(!unreadMessages)
+            navigationBar.addItem("Posteingang", e -> navigateToMessages());
+        else
+        {
+            Icon messageIcon = VaadinIcon.ENVELOPE.create();
+            messageIcon.setColor("#67ed42");
+
+            Label inboxLabel = new Label("Posteingang");
+            inboxLabel.getElement().getStyle().set("color", "#67ed42");
+
+            Tab envelope = new Tab(messageIcon);
+            Tab inbox = new Tab(inboxLabel);
+
+            Tabs inboxTab = new Tabs(envelope, inbox);
+            navigationBar.addItem(inboxTab, e-> navigateToMessages());
+        }
+        navigationBar.addItem("Logout", e -> logoutUser());
     }
 
     private void navigateToUserProfile() {
@@ -246,6 +271,13 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         if ( checkIfUserIsLoggedIn() ) {
             // Setzen des Vornamens von dem aktuell eingeloggten Benutzer
             helloUser.setText("Hallo "  + this.getCurrentNameOfUser() );
+            navigationBar.removeAll();
+
+            // Highlight des Posteingang-Tabs, wenn es ungelesene Nachrichten gibt
+            if(messageRepository.findMessagesByRecipientAndRead(getCurrentUser().getId(), false).size() > 0)
+                initNavigationBar(true);
+            else
+                initNavigationBar(false);
         }
 
         // Der aktuell-selektierte Tab wird gehighlighted.
@@ -253,7 +285,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         // Setzen des aktuellen Names des Tabs
         //viewTitle.setText(getCurrentPageTitle());
-        LOGGER.info(getCurrentPageTitle());
+
     }
 
     private Optional<Tab> getTabForComponent(Component component) {
@@ -304,6 +336,14 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         return contactPerson.getCompany().getId();
     }
 
+    // TODO: ANPASSEN, ENTFERNEN GEGEBENENFALLS
+ /*   private boolean isMailUnread() {
+        List<MessageDTO> unread = messageRepository.findMessagesByRecipient(getCurrentUser().getId());
+        if(unread.size() > 0) System.out.println("YO LETS GOOO");
+        else System.out.println("NOPE");
+        return true;
+    }
+*/
 
     @Override
     /**

@@ -8,9 +8,11 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
@@ -198,20 +200,36 @@ public class InboxView extends Div implements HasUrlParameter<String> {
                 }
             );
 
-            // A delete button
+            // Delete button for messages
             Button delete = new Button("Nachricht löschen");
             delete.addClickListener(e -> {
-                try {
-                    this.removeMessage(message);
+                // Preventing missclicks by opening a dialog box
+                Dialog dialog   = new Dialog();
+                Label question  = new Label("Sind sie sicher, dass Sie diese Nachricht löschen möchten?");
+                Label info      = new Label("(Dieser Vorgang ist unwiderruflich.)");
+                Button yesButton = new Button("Ja");
+                Button noButton  = new Button ("Nein");
+
+                yesButton.addClickListener(jo -> {
+                    dialog.close();
+                    try {
+                        this.removeMessage(message);
+                    } catch (DatabaseUserException ex) {
+                        ex.printStackTrace();
+                    }
                     splitLayout.setSplitterPosition(1000);
                     grid.deselectAll();
                     cleanSecondary();
                     if(grid.getColumns().isEmpty())
                         splitLayout.addToPrimary(hint);
+                });
+                noButton.addClickListener(no -> dialog.close());
 
-                } catch (DatabaseUserException ex) {
-                    ex.printStackTrace();
-                }
+                HorizontalLayout buttons = new HorizontalLayout(yesButton, noButton);
+                VerticalLayout dialogContent = new VerticalLayout(question, info, buttons);
+                dialogContent.setAlignItems(FlexComponent.Alignment.CENTER);
+                dialog.add(dialogContent);
+                dialog.open();
             });
 
             // Reply
@@ -269,7 +287,6 @@ public class InboxView extends Div implements HasUrlParameter<String> {
             cancelButton.addClickListener(e -> messageReply.setValue(""));
 
             HorizontalLayout header = new HorizontalLayout(sender, senderVal, subject, subjectVal, date, dateVal);
-
             HorizontalLayout hButtons1 = new HorizontalLayout(profile, delete);
             HorizontalLayout hButtons2 = new HorizontalLayout(replyButton, cancelButton);
 
