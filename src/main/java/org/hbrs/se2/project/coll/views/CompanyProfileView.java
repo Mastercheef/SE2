@@ -237,6 +237,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 Label jobStart          = new Label("Beginn der Tätigkeit:");
                 Label jobEnd            = new Label("Ende der Tätigkeit:");
                 Label jobTemporary      = new Label("Temporäre Beschäftigung:");
+                Label jobSalary         = new Label("Lohn:");
 
                 Label lJobTitle;
                 Label lJobType;
@@ -246,10 +247,11 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 Label lJobStart;
                 Label lJobEnd;
                 Label lJobTemporary;
+                Label lJobSalary;
 
                 // Styling
                 for (Label label : new Label[]{ jobTitle, jobType, jobHours, jobRequirements, jobDescription, jobStart,
-                        jobEnd, jobTemporary }) {
+                        jobEnd, jobTemporary, jobSalary }) {
                     label.getElement().getStyle().set(FONT, "bold");
                     label.setWidth(WIDTH);
                 }
@@ -266,6 +268,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 lJobDescription     = new Label(job.getJobDescription());
                 lJobStart           = new Label(job.getStartOfWork().toString());
                 lJobEnd             = new Label(job.getEndOfWork().toString());
+                lJobSalary          = new Label(Integer.toString(job.getSalary()));
+
 
                 if(String.valueOf(job.getTemporaryEmployment()).equals("true"))
                     lJobTemporary = new Label("Ja");
@@ -280,6 +284,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 HorizontalLayout hJobStart          = new HorizontalLayout(jobStart, lJobStart);
                 HorizontalLayout hJobEnd            = new HorizontalLayout(jobEnd, lJobEnd);
                 HorizontalLayout hJobTemporary      = new HorizontalLayout(jobTemporary, lJobTemporary);
+                HorizontalLayout hJobSalary         = new HorizontalLayout(jobSalary, lJobSalary);
 
                 // Create Buttons to get in contact with the Company
                 Button contactButton = new Button("Kontakt aufnehmen");
@@ -288,7 +293,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
                 // Add everything to the container
                 form.add(jobNumber, hJobTitle, hJobType, hJobHours, hJobRequirements, hJobDescription, hJobStart,
-                            hJobEnd, hJobTemporary, contactButton);
+                            hJobEnd, hJobTemporary, hJobSalary, contactButton);
             }
         }
         return form;
