@@ -19,22 +19,18 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.*;
-import org.hbrs.se2.project.coll.dtos.MessageDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
-import org.hbrs.se2.project.coll.entities.Message;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.MessageRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.views.DataProtectionView;
 import org.hbrs.se2.project.coll.views.ImpressumView;
 import org.hbrs.se2.project.coll.views.StudentProfileView;
-import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -48,9 +44,8 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppView.class);
 
     private Tabs menu;
-    private H1 homeIcon;
     private H1 helloUser;
-    private Label copyright = new Label("Copyright © 2021-2022");
+    private final Label copyright = new Label("Copyright © 2021-2022");
     MenuBar navigationBar = new MenuBar();
 
     @Autowired
@@ -102,7 +97,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         homeIconHorizontalLayout.setFlexGrow(1);
         homeIconHorizontalLayout.setPadding(true);
 
-        homeIcon = new H1("Coll@HBRS");
+        H1 homeIcon = new H1("Coll@HBRS");
         homeIcon.getElement().getClassList().add("pointer");
         homeIcon.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW));
         homeIconHorizontalLayout.add(homeIcon);
@@ -270,14 +265,12 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         if ( checkIfUserIsLoggedIn() ) {
             // Setzen des Vornamens von dem aktuell eingeloggten Benutzer
-            helloUser.setText("Hallo "  + this.getCurrentNameOfUser() );
+            helloUser.setText("Hallo " + this.getCurrentNameOfUser() );
             navigationBar.removeAll();
 
             // Highlight des Posteingang-Tabs, wenn es ungelesene Nachrichten gibt
-            if(messageRepository.findMessagesByRecipientAndRead(getCurrentUser().getId(), false).size() > 0)
-                initNavigationBar(true);
-            else
-                initNavigationBar(false);
+            initNavigationBar(messageRepository.findMessagesByRecipientAndRead(getCurrentUser().getId(),
+                    false).size() > 0);
         }
 
         // Der aktuell-selektierte Tab wird gehighlighted.
@@ -296,10 +289,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     private boolean checkIfUserIsLoggedIn() {
         // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
         UserDTO userDTO = this.getCurrentUser();
-        if (userDTO == null) {
-            return false;
-        }
-        return true;
+        return userDTO != null;
     }
 
     private boolean navigateToLoginIfSessionNeeded() {
@@ -335,15 +325,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         ContactPerson contactPerson = contactPersonRepository.findContactPersonById(contactPersonId);
         return contactPerson.getCompany().getId();
     }
-
-    // TODO: ANPASSEN, ENTFERNEN GEGEBENENFALLS
- /*   private boolean isMailUnread() {
-        List<MessageDTO> unread = messageRepository.findMessagesByRecipient(getCurrentUser().getId());
-        if(unread.size() > 0) System.out.println("YO LETS GOOO");
-        else System.out.println("NOPE");
-        return true;
-    }
-*/
 
     @Override
     /**
