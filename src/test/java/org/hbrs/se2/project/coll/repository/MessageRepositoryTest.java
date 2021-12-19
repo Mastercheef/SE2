@@ -93,7 +93,7 @@ class MessageRepositoryTest {
         List<MessageDTO> messageDTOs = messageRepository.findMessagesBySubjectAndDate(
                 messages.get(0).getSubject(),
                 messages.get(0).getDate()
-                );
+        );
 
         for(int i = 0; i < messageDTOs.size(); i++) {
             assertEquals(messageDTOs.get(i).getId(), messages.get(i).getId());

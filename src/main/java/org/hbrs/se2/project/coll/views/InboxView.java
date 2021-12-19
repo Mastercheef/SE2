@@ -99,8 +99,6 @@ public class InboxView extends Div implements HasUrlParameter<String> {
                 try {
                     toggleReply(message.getItem(), true);
 
-                    // TODO: Live update the envelope icon. Vaadin has a bug with refresh (according to web),
-                    //  find a workaround
                     // If needed: change envelope (read) icon
                     if(!message.getItem().getRead())
                         inboxControl.setMessageAsRead(message.getItem());
@@ -171,7 +169,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
 
             Label date = new Label("Datum:");
             date.getElement().getStyle().set("font-size", "14px")
-                .set("font-weight", "bold");
+                    .set("font-weight", "bold");
 
             Label dateVal = new Label(message.getDate().toString());
             dateVal.getElement().getStyle().set("font-size", "14px");
@@ -190,13 +188,13 @@ public class InboxView extends Div implements HasUrlParameter<String> {
             // Visit profile button
             Button profile = new Button("Profil besuchen");
             profile.addClickListener(e ->
-                {
-                    try {
-                        UI.getCurrent().navigate(inboxControl.callProfileRoute(message.getSender()));
-                    } catch (DatabaseUserException ex) {
-                        ex.printStackTrace();
+                    {
+                        try {
+                            UI.getCurrent().navigate(inboxControl.callProfileRoute(message.getSender()));
+                        } catch (DatabaseUserException ex) {
+                            ex.printStackTrace();
+                        }
                     }
-                }
             );
 
             // Delete button for messages

@@ -10,6 +10,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEvent;
@@ -66,6 +67,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
     Label startOfWork           = new Label("Eintrittsdatum");
     Label endOfWork             = new Label("Enddatum");
     Label jobDescription        = new Label("Stellenbeschreibung (*)");
+    Label salary                = new Label("Lohn");
 
     TextField       lJobTitle            = new TextField();
     Select<String>  lTemporaryEmployment = new Select<>();
@@ -75,6 +77,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
     DatePicker      lStartOfWork         = new DatePicker();
     DatePicker      lEndOfWork           = new DatePicker();
     TextArea        lJobDescription      = new TextArea();
+    NumberField     lSalary              = new NumberField();
 
     Div div           = new Div();
 
@@ -102,7 +105,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         setSizeFull();
 
         for (Label label : new Label[]{jobTitle, temporaryEmployment, typeOfEmployment, workingHours, requirements,
-                startOfWork, endOfWork, jobDescription}) {
+                startOfWork, endOfWork, jobDescription, salary}) {
             label.getElement().getStyle().set("font-weight", "bold");
         }
 
@@ -127,9 +130,15 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         // Working Hours per Week
         HorizontalLayout hWorkingHours = new HorizontalLayout(workingHours, lWorkingHours);
 
+        // Working Hours per Week
+        Div euro = new Div();
+        euro.add("€");
+        lSalary.setPrefixComponent(euro);
+        HorizontalLayout hSalary = new HorizontalLayout(salary, lSalary);
+
         // Append
         HorizontalLayout first = new HorizontalLayout(hJobTitle, hTypeOfEmployment, hStartOfWork, hEndOfWork);
-        HorizontalLayout second = new HorizontalLayout(hTemporaryEmployment, hWorkingHours);
+        HorizontalLayout second = new HorizontalLayout(hTemporaryEmployment, hWorkingHours, hSalary);
 
         // Description
         VerticalLayout vJobDescription = new VerticalLayout(jobDescription, lJobDescription);
@@ -144,7 +153,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
 
         // Alignment
         for(HorizontalLayout hlayout : new HorizontalLayout[] { hJobTitle, hTypeOfEmployment,
-                hStartOfWork, hEndOfWork, hTemporaryEmployment, hWorkingHours}) {
+                hStartOfWork, hEndOfWork, hTemporaryEmployment, hWorkingHours, hSalary}) {
             hlayout.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
             hlayout.setJustifyContentMode(JustifyContentMode.START);
             hlayout.getElement().getStyle().set("margin-top", "10px");
