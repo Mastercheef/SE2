@@ -3,11 +3,12 @@ package org.hbrs.se2.project.coll.dtos;
 import java.time.LocalDate;
 
 public interface MessageDTO {
-    public int getId();
-    public int getSender();
-    public int getRecipient();
-    public String getContent();
-    public String getSubject();
-    public LocalDate getDate();
-    public boolean getRead();
+    public int          getId();
+    public int          getSender();
+    public int          getRecipient();
+    public String       getContent();
+    public String       getSubject();
+    public LocalDate    getDate();
+    public boolean      getRead();
+    public String       getType();
 }

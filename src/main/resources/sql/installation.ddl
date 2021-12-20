@@ -131,6 +131,7 @@ create table col_tab_message (
     subject varchar not null,
     date date not null,
     read boolean not null default false,
+    type varchar not null,
     constraint col_pk_message_id primary key (message_id));
 
 -- Constraints Section

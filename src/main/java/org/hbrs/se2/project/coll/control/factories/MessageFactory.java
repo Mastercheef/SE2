@@ -16,6 +16,7 @@ public class MessageFactory {
         message.setContent(messageDTO.getContent());
         message.setSubject(messageDTO.getSubject());
         message.setDate(messageDTO.getDate());
+        message.setType(messageDTO.getType());
         return message;
     }
 }

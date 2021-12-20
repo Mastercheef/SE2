@@ -101,7 +101,19 @@ public class InboxControl {
     public String getSubject(int messageId) throws DatabaseUserException {
         try {
             return this.messageRepository.findMessageById(messageId).getSubject();
-           // return this.jobAdvertisementRepository.findJobAdvertisementById(subject).getJobTitle();
+        } catch (Exception exception) {
+            LOGGER.info(Globals.LogMessage.LOG ,  exception.toString());
+            if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
+                throw new DatabaseUserException(Globals.LogMessage.CONNECTED);
+            } else {
+                throw new DatabaseUserException(Globals.LogMessage.ERROR);
+            }
+        }
+    }
+
+    public String getType(int messageId) throws  DatabaseUserException {
+        try {
+            return this.messageRepository.findMessageById(messageId).getType();
         } catch (Exception exception) {
             LOGGER.info(Globals.LogMessage.LOG ,  exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
@@ -143,6 +155,7 @@ public class InboxControl {
         readMessage.setSubject(message.getSubject());
         readMessage.setDate(message.getDate());
         readMessage.setContent(message.getContent());
+        readMessage.setType(message.getType());
 
         try {
             Message updatedMessage = MessageFactory.createMessage(readMessage);

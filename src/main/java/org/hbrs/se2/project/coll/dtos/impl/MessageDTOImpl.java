@@ -5,13 +5,14 @@ import org.hbrs.se2.project.coll.dtos.MessageDTO;
 import java.time.LocalDate;
 
 public class MessageDTOImpl implements MessageDTO {
-    private int id;
-    private int sender;
-    private int recipient;
-    private String content;
-    private String subject;
-    private LocalDate date;
-    private boolean read;
+    private int         id;
+    private int         sender;
+    private int         recipient;
+    private String      content;
+    private String      subject;
+    private LocalDate   date;
+    private boolean     read;
+    private String      type;
 
     public void setId(int id) { this.id = id; }
 
@@ -26,6 +27,8 @@ public class MessageDTOImpl implements MessageDTO {
     public void setDate(LocalDate date) { this.date = date; }
 
     public void setRead(boolean read) { this.read = read; }
+
+    public void setType(String type) { this.type = type; }
 
     @Override
     public int getId() { return this.id; }
@@ -47,4 +50,7 @@ public class MessageDTOImpl implements MessageDTO {
 
     @Override
     public boolean getRead() { return this.read; }
+
+    @Override
+    public String getType() { return this.type; }
 }

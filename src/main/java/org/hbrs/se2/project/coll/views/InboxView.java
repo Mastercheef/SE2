@@ -93,6 +93,20 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         // Date of received message
         grid.addColumn(MessageDTO::getDate).setHeader("Datum");
 
+        // Type of received message
+        grid.addColumn(message -> {
+            try {
+                String type = inboxControl.getType(message.getId());
+                if(Objects.equals(type, "Nachricht"))
+                    return "Nachricht";
+                if(Objects.equals(type, "Bewerbung"))
+                    return "Bewerbung";
+            } catch (DatabaseUserException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }).setHeader("Nachrichtentyp");
+
         // Clicking a message opens it in the lower part of the window
         grid.addItemClickListener(message -> {
             if(grid.getSelectionModel().getFirstSelectedItem().isPresent()) {
