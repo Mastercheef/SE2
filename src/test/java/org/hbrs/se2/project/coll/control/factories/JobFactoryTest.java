@@ -1,9 +1,8 @@
 package org.hbrs.se2.project.coll.control.factories;
-import org.hbrs.se2.project.coll.dtos.impl.RecruitmentAdvertisingDTOImpl;
+import org.hbrs.se2.project.coll.dtos.impl.JobAdvertisementDTOimpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
-import org.hbrs.se2.project.coll.util.Globals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -19,7 +18,7 @@ class JobFactoryTest {
 
     private static final String errorMessage = "class org.hbrs.se2.project.coll.control.factories.JobFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.JobFactory with modifiers \"private\"";
 
-    private RecruitmentAdvertisingDTOImpl dto;
+    private JobAdvertisementDTOimpl dto;
 
     private short workingHours = 40;
 
@@ -34,7 +33,7 @@ class JobFactoryTest {
         address = spy(new Address());
         contactPerson = spy(new ContactPerson());
         MockitoAnnotations.openMocks(this);
-        dto = new RecruitmentAdvertisingDTOImpl();
+        dto = new JobAdvertisementDTOimpl();
         dto.setId(100);
         dto.setTemporaryEmployment(true);
         dto.setTypeOfEmployment("Vollzeit");

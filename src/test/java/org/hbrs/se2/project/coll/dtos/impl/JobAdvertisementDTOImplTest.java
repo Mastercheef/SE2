@@ -14,163 +14,167 @@ class JobAdvertisementDTOImplTest {
 
     JobAdvertisementDTOimpl jobAdvertisementDTOimpl = new JobAdvertisementDTOimpl();
 
-
     @Mock
     private Address address = new Address();
 
     @Mock
-    private ContactPerson contactPerson = new ContactPerson();
-    private RecruitmentAdvertisingDTOImpl recruitmentAdvertisingDTO;
-    private String companyName = "CompanyName";
-    private String formOfEmployment = "Vollzeit";
-    private byte workingHours = 40;
-    private String beginnOfJob = "1.1.2000";
-    private String workingLocation = "Home Office";
-    private String jobDescription = "Job Beschreibung";
-    private String requirementForApplicants = "Viele!";
-    private String businessAddress = "MustermannStraße";
-    private boolean temporaryEmployment = false;
-    private String dateOfTemporaryEmployment =  "2.2.2002";
-    private String contactPersonString = "Herr Kontakt Person";
-    private String emailAddress = "max@emailhbrs.de";
+    private JobAdvertisementDTOimpl job;
+    private final LocalDate startOfWork           = LocalDate.of(2022, 1, 1);
+    private final LocalDate endOfWork             = LocalDate.of(2022, 4, 1);
+    private final ContactPerson contactPerson     = new ContactPerson();
 
     @BeforeEach
     void setUp() {
 
-        recruitmentAdvertisingDTO = new RecruitmentAdvertisingDTOImpl();
-        recruitmentAdvertisingDTO.setTemporaryEmployment(true);
-        recruitmentAdvertisingDTO.setTypeOfEmployment("Vollzeit");
-        recruitmentAdvertisingDTO.setWorkingHours((short) 40);
-        recruitmentAdvertisingDTO.setRequirements("Lorem Ipsum");
-        recruitmentAdvertisingDTO.setAddress(address);
-        recruitmentAdvertisingDTO.setStartOfWork(LocalDate.of(1999,1,1));
-        recruitmentAdvertisingDTO.setEndOfWork(LocalDate.of(2000,12,31));
-        recruitmentAdvertisingDTO.setJobDescription("Lorem Ipsum");
-        recruitmentAdvertisingDTO.setJobTitle("Datenbank-Experte");
-        recruitmentAdvertisingDTO.setId(111);
-        recruitmentAdvertisingDTO.setContactPerson(contactPerson);
+        job = new JobAdvertisementDTOimpl();
+        job.setTemporaryEmployment(true);
+        job.setTypeOfEmployment("Vollzeit");
+        job.setWorkingHours((short) 40);
+        job.setRequirements("C++, Java");
+        job.setAddress(address);
+        job.setStartOfWork(LocalDate.of(2025, 1, 1));
+        job.setEndOfWork(LocalDate.of(2040, 1, 1));
+        job.setContactPerson(contactPerson);
+        job.setJobDescription("Eine weitere Beschreibung dieser tollen Stelle");
+        job.setJobTitle("Vollzeitmitarbeiter für alles");
+        job.setSalary(2500);
+        job.setId(111);
     }
 
     @Test
     void getTemporaryEmployment() {
-        assertTrue(recruitmentAdvertisingDTO.getTemporaryEmployment());
+        assertTrue(job.getTemporaryEmployment());
     }
 
     @Test
     void getTypeOfEmployment() {
-        assertEquals("Vollzeit" , recruitmentAdvertisingDTO.getTypeOfEmployment());
+        assertEquals("Vollzeit", job.getTypeOfEmployment());
     }
 
     @Test
     void getWorkingHours() {
-        assertEquals(Integer.valueOf(40) , Integer.valueOf(recruitmentAdvertisingDTO.getWorkingHours()));
+        assertEquals(40, job.getWorkingHours());
     }
 
     @Test
     void getRequirements() {
-        assertEquals("Lorem Ipsum" , recruitmentAdvertisingDTO.getRequirements());
+        assertEquals("C++, Java", job.getRequirements());
     }
 
     @Test
     void getAddress() {
-        assertNotNull(recruitmentAdvertisingDTO.getAddress());
+        assertNotNull(job.getAddress());
     }
 
     @Test
     void getStartOfWork() {
-        assertEquals(LocalDate.of(1999,1,1) , recruitmentAdvertisingDTO.getStartOfWork() );
+        assertEquals(LocalDate.of(2025, 1, 1), job.getStartOfWork() );
     }
 
     @Test
     void getEndOfWork() {
-        assertEquals(LocalDate.of(2000,12,31) , recruitmentAdvertisingDTO.getEndOfWork());
+        assertEquals(LocalDate.of(2040, 1, 1), job.getEndOfWork());
     }
 
     @Test
     void getContactPerson() {
-        assertNotNull(recruitmentAdvertisingDTO.getContactPerson());
+        assertNotNull(job.getContactPerson());
     }
 
     @Test
     void getJobDescription() {
-        assertEquals("Lorem Ipsum" ,recruitmentAdvertisingDTO.getJobDescription());
+        assertEquals("Eine weitere Beschreibung dieser tollen Stelle", job.getJobDescription());
     }
 
     @Test
     void getJobTitle() {
-        assertEquals("Datenbank-Experte" , recruitmentAdvertisingDTO.getJobTitle());
+        assertEquals("Vollzeitmitarbeiter für alles", job.getJobTitle());
     }
 
     @Test
     void getId() {
-        assertEquals(111 , recruitmentAdvertisingDTO.getId());
+        assertEquals(111, job.getId());
     }
 
     @Test
-    void companyName() {
-        jobAdvertisementDTOimpl.setCompanyName(companyName);
-        assertEquals(companyName , jobAdvertisementDTOimpl.getCompanyName());
-    }
-
-    @Test
-    void FormOfEmployment() {
-        jobAdvertisementDTOimpl.setFormOfEmployment(formOfEmployment);
-        assertEquals(formOfEmployment , jobAdvertisementDTOimpl.getFormOfEmployment());
+    void typeOfEmployment() {
+        String typeOfEmployment = "Praktikum";
+        jobAdvertisementDTOimpl.setTypeOfEmployment(typeOfEmployment);
+        assertEquals(typeOfEmployment, jobAdvertisementDTOimpl.getTypeOfEmployment());
     }
 
     @Test
     void workingHours() {
+        short workingHours = (short) 20;
         jobAdvertisementDTOimpl.setWorkingHours(workingHours);
-        assertEquals(workingHours , jobAdvertisementDTOimpl.getWorkingHours());
+        assertEquals(workingHours, jobAdvertisementDTOimpl.getWorkingHours());
     }
 
     @Test
     void beginnOfJob() {
-        jobAdvertisementDTOimpl.setBeginnOfJob(beginnOfJob);
-        assertEquals(beginnOfJob , jobAdvertisementDTOimpl.getBeginnOfJob());
+        jobAdvertisementDTOimpl.setStartOfWork(startOfWork);
+        assertEquals(startOfWork, jobAdvertisementDTOimpl.getStartOfWork());
     }
     @Test
-    void WorkingLocation() {
-        jobAdvertisementDTOimpl.setWorkingLocation(workingLocation);
-        assertEquals(workingLocation , jobAdvertisementDTOimpl.getWorkingLocation());
+    void address() {
+        jobAdvertisementDTOimpl.setAddress(address);
+        assertEquals(address, jobAdvertisementDTOimpl.getAddress());
     }
     @Test
     void jobDescription() {
+        String jobDescription = "Beschreibung des Jobs";
         jobAdvertisementDTOimpl.setJobDescription(jobDescription);
-        assertEquals(jobDescription , jobAdvertisementDTOimpl.getJobDescription());
+        assertEquals(jobDescription, jobAdvertisementDTOimpl.getJobDescription());
+    }
+
+    @Test
+    void jobTitle() {
+        String jobTitle = "Praktikum als Stift";
+        jobAdvertisementDTOimpl.setJobTitle(jobTitle);
+        assertEquals(jobTitle, jobAdvertisementDTOimpl.getJobTitle());
     }
 
     @Test
     void requirementForApplicants() {
-        jobAdvertisementDTOimpl.setRequirementForApplicants(requirementForApplicants);
-        assertEquals(requirementForApplicants , jobAdvertisementDTOimpl.getRequirementForApplicants());
-    }
-
-    @Test
-    void businessAdress() {
-        jobAdvertisementDTOimpl.setBusinessAdress(businessAddress);
-        assertEquals(businessAddress , jobAdvertisementDTOimpl.getBusinessAddress());
+        String requirements = "Viele";
+        jobAdvertisementDTOimpl.setRequirements(requirements);
+        assertEquals(requirements, jobAdvertisementDTOimpl.getRequirements());
     }
 
     @Test
     void temporaryEmployment() {
-        jobAdvertisementDTOimpl.setTemporaryEmployment(temporaryEmployment);
-        assertEquals(temporaryEmployment , jobAdvertisementDTOimpl.getTemporaryEmployment());
+        boolean isTemporaryEmployment = true;
+        jobAdvertisementDTOimpl.setTemporaryEmployment(isTemporaryEmployment);
+        assertEquals(isTemporaryEmployment, jobAdvertisementDTOimpl.getTemporaryEmployment());
     }
 
     @Test
-    void DateOfTemporaryEmployment() {
-        jobAdvertisementDTOimpl.setDateOfTemporaryEmployment(dateOfTemporaryEmployment);
-        assertEquals(dateOfTemporaryEmployment, jobAdvertisementDTOimpl.getDateOfTemporaryEmployment());
+    void startOfWork() {
+        jobAdvertisementDTOimpl.setStartOfWork(startOfWork);
+        assertEquals(startOfWork, jobAdvertisementDTOimpl.getStartOfWork());
     }
+
+    @Test
+    void endOfWork() {
+        jobAdvertisementDTOimpl.setEndOfWork(endOfWork);
+        assertEquals(endOfWork, jobAdvertisementDTOimpl.getEndOfWork());
+    }
+
     @Test
     void contactPerson() {
-        jobAdvertisementDTOimpl.setContactPerson(contactPersonString);
-        assertEquals(contactPersonString , jobAdvertisementDTOimpl.getContactPerson());
+        jobAdvertisementDTOimpl.setContactPerson(contactPerson);
+        assertEquals(contactPerson, jobAdvertisementDTOimpl.getContactPerson());
     }
     @Test
-    void emailAddress() {
-        jobAdvertisementDTOimpl.setEmailAddress(emailAddress);
-        assertEquals(emailAddress , jobAdvertisementDTOimpl.getEmailAddress());
+    void salary() {
+        int salary = 1500;
+        jobAdvertisementDTOimpl.setSalary(salary);
+        assertEquals(salary, jobAdvertisementDTOimpl.getSalary());
+    }
+    @Test
+    void id() {
+        int id = 111;
+        jobAdvertisementDTOimpl.setId(id);
+        assertEquals(id, jobAdvertisementDTOimpl.getId());
     }
 }

@@ -19,9 +19,10 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.CompanyControl;
 import org.hbrs.se2.project.coll.control.JobAdvertisementControl;
+import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
-import org.hbrs.se2.project.coll.dtos.impl.RecruitmentAdvertisingDTOImpl;
+import org.hbrs.se2.project.coll.dtos.impl.JobAdvertisementDTOimpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.layout.AppView;
@@ -144,7 +145,6 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         VerticalLayout vJobDescription = new VerticalLayout(jobDescription, lJobDescription);
         lJobDescription.setWidthFull();
         lJobDescription.setMinHeight("150px");
-        //lJobDescription.getElement().getStyle().set("height", "150px");
 
         // Requirements
         VerticalLayout vRequirements = new VerticalLayout(requirements, lRequirements);
@@ -167,7 +167,11 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
 
         saveButton.addClickListener(e -> {
             if(!checkForEmptyInput()) {
-                createAndSaveNewJob();
+                try {
+                    createAndSaveNewJob();
+                } catch (DatabaseUserException ex) {
+                    ex.printStackTrace();
+                }
                 UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
             }
         });
@@ -243,8 +247,9 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         return empty;
     }
 
-    public void createAndSaveNewJob() {
-        RecruitmentAdvertisingDTOImpl newJob = new RecruitmentAdvertisingDTOImpl();
+    public void createAndSaveNewJob() throws DatabaseUserException {
+
+        JobAdvertisementDTOimpl newJob = new JobAdvertisementDTOimpl();
         newJob.setJobTitle(lJobTitle.getValue());
         newJob.setTypeOfEmployment(lTypeOfEmployment.getValue());
         newJob.setWorkingHours(Short.parseShort(lWorkingHours.getValue()));

@@ -1,16 +1,15 @@
 package org.hbrs.se2.project.coll.control.factories;
 
-import org.hbrs.se2.project.coll.dtos.RecruitmentAdvertisingDTO;
+import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 
 public class JobFactory {
-
 
     private JobFactory() {
         throw new IllegalStateException("Factory Class");
     }
 
-    public static JobAdvertisement createJob(RecruitmentAdvertisingDTO dto) {
+    public static JobAdvertisement createJob(JobAdvertisementDTO dto) {
         JobAdvertisement jobAdvertisement = new JobAdvertisement();
         jobAdvertisement.setId(dto.getId());
         jobAdvertisement.setTemporaryEmployment(dto.getTemporaryEmployment());
