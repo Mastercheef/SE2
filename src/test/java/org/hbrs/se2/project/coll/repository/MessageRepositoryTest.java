@@ -31,6 +31,8 @@ class MessageRepositoryTest {
         assertEquals(messageDTO.getRecipient(), message.getRecipient());
         assertEquals(messageDTO.getSubject(), message.getSubject());
         assertEquals(messageDTO.getDate(), message.getDate());
+        assertEquals(messageDTO.getRead(), message.getRead());
+        assertEquals(messageDTO.getType(), message.getType());
         messageRepository.delete(message);
     }
 
@@ -47,6 +49,8 @@ class MessageRepositoryTest {
             assertEquals(messageDTOs.get(i).getRecipient(), messages.get(i).getRecipient());
             assertEquals(messageDTOs.get(i).getSubject(), messages.get(i).getSubject());
             assertEquals(messageDTOs.get(i).getDate(), messages.get(i).getDate());
+            assertEquals(messageDTOs.get(i).getRead(), messages.get(i).getRead());
+            assertEquals(messageDTOs.get(i).getType(), messages.get(i).getType());
         }
         messageRepository.deleteAll(messages);
     }
@@ -64,6 +68,8 @@ class MessageRepositoryTest {
             assertEquals(messageDTOs.get(i).getSender(), messages.get(i).getSender());
             assertEquals(messageDTOs.get(i).getSubject(), messages.get(i).getSubject());
             assertEquals(messageDTOs.get(i).getDate(), messages.get(i).getDate());
+            assertEquals(messageDTOs.get(i).getRead(), messages.get(i).getRead());
+            assertEquals(messageDTOs.get(i).getType(), messages.get(i).getType());
         }
         messageRepository.deleteAll(messages);
     }
@@ -81,6 +87,8 @@ class MessageRepositoryTest {
             assertEquals(messageDTOs.get(i).getSender(), messages.get(i).getSender());
             assertEquals(messageDTOs.get(i).getRecipient(), messages.get(i).getRecipient());
             assertEquals(messageDTOs.get(i).getDate(), messages.get(i).getDate());
+            assertEquals(messageDTOs.get(i).getRead(), messages.get(i).getRead());
+            assertEquals(messageDTOs.get(i).getType(), messages.get(i).getType());
         }
         messageRepository.deleteAll(messages);
     }
@@ -101,6 +109,8 @@ class MessageRepositoryTest {
             assertEquals(messageDTOs.get(i).getSender(), messages.get(i).getSender());
             assertEquals(messageDTOs.get(i).getRecipient(), messages.get(i).getRecipient());
             assertEquals(messageDTOs.get(i).getDate(), messages.get(i).getDate());
+            assertEquals(messageDTOs.get(i).getRead(), messages.get(i).getRead());
+            assertEquals(messageDTOs.get(i).getType(), messages.get(i).getType());
         }
         messageRepository.deleteAll(messages);
     }
@@ -112,6 +122,8 @@ class MessageRepositoryTest {
         newMessage.setRecipient(20000000);
         newMessage.setSubject("Testbetreff1");
         newMessage.setDate(LocalDate.now());
+        newMessage.setRead(false);
+        newMessage.setType("Nachricht");
 
         return MessageFactory.createMessage(newMessage);
     }
@@ -125,6 +137,8 @@ class MessageRepositoryTest {
         message1.setRecipient(20000000);
         message1.setSubject("Testbetreff1");
         message1.setDate(LocalDate.now());
+        message1.setRead(false);
+        message1.setType("Nachricht");
 
         MessageDTOImpl message2 = new MessageDTOImpl();
         message2.setContent("Eine weitere Nachricht für dich.");
@@ -132,6 +146,8 @@ class MessageRepositoryTest {
         message2.setRecipient(20000000);
         message2.setSubject("Testbetreff2");
         message2.setDate(LocalDate.now());
+        message2.setRead(false);
+        message2.setType("Bewerbung");
 
         messages.add(MessageFactory.createMessage(message1));
         messages.add(MessageFactory.createMessage(message2));
