@@ -78,7 +78,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
                 e.printStackTrace();
             }
             return null;
-        }).setHeader("Absender");
+        }).setHeader("Absender").setSortable(true);
 
         // Resolution of Subject via control class
         grid.addColumn(message -> {
@@ -88,10 +88,10 @@ public class InboxView extends Div implements HasUrlParameter<String> {
                 e.printStackTrace();
             }
             return null;
-        }).setHeader("Betreff");
+        }).setHeader("Betreff").setSortable(true);
 
         // Date of received message
-        grid.addColumn(MessageDTO::getDate).setHeader("Datum");
+        grid.addColumn(MessageDTO::getDate).setHeader("Datum").setSortable(true);
 
         // Type of received message
         grid.addColumn(message -> {
@@ -105,7 +105,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
                 e.printStackTrace();
             }
             return null;
-        }).setHeader("Nachrichtentyp");
+        }).setHeader("Nachrichtentyp").setSortable(true);
 
         // Clicking a message opens it in the lower part of the window
         grid.addItemClickListener(message -> {
