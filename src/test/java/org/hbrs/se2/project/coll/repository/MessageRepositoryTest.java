@@ -110,7 +110,7 @@ class MessageRepositoryTest {
         newMessage.setContent("Hallo, hierbei handelt es sich um eine Testnachricht. Großartig.");
         newMessage.setSender(20000012);
         newMessage.setRecipient(20000000);
-        newMessage.setSubject(30000000);
+        newMessage.setSubject("Testbetreff1");
         newMessage.setDate(LocalDate.now());
 
         return MessageFactory.createMessage(newMessage);
@@ -123,14 +123,14 @@ class MessageRepositoryTest {
         message1.setContent("Hallo, hierbei handelt es sich um eine Testnachricht. Großartig.");
         message1.setSender(20000012);
         message1.setRecipient(20000000);
-        message1.setSubject(30000000);
+        message1.setSubject("Testbetreff1");
         message1.setDate(LocalDate.now());
 
         MessageDTOImpl message2 = new MessageDTOImpl();
         message2.setContent("Eine weitere Nachricht für dich.");
         message2.setSender(20000012);
         message2.setRecipient(20000000);
-        message2.setSubject(30000000);
+        message2.setSubject("Testbetreff2");
         message2.setDate(LocalDate.now());
 
         messages.add(MessageFactory.createMessage(message1));

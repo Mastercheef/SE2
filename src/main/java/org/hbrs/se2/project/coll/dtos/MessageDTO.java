@@ -7,7 +7,7 @@ public interface MessageDTO {
     public int getSender();
     public int getRecipient();
     public String getContent();
-    public int getSubject();
+    public String getSubject();
     public LocalDate getDate();
     public boolean getRead();
 }

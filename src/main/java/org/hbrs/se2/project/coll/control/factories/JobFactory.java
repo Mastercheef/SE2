@@ -1,6 +1,7 @@
 package org.hbrs.se2.project.coll.control.factories;
 
 import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
+import org.hbrs.se2.project.coll.dtos.impl.JobAdvertisementDTOimpl;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 
 public class JobFactory {
@@ -22,7 +23,25 @@ public class JobFactory {
         jobAdvertisement.setContactPerson(dto.getContactPerson());
         jobAdvertisement.setJobDescription(dto.getJobDescription());
         jobAdvertisement.setJobTitle(dto.getJobTitle());
+        jobAdvertisement.setSalary(dto.getSalary());
 
         return jobAdvertisement;
+    }
+
+    public static JobAdvertisementDTO createJobDTO(JobAdvertisement jobAdvertisement) {
+        JobAdvertisementDTOimpl jobAdvertisementDTOimpl = new JobAdvertisementDTOimpl();
+        jobAdvertisementDTOimpl.setId(jobAdvertisement.getId());
+        jobAdvertisementDTOimpl.setTemporaryEmployment(jobAdvertisement.getTemporaryEmployment());
+        jobAdvertisementDTOimpl.setTypeOfEmployment(jobAdvertisement.getTypeOfEmployment());
+        jobAdvertisementDTOimpl.setWorkingHours(jobAdvertisement.getWorkingHours());
+        jobAdvertisementDTOimpl.setRequirements(jobAdvertisement.getRequirements());
+        jobAdvertisementDTOimpl.setAddress(jobAdvertisement.getWorkingLocation());
+        jobAdvertisementDTOimpl.setStartOfWork(jobAdvertisement.getStartOfWork());
+        jobAdvertisementDTOimpl.setEndOfWork(jobAdvertisement.getEndOfWork());
+        jobAdvertisementDTOimpl.setContactPerson(jobAdvertisement.getContactPerson());
+        jobAdvertisementDTOimpl.setJobDescription(jobAdvertisement.getJobDescription());
+        jobAdvertisementDTOimpl.setJobTitle(jobAdvertisement.getJobTitle());
+        jobAdvertisementDTOimpl.setSalary(jobAdvertisement.getSalary());
+        return jobAdvertisementDTOimpl;
     }
 }

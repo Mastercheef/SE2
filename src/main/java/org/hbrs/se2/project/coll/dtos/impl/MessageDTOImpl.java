@@ -9,7 +9,7 @@ public class MessageDTOImpl implements MessageDTO {
     private int sender;
     private int recipient;
     private String content;
-    private int subject;
+    private String subject;
     private LocalDate date;
     private boolean read;
 
@@ -21,7 +21,7 @@ public class MessageDTOImpl implements MessageDTO {
 
     public void setContent(String content) { this.content = content; }
 
-    public void setSubject(int subject) { this.subject = subject; }
+    public void setSubject(String subject) { this.subject = subject; }
 
     public void setDate(LocalDate date) { this.date = date; }
 
@@ -40,7 +40,7 @@ public class MessageDTOImpl implements MessageDTO {
     public String getContent() { return this.content; }
 
     @Override
-    public int getSubject() { return this.subject; }
+    public String getSubject() { return this.subject; }
 
     @Override
     public LocalDate getDate() { return this.date; }

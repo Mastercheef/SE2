@@ -2,7 +2,9 @@ package org.hbrs.se2.project.coll.views;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEvent;
@@ -10,7 +12,9 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.CompanyControl;
+import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
+import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
@@ -38,7 +42,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     private JobAdvertisementRepository jobAdvertisementRepository;
 
     @Autowired
-    private CompanyControl profileControl;
+    private CompanyControl companyControl;
     Address address;
     int companyId;
 
@@ -70,7 +74,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     public void setParameter(BeforeEvent event, String parameter) {
         try {
             if (!Objects.equals(parameter, "")) {
-                CompanyDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
+                CompanyDTO profileDTO = companyControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
                 address = profileDTO.getAddress();
                 initLabels(profileDTO);
                 createProfile();
@@ -287,17 +291,55 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 HorizontalLayout hJobSalary         = new HorizontalLayout(jobSalary, lJobSalary);
 
                 // Create Buttons to get in contact with the Company
+                HorizontalLayout hJobButtons = new HorizontalLayout();
                 Button contactButton = new Button("Kontakt aufnehmen");
                 contactButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.CONTACTING_VIEW +
                         companyId + "/" + job.getId()));
+                hJobButtons.add(contactButton);
+
+                // Button to delete. Only viewable by company's contact person
+                if(contactPersonId == getCurrentUser().getId())
+                {
+                    Button deleteButton = new Button("Stellenangebot löschen");
+                    deleteButton.addClickListener(e -> {
+
+                        // Preventing missclicks by opening a dialog box
+                        Dialog dialog    = new Dialog();
+                        Label  question  = new Label("Sind sie sicher, dass Sie dieses Stellenangebot löschen " +
+                                "möchten?");
+                        Label  info      = new Label("(Dieser Vorgang ist unwiderruflich.)");
+                        Button yesButton = new Button("Ja");
+                        Button noButton  = new Button ("Nein");
+
+                        yesButton.addClickListener(jo -> {
+                            dialog.close();
+                            try {
+                                companyControl.deleteAdvertisement(job);
+                            } catch (DatabaseUserException ex) {
+                                ex.printStackTrace();
+                            }
+                            UI.getCurrent().getPage().reload();
+                        });
+                        noButton.addClickListener(no -> dialog.close());
+
+                        HorizontalLayout buttons = new HorizontalLayout(yesButton, noButton);
+                        VerticalLayout dialogContent = new VerticalLayout(question, info, buttons);
+                        dialogContent.setAlignItems(FlexComponent.Alignment.CENTER);
+                        dialog.add(dialogContent);
+                        dialog.open();
+
+                    });
+                    hJobButtons.add(deleteButton);
+                }
 
                 // Add everything to the container
                 form.add(jobNumber, hJobTitle, hJobType, hJobHours, hJobRequirements, hJobDescription, hJobStart,
-                            hJobEnd, hJobTemporary, hJobSalary, contactButton);
+                            hJobEnd, hJobTemporary, hJobSalary, hJobButtons);
             }
         }
         return form;
     }
+
     private UserDTO getCurrentUser() {
         return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }

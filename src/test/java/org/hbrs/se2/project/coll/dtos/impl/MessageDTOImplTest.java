@@ -35,8 +35,8 @@ class MessageDTOImplTest {
 
     @Test
     void getSubject() {
-        messageDTO.setSubject(400);
-        assertEquals(400 , messageDTO.getSubject());
+        messageDTO.setSubject("Betreff");
+        assertEquals("Betreff" , messageDTO.getSubject());
     }
 
     @Test

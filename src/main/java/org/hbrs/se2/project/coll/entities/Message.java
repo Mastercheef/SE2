@@ -10,7 +10,7 @@ public class Message {
     private int sender;
     private int recipient;
     private String content;
-    private int subject;
+    private String subject;
     private LocalDate date;
     private boolean read;
 
@@ -50,9 +50,9 @@ public class Message {
     public void setContent(String content) { this.content = content; }
 
     @Basic
-    @Column(name = "subject_id")
-    public int getSubject() { return subject; }
-    public void setSubject(int subject) { this.subject = subject; }
+    @Column(name = "subject")
+    public String getSubject() { return subject; }
+    public void setSubject(String subject) { this.subject = subject; }
 
     @Basic
     @Column(name = "date")

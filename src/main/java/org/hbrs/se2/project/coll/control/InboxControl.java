@@ -98,10 +98,10 @@ public class InboxControl {
         }
     }
 
-    public String getSubject(int subject) throws DatabaseUserException {
+    public String getSubject(int messageId) throws DatabaseUserException {
         try {
-            return this.jobAdvertisementRepository.findJobAdvertisementById(subject).getJobTitle();
-
+            return this.messageRepository.findMessageById(messageId).getSubject();
+           // return this.jobAdvertisementRepository.findJobAdvertisementById(subject).getJobTitle();
         } catch (Exception exception) {
             LOGGER.info(Globals.LogMessage.LOG ,  exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {

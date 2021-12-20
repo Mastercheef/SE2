@@ -83,7 +83,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         // Resolution of Subject via control class
         grid.addColumn(message -> {
             try {
-                return inboxControl.getSubject(message.getSubject());
+                return inboxControl.getSubject(message.getId());
             } catch (DatabaseUserException e) {
                 e.printStackTrace();
             }
@@ -164,7 +164,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
             subject.getElement().getStyle().set("font-size", "14px")
                     .set("font-weight", "bold");
 
-            Label subjectVal = new Label(inboxControl.getSubject(message.getSubject()));
+            Label subjectVal = new Label(inboxControl.getSubject(message.getId()));
             subjectVal.getElement().getStyle().set("font-size", "14px");
 
             Label date = new Label("Datum:");
