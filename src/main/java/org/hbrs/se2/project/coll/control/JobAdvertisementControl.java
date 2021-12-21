@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class JobAdvertisementControl {
@@ -106,6 +107,14 @@ public class JobAdvertisementControl {
 
     public List<JobAdvertisement> getAllJobs() {
         return jobAdvertisementRepository.findAll();
+    }
+
+    public List<JobAdvertisement> filterJobs(String type) {
+        List<JobAdvertisement> allJobs = getAllJobs();
+
+        allJobs.removeIf(job -> !Objects.equals(job.getTypeOfEmployment(), type));
+
+        return allJobs;
     }
 }
 

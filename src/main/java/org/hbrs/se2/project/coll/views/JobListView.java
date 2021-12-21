@@ -11,6 +11,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -18,6 +19,7 @@ import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.JobAdvertisementControl;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.layout.AppView;
+import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,9 +32,21 @@ public class JobListView extends Div implements AfterNavigationObserver {
     @Autowired
     JobAdvertisementControl jobAdvertisementControl;
 
+    // TODO: put this in control later for filtering
+    @Autowired
+    JobAdvertisementRepository jobAdvertisementRepository;
+
     Grid<JobAdvertisement> grid = new Grid<>();
 
+    TextField jobTypeFilter = new TextField();
+
     public JobListView() {
+
+        // Filter
+        jobTypeFilter.setPlaceholder("Nach Jobtyp filtern ...");
+        jobTypeFilter.setClearButtonVisible(true);
+        jobTypeFilter.setValueChangeMode(ValueChangeMode.EAGER);
+        jobTypeFilter.addValueChangeListener(e-> updateGrid());
 
         setSizeFull();
         grid.setHeight("100%");
@@ -51,21 +65,26 @@ public class JobListView extends Div implements AfterNavigationObserver {
         add(grid);
     }
 
-    private void filterGrid() {
-
+    // TODO: in control auslagern
+    public void updateGrid() {
+        grid.setItems(jobAdvertisementRepository.findJobAdvertisementsByTypeOfEmploymentIsContaining(jobTypeFilter.getValue()));
     }
 
+    // TODO: Weitere filter-felder schreiben
+    // Header (filter)
     private HorizontalLayout createHeaderCard() {
         HorizontalLayout card = new HorizontalLayout();
         card.setAlignItems(FlexComponent.Alignment.BASELINE);
 
-        TextField jobType = new TextField();
-        jobType.setLabel("Typ:");
+        jobTypeFilter.setLabel("Typ:");
 
-        Button filterButton = new Button("Filtern");
         Button filterDelete = new Button("Alle Filter löschen");
+        filterDelete.addClickListener(e-> {
+           jobTypeFilter.setValue("");
+           jobTypeFilter.setPlaceholder("Nach Jobtyp filtern ...");
+        });
 
-        card.add(jobType, filterButton, filterDelete);
+        card.add(jobTypeFilter, filterDelete);
         return card;
     }
 
@@ -135,5 +154,4 @@ public class JobListView extends Div implements AfterNavigationObserver {
         grid.setItems(jobs);
     }
 
-    // TODO: Filter einbauen.
 }

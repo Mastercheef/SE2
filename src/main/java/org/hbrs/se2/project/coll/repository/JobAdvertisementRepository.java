@@ -14,6 +14,8 @@ public interface JobAdvertisementRepository extends JpaRepository<JobAdvertiseme
     JobAdvertisement findJobAdvertisementByJobDescription(String string);
     JobAdvertisement findJobAdvertisementById(int id);
 
+    List<JobAdvertisement> findJobAdvertisementsByTypeOfEmploymentIsContaining(String type);
+
     /* Finds all JobAdvertisements from a given CompanyId
     */
     @Query(
