@@ -21,6 +21,7 @@ import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 public class JobAdvertisementControl {
@@ -101,6 +102,10 @@ public class JobAdvertisementControl {
     private int getCompanyId(JobAdvertisement jobAdvertisement) {
         return contactPersonRepository.findContactPersonById(jobAdvertisement.getContactPerson().
                 getId()).getCompany().getId();
+    }
+
+    public List<JobAdvertisement> getAllJobs() {
+        return jobAdvertisementRepository.findAll();
     }
 }
 
