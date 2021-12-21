@@ -42,6 +42,7 @@ public class JobAdvertisementView extends VerticalLayout implements HasUrlParame
     Label temporaryEmployment   = new Label("kurzfristige Beschäftigung ");
     Label contactPerson         = new Label("Kontaktperson");
     Label emailAddress          = new Label("E-Mail");
+    Label salary                = new Label("Lohn");
 
     H2    jobTitle;
     Label lCompanyName;
@@ -56,6 +57,7 @@ public class JobAdvertisementView extends VerticalLayout implements HasUrlParame
     Label lContactPerson;
     Label lEmailAddress;
     Label lTemporaryEmployment;
+    Label lSalary;
 
     Div div = new Div();
 
@@ -76,18 +78,19 @@ public class JobAdvertisementView extends VerticalLayout implements HasUrlParame
 
     // Used to read DTO data and inject it into the labels
     public void initLabels(JobAdvertisement job) {
-        jobTitle              = new H2(job.getJobTitle());
-        lCompanyName          = new Label(jobAdvertisementControl.getCompanyName(job));
-        lTypeofEmployment     = new Label(job.getTypeOfEmployment());
-        lWorkingHours         = new Label(Short.toString(job.getWorkingHours()));
-        lStartOfWork          = new Label(job.getStartOfWork().toString());
-        lEndOfWork            = new Label(job.getEndOfWork().toString());
-        lJobDescription       = new Label(job.getJobDescription());
-        lRequirements         = new Label(job.getRequirements());
-        lAddress              = new Label(jobAdvertisementControl.getCompanyAddress(job).toString());
-        lPhoneNumber          = new Label(Integer.toString(jobAdvertisementControl.getCompanyPhoneNumber(job)));
-        lContactPerson        = new Label(jobAdvertisementControl.getContactPersonName(job));
-        lEmailAddress         = new Label(jobAdvertisementControl.getContactPersonEmail(job));
+        jobTitle            = new H2(job.getJobTitle());
+        lCompanyName        = new Label(jobAdvertisementControl.getCompanyName(job));
+        lTypeofEmployment   = new Label(job.getTypeOfEmployment());
+        lWorkingHours       = new Label(Short.toString(job.getWorkingHours()));
+        lStartOfWork        = new Label(job.getStartOfWork().toString());
+        lEndOfWork          = new Label(job.getEndOfWork().toString());
+        lJobDescription     = new Label(job.getJobDescription());
+        lRequirements       = new Label(job.getRequirements());
+        lAddress            = new Label(jobAdvertisementControl.getCompanyAddress(job).toString());
+        lPhoneNumber        = new Label(Integer.toString(jobAdvertisementControl.getCompanyPhoneNumber(job)));
+        lContactPerson      = new Label(jobAdvertisementControl.getContactPersonName(job));
+        lEmailAddress       = new Label(jobAdvertisementControl.getContactPersonEmail(job));
+        lSalary             = new Label(Integer.toString(job.getSalary()));
 
         if(job.getTemporaryEmployment())
             lTemporaryEmployment = new Label("Ja");
@@ -99,7 +102,7 @@ public class JobAdvertisementView extends VerticalLayout implements HasUrlParame
     public void setupJob() {
         for (Label label : new Label[]{lCompanyName, typeOfEmployment, workingHours, startOfWork,
                 endOfWork, jobDescription, requirements, address,
-                phoneNumber, temporaryEmployment, contactPerson, emailAddress}) {
+                phoneNumber, temporaryEmployment, contactPerson, emailAddress, salary}) {
             label.getElement().getStyle().set("font-weight", "bold");
             label.getElement().getStyle().set("width", "200px");
         }
@@ -110,8 +113,9 @@ public class JobAdvertisementView extends VerticalLayout implements HasUrlParame
         HorizontalLayout hWorkingHours      = new HorizontalLayout(workingHours, lWorkingHours);
         HorizontalLayout hStartOfWork       = new HorizontalLayout(startOfWork, lStartOfWork);
         HorizontalLayout hEndOfWork         = new HorizontalLayout(endOfWork, lEndOfWork);
+        HorizontalLayout hSalary            = new HorizontalLayout(salary, lSalary, new Label("€"));
 
-        div.add(hJobTitle, hCompanyName, hTypeOfEmployment, hWorkingHours, hStartOfWork, hEndOfWork);
+        div.add(hJobTitle, hCompanyName, hTypeOfEmployment, hWorkingHours, hStartOfWork, hEndOfWork, hSalary);
         add(div);
 
         VerticalLayout vJobDescription  = new VerticalLayout(jobDescription, lJobDescription);
