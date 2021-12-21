@@ -10,11 +10,14 @@ import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.entities.Message;
+import org.hbrs.se2.project.coll.repository.CompanyRepository;
+import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -26,6 +29,12 @@ public class JobAdvertisementControl {
 
     @Autowired
     JobAdvertisementRepository jobAdvertisementRepository;
+
+    @Autowired
+    CompanyRepository companyRepository;
+
+    @Autowired
+    ContactPersonRepository contactPersonRepository;
 
     public void saveAdvertisement(JobAdvertisementDTO dto) throws DatabaseUserException {
         try {
@@ -55,8 +64,43 @@ public class JobAdvertisementControl {
         }
     }
 
+    public JobAdvertisement getJob(int jobId) {
+        return jobAdvertisementRepository.findJobAdvertisementById(jobId);
+    }
+
     public JobAdvertisementDTO createJobDTO(JobAdvertisement jobAdvertisement) {
         return JobFactory.createJobDTO(jobAdvertisement);
+    }
+
+    public String getCompanyName(JobAdvertisement jobAdvertisement) {
+        int companyId = getCompanyId(jobAdvertisement);
+        return companyRepository.findCompanyProfileById(companyId).getCompanyName();
+    }
+
+    public Address getCompanyAddress(JobAdvertisement jobAdvertisement) {
+        int companyId = getCompanyId(jobAdvertisement);
+        return companyRepository.findCompanyProfileById(companyId).getAddress();
+    }
+
+    public int getCompanyPhoneNumber(JobAdvertisement jobAdvertisement) {
+        int companyId = getCompanyId(jobAdvertisement);
+        return companyRepository.findCompanyProfileById(companyId).getPhoneNumber();
+    }
+
+    public String getContactPersonName(JobAdvertisement jobAdvertisement) {
+        int companyId = getCompanyId(jobAdvertisement);
+        return (contactPersonRepository.findContactPersonByCompanyId(companyId).getFirstName() + " " +
+                contactPersonRepository.findContactPersonByCompanyId(companyId).getLastName());
+    }
+
+    public String getContactPersonEmail(JobAdvertisement jobAdvertisement) {
+        int companyId = getCompanyId(jobAdvertisement);
+        return contactPersonRepository.findContactPersonByCompanyId(companyId).getEmail();
+    }
+
+    private int getCompanyId(JobAdvertisement jobAdvertisement) {
+        return contactPersonRepository.findContactPersonById(jobAdvertisement.getContactPerson().
+                getId()).getCompany().getId();
     }
 }
 

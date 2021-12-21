@@ -1,120 +1,133 @@
 package org.hbrs.se2.project.coll.views;
 
-import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.router.BeforeEvent;
+import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import org.hbrs.se2.project.coll.control.JobAdvertisementControl;
+import org.hbrs.se2.project.coll.dtos.CompanyDTO;
+import org.hbrs.se2.project.coll.entities.JobAdvertisement;
+import org.hbrs.se2.project.coll.layout.AppView;
+import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
-//TODO: UserDTO für Daten auslesen und in Textfelder einfüllen
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-@Route(value = "recruitment", layout = AppLayout.class)
-@PageTitle("Coll | Registration")
-public class JobAdvertisementView extends VerticalLayout{
 
-    H2 headerJobName = new H2("Datenbank-Experte");
+@Route(value = "jobadvertisement", layout = AppView.class)
+@PageTitle("Stellenangebot")
+public class JobAdvertisementView extends VerticalLayout implements HasUrlParameter<String>{
 
-    Label llabelCompanyName = new Label("Mustermann GmbH");
+    @Autowired
+    JobAdvertisementControl jobAdvertisementControl;
 
-    Label labelTypeOfEmployment = new Label("Typ");
-    Label llabelTypeOfEmployment = new Label("Arbeit");
+    @Autowired
+    JobAdvertisementRepository jobAdvertisementRepository;
 
-    Label labelFormOfEmployment = new Label("Arbeitszeit");
-    Label llabelFormOfEmployment = new Label("Vollzeit");
+    Label typeOfEmployment      = new Label("Typ");
+    Label workingHours          = new Label("Stunden/Woche");
+    Label startOfWork           = new Label("Eintrittsdatum");
+    Label endOfWork             = new Label("Austrittsdatum");
+    Label jobDescription        = new Label("Stellenbeschreibung");
+    Label requirements          = new Label("Anforderungen");
+    Label address               = new Label("Adresse");
+    Label phoneNumber           = new Label("Telefon");
+    Label temporaryEmployment   = new Label("kurzfristige Beschäftigung ");
+    Label contactPerson         = new Label("Kontaktperson");
+    Label emailAddress          = new Label("E-Mail");
 
-    Label labelBeginnOfJob = new Label("Eintrittsdatum");
-    Label llabelBeginnOfJob = new Label("ab sofort");
+    H2    jobTitle;
+    Label lCompanyName;
+    Label lTypeofEmployment;
+    Label lWorkingHours;
+    Label lStartOfWork;
+    Label lEndOfWork;
+    Label lJobDescription;
+    Label lRequirements;
+    Label lAddress;
+    Label lPhoneNumber;
+    Label lContactPerson;
+    Label lEmailAddress;
+    Label lTemporaryEmployment;
 
-    Label labelWorkingLocation = new Label("Arbeitsort");
-    Label llabelWorkingLocation = new Label("HomeOffice");
+    Div div = new Div();
 
-    Label labelJobDescription = new Label("Stellenbeschreibung");
-    Label llabelJobDescription = new Label("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum");
+    private static final Logger LOGGER = Logger.getLogger(JobAdvertisementView.class.getName());
 
-    Label labelRequirementForApplicants = new Label("Anforderungen");
-    Label llabelRequirementForApplicants = new Label("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt");
+    @Override
+    public void setParameter(BeforeEvent event, String parameter) {
+        try {
+            if (!Objects.equals(parameter, "")) {
+                JobAdvertisement jobAdvertisement = jobAdvertisementControl.getJob(Integer.parseInt(parameter));
+                initLabels(jobAdvertisement);
+                setupJob();
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.INFO, e.toString());
+        }
+    }
 
-    Label labelBusinessAdress = new Label("Adresse");
-    Label lbusinessAdress = new Label("Musterstrasse 1, 12345 Musterstadt");
+    // Used to read DTO data and inject it into the labels
+    public void initLabels(JobAdvertisement job) {
+        jobTitle              = new H2(job.getJobTitle());
+        lCompanyName          = new Label(jobAdvertisementControl.getCompanyName(job));
+        lTypeofEmployment     = new Label(job.getTypeOfEmployment());
+        lWorkingHours         = new Label(Short.toString(job.getWorkingHours()));
+        lStartOfWork          = new Label(job.getStartOfWork().toString());
+        lEndOfWork            = new Label(job.getEndOfWork().toString());
+        lJobDescription       = new Label(job.getJobDescription());
+        lRequirements         = new Label(job.getRequirements());
+        lAddress              = new Label(jobAdvertisementControl.getCompanyAddress(job).toString());
+        lPhoneNumber          = new Label(Integer.toString(jobAdvertisementControl.getCompanyPhoneNumber(job)));
+        lContactPerson        = new Label(jobAdvertisementControl.getContactPersonName(job));
+        lEmailAddress         = new Label(jobAdvertisementControl.getContactPersonEmail(job));
 
-    Label labelTelephoneNumber = new Label("Telefon");
-    Label ltelephoneNumber = new Label("01234 567890");
+        if(job.getTemporaryEmployment())
+            lTemporaryEmployment = new Label("Ja");
+        else
+            lTemporaryEmployment = new Label("Nein");
+    }
 
-    Label labelTemporaryEmployment = new Label("kurzfristige Beschäftigung ");
-    Label ltemporaryEmployment = new Label("Nein ");
-    Label dateOfTemporaryEmployment;
-
-    Label labelContactPerson = new Label("Kontaktperson");
-    Label lcontactPerson = new Label("Markus Mustermann ");
-
-    Label labelEmailAdress = new Label("E-Mail");
-    Label lemailAdress = new Label("maxmustermann@email.de");
-
-    Div div           = new Div();
-
-    public JobAdvertisementView() {
-
-        //TODO: Methods for grabbing UserDTO data
-
-        for (Label label : new Label[]{llabelCompanyName, labelTypeOfEmployment, labelFormOfEmployment, labelBeginnOfJob,
-                labelWorkingLocation,labelJobDescription,labelRequirementForApplicants,labelBusinessAdress,
-                labelTelephoneNumber,labelTemporaryEmployment,labelContactPerson,labelEmailAdress }) {
+    // Build content
+    public void setupJob() {
+        for (Label label : new Label[]{lCompanyName, typeOfEmployment, workingHours, startOfWork,
+                endOfWork, jobDescription, requirements, address,
+                phoneNumber, temporaryEmployment, contactPerson, emailAddress}) {
             label.getElement().getStyle().set("font-weight", "bold");
             label.getElement().getStyle().set("width", "200px");
         }
 
-        // TODO: Get Data from UserDTO
-        HorizontalLayout hjobName = new HorizontalLayout();
-        hjobName.add(headerJobName);
-        HorizontalLayout hlabelCompanyName = new HorizontalLayout();
-        hlabelCompanyName.add((llabelCompanyName));
+        HorizontalLayout hJobTitle          = new HorizontalLayout(jobTitle);
+        HorizontalLayout hCompanyName       = new HorizontalLayout(lCompanyName);
+        HorizontalLayout hTypeOfEmployment  = new HorizontalLayout(typeOfEmployment, lTypeofEmployment);
+        HorizontalLayout hWorkingHours      = new HorizontalLayout(workingHours, lWorkingHours);
+        HorizontalLayout hStartOfWork       = new HorizontalLayout(startOfWork, lStartOfWork);
+        HorizontalLayout hEndOfWork         = new HorizontalLayout(endOfWork, lEndOfWork);
 
-        HorizontalLayout hlabelTypeOfEmployment = new HorizontalLayout();
-        hlabelTypeOfEmployment.add(labelTypeOfEmployment,llabelTypeOfEmployment);
-
-        HorizontalLayout hformOfEmployment = new HorizontalLayout();
-        hformOfEmployment.add(labelFormOfEmployment,llabelFormOfEmployment);
-
-        HorizontalLayout hlabelBeginnOfJob = new HorizontalLayout();
-        hlabelBeginnOfJob.add(labelBeginnOfJob,llabelBeginnOfJob);
-
-        HorizontalLayout hlabelWorkingLocation = new HorizontalLayout();
-        hlabelWorkingLocation.add(labelWorkingLocation,llabelWorkingLocation);
-
-
-        div.add(hjobName,hlabelCompanyName,hlabelTypeOfEmployment,hformOfEmployment,
-                hlabelBeginnOfJob,hlabelWorkingLocation);
-
+        div.add(hJobTitle, hCompanyName, hTypeOfEmployment, hWorkingHours, hStartOfWork, hEndOfWork);
         add(div);
 
-        VerticalLayout vlabelJobDescription = new VerticalLayout();
-        vlabelJobDescription.add(labelJobDescription,llabelJobDescription);
+        VerticalLayout vJobDescription  = new VerticalLayout(jobDescription, lJobDescription);
+        VerticalLayout vRequirements    = new VerticalLayout(requirements, lRequirements);
+        add(vJobDescription, vRequirements);
 
-        VerticalLayout vlabelRequirementForApplicants = new VerticalLayout();
-        vlabelRequirementForApplicants.add(labelRequirementForApplicants,llabelRequirementForApplicants);
+        HorizontalLayout hAddress               = new HorizontalLayout(address, lAddress);
+        HorizontalLayout hPhoneNumber           = new HorizontalLayout(phoneNumber, lPhoneNumber);
+        HorizontalLayout hTemporaryEmployment   = new HorizontalLayout(temporaryEmployment, lTemporaryEmployment);
+        HorizontalLayout hContactPerson         = new HorizontalLayout(contactPerson, lContactPerson);
+        HorizontalLayout hEmailAddress          = new HorizontalLayout(emailAddress, lEmailAddress);
 
-        add(vlabelJobDescription,vlabelRequirementForApplicants);
+        add(hAddress, hPhoneNumber, hTemporaryEmployment, hContactPerson, hEmailAddress);
+    }
 
-
-        HorizontalLayout hbusinessAdress = new HorizontalLayout();
-        hbusinessAdress.add(labelBusinessAdress,lbusinessAdress);
-
-        HorizontalLayout htelephoneNumber = new HorizontalLayout();
-        htelephoneNumber.add(labelTelephoneNumber,ltelephoneNumber);
-
-        HorizontalLayout htemporaryEmployment = new HorizontalLayout();
-        htemporaryEmployment.add(labelTemporaryEmployment,ltemporaryEmployment);
-
-        HorizontalLayout hcontactPerson = new HorizontalLayout();
-        hcontactPerson.add(labelContactPerson,lcontactPerson);
-
-        HorizontalLayout hemailAdress = new HorizontalLayout();
-        hemailAdress.add(labelEmailAdress,lemailAdress);
-
-        add(hbusinessAdress,htelephoneNumber,htemporaryEmployment,hcontactPerson,hemailAdress);
+    JobAdvertisementView() {
 
     }
 
