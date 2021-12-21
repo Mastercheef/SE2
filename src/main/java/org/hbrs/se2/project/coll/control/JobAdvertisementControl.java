@@ -99,7 +99,7 @@ public class JobAdvertisementControl {
         return contactPersonRepository.findContactPersonByCompanyId(companyId).getEmail();
     }
 
-    private int getCompanyId(JobAdvertisement jobAdvertisement) {
+    public int getCompanyId(JobAdvertisement jobAdvertisement) {
         return contactPersonRepository.findContactPersonById(jobAdvertisement.getContactPerson().
                 getId()).getCompany().getId();
     }

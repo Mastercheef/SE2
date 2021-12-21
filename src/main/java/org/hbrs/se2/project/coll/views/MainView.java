@@ -1,4 +1,6 @@
 package org.hbrs.se2.project.coll.views;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -40,7 +42,7 @@ public class MainView extends VerticalLayout {
         logo.setWidth("400px");
         logo.getElement().getStyle().set("border", "1px solid black");
         H2 slogan = new H2("Über 1 Milliarden vermittelte Stellen");
-        H1 suchenText = new H1("Was suchen Sie");
+        H1 suchenText = new H1("Was suchen Sie?");
         VerticalLayout start = new VerticalLayout();
         start.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         start.add(logo,slogan,suchenText);
@@ -60,12 +62,15 @@ public class MainView extends VerticalLayout {
         comboBox.setAllowCustomValue(false);
         comboBox.setPlaceholder("Arbeit");
 
+        Button jobList = new Button("... oder alle Stellenangebote ansehen!");
+        jobList.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW));
+
         HorizontalLayout hl = new HorizontalLayout(comboBox, textField);
         hl.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         hl.setSpacing(false);
         hl.setWidthFull();
         hl.setJustifyContentMode(JustifyContentMode.CENTER);
-        VerticalLayout body = new VerticalLayout(start,hl);
+        VerticalLayout body = new VerticalLayout(start, hl, jobList);
         body.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         body.setSizeFull();
 

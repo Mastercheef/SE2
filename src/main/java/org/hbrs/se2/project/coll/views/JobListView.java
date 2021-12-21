@@ -4,8 +4,10 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -35,24 +37,45 @@ public class JobListView extends Div implements AfterNavigationObserver {
         setSizeFull();
         grid.setHeight("100%");
         grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-        grid.addComponentColumn(this::createJobCard);
+
+        // Prepare Grid Header (for filters)
+        HeaderRow filterBar = grid.appendHeaderRow();
+
+        // Prepare Content of Grid (jobs)
+        grid.addComponentColumn(this::createJobCard).setKey("content");
+
+        // Set Header Content
+        filterBar.getCell(grid.getColumnByKey("content")).setComponent(createHeaderCard());
+
+        // Add to page
         add(grid);
     }
 
-    private void createFilter() {
+    private void filterGrid() {
+
+    }
+
+    private HorizontalLayout createHeaderCard() {
+        HorizontalLayout card = new HorizontalLayout();
+        card.setAlignItems(FlexComponent.Alignment.BASELINE);
+
         TextField jobType = new TextField();
         jobType.setLabel("Typ:");
 
         Button filterButton = new Button("Filtern");
         Button filterDelete = new Button("Alle Filter löschen");
 
-        add(new HorizontalLayout(jobType, filterButton, filterDelete));
+        card.add(jobType, filterButton, filterDelete);
+        return card;
     }
 
     // Initialize cards (Styling, etc)
     private HorizontalLayout createJobCard(JobAdvertisement jobAdvertisement) {
         HorizontalLayout card = new HorizontalLayout();
         card.setSpacing(false);
+
+        // Company variable for later use
+        int companyId = jobAdvertisementControl.getCompanyId(jobAdvertisement);
 
         // Header
         Span jobTitle           = new Span(jobAdvertisement.getJobTitle());
@@ -71,6 +94,21 @@ public class JobListView extends Div implements AfterNavigationObserver {
         Span salary             = new Span(jobAdvertisement.getSalary() + " €");
         Span requirements       = new Span(jobAdvertisement.getRequirements());
 
+        // Buttons for engagement
+        Button details = new Button("Details");
+        Button message = new Button("Frage stellen");
+        Button apply = new Button("Jetzt bewerben!");
+
+        // Button functionality
+        details.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.JOBADVERTISEMENT_VIEW +
+                jobAdvertisement.getId()));
+        message.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.CONTACTING_VIEW +
+                companyId + "/" + jobAdvertisement.getId(), "_blank"));
+
+        // TODO: Link zum tatsächlichen Bewerbungsformular
+        //apply
+
+
         // Append
         HorizontalLayout header = new HorizontalLayout(jobTitle, new Span("-"),
                 typeOfEmployment, new Span("-"), companyName);
@@ -78,19 +116,16 @@ public class JobListView extends Div implements AfterNavigationObserver {
         HorizontalLayout dateAndHours = new HorizontalLayout(new Span("Ab:"), startOfWork,
                 new Span("Stunden/Woche:"), workingHours);
 
-        HorizontalLayout salaryInfo = new HorizontalLayout(new Span("Vergütung:"), salary);
-        HorizontalLayout requirementsInfo = new HorizontalLayout(new Span("Voraussetzungen:"), requirements);
+        HorizontalLayout buttons            = new HorizontalLayout(details, message, apply);
+        HorizontalLayout salaryInfo         = new HorizontalLayout(new Span("Vergütung:"), salary);
+        HorizontalLayout requirementsInfo   = new HorizontalLayout(new Span("Voraussetzungen:"), requirements,
+                                                buttons);
 
         VerticalLayout cardLayout = new VerticalLayout(header, jobDescription, dateAndHours, salaryInfo,
-                requirementsInfo);
+                requirementsInfo, buttons);
         cardLayout.setSpacing(false);
 
         card.add(cardLayout);
-
-        // Open Advertisement in new tab onclick
-        card.addClickListener(e-> UI.getCurrent().getPage().open(Globals.Pages.JOBADVERTISEMENT_VIEW +
-                        jobAdvertisement.getId(),
-                "_blank"));
         return card;
     }
 
