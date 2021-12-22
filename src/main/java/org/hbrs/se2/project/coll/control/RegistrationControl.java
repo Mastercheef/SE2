@@ -38,7 +38,7 @@ public class RegistrationControl {
 
     @Transactional
     public RegistrationResultDTO registerUser(RegistrationDTO registrationDTO) throws DatabaseUserException {
-        Company savedCompany = null;
+
         try {
             this.registrationResult = new RegistrationResultDTOImpl();
             this.registrationDTO = registrationDTO;
@@ -67,7 +67,7 @@ public class RegistrationControl {
                 }
 
                 if (registrationDTO.getUserDTO().getType().equals("cp")) {
-                    savedCompany = companyControl.saveCompany(registrationDTO.getCompanyDTO());
+                    Company savedCompany = companyControl.saveCompany(registrationDTO.getCompanyDTO());
                     contactPersonControl.createNewContactPerson(registrationDTO.getUserDTO(), savedCompany);
                 }
 

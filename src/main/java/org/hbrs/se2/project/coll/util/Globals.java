@@ -29,6 +29,7 @@ public class Globals {
         public static final String PROFILE_EDIT_VIEW            = "profile_edit/";
         public static final String RECRUITMENT_VIEW             = "recruitment_formular/";
         public static final String REGISTER_VIEW                = "register/";
+        public static final String APPLICATION_VIEW             = "apply/";
         // TODO: Restliche Seiten
     }
 
@@ -39,6 +40,7 @@ public class Globals {
         public static final String REGISTER_PAGE_TITLE          = "Registration";
         public static final String LOGIN_PAGE_TITLE             = "Login";
         public static final String MAIN_PAGE_TITLE              = "Main";
+        public static final String APPLICATION_PAGE_TITLE              = "Application";
     }
 
     public static class LogMessage {

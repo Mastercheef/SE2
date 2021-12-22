@@ -1,5 +1,7 @@
 package org.hbrs.se2.project.coll.views;
 
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
@@ -10,10 +12,10 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.hbrs.se2.project.coll.control.JobAdvertisementControl;
-import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
+import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
@@ -59,6 +61,8 @@ public class JobAdvertisementView extends VerticalLayout implements HasUrlParame
     Label lTemporaryEmployment;
     Label lSalary;
 
+    Button applyButton;
+
     Div div = new Div();
 
     private static final Logger LOGGER = Logger.getLogger(JobAdvertisementView.class.getName());
@@ -96,6 +100,10 @@ public class JobAdvertisementView extends VerticalLayout implements HasUrlParame
             lTemporaryEmployment = new Label("Ja");
         else
             lTemporaryEmployment = new Label("Nein");
+
+        applyButton = new Button("Jetzt bewerben!");
+        applyButton.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.JOBADVERTISEMENT_VIEW +
+                job.getId() + "/" + Globals.Pages.APPLICATION_VIEW));
     }
 
     // Build content
@@ -129,6 +137,7 @@ public class JobAdvertisementView extends VerticalLayout implements HasUrlParame
         HorizontalLayout hEmailAddress          = new HorizontalLayout(emailAddress, lEmailAddress);
 
         add(hAddress, hPhoneNumber, hTemporaryEmployment, hContactPerson, hEmailAddress);
+        add(applyButton);
     }
 
     JobAdvertisementView() {

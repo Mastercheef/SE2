@@ -123,7 +123,8 @@ public class JobListView extends Div implements AfterNavigationObserver {
                 jobAdvertisement.getId()));
         message.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.CONTACTING_VIEW +
                 companyId + "/" + jobAdvertisement.getId(), "_blank"));
-
+        apply.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.JOBADVERTISEMENT_VIEW +
+                jobAdvertisement.getId() + "/" + Globals.Pages.APPLICATION_VIEW));
         // TODO: Link zum tatsächlichen Bewerbungsformular
         //apply
 
