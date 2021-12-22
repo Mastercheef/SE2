@@ -1,6 +1,7 @@
 package org.hbrs.se2.project.coll.repository;
 
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
+import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,7 +15,10 @@ public interface JobAdvertisementRepository extends JpaRepository<JobAdvertiseme
     JobAdvertisement findJobAdvertisementByJobDescription(String string);
     JobAdvertisement findJobAdvertisementById(int id);
 
-    List<JobAdvertisement> findJobAdvertisementsByTypeOfEmploymentIsContaining(String type);
+    // Filter function ...
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCase(String title,
+                                                                                                                                                     String type,
+                                                                                                                                                     String requirements);
 
     /* Finds all JobAdvertisements from a given CompanyId
     */

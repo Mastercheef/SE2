@@ -19,7 +19,6 @@ import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.JobAdvertisementControl;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.layout.AppView;
-import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,21 +31,24 @@ public class JobListView extends Div implements AfterNavigationObserver {
     @Autowired
     JobAdvertisementControl jobAdvertisementControl;
 
-    // TODO: put this in control later for filtering
-    @Autowired
-    JobAdvertisementRepository jobAdvertisementRepository;
-
     Grid<JobAdvertisement> grid = new Grid<>();
 
-    TextField jobTypeFilter = new TextField();
+    TextField jobTitleFilter        = new TextField();
+    TextField jobTypeFilter         = new TextField();
+    TextField requirementsFilter    = new TextField();
 
     public JobListView() {
 
         // Filter
+        jobTitleFilter.setPlaceholder("Nach Jobtitel filtern ...");
         jobTypeFilter.setPlaceholder("Nach Jobtyp filtern ...");
-        jobTypeFilter.setClearButtonVisible(true);
-        jobTypeFilter.setValueChangeMode(ValueChangeMode.EAGER);
-        jobTypeFilter.addValueChangeListener(e-> updateGrid());
+        requirementsFilter.setPlaceholder("Nach Voraussetzungen filtern ...");
+
+        for(TextField textfield : new TextField[] { jobTitleFilter, jobTypeFilter, requirementsFilter}) {
+            textfield.setClearButtonVisible(true);
+            textfield.setValueChangeMode(ValueChangeMode.EAGER);
+            textfield.addValueChangeListener(e-> updateGrid());
+        }
 
         setSizeFull();
         grid.setHeight("100%");
@@ -65,9 +67,10 @@ public class JobListView extends Div implements AfterNavigationObserver {
         add(grid);
     }
 
-    // TODO: in control auslagern
     public void updateGrid() {
-        grid.setItems(jobAdvertisementRepository.findJobAdvertisementsByTypeOfEmploymentIsContaining(jobTypeFilter.getValue()));
+        grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
+                jobTypeFilter.getValue(),
+                requirementsFilter.getValue()));
     }
 
     // TODO: Weitere filter-felder schreiben
@@ -76,15 +79,21 @@ public class JobListView extends Div implements AfterNavigationObserver {
         HorizontalLayout card = new HorizontalLayout();
         card.setAlignItems(FlexComponent.Alignment.BASELINE);
 
+        jobTitleFilter.setLabel("Titel:");
         jobTypeFilter.setLabel("Typ:");
+        requirementsFilter.setLabel("Voraussetzungen:");
 
         Button filterDelete = new Button("Alle Filter löschen");
         filterDelete.addClickListener(e-> {
-           jobTypeFilter.setValue("");
-           jobTypeFilter.setPlaceholder("Nach Jobtyp filtern ...");
+            jobTitleFilter.setValue("");
+            jobTitleFilter.setPlaceholder("Nach Jobtitel filtern ...");
+            jobTypeFilter.setValue("");
+            jobTypeFilter.setPlaceholder("Nach Jobtyp filtern ...");
+            requirementsFilter.setValue("");
+            requirementsFilter.setPlaceholder("Nach Voraussetzungen filtern ...");
         });
 
-        card.add(jobTypeFilter, filterDelete);
+        card.add(jobTitleFilter, jobTypeFilter, requirementsFilter, filterDelete);
         return card;
     }
 
@@ -125,8 +134,6 @@ public class JobListView extends Div implements AfterNavigationObserver {
                 companyId + "/" + jobAdvertisement.getId(), "_blank"));
         apply.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.JOBADVERTISEMENT_VIEW +
                 jobAdvertisement.getId() + "/" + Globals.Pages.APPLICATION_VIEW));
-        // TODO: Link zum tatsächlichen Bewerbungsformular
-        //apply
 
 
         // Append

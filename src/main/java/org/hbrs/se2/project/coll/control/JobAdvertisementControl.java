@@ -109,12 +109,9 @@ public class JobAdvertisementControl {
         return jobAdvertisementRepository.findAll();
     }
 
-    public List<JobAdvertisement> filterJobs(String type) {
-        List<JobAdvertisement> allJobs = getAllJobs();
-
-        allJobs.removeIf(job -> !Objects.equals(job.getTypeOfEmployment(), type));
-
-        return allJobs;
+    public List<JobAdvertisement> filterJobs(String title, String type, String requirements) {
+        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCase(title, type, requirements);
     }
+
 }
 
