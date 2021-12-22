@@ -436,17 +436,23 @@ public class RegistrationView extends Div {
         }
     }
 
-    public void triggerDialogMessage(String header, String message) {
+    public void triggerDialogMessage(String headerText, String message) {
         Dialog dialog = new Dialog();
-        dialog.add(new H3(header));
-        dialog.add(new Text(message));
-        dialog.setWidth("600px");
-        dialog.setHeight("250px");
-        dialog.add(new Button("OK", e -> dialog.close()));
-        dialog.getElement().getStyle().set("display", "flex");
-        dialog.getElement().getStyle().set("flex-direction", "column");
-        dialog.getElement().getStyle().set("align-items", "center");
-        dialog.getElement().getStyle().set("justify-content", "space-around");
+
+        H3 header = new H3(headerText);
+        Label contentText = new Label(message);
+
+        Button ok = new Button("Ok");
+
+        ok.addClickListener(e -> dialog.close());
+
+        HorizontalLayout head = new HorizontalLayout(header);
+        HorizontalLayout text = new HorizontalLayout(contentText);
+        HorizontalLayout butt = new HorizontalLayout(ok);
+
+        VerticalLayout dialogContent = new VerticalLayout(header, text, butt);
+        dialogContent.setAlignItems(FlexComponent.Alignment.CENTER);
+        dialog.add(dialogContent);
         dialog.open();
     }
 
