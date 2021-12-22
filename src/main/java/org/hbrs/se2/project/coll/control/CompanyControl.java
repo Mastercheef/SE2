@@ -4,18 +4,13 @@ import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.control.factories.CompanyFactory;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
-import org.hbrs.se2.project.coll.dtos.impl.JobAdvertisementDTOimpl;
-import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.Company;
-import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 @Component
 public class CompanyControl {

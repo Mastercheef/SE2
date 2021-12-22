@@ -122,19 +122,6 @@ public class User {
         this.id = id;
     }
 
-    /*@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_to_rolle", catalog = "demouser",
-            schema = "collhbrs",
-            joinColumns = @JoinColumn(name = "userid", referencedColumnName = "id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "bezeichnung", referencedColumnName = "bezeichhnung", nullable = false))
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }*/
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

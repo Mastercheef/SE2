@@ -30,7 +30,7 @@ public class Globals {
         public static final String RECRUITMENT_VIEW             = "recruitment_formular/";
         public static final String REGISTER_VIEW                = "register/";
         public static final String APPLICATION_VIEW             = "apply/";
-        // TODO: Restliche Seiten
+
     }
 
     public static class PageTitles {

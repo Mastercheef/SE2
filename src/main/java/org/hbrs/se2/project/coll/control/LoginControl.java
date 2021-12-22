@@ -17,7 +17,6 @@ public class LoginControl {
 
     private UserDTO userDTO = null;
 
-    //private LoginResultDTO loginResult = new LoginResultDTO();
     private LoginResultDTOImpl loginResult = new LoginResultDTOImpl();
 
     public LoginResultDTO authentificate(String email, String plainTextPassword ) {

@@ -20,7 +20,6 @@ public class JobAdvertisement {
     private String jobDescription;
     private int salary;
     private String jobTitle;
-    private Company company;
     private Set<StudentUser> applicants;
 
     @Id
