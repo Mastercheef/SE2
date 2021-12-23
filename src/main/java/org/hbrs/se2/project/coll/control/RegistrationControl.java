@@ -32,6 +32,8 @@ public class RegistrationControl {
     StudentUserControl studentUserControl;
     @Autowired
     ContactPersonControl contactPersonControl;
+    @Autowired
+    SettingsControl settingsControl;
 
     private RegistrationDTO registrationDTO;
     private RegistrationResultDTOImpl registrationResult;
@@ -70,6 +72,7 @@ public class RegistrationControl {
                     Company savedCompany = companyControl.saveCompany(registrationDTO.getCompanyDTO());
                     contactPersonControl.createNewContactPerson(registrationDTO.getUserDTO(), savedCompany);
                 }
+                //settingsControl.createNewUserSettings(registrationDTO.getUserDTO());
 
                 registrationResult.addReason(ReasonType.SUCCESS);
                 registrationResult.setResult(true);

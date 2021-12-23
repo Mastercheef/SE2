@@ -20,6 +20,7 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.*;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.dtos.impl.UserDTOImpl;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.MessageRepository;
@@ -148,6 +149,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             Tabs inboxTab = new Tabs(envelope, inbox);
             navigationBar.addItem(inboxTab, e-> navigateToMessages());
         }
+        navigationBar.addItem(VaadinIcon.COG.create(), e -> navigateToOptions());
         navigationBar.addItem("Logout", e -> logoutUser());
     }
 
@@ -170,6 +172,12 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         String currentUserId = Integer.toString(getCurrentUser().getId());
         if(!Objects.equals(currentLocation, Globals.Pages.INBOX_VIEW + currentUserId))
             UI.getCurrent().navigate(Globals.Pages.INBOX_VIEW + currentUserId);
+    }
+
+    private void navigateToOptions() {
+        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
+        if(!Objects.equals(currentLocation, Globals.Pages.SETTINGS_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.SETTINGS_VIEW);
     }
 
     private void logoutUser() {

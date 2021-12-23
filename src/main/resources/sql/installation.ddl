@@ -12,6 +12,7 @@ drop table col_tab_message;
 drop table col_tab_student;
 drop table col_tab_user;
 drop table col_tab_address;
+drop table col_tab_settings;
 
 drop sequence col_seq_address_id;
 drop sequence col_seq_user_id;
@@ -134,6 +135,12 @@ create table col_tab_message (
     type varchar not null,
     constraint col_pk_message_id primary key (message_id));
 
+create table col_tab_settings (
+    user_id bigint not null,
+    notification_is_enabled boolean not null,
+    constraint col_pk_se_user_id primary key (user_id));
+
+
 -- Constraints Section
 -- ___________________
 
@@ -191,6 +198,12 @@ alter table col_tab_message
     add constraint col_fk_m_s_user_id
     foreign key (sender_id)
     references col_tab_user;
+
+alter table col_tab_settings
+    add constraint col_fk_se_user_id
+    foreign key (user_id)
+    references col_tab_user;
+
 
 --alter table col_tab_user add constraint
 --     check(exists(select * from col_tab_contact_person

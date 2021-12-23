@@ -1,11 +1,15 @@
 package org.hbrs.se2.project.coll.control.factories;
 
 import org.hbrs.se2.project.coll.dtos.ContactPersonDTO;
+import org.hbrs.se2.project.coll.dtos.SettingsDTO;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
+import org.hbrs.se2.project.coll.entities.Settings;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.entities.User;
+
+import java.awt.*;
 
 public class UserFactory {
 
@@ -86,6 +90,22 @@ public class UserFactory {
         contactPerson.setPassword(userDTO.getPassword());
 
         return contactPerson;
+    }
+
+    public static Settings createSettings(SettingsDTO settingsDTO) {
+        Settings settings = new Settings();
+        settings.setId(settingsDTO.getId());
+        settings.setNotificationIsEnabled(settingsDTO.getNotificationIsEnabled());
+
+        return settings;
+    }
+
+    public static Settings createSettingsFromBasicUser(UserDTO userDTO) {
+        Settings settings = new Settings();
+        settings.setId(userDTO.getId());
+        settings.setNotificationIsEnabled(true);
+
+        return settings;
     }
 
     public static User createUser(UserDTO userDTO) {

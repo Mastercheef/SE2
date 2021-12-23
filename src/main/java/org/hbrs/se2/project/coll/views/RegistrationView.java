@@ -22,6 +22,7 @@ import org.hbrs.se2.project.coll.control.*;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.*;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
@@ -40,6 +41,8 @@ public class RegistrationView extends Div {
     private RegistrationControl registrationControl;
     @Autowired
     private LoginControl loginControl;
+    @Autowired
+    private SettingsControl settingsControl;
 
     Tab studentUser = new Tab("Student");
     Tab companyUser = new Tab(Globals.View.COMPANY);
@@ -286,13 +289,19 @@ public class RegistrationView extends Div {
         add(siteLayout);
     }
 
-    public void autoLoginAfterRegistration(UserDTOImpl userDTO) {
+    public void autoLoginAfterRegistration(UserDTOImpl userDTO) throws DatabaseUserException {
         LoginResultDTO isAuthenticated = loginControl.authentificate(userDTO.getEmail(), userDTO.getPassword());
         if (isAuthenticated.getResult()) {
             UI.getCurrent().getSession().setAttribute( Globals.CURRENT_USER, loginControl.getCurrentUser() );
+            createSettingsAfterRegistration(loginControl.getCurrentUser());
         } else {
             triggerDialogMessage(Globals.View.ERROR,"Fehler beim automatischen einloggen. Bitte versuchen Sie es erneut");
         }
+    }
+
+    private void createSettingsAfterRegistration(UserDTO userDTO) throws DatabaseUserException {
+        // Anlegen der Settings für User (einmalig)
+        settingsControl.createNewUserSettings(userDTO);
     }
 
     public void setErrorFields(List<ReasonType> reasons) {
