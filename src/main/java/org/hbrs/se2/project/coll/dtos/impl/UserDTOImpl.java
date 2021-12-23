@@ -91,14 +91,14 @@ public class UserDTOImpl implements UserDTO {
     public String toString() {
         return
                 "id=" + id + '\'' +
-                        ", salutation='" + salutation + '\'' +
-                        ", title='" + title + '\'' +
-                        ", firstname='" + firstname + '\'' +
-                        ", lastname='" + lastname + '\'' +
-                        ", dateOfBirth=" + dateOfBirth +
-                        ", address=" + address + '\'' +
-                        ", email='" + email + '\'' +
-                        ", phone='" + phone + '\'' +
-                        ", type='" + type + '\'' ;
+                ", salutation='" + salutation + '\'' +
+                ", title='" + title + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", address=" + address + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", type='" + type + '\'' ;
     }
 }
