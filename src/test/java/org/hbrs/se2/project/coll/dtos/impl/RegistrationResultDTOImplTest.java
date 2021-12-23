@@ -4,6 +4,7 @@ import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,5 +42,17 @@ class RegistrationResultDTOImplTest {
     @Test
     void testToString() {
         assertEquals("[CITY_MISSING, COMPANY_CITY_MISSING, COMPANY_WEBSITE_MISSING]" , registrationResultDTO.toString());
+    }
+
+    @Test
+    void getReasonList() {
+        List<RegistrationResultDTO.ReasonType> reasonTypeList = new LinkedList<>();
+        reasonTypeList.add(RegistrationResultDTO.ReasonType.CITY_MISSING);
+        reasonTypeList.add(RegistrationResultDTO.ReasonType.COMPANY_EMAIL_INVALID);
+        reasonTypeList.add(RegistrationResultDTO.ReasonType.COMPANY_CITY_MISSING);
+        registrationResultDTO.setReasons(reasonTypeList);
+
+        assertEquals( 3 , registrationResultDTO.getReasons().size());
+        assertEquals(RegistrationResultDTO.ReasonType.CITY_MISSING , registrationResultDTO.getReasons().get(0));
     }
 }

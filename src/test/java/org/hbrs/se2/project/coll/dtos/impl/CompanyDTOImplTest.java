@@ -1,8 +1,12 @@
 package org.hbrs.se2.project.coll.dtos.impl;
 
+import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -66,4 +70,21 @@ class CompanyDTOImplTest {
         assertEquals("Coole Description" , companyDTO.getDescription());
     }
 
+     @Test
+    void getJobAdvertisement() {
+
+        JobAdvertisementDTOimpl jobAdvertisementDTOimplOne = new JobAdvertisementDTOimpl();
+        JobAdvertisementDTOimpl jobAdvertisementDTOimplTwo = new JobAdvertisementDTOimpl();
+        JobAdvertisementDTOimpl jobAdvertisementDTOimplThree = new JobAdvertisementDTOimpl();
+
+        Set<JobAdvertisementDTO> jobAdvertisementDTOSet = new HashSet<JobAdvertisementDTO>();
+        jobAdvertisementDTOSet.add(jobAdvertisementDTOimplOne);
+        jobAdvertisementDTOSet.add(jobAdvertisementDTOimplTwo);
+        jobAdvertisementDTOSet.add(jobAdvertisementDTOimplThree);
+
+        companyDTO.setAdvertisements(jobAdvertisementDTOSet);
+
+        assertNotNull(companyDTO.getAdvertisements());
+        assertEquals(3 , companyDTO.getAdvertisements().size());
+     }
 }
