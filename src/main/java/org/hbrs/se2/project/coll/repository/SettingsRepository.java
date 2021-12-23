@@ -9,3 +9,5 @@ import org.springframework.stereotype.Component;
 public interface SettingsRepository extends JpaRepository<Settings, Integer> {
     SettingsDTO findSettingsById(int id);
 }
+
+

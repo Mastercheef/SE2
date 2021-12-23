@@ -7,7 +7,6 @@ import org.hbrs.se2.project.coll.dtos.SettingsDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.*;
 import org.hbrs.se2.project.coll.repository.SettingsRepository;
-import org.hbrs.se2.project.coll.util.Globals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +22,19 @@ public class SettingsControl {
     @Autowired
     private SettingsRepository settingsRepository;
 
+
+
+    public SettingsDTO getUserSettings(int id) {
+        return settingsRepository.findSettingsById(id);
+    }
+
     public Settings createNewUserSettings(UserDTO userDTO) throws DatabaseUserException {
         Settings settings = UserFactory.createSettingsFromBasicUser(userDTO);
         settings.setNotificationIsEnabled(true);
         return saveUserSettings(settings);
     }
 
-    public Settings updateSettings(SettingsDTO settingsDTO, CheckboxGroup<String> checkboxGroup) throws DatabaseUserException {
+    public Settings updateUserSettings(SettingsDTO settingsDTO, CheckboxGroup<String> checkboxGroup) throws DatabaseUserException {
         Set<String> settingsValues = checkboxGroup.getValue();
         Settings settings = UserFactory.createSettings(settingsDTO);
 

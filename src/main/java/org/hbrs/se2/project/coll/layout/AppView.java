@@ -19,6 +19,8 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.*;
+import org.hbrs.se2.project.coll.control.LoginControl;
+import org.hbrs.se2.project.coll.control.SettingsControl;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.UserDTOImpl;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
@@ -54,6 +56,9 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     @Autowired
     private MessageRepository messageRepository;
+
+    @Autowired
+    private SettingsControl settingsControl;
 
     public AppView() {
         if (getCurrentUser() == null) {
@@ -133,10 +138,12 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         else if (Objects.equals(currentUserType, "cp"))
             navigationBar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
 
-        if(!unreadMessages)
-            navigationBar.addItem("Posteingang", e -> navigateToMessages());
-        else
-        {
+        /*  Check if:
+            - There are unread messages
+            - If a user has enabled notifications
+        */
+        if(unreadMessages && settingsControl.getUserSettings(getCurrentUser().getId()).getNotificationIsEnabled()) {
+
             Icon messageIcon = VaadinIcon.ENVELOPE.create();
             messageIcon.setColor("#67ed42");
 
@@ -147,8 +154,11 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             Tab inbox = new Tab(inboxLabel);
 
             Tabs inboxTab = new Tabs(envelope, inbox);
-            navigationBar.addItem(inboxTab, e-> navigateToMessages());
+            navigationBar.addItem(inboxTab, e -> navigateToMessages());
         }
+        else
+            navigationBar.addItem("Posteingang", e -> navigateToMessages());
+
         navigationBar.addItem(VaadinIcon.COG.create(), e -> navigateToOptions());
         navigationBar.addItem("Logout", e -> logoutUser());
     }
