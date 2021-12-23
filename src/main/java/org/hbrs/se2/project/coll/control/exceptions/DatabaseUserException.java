@@ -1,5 +1,6 @@
 package org.hbrs.se2.project.coll.control.exceptions;
 
+import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
 import org.hbrs.se2.project.coll.util.Globals;
 
 import javax.xml.crypto.Data;
@@ -8,8 +9,7 @@ public class DatabaseUserException extends Exception {
 
     private static final long serialVersionUID = -8460356990632230194L;
 
-    private Integer errorCode;
-
+    private RegistrationResultDTO.ReasonType reasonType = RegistrationResultDTO.ReasonType.DATABASE_USER_EXCEPTION;
     public DatabaseUserException(String message) {
         super(message);
     }
@@ -18,13 +18,13 @@ public class DatabaseUserException extends Exception {
         super(message,cause);
     }
 
-    public DatabaseUserException(String message, Throwable cause, Globals.ErrorCodes errorCode) {
+    public DatabaseUserException(String message, Throwable cause, RegistrationResultDTO.ReasonType reasonType) {
         super(message, cause);
-        this.errorCode = errorCode.getCode();
+        this.reasonType = reasonType;
     }
 
-    public Integer getErrorCode() {
-        return errorCode;
+    public RegistrationResultDTO.ReasonType getErrorCode() {
+        return reasonType;
     }
 
 
