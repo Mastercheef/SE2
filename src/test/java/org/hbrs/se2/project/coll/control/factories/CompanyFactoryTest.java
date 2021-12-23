@@ -32,8 +32,8 @@ class CompanyFactoryTest {
         when(companyDTO.getDescription()).thenReturn("Mustermann Description");
         when(companyDTO.getEmail()).thenReturn("musterman@email.de");
         when(companyDTO.getWebsite()).thenReturn("mustermann.de");
-        when(companyDTO.getFaxNumber()).thenReturn(56789);
-        when(companyDTO.getPhoneNumber()).thenReturn(01234);
+        when(companyDTO.getFaxNumber()).thenReturn("56789");
+        when(companyDTO.getPhoneNumber()).thenReturn("01234");
 
         companyProfile = CompanyFactory.createCompany(companyDTO);
 

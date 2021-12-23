@@ -119,8 +119,8 @@ public class RegistrationView extends Div {
             CompanyDTOImpl newCompanyDTO = new CompanyDTOImpl();
             newCompanyDTO.setCompanyName(companyName.getValue());
             newCompanyDTO.setEmail(companyEmail.getValue());
-            newCompanyDTO.setPhoneNumber(Integer.parseInt(companyPhone.getValue()));
-            newCompanyDTO.setFaxNumber(Integer.parseInt(companyFax.getValue()));
+            newCompanyDTO.setPhoneNumber(companyPhone.getValue());
+            newCompanyDTO.setFaxNumber(companyFax.getValue());
             newCompanyDTO.setWebsite(companyHomepage.getValue());
             newCompanyDTO.setDescription(companyDescription.getValue());
 

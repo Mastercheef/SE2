@@ -36,20 +36,17 @@ class CompanyDTOImplTest {
         assertNotNull(companyDTO.getAddress());
     }
 
-    //TODO Does this need to be int?
     @Test
     void getPhoneNumber() {
-        companyDTO.setPhoneNumber(012345);
-        assertEquals(012345 , companyDTO.getPhoneNumber());
+        companyDTO.setPhoneNumber("012345");
+        assertEquals("012345" , companyDTO.getPhoneNumber());
 
     }
 
-
-    //TODO Does this need to be int?
     @Test
     void getFaxNumber() {
-        companyDTO.setFaxNumber(54321);
-        assertEquals(54321 , companyDTO.getFaxNumber());
+        companyDTO.setFaxNumber("54321");
+        assertEquals("54321" , companyDTO.getFaxNumber());
     }
 
 

@@ -58,7 +58,7 @@ public class CompanyViewTest {
         companyProfile.setCompanyName("Fancy Testing Company");
         companyProfile.setDescription("We are a fancy Company!");
         companyProfile.setWebsite("www.a-fancy-company.com");
-        companyProfile.setFaxNumber(1093049);
+        companyProfile.setFaxNumber("1093049");
         companyProfile.setAddress(address);
         companyRepository.save(companyProfile);
 
@@ -113,8 +113,8 @@ public class CompanyViewTest {
         String  newCompanyName = "TEST GmbH und Co. KG";
         String  newWebsite     = "testfirma.de";
         String  newEmail       = "testfirma@test.com";
-        int     newPhoneNumber = 123456789;
-        int     newFaxNumber   = 987654321;
+        String  newPhoneNumber = "123456789";
+        String  newFaxNumber   = "987654321";
         int     newId          = 123;
         Address newAddress     = new Address();
         newAddress.setId(10000002);

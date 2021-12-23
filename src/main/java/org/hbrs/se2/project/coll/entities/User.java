@@ -24,6 +24,7 @@ public class User {
     private String email;
     private String password;
     private String type;
+    private Settings settings;
 
     @Basic
     @Column(name = "salutation")
@@ -120,6 +121,15 @@ public class User {
     }
     public void setId(int id) {
         this.id = id;
+    }
+
+
+    @OneToOne
+    public Settings getSettings() {
+        return settings;
+    }
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 
     @Override

@@ -76,7 +76,7 @@ public class JobAdvertisementControl {
         return companyRepository.findCompanyProfileById(companyId).getAddress();
     }
 
-    public int getCompanyPhoneNumber(JobAdvertisement jobAdvertisement) {
+    public String getCompanyPhoneNumber(JobAdvertisement jobAdvertisement) {
         int companyId = getCompanyId(jobAdvertisement);
         return companyRepository.findCompanyProfileById(companyId).getPhoneNumber();
     }

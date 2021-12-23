@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table( name ="col_tab_settings" , schema = "collhbrs" )
 public class Settings {
+
     private int id;
     private boolean notificationIsEnabled;
 

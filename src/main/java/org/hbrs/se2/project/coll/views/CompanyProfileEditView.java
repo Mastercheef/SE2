@@ -187,8 +187,8 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         updatedProfile.setId(companyId);
         updatedProfile.setCompanyName(lcompanyname.getValue());
         updatedProfile.setEmail(lemail.getValue());
-        updatedProfile.setPhoneNumber(Integer.parseInt(lphone.getValue()));
-        updatedProfile.setFaxNumber(Integer.parseInt(lfax.getValue()));
+        updatedProfile.setPhoneNumber(lphone.getValue());
+        updatedProfile.setFaxNumber(lfax.getValue());
         updatedProfile.setWebsite(lwebsite.getValue());
         updatedProfile.setDescription(ldescription.getValue());
 
