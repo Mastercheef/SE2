@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class Settings {
 
     private int id;
+    private User user;
     private boolean notificationIsEnabled;
 
     @Id
@@ -17,6 +18,12 @@ public class Settings {
     public void setId(int id) {
         this.id = id;
     }
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id")
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
     @Basic
     @Column(name = "notification_is_enabled")

@@ -124,7 +124,8 @@ public class User {
     }
 
 
-    @OneToOne
+    @OneToOne(mappedBy = "user")
+    @PrimaryKeyJoinColumn
     public Settings getSettings() {
         return settings;
     }
