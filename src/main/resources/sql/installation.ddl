@@ -4,6 +4,7 @@
 -- Drop Section
 -- _______________
 
+drop table col_tab_settings;
 drop table col_tab_application;
 drop table col_tab_job_advertisement;
 drop table col_tab_contact_person;
@@ -12,13 +13,13 @@ drop table col_tab_message;
 drop table col_tab_student;
 drop table col_tab_user;
 drop table col_tab_address;
-drop table col_tab_settings;
 
 drop sequence col_seq_address_id;
 drop sequence col_seq_user_id;
 drop sequence col_seq_advertisement_id;
 drop sequence col_seq_company_id;
 drop sequence col_seq_message_id;
+drop sequence col_seq_application_id;
 
 -- Trigger Section
 -- _______________
@@ -52,6 +53,13 @@ create sequence col_seq_message_id
     increment by 1
     minvalue 50000000
     maxvalue 59999999;
+
+create sequence col_seq_application_id
+    start with 60000000
+    increment by 1
+    minvalue 60000000
+    maxvalue 69999999;
+
 -- Table Section
 -- _____________
 
@@ -121,8 +129,12 @@ create table col_tab_company (
      constraint col_pk_company_id primary key (company_id));
 
 create table col_tab_application (
+     application_id bigint not null default nextval('col_seq_application_id'),
      user_id bigint not null,
-     advertisement_id bigint not null);
+     advertisement_id bigint not null,
+     headline varchar(128) not null,
+     text varchar(4096) not null,
+     constraint col_pk_application_id primary key (application_id));
 
 create table col_tab_message (
     message_id bigint not null default nextval('col_seq_message_id'),
