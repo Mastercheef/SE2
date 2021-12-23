@@ -123,7 +123,6 @@ public class User {
         this.id = id;
     }
 
-
     @OneToOne(mappedBy = "user")
     @PrimaryKeyJoinColumn
     public Settings getSettings() {

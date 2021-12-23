@@ -72,7 +72,6 @@ public class RegistrationControl {
                     Company savedCompany = companyControl.saveCompany(registrationDTO.getCompanyDTO());
                     contactPersonControl.createNewContactPerson(registrationDTO.getUserDTO(), savedCompany);
                 }
-                //settingsControl.createNewUserSettings(registrationDTO.getUserDTO());
 
                 registrationResult.addReason(ReasonType.SUCCESS);
                 registrationResult.setResult(true);
