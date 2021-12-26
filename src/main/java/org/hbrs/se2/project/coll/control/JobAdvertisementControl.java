@@ -12,6 +12,7 @@ import org.hbrs.se2.project.coll.util.Globals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -103,6 +104,10 @@ public class JobAdvertisementControl {
 
     public List<JobAdvertisement> filterJobs(String title, String type, String requirements) {
         return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCase(title, type, requirements);
+    }
+
+    public List<JobAdvertisement> filterJobs(String title, String requirements) {
+        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCase(title, requirements);
     }
 
 }

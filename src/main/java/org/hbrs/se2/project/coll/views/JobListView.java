@@ -2,6 +2,7 @@ package org.hbrs.se2.project.coll.views;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.HeaderRow;
@@ -10,6 +11,7 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.AfterNavigationEvent;
@@ -23,6 +25,7 @@ import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Objects;
 
 @Route(value = "joblist", layout = AppView.class)
 @PageTitle("Liste der Stellenangebote")
@@ -34,21 +37,29 @@ public class JobListView extends Div implements AfterNavigationObserver {
     Grid<JobAdvertisement> grid = new Grid<>();
 
     TextField jobTitleFilter        = new TextField();
-    TextField jobTypeFilter         = new TextField();
+    //TextField jobTypeFilter         = new TextField();
+    ComboBox<String> jobTypeFilter  = new ComboBox<>();
     TextField requirementsFilter    = new TextField();
 
     public JobListView() {
 
         // Filter
         jobTitleFilter.setPlaceholder("Nach Jobtitel filtern ...");
-        jobTypeFilter.setPlaceholder("Nach Jobtyp filtern ...");
         requirementsFilter.setPlaceholder("Nach Voraussetzungen filtern ...");
 
-        for(TextField textfield : new TextField[] { jobTitleFilter, jobTypeFilter, requirementsFilter}) {
+        jobTypeFilter.setItems("Praktikum", "Minijob", "Vollzeit", "Teilzeit");
+
+        // Dropdown for Job Type
+        //jobTypeFilter.setItems("Praktikum", "Minijob", "Teilzeit", "Vollzeit");
+        //jobTitleFilter.addValueChangeListener(e-> updateGrid());
+
+        // Clicklistener etc
+        for(TextField textfield : new TextField[] { jobTitleFilter, requirementsFilter}) {
             textfield.setClearButtonVisible(true);
             textfield.setValueChangeMode(ValueChangeMode.EAGER);
             textfield.addValueChangeListener(e-> updateGrid());
         }
+        jobTypeFilter.addValueChangeListener(e -> updateGrid());
 
         setSizeFull();
         grid.setHeight("100%");
@@ -67,10 +78,15 @@ public class JobListView extends Div implements AfterNavigationObserver {
         add(grid);
     }
 
+    /* We have to differentiate between an empty job type filter or not, as Vaadin Combo Boxes don't work well with
+        null values.
+    */
     public void updateGrid() {
-        grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
-                jobTypeFilter.getValue(),
-                requirementsFilter.getValue()));
+        if(jobTypeFilter.isEmpty())
+            grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(), requirementsFilter.getValue()));
+        else
+            grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
+                    jobTypeFilter.getValue(), requirementsFilter.getValue()));
     }
 
     // TODO: Weitere filter-felder schreiben
