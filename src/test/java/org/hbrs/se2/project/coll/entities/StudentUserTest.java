@@ -34,24 +34,51 @@ class StudentUserTest {
         studentUser.setDateOfBirth(LocalDate.of(1999,1,1));
         studentUser.setPhone("0123456789");
         studentUser.setAddress(address);
-        studentUser.setGraduation("1.1.2000");
-        studentUser.setSkills("C++");
-        studentUser.setInterests("Bier");
-        studentUser.setWebsite("www.mustermann.de");
-        studentUser.setDescription("Talentierter Programmierer");
-        studentUser.setSubjectField("Datenbank");
         studentUser.setEmail("mustermann@gmx.de");
         studentUser.setType("st");
-
-
-
     }
+        String graduation = "1.1.2000";
+        String skills = "C++";
+        String interests = "Bier";
+        String website = "www.mustermann.de";
+        String description = "Talentierter Programmierer";
+        String subjectField = "Datenbank";
+
     @Test
-    void getSubjectField() {
+    void testGetGraduation(){
+        studentUser.setGraduation(graduation);
+        assertEquals("1.1.2000", studentUser.getGraduation());
+    }
+
+    @Test
+    void testGetSkills(){
+        studentUser.setSkills(skills);
+        assertEquals("C++", studentUser.getSkills());
+    }
+
+    @Test
+    void testGetInterests(){
+        studentUser.setInterests(interests);
+        assertEquals("Bier", studentUser.getInterests());
+    }
+
+    @Test
+    void testGetWebsite(){
+        studentUser.setWebsite(website);
+        assertEquals("www.mustermann.de", studentUser.getWebsite());
+    }
+
+    @Test
+    void testGetDescription(){
+        studentUser.setDescription(description);
+        assertEquals("Talentierter Programmierer", studentUser.getDescription());
+    }
+
+    @Test
+    void testGetSubjectField() {
+        studentUser.setSubjectField(subjectField);
         assertEquals("Datenbank" , studentUser.getSubjectField());
     }
-
-
 
     @Test
     //TODO Implement
@@ -65,9 +92,6 @@ class StudentUserTest {
 
         assertEquals(2 , studentUser.getApplications().size());
     }
-
-
-
 
     @Test
     void testToString() {
