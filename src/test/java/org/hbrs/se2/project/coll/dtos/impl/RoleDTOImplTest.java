@@ -12,22 +12,21 @@ class RoleDTOImplTest {
     @BeforeEach
     void setUp() {
         roleDTO = new RoleDTOImpl();
-        roleDTO.setBezeichnung("Manager");
+        roleDTO.setDesignation("Manager");
     }
 
     @Test
-    void setBezeichnung() {
-        assertEquals("Manager" , roleDTO.getBezeichhnung());
+    void setLabel() {
+        assertEquals("Manager" , roleDTO.getDesignation());
     }
 
     @Test
     void getBezeichhnung() {
-        assertEquals("Manager" , roleDTO.getBezeichhnung());
-
+        assertEquals("Manager" , roleDTO.getDesignation());
     }
 
     @Test
     void testToString() {
-        assertEquals("RolleDTOImpl{bezeichnung='Manager'}" , roleDTO.toString());
+        assertEquals("RoleDTOImpl{designation='Manager'}" , roleDTO.toString());
     }
 }

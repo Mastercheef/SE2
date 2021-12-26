@@ -41,7 +41,5 @@ class RegistrationResultDTOTest {
         assertEquals("COMPANY_COUNTRY_MISSING", RegistrationResultDTO.ReasonType.COMPANY_COUNTRY_MISSING.toString());
         assertEquals("COMPANY_EMAIL_INVALID", RegistrationResultDTO.ReasonType.COMPANY_EMAIL_INVALID.toString());
         assertEquals("COMPANY_ALREADY_REGISTERED", RegistrationResultDTO.ReasonType.COMPANY_ALREADY_REGISTERED.toString());
-
-
     }
 }

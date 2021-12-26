@@ -4,21 +4,22 @@ import org.hbrs.se2.project.coll.dtos.RoleDTO;
 
 public class RoleDTOImpl implements RoleDTO {
 
-    private String bezeichnung;
+    private String designation;
 
-    public void setBezeichnung(String bezeichnung) {
-        this.bezeichnung = bezeichnung;
+    @Override
+    public void setDesignation(String designation) {
+        this.designation = designation;
     }
 
     @Override
-    public String getBezeichhnung() {
-        return this.bezeichnung;
+    public String getDesignation() {
+        return this.designation;
     }
 
     @Override
     public String toString() {
-        return "RolleDTOImpl{" +
-                "bezeichnung='" + bezeichnung + '\'' +
+        return "RoleDTOImpl{" +
+                "designation='" + designation + '\'' +
                 '}';
     }
 }
