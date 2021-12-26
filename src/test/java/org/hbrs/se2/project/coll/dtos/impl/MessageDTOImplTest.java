@@ -50,4 +50,10 @@ class MessageDTOImplTest {
         messageDTO.setRead(true);
         assertTrue(messageDTO.getRead());
     }
+
+    @Test
+    void getType(){
+        messageDTO.setType("test");
+        assertEquals("test", messageDTO.getType());
+    }
 }
