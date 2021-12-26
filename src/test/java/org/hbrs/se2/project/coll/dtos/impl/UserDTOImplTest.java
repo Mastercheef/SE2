@@ -113,6 +113,17 @@ class UserDTOImplTest {
 
     @Test
     void testToString() {
+        userDTO.setType(type);
+        userDTO.setSalutation(salutation);
+        userDTO.setTitle(title);
+        userDTO.setFirstName(firstName);
+        userDTO.setLastName(lastName);
+        userDTO.setDateOfBirth(date);
+        userDTO.setAddress(address);
+        userDTO.setEmail(eMail);
+        userDTO.setPhone(phoneNumber);
+        userDTO.setPassword(password);
+        userDTO.setId(id);
         assertEquals("id=12', salutation='Herr', title='Dr.', firstname='Max', lastname='Mustermann', dateOfBirth=1971-02-01, address=Musterstraße 1\n" +
                 "12345 Musterstadt\n" +
                 "DE', email='max@mustermann.de', phone='0123456789', type='st'", userDTO.toString());

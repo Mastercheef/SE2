@@ -43,8 +43,8 @@ class CompanyFactoryTest {
         assertEquals("Mustermann Description" , companyProfile.getDescription());
         assertEquals("musterman@email.de" , companyProfile.getEmail());
         assertEquals("mustermann.de" , companyProfile.getWebsite());
-        assertEquals(56789 , companyProfile.getFaxNumber());
-        assertEquals(01234 , companyProfile.getPhoneNumber());
+        assertEquals("56789" , companyProfile.getFaxNumber());
+        assertEquals("01234" , companyProfile.getPhoneNumber());
     }
 
     @Test

@@ -93,11 +93,6 @@ class UserTest {
     }
 
     @Test
-    void testGetPassword(){
-        assertEquals("passwd", userOne.getPassword());
-    }
-
-    @Test
     void testGetType(){
         assertEquals("st", userOne.getType());
     }

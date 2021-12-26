@@ -95,6 +95,12 @@ class StudentUserTest {
 
     @Test
     void testToString() {
+        studentUser.setGraduation(graduation);
+        studentUser.setSkills(skills);
+        studentUser.setInterests(interests);
+        studentUser.setWebsite(website);
+        studentUser.setDescription(description);
+        studentUser.setSubjectField(subjectField);
         assertEquals("111, Herr, Dr., Max, Mustermann, 1999-01-01, 0123456789, Musterstrasse 1\n" +
                 "12345 Musterstadt\n" +
                 "Deutschland, mustermann@gmx.de, 1.1.2000, C++, Bier, www.mustermann.de, Talentierter Programmierer, Datenbank, st" , studentUser.toString());
