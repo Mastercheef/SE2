@@ -14,10 +14,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.router.AfterNavigationEvent;
-import com.vaadin.flow.router.AfterNavigationObserver;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import org.hbrs.se2.project.coll.control.JobAdvertisementControl;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.layout.AppView;
@@ -27,9 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Objects;
 
-@Route(value = "joblist", layout = AppView.class)
+@Route(value = "joblist/:jobType?/:jobTitle?", layout = AppView.class)
+//@Route(value = "joblist", layout = AppView.class)
 @PageTitle("Liste der Stellenangebote")
-public class JobListView extends Div implements AfterNavigationObserver {
+public class JobListView extends Div implements AfterNavigationObserver, BeforeEnterObserver {
 
     @Autowired
     JobAdvertisementControl jobAdvertisementControl;
@@ -37,9 +35,18 @@ public class JobListView extends Div implements AfterNavigationObserver {
     Grid<JobAdvertisement> grid = new Grid<>();
 
     TextField jobTitleFilter        = new TextField();
-    //TextField jobTypeFilter         = new TextField();
     ComboBox<String> jobTypeFilter  = new ComboBox<>();
     TextField requirementsFilter    = new TextField();
+
+    String preJobType   = null;
+    String preJobTitle  = null;
+
+    // Set prefilters. Is only used when search fields on MainView are used.
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        event.getRouteParameters().get("jobType").ifPresent(value -> preJobType = value);
+        event.getRouteParameters().get("jobTitle").ifPresent(value -> preJobTitle = value);
+    }
 
     public JobListView() {
 
@@ -47,11 +54,9 @@ public class JobListView extends Div implements AfterNavigationObserver {
         jobTitleFilter.setPlaceholder("Nach Jobtitel filtern ...");
         requirementsFilter.setPlaceholder("Nach Voraussetzungen filtern ...");
 
+        // Dropdown for Job Type
         jobTypeFilter.setItems("Praktikum", "Minijob", "Vollzeit", "Teilzeit");
 
-        // Dropdown for Job Type
-        //jobTypeFilter.setItems("Praktikum", "Minijob", "Teilzeit", "Vollzeit");
-        //jobTitleFilter.addValueChangeListener(e-> updateGrid());
 
         // Clicklistener etc
         for(TextField textfield : new TextField[] { jobTitleFilter, requirementsFilter}) {
@@ -124,7 +129,7 @@ public class JobListView extends Div implements AfterNavigationObserver {
         // Header
         Span jobTitle           = new Span(jobAdvertisement.getJobTitle());
         Span typeOfEmployment   = new Span(jobAdvertisement.getTypeOfEmployment());
-        Span companyName        = new Span( jobAdvertisementControl.getCompanyName(jobAdvertisement));
+        Span companyName        = new Span(jobAdvertisementControl.getCompanyName(jobAdvertisement));
 
         // Header styling
         for (Span span : new Span[]{ jobTitle, typeOfEmployment, companyName }) {
@@ -176,6 +181,16 @@ public class JobListView extends Div implements AfterNavigationObserver {
     public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
         List<JobAdvertisement> jobs = jobAdvertisementControl.getAllJobs();
         grid.setItems(jobs);
+
+        // Handle prefilters if they are set.
+        if(preJobTitle != null || preJobType != null)
+        {
+            if(preJobTitle != null)
+                jobTitleFilter.setValue(preJobTitle);
+            if(preJobType != null)
+                jobTypeFilter.setValue(preJobType);
+            updateGrid();
+        }
     }
 
 }

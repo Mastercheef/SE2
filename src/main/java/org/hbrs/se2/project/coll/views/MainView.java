@@ -48,6 +48,13 @@ public class MainView extends VerticalLayout {
         start.add(logo,slogan,suchenText);
         start.setAlignSelf(Alignment.BASELINE);
 
+        ComboBox<String> comboBox;
+        comboBox = new ComboBox<>("Arbeit");
+        comboBox.setItems("Praktikum", "Minijob", "Vollzeit", "Teilzeit");
+
+        comboBox.setAllowCustomValue(false);
+        comboBox.setPlaceholder("Arbeit");
+
         TextField textField = new TextField();
         textField.getElement().setAttribute("aria-label", "search");
         textField.setPlaceholder("z.B. Beruf,Stichwort ");
@@ -55,17 +62,15 @@ public class MainView extends VerticalLayout {
         textField.setPrefixComponent(VaadinIcon.SEARCH.create());
         add(textField);
 
-        ComboBox<String> comboBox;
-        comboBox = new ComboBox<>("Arbeit");
-        comboBox.setItems("Job" , "Praktikum");
-
-        comboBox.setAllowCustomValue(false);
-        comboBox.setPlaceholder("Arbeit");
+        // Fetch values from fields and redirect to JobListView, after that use filter-function
+        Button searchButton = new Button("Suchen!");
+        searchButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW +
+                comboBox.getValue() + "/" + textField.getValue()));
 
         Button jobList = new Button("... oder alle Stellenangebote ansehen!");
         jobList.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW));
 
-        HorizontalLayout hl = new HorizontalLayout(comboBox, textField);
+        HorizontalLayout hl = new HorizontalLayout(comboBox, textField, searchButton);
         hl.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         hl.setSpacing(false);
         hl.setWidthFull();
