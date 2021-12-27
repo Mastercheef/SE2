@@ -2,15 +2,17 @@ package org.hbrs.se2.project.coll.entities;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CompanyTest {
 
-    private Company company;
-    private Address address;
-    private ContactPerson contactPerson;
+    private Company company = new Company();
+    private Address address = new Address();
+    private ContactPerson contactPerson = new ContactPerson();
     int id;
     String companyName;
     String phoneNumber;
@@ -18,8 +20,7 @@ public class CompanyTest {
     String email;
     String website;
     String description;
-    Set<ContactPerson> contactPersons;
-
+    Set<ContactPerson> contactPersons = new HashSet<>();
 
     @BeforeEach
     void setup() {
@@ -70,7 +71,7 @@ public class CompanyTest {
     @Test
     void testGetWebsite(){
         company.setWebsite(website);
-        assertEquals("ww.amazon.de", company.getWebsite());
+        assertEquals("www.amazon.de", company.getWebsite());
     }
 
     @Test
