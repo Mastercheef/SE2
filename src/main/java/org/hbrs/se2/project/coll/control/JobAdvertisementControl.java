@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.batch.BatchProperties;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -98,30 +99,32 @@ public class JobAdvertisementControl {
                 getId()).getCompany().getId();
     }
 
+    // Used to find all available Jobs and filter them by entry date
     public List<JobAdvertisement> getAllJobs() {
-        return jobAdvertisementRepository.findAll();
+        return jobAdvertisementRepository.findAll(Sort.by(Sort.Direction.DESC, "startOfWork"));
+
     }
 
     /* We need multiple filter functions because of Vaadin Combo Boxes. */
 
     // All filters set
     public List<JobAdvertisement> filterJobs(String title, String type, String requirements, boolean temporaryEmployment) {
-        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmployment(title, type, requirements, temporaryEmployment);
+        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentOrderByStartOfWorkDesc(title, type, requirements, temporaryEmployment);
     }
 
     // Only "JobType" filter set
     public List<JobAdvertisement> filterJobs(String title, String type, String requirements) {
-        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCase(title, type, requirements);
+        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseOrderByStartOfWorkDesc(title, type, requirements);
     }
 
     // Only "Temporary Employment" filter set
     public List<JobAdvertisement> filterJobs(String title, String requirements, boolean temporaryEmployment) {
-        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmployment(title, requirements, temporaryEmployment);
+        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentOrderByStartOfWorkDesc(title, requirements, temporaryEmployment);
     }
 
     // "Job Type" and "Temporary Employment" filters not set
     public List<JobAdvertisement> filterJobs(String title, String requirements) {
-        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCase(title, requirements);
+        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseOrderByStartOfWorkDesc(title, requirements);
     }
 
 }

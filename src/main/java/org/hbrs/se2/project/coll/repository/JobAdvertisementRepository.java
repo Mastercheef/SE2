@@ -16,20 +16,21 @@ public interface JobAdvertisementRepository extends JpaRepository<JobAdvertiseme
     JobAdvertisement findJobAdvertisementByJobDescription(String string);
     JobAdvertisement findJobAdvertisementById(int id);
 
-
+    // TODO: Pull out Queries and name these methods better.
     // Filter functions ...
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmployment(String title,
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentOrderByStartOfWorkDesc(String title,
                                                                                                                                                                          String type,
                                                                                                                                                                          String requirements,
                                                                                                                                                                          boolean temporaryEmployment);
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmployment(String title,
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentOrderByStartOfWorkDesc(String title,
                                                                                                                                                       String requirements,
                                                                                                                                                       boolean temporaryEmployment);
 
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCase(String title,
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseOrderByStartOfWorkDesc(String title,
                                                                                                                                                      String type,
                                                                                                                                                      String requirements);
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCase(String title, String requirements);
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseOrderByStartOfWorkDesc(String title, String requirements);
+
 
     /* Finds all JobAdvertisements from a given CompanyId
     */
