@@ -12,9 +12,11 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.*;
 import org.hbrs.se2.project.coll.control.JobAdvertisementControl;
+import org.hbrs.se2.project.coll.dtos.MessageDTO;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
@@ -206,6 +208,8 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
                 jobTypeFilter.setValue(preJobType);
             updateGrid();
         }
+
+        // Grid Items / Job Advertisements always get sorted in descending order by their StartOfWork-Attribute.
     }
 
 }
