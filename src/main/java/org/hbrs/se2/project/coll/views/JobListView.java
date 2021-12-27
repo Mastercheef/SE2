@@ -27,14 +27,18 @@ import java.util.Objects;
 @PageTitle(Globals.PageTitles.MAIN_PAGE_TITLE)
 public class JobListView extends Div implements AfterNavigationObserver, BeforeEnterObserver {
 
+    // TODO: Weitere filter-felder schreiben
+
     @Autowired
     JobAdvertisementControl jobAdvertisementControl;
 
     Grid<JobAdvertisement> grid = new Grid<>();
 
-    TextField jobTitleFilter        = new TextField();
-    ComboBox<String> jobTypeFilter  = new ComboBox<>();
-    TextField requirementsFilter    = new TextField();
+    TextField jobTitleFilter            = new TextField();
+    TextField requirementsFilter        = new TextField();
+
+    ComboBox<String> jobTypeFilter      = new ComboBox<>();
+    ComboBox<Boolean> temporaryFilter   = new ComboBox<>();
 
     String preJobType   = null;
     String preJobTitle  = null;
@@ -52,9 +56,17 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
         jobTitleFilter.setPlaceholder("Nach Jobtitel filtern ...");
         requirementsFilter.setPlaceholder("Nach Voraussetzungen filtern ...");
         jobTypeFilter.setPlaceholder("Nach Jobtyp filtern ...");
+        temporaryFilter.setPlaceholder("Kurzfristige Beschäftigung?");
+
+        jobTitleFilter.setLabel("Titel:");
+        jobTypeFilter.setLabel("Typ:");
+        requirementsFilter.setLabel("Voraussetzungen:");
+        temporaryFilter.setLabel("Kurzfristige Beschäftigung:");
 
         // Dropdown for Job Type
         jobTypeFilter.setItems("Praktikum", "Minijob", "Vollzeit", "Teilzeit");
+        temporaryFilter.setItems(true, false);
+        temporaryFilter.setItemLabelGenerator(bool -> { return bool ? "Ja" : "Nein";});
 
 
         // Clicklistener etc
@@ -64,6 +76,7 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
             textfield.addValueChangeListener(e-> updateGrid());
         }
         jobTypeFilter.addValueChangeListener(e -> updateGrid());
+        temporaryFilter.addValueChangeListener(e -> updateGrid());
 
         setSizeFull();
         grid.setHeight("100%");
@@ -82,26 +95,27 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
         add(grid);
     }
 
-    /* We have to differentiate between an empty job type filter or not, as Vaadin Combo Boxes don't work well with
+    /* We have to differentiate between an empty ComboBoxes or not, as Vaadin Combo Boxes don't work well with
         null values.
     */
     public void updateGrid() {
-        if(jobTypeFilter.isEmpty())
+        if(jobTypeFilter.isEmpty() && temporaryFilter.isEmpty())
             grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(), requirementsFilter.getValue()));
-        else
+        else if(jobTypeFilter.isEmpty())
+            grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
+                    requirementsFilter.getValue(), temporaryFilter.getValue()));
+        else if(temporaryFilter.isEmpty())
             grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
                     jobTypeFilter.getValue(), requirementsFilter.getValue()));
+        else
+            grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
+                    jobTypeFilter.getValue(), requirementsFilter.getValue(), temporaryFilter.getValue()));
     }
 
-    // TODO: Weitere filter-felder schreiben
     // Header (filter)
     private HorizontalLayout createHeaderCard() {
         HorizontalLayout card = new HorizontalLayout();
         card.setAlignItems(FlexComponent.Alignment.BASELINE);
-
-        jobTitleFilter.setLabel("Titel:");
-        jobTypeFilter.setLabel("Typ:");
-        requirementsFilter.setLabel("Voraussetzungen:");
 
         Button filterDelete = new Button("Alle Filter löschen");
         filterDelete.addClickListener(e-> {
@@ -111,9 +125,11 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
             jobTypeFilter.setPlaceholder("Nach Jobtyp filtern ...");
             requirementsFilter.setValue("");
             requirementsFilter.setPlaceholder("Nach Voraussetzungen filtern ...");
+            temporaryFilter.setValue(null);
+            temporaryFilter.setPlaceholder("Kurzfristige Beschäftigung?");
         });
 
-        card.add(jobTitleFilter, jobTypeFilter, requirementsFilter, filterDelete);
+        card.add(jobTitleFilter, jobTypeFilter, requirementsFilter, temporaryFilter, filterDelete);
         return card;
     }
 

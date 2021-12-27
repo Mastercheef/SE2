@@ -16,7 +16,16 @@ public interface JobAdvertisementRepository extends JpaRepository<JobAdvertiseme
     JobAdvertisement findJobAdvertisementByJobDescription(String string);
     JobAdvertisement findJobAdvertisementById(int id);
 
-    // Filter function ...
+
+    // Filter functions ...
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmployment(String title,
+                                                                                                                                                                         String type,
+                                                                                                                                                                         String requirements,
+                                                                                                                                                                         boolean temporaryEmployment);
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmployment(String title,
+                                                                                                                                                      String requirements,
+                                                                                                                                                      boolean temporaryEmployment);
+
     List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCase(String title,
                                                                                                                                                      String type,
                                                                                                                                                      String requirements);

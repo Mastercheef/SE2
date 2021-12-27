@@ -102,10 +102,24 @@ public class JobAdvertisementControl {
         return jobAdvertisementRepository.findAll();
     }
 
+    /* We need multiple filter functions because of Vaadin Combo Boxes. */
+
+    // All filters set
+    public List<JobAdvertisement> filterJobs(String title, String type, String requirements, boolean temporaryEmployment) {
+        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmployment(title, type, requirements, temporaryEmployment);
+    }
+
+    // Only "JobType" filter set
     public List<JobAdvertisement> filterJobs(String title, String type, String requirements) {
         return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCase(title, type, requirements);
     }
 
+    // Only "Temporary Employment" filter set
+    public List<JobAdvertisement> filterJobs(String title, String requirements, boolean temporaryEmployment) {
+        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmployment(title, requirements, temporaryEmployment);
+    }
+
+    // "Job Type" and "Temporary Employment" filters not set
     public List<JobAdvertisement> filterJobs(String title, String requirements) {
         return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCase(title, requirements);
     }
