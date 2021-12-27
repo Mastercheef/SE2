@@ -57,6 +57,7 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
+
         try {
             loadStudentUserInformation();
             jobAdvertisement = jobAdvertisementRepository.findJobAdvertisementById(Integer.parseInt(event.getRouteParameters().get("adID").get()));
@@ -144,16 +145,18 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
 
     public void loadStudentUserInformation() {
         try {
-            studentUserDTO = studentUserRepository.findStudentUserById(this.getCurrentUser().getId());
-            sSalutation = new Span(studentUserDTO.getSalutation() + " " + studentUserDTO.getTitle());
-            sName = new Span(studentUserDTO.getFirstName() + " " + studentUserDTO.getLastName());
-            sDateOfBirth =  new Span(Utils.convertToGermanDateFormat(studentUserDTO.getDateOfBirth()));
-            sEmail =  new Span(studentUserDTO.getEmail());
-            sPhone =  new Span(studentUserDTO.getPhone());
+            if(getCurrentUser() != null) {
+                studentUserDTO = studentUserRepository.findStudentUserById(this.getCurrentUser().getId());
+                sSalutation = new Span(studentUserDTO.getSalutation() + " " + studentUserDTO.getTitle());
+                sName = new Span(studentUserDTO.getFirstName() + " " + studentUserDTO.getLastName());
+                sDateOfBirth = new Span(Utils.convertToGermanDateFormat(studentUserDTO.getDateOfBirth()));
+                sEmail = new Span(studentUserDTO.getEmail());
+                sPhone = new Span(studentUserDTO.getPhone());
 
-            sAddress =  new Span(studentUserDTO.getAddress().getStreet() + " " + studentUserDTO.getAddress().getHouseNumber());
-            sLocation =  new Span(studentUserDTO.getAddress().getPostalCode() + " " + studentUserDTO.getAddress().getCity());
-            sCountry =  new Span(studentUserDTO.getAddress().getCountry());
+                sAddress = new Span(studentUserDTO.getAddress().getStreet() + " " + studentUserDTO.getAddress().getHouseNumber());
+                sLocation = new Span(studentUserDTO.getAddress().getPostalCode() + " " + studentUserDTO.getAddress().getCity());
+                sCountry = new Span(studentUserDTO.getAddress().getCountry());
+            }
         } catch (Exception exception) {
             openErrorDialog("Fehler", "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
         }
