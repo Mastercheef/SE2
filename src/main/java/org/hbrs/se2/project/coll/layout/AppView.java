@@ -317,7 +317,9 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         String pageTitle = getCurrentPageTitle();
         if (userDTO == null && !pageTitle.equals(Globals.PageTitles.REGISTER_PAGE_TITLE) &&
                 !pageTitle.equals(Globals.PageTitles.LOGIN_PAGE_TITLE) &&
-                !pageTitle.equals(Globals.PageTitles.MAIN_PAGE_TITLE)) {
+                !pageTitle.equals(Globals.PageTitles.MAIN_PAGE_TITLE) &&
+                !pageTitle.equals(Globals.PageTitles.JOBADVERTISEMENT_PAGE_TITLE) &&
+                !pageTitle.equals(Globals.PageTitles.JOBLIST_PAGE_TITLE)) {
             UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
             //UI.getCurrent().getPage().reload();
             return false;

@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 
 
-@PageTitle("Kontaktaufnahme")
 @Route(value = "contacting/:companyId/:jobId", layout = AppView.class)
+@PageTitle("Kontaktaufnahme")
 public class ContactingView extends VerticalLayout implements BeforeEnterObserver {
 
     @Autowired
@@ -36,9 +36,12 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
     public void beforeEnter(BeforeEnterEvent event) {
         event.getRouteParameters().get("companyId").ifPresent((value -> companyId = value));
         event.getRouteParameters().get("jobId").ifPresent((value -> jobId = value));
-        userId = getCurrentUser().getId();
-        contactPersonId = contactingControl.getContactPerson(Integer.parseInt(companyId));
-        initContacting();
+        if(getCurrentUser() != null)
+        {
+            userId = getCurrentUser().getId();
+            contactPersonId = contactingControl.getContactPerson(Integer.parseInt(companyId));
+            initContacting();
+        }
     }
 
     public void initContacting() {

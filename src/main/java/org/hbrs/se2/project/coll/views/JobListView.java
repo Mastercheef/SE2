@@ -11,7 +11,6 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.*;
@@ -24,9 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Objects;
 
-@Route(value = "joblist/:jobType?/:jobTitle?", layout = AppView.class)
-//@Route(value = "joblist", layout = AppView.class)
-@PageTitle("Liste der Stellenangebote")
+@Route(value = "joblist/:jobTitle?/:jobType?", layout = AppView.class)
+@PageTitle(Globals.PageTitles.MAIN_PAGE_TITLE)
 public class JobListView extends Div implements AfterNavigationObserver, BeforeEnterObserver {
 
     @Autowired
@@ -44,8 +42,8 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
     // Set prefilters. Is only used when search fields on MainView are used.
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        event.getRouteParameters().get("jobType").ifPresent(value -> preJobType = value);
         event.getRouteParameters().get("jobTitle").ifPresent(value -> preJobTitle = value);
+        event.getRouteParameters().get("jobType").ifPresent(value -> preJobType = value);
     }
 
     public JobListView() {
@@ -53,6 +51,7 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
         // Filter
         jobTitleFilter.setPlaceholder("Nach Jobtitel filtern ...");
         requirementsFilter.setPlaceholder("Nach Voraussetzungen filtern ...");
+        jobTypeFilter.setPlaceholder("Nach Jobtyp filtern ...");
 
         // Dropdown for Job Type
         jobTypeFilter.setItems("Praktikum", "Minijob", "Vollzeit", "Teilzeit");

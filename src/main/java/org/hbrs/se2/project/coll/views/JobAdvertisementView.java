@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 
 @Route(value = "jobadvertisement", layout = AppView.class)
-@PageTitle("Stellenangebot")
+@PageTitle(Globals.PageTitles.JOBADVERTISEMENT_PAGE_TITLE)
 public class JobAdvertisementView extends VerticalLayout implements HasUrlParameter<String>{
 
     @Autowired

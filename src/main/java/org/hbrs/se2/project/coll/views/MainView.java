@@ -17,6 +17,8 @@ import com.vaadin.flow.component.textfield.TextField;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
 
+import java.util.Objects;
+
 @Route(value = "" , layout = AppView.class)
 @RouteAlias(value = "main" , layout = AppView.class)
 @PWA(name = "Coll@HBRS", shortName = "Coll")
@@ -64,8 +66,21 @@ public class MainView extends VerticalLayout {
 
         // Fetch values from fields and redirect to JobListView, after that use filter-function
         Button searchButton = new Button("Suchen!");
-        searchButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW +
-                comboBox.getValue() + "/" + textField.getValue()));
+        searchButton.addClickListener(e -> {
+            if(!comboBox.isEmpty() || !textField.isEmpty())
+            {
+                // Vaadin ComboBox is not great. We have to specifically handle null-values.
+                if(comboBox.isEmpty())
+                    UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW +
+                        textField.getValue());
+                else
+                    UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW +
+                            textField.getValue() + "/" + comboBox.getValue());
+            }
+            // Used when both fields are empty, just a normal call of the JobListView
+            else
+                UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW);
+        });
 
         Button jobList = new Button("... oder alle Stellenangebote ansehen!");
         jobList.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW));

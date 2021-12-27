@@ -37,10 +37,12 @@ public class Globals {
         private PageTitles() {
             throw new IllegalStateException(ExceptionMessage.UTILITY);
         }
-        public static final String REGISTER_PAGE_TITLE          = "Registration";
+        public static final String APPLICATION_PAGE_TITLE       = "Application";
+        public static final String JOBADVERTISEMENT_PAGE_TITLE  = "Stellenangebot";
+        public static final String JOBLIST_PAGE_TITLE           = "Liste der Stellenangebote";
         public static final String LOGIN_PAGE_TITLE             = "Login";
         public static final String MAIN_PAGE_TITLE              = "Main";
-        public static final String APPLICATION_PAGE_TITLE              = "Application";
+        public static final String REGISTER_PAGE_TITLE          = "Registration";
     }
 
     public static class LogMessage {
