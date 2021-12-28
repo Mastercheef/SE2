@@ -25,6 +25,7 @@ import org.hbrs.se2.project.coll.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,6 +40,7 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
 
     Grid<JobAdvertisement> grid = new Grid<>();
 
+    TextField companyFilter             = new TextField();
     TextField jobTitleFilter            = new TextField();
     TextField requirementsFilter        = new TextField();
 
@@ -62,11 +64,13 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
     public JobListView() {
 
         // Filter
-        jobTitleFilter.setPlaceholder("Nach Jobtitel filtern ...");
-        requirementsFilter.setPlaceholder("Nach Voraussetzungen filtern ...");
-        jobTypeFilter.setPlaceholder("Nach Jobtyp filtern ...");
+        companyFilter.setPlaceholder("Firmen filtern ...");
+        jobTitleFilter.setPlaceholder("Jobtitel filtern ...");
+        requirementsFilter.setPlaceholder("Voraussetzungen filtern ...");
+        jobTypeFilter.setPlaceholder("Jobtypen filtern ...");
         temporaryFilter.setPlaceholder("Kurzfristige Beschäftigung?");
 
+        companyFilter.setLabel("Firma:");
         jobTitleFilter.setLabel("Titel:");
         jobTypeFilter.setLabel("Typ:");
         requirementsFilter.setLabel("Voraussetzungen:");
@@ -80,7 +84,7 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
 
 
         // Clicklistener etc
-        for(TextField textfield : new TextField[] { jobTitleFilter, requirementsFilter}) {
+        for(TextField textfield : new TextField[] { companyFilter, jobTitleFilter, requirementsFilter}) {
             textfield.setClearButtonVisible(true);
             textfield.setValueChangeMode(ValueChangeMode.EAGER);
             textfield.addValueChangeListener(e-> updateGrid());
@@ -118,21 +122,41 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
         null values.
     */
     public void updateGrid() {
+        List<JobAdvertisement> filteredJobs = new ArrayList<>();
         if(jobTypeFilter.isEmpty() && temporaryFilter.isEmpty())
-            grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(), requirementsFilter.getValue(),
-                    entryDateFilter.getValue()));
+            filteredJobs = jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(), requirementsFilter.getValue(),
+                    entryDateFilter.getValue());
+            /*grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(), requirementsFilter.getValue(),
+                    entryDateFilter.getValue()));*/
         else if(jobTypeFilter.isEmpty())
-            grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
+            filteredJobs = jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
                     requirementsFilter.getValue(), temporaryFilter.getValue(),
-                    entryDateFilter.getValue()));
+                    entryDateFilter.getValue());
+            /*grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
+                    requirementsFilter.getValue(), temporaryFilter.getValue(),
+                    entryDateFilter.getValue()));*/
         else if(temporaryFilter.isEmpty())
-            grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
+            filteredJobs = jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
                     jobTypeFilter.getValue(), requirementsFilter.getValue(),
-                    entryDateFilter.getValue()));
+                    entryDateFilter.getValue());
+            /*grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
+                    jobTypeFilter.getValue(), requirementsFilter.getValue(),
+                    entryDateFilter.getValue()));*/
         else
-            grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
+            filteredJobs = jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
                     jobTypeFilter.getValue(), requirementsFilter.getValue(), temporaryFilter.getValue(),
-                    entryDateFilter.getValue()));
+                    entryDateFilter.getValue());
+            /*grid.setItems(jobAdvertisementControl.filterJobs(jobTitleFilter.getValue(),
+                    jobTypeFilter.getValue(), requirementsFilter.getValue(), temporaryFilter.getValue(),
+                    entryDateFilter.getValue()));*/
+
+
+        /* Filter for companies. Has to be done in an extra step b/c we only have the companyId in
+            JobAdvertisements, therefore has to be resolved in JobAdvertisementControl. */
+        if(!companyFilter.isEmpty())
+            filteredJobs = jobAdvertisementControl.filterCompanies(filteredJobs, companyFilter.getValue());
+
+        grid.setItems(filteredJobs);
     }
 
     // Header (filter)
@@ -142,12 +166,14 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
 
         Button filterDelete = new Button("Alle Filter löschen");
         filterDelete.addClickListener(e-> {
+            companyFilter.setValue("");
+            companyFilter.setPlaceholder("Firmen filtern ...");
             jobTitleFilter.setValue("");
-            jobTitleFilter.setPlaceholder("Nach Jobtitel filtern ...");
+            jobTitleFilter.setPlaceholder("Jobtitel filtern ...");
             jobTypeFilter.setValue("");
-            jobTypeFilter.setPlaceholder("Nach Jobtyp filtern ...");
+            jobTypeFilter.setPlaceholder("Jobtypen filtern ...");
             requirementsFilter.setValue("");
-            requirementsFilter.setPlaceholder("Nach Voraussetzungen filtern ...");
+            requirementsFilter.setPlaceholder("Voraussetzungen filtern ...");
             temporaryFilter.setValue(null);
             temporaryFilter.setPlaceholder("Kurzfristige Beschäftigung?");
             LocalDate newDate = LocalDate.of(LocalDate.now().getYear(), 1, 1);
@@ -155,7 +181,8 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
             entryDateFilter.setValue(newDate);
         });
 
-        card.add(jobTitleFilter, jobTypeFilter, requirementsFilter, temporaryFilter, entryDateFilter, filterDelete);
+        card.add(companyFilter, jobTitleFilter, jobTypeFilter, requirementsFilter,
+                temporaryFilter, entryDateFilter, filterDelete);
         return card;
     }
 

@@ -17,7 +17,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
 @Component
 public class JobAdvertisementControl {
@@ -127,6 +130,18 @@ public class JobAdvertisementControl {
     // "Job Type" and "Temporary Employment" filters not set
     public List<JobAdvertisement> filterJobs(String title, String requirements, LocalDate date) {
         return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndStartOfWorkIsGreaterThanEqualOrderByStartOfWorkDesc(title, requirements, date);
+    }
+
+    public List<JobAdvertisement> filterCompanies(List<JobAdvertisement> jobs, String companyName) {
+        List<JobAdvertisement> companyJobs = new ArrayList<>();
+        if(!jobs.isEmpty()) {
+            for (JobAdvertisement job : jobs)
+                // Used because of case sensitivity. Otherwise, works like str1.contains(str2)
+                if (Pattern.compile(Pattern.quote(companyName),
+                        Pattern.CASE_INSENSITIVE).matcher(getCompanyName(job)).find())
+                    companyJobs.add(job);
+        }
+        return companyJobs;
     }
 
 }
