@@ -20,24 +20,30 @@ public interface JobAdvertisementRepository extends JpaRepository<JobAdvertiseme
     // TODO: Pull out Queries and name these methods better.
     // Filter functions ...
     // All filters
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentAndStartOfWorkIsGreaterThanEqualOrderByStartOfWorkDesc(String title,
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentAndStartOfWorkIsGreaterThanEqualAndWorkingHoursIsLessThanEqualAndSalaryIsGreaterThanEqualOrderByStartOfWorkDesc(String title,
                                                                                                                                                                                                                                String type,
                                                                                                                                                                                                                                String requirements,
-                                                                                                                                                                                                                               boolean temporaryEmployment, LocalDate date);
+                                                                                                                                                                                                                               boolean temporaryEmployment,
+                                                                                                                                                                                                                               LocalDate date,
+                                                                                                                                                                                                                               short hours, int salary);
+
     // Title, Type, Requirements only
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndStartOfWorkIsGreaterThanEqualOrderByStartOfWorkDesc(String title,
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndStartOfWorkIsGreaterThanEqualAndWorkingHoursIsLessThanEqualAndSalaryIsGreaterThanEqualOrderByStartOfWorkDesc(String title,
                                                                                                                                                                                                          String type,
-                                                                                                                                                                                                         String requirements, LocalDate date);
+                                                                                                                                                                                                         String requirements,
+                                                                                                                                                                                                         LocalDate date,
+                                                                                                                                                                                                         short hours, int salary);
 
     // Title, Requirements, Temporary employment only
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentAndStartOfWorkIsGreaterThanEqualOrderByStartOfWorkDesc(String title,
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentAndStartOfWorkIsGreaterThanEqualAndWorkingHoursIsLessThanEqualAndSalaryIsGreaterThanEqualOrderByStartOfWorkDesc(String title,
                                                                                                                                                                                           String requirements,
-                                                                                                                                                                                          boolean temporaryEmployment, LocalDate date);
+                                                                                                                                                                                          boolean temporaryEmployment,
+                                                                                                                                                                                          LocalDate date,
+                                                                                                                                                                                          short hours, int salary);
 
     // Title, Requirements only
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndStartOfWorkIsGreaterThanEqualOrderByStartOfWorkDesc(String title, String requirements, LocalDate date);
-
-
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndStartOfWorkIsGreaterThanEqualAndWorkingHoursIsLessThanEqualAndSalaryIsGreaterThanEqualOrderByStartOfWorkDesc(String title, String requirements, LocalDate date,
+                                                                                                                                                                                                  short hours, int salary);
     /* Finds all JobAdvertisements from a given CompanyId
     */
     @Query(
