@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -18,18 +19,23 @@ public interface JobAdvertisementRepository extends JpaRepository<JobAdvertiseme
 
     // TODO: Pull out Queries and name these methods better.
     // Filter functions ...
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentOrderByStartOfWorkDesc(String title,
-                                                                                                                                                                         String type,
-                                                                                                                                                                         String requirements,
-                                                                                                                                                                         boolean temporaryEmployment);
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentOrderByStartOfWorkDesc(String title,
-                                                                                                                                                      String requirements,
-                                                                                                                                                      boolean temporaryEmployment);
+    // All filters
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentAndStartOfWorkIsGreaterThanEqualOrderByStartOfWorkDesc(String title,
+                                                                                                                                                                                                                               String type,
+                                                                                                                                                                                                                               String requirements,
+                                                                                                                                                                                                                               boolean temporaryEmployment, LocalDate date);
+    // Title, Type, Requirements only
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndStartOfWorkIsGreaterThanEqualOrderByStartOfWorkDesc(String title,
+                                                                                                                                                                                                         String type,
+                                                                                                                                                                                                         String requirements, LocalDate date);
 
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseOrderByStartOfWorkDesc(String title,
-                                                                                                                                                     String type,
-                                                                                                                                                     String requirements);
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseOrderByStartOfWorkDesc(String title, String requirements);
+    // Title, Requirements, Temporary employment only
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentAndStartOfWorkIsGreaterThanEqualOrderByStartOfWorkDesc(String title,
+                                                                                                                                                                                          String requirements,
+                                                                                                                                                                                          boolean temporaryEmployment, LocalDate date);
+
+    // Title, Requirements only
+    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndStartOfWorkIsGreaterThanEqualOrderByStartOfWorkDesc(String title, String requirements, LocalDate date);
 
 
     /* Finds all JobAdvertisements from a given CompanyId
