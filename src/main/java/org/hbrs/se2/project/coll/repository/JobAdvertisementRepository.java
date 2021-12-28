@@ -17,33 +17,33 @@ public interface JobAdvertisementRepository extends JpaRepository<JobAdvertiseme
     JobAdvertisement findJobAdvertisementByJobDescription(String string);
     JobAdvertisement findJobAdvertisementById(int id);
 
-    // TODO: Pull out Queries and name these methods better.
     // Filter functions ...
     // All filters
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentAndStartOfWorkIsGreaterThanEqualAndWorkingHoursIsLessThanEqualAndSalaryIsGreaterThanEqualOrderByStartOfWorkDesc(String title,
-                                                                                                                                                                                                                               String type,
-                                                                                                                                                                                                                               String requirements,
-                                                                                                                                                                                                                               boolean temporaryEmployment,
-                                                                                                                                                                                                                               LocalDate date,
-                                                                                                                                                                                                                               short hours, int salary);
+    @Query("select j from JobAdvertisement j where upper(j.jobTitle) like upper(concat('%', ?1, '%')) and " +
+            "upper(j.typeOfEmployment) like upper(concat('%', ?2, '%')) and upper(j.requirements) like " +
+            "upper(concat('%', ?3, '%')) and j.temporaryEmployment = ?4 and j.startOfWork >= ?5 and " +
+            "j.workingHours <= ?6 and j.salary >= ?7 order by j.startOfWork DESC")
+    List<JobAdvertisement> filterJobs(String title,String type, String requirements, boolean temporaryEmployment, LocalDate date, short hours, int salary);
 
     // Title, Type, Requirements only
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndStartOfWorkIsGreaterThanEqualAndWorkingHoursIsLessThanEqualAndSalaryIsGreaterThanEqualOrderByStartOfWorkDesc(String title,
-                                                                                                                                                                                                         String type,
-                                                                                                                                                                                                         String requirements,
-                                                                                                                                                                                                         LocalDate date,
-                                                                                                                                                                                                         short hours, int salary);
+    @Query("select j from JobAdvertisement j where upper(j.jobTitle) like upper(concat('%', ?1, '%')) and " +
+            "upper(j.typeOfEmployment) like upper(concat('%', ?2, '%')) and upper(j.requirements) like " +
+            "upper(concat('%', ?3, '%')) and j.startOfWork >= ?4 and j.workingHours <= ?5 and " +
+            "j.salary >= ?6 order by j.startOfWork DESC")
+    List<JobAdvertisement> filterJobs(String title, String type, String requirements, LocalDate date, short hours, int salary);
 
     // Title, Requirements, Temporary employment only
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentAndStartOfWorkIsGreaterThanEqualAndWorkingHoursIsLessThanEqualAndSalaryIsGreaterThanEqualOrderByStartOfWorkDesc(String title,
-                                                                                                                                                                                          String requirements,
-                                                                                                                                                                                          boolean temporaryEmployment,
-                                                                                                                                                                                          LocalDate date,
-                                                                                                                                                                                          short hours, int salary);
+    @Query("select j from JobAdvertisement j where upper(j.jobTitle) like upper(concat('%', ?1, '%')) and " +
+            "upper(j.requirements) like upper(concat('%', ?2, '%')) and j.temporaryEmployment = ?3 and " +
+            "j.startOfWork >= ?4 and j.workingHours <= ?5 and j.salary >= ?6 order by j.startOfWork DESC")
+    List<JobAdvertisement> filterJobs(String title, String requirements, boolean temporaryEmployment, LocalDate date, short hours, int salary);
 
     // Title, Requirements only
-    List<JobAdvertisement> findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndStartOfWorkIsGreaterThanEqualAndWorkingHoursIsLessThanEqualAndSalaryIsGreaterThanEqualOrderByStartOfWorkDesc(String title, String requirements, LocalDate date,
-                                                                                                                                                                                                  short hours, int salary);
+    @Query("select j from JobAdvertisement j where upper(j.jobTitle) like upper(concat('%', ?1, '%')) and " +
+            "upper(j.requirements) like upper(concat('%', ?2, '%')) and j.startOfWork >= ?3 and " +
+            "j.workingHours <= ?4 and j.salary >= ?5 order by j.startOfWork DESC")
+    List<JobAdvertisement> filterJobs(String title, String requirements, LocalDate date, short hours, int salary);
+
     /* Finds all JobAdvertisements from a given CompanyId
     */
     @Query(

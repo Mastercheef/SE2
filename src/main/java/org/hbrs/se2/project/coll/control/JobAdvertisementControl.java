@@ -113,23 +113,29 @@ public class JobAdvertisementControl {
 
     // All filters set
     public List<JobAdvertisement> filterJobs(String title, String type, String requirements,
-                                             boolean temporaryEmployment, LocalDate date, short hours, int salary) {
-        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentAndStartOfWorkIsGreaterThanEqualAndWorkingHoursIsLessThanEqualAndSalaryIsGreaterThanEqualOrderByStartOfWorkDesc(title, type, requirements, temporaryEmployment, date, hours, salary);
+                                             boolean temporaryEmployment, LocalDate date, short hours,
+                                             int salary) {
+        return jobAdvertisementRepository.filterJobs(title, type, requirements, temporaryEmployment,
+                date, hours, salary);
     }
 
     // Only "JobType" filter set
-    public List<JobAdvertisement> filterJobs(String title, String type, String requirements, LocalDate date, short hours, int salary) {
-        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndStartOfWorkIsGreaterThanEqualAndWorkingHoursIsLessThanEqualAndSalaryIsGreaterThanEqualOrderByStartOfWorkDesc(title, type, requirements, date, hours, salary);
+    public List<JobAdvertisement> filterJobs(String title, String type, String requirements,
+                                             LocalDate date, short hours, int salary) {
+        return jobAdvertisementRepository.filterJobs(title, type, requirements, date, hours, salary);
     }
 
     // Only "Temporary Employment" filter set
-    public List<JobAdvertisement> filterJobs(String title, String requirements, boolean temporaryEmployment, LocalDate date, short hours, int salary) {
-        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndTemporaryEmploymentAndStartOfWorkIsGreaterThanEqualAndWorkingHoursIsLessThanEqualAndSalaryIsGreaterThanEqualOrderByStartOfWorkDesc(title, requirements, temporaryEmployment, date, hours, salary);
+    public List<JobAdvertisement> filterJobs(String title, String requirements, boolean temporaryEmployment,
+                                             LocalDate date, short hours, int salary) {
+        return jobAdvertisementRepository.filterJobs(title, requirements, temporaryEmployment, date,
+                hours, salary);
     }
 
     // "Job Type" and "Temporary Employment" filters not set
-    public List<JobAdvertisement> filterJobs(String title, String requirements, LocalDate date, short hours, int salary) {
-        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndRequirementsContainsIgnoreCaseAndStartOfWorkIsGreaterThanEqualAndWorkingHoursIsLessThanEqualAndSalaryIsGreaterThanEqualOrderByStartOfWorkDesc(title, requirements, date, hours, salary);
+    public List<JobAdvertisement> filterJobs(String title, String requirements, LocalDate date,
+                                             short hours, int salary) {
+        return jobAdvertisementRepository.filterJobs(title, requirements, date, hours, salary);
     }
 
     public List<JobAdvertisement> filterCompanies(List<JobAdvertisement> jobs, String companyName) {
