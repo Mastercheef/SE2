@@ -14,7 +14,7 @@ public class StudentUser extends User {
     private String website;
     private String description;
     private String subjectField;
-    private Set<JobAdvertisement> applications;
+    private Set<JobApplication> applications;
 
     @Basic
     @Column(name = "graduation")
@@ -70,12 +70,11 @@ public class StudentUser extends User {
         this.subjectField = subjectField;
     }
 
-    @ManyToMany
-    @JoinTable(name = "col_tab_application" , schema = "collhbrs", joinColumns = @JoinColumn(name = "user_id") )
-    public Set<JobAdvertisement> getApplications() {
+    @OneToMany(mappedBy = "studentUser")
+    public Set<JobApplication> getApplications() {
         return applications;
     }
-    public void setApplications(Set<JobAdvertisement> applications) {
+    public void setApplications(Set<JobApplication> applications) {
         this.applications = applications;
     }
 

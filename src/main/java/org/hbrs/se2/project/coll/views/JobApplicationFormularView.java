@@ -4,27 +4,27 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.*;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.*;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextArea;
-import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.orderedlayout.*;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.hbrs.se2.project.coll.control.JobApplicationControl;
+import com.vaadin.flow.component.formlayout.*;
+import com.vaadin.flow.component.html.Div;
+
+import com.vaadin.flow.component.html.*;
+
+import org.hbrs.se2.project.coll.control.*;
 import org.hbrs.se2.project.coll.control.factories.UserFactory;
-import org.hbrs.se2.project.coll.dtos.JobApplicationDTO;
 import org.hbrs.se2.project.coll.dtos.JobApplicationResultDTO;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.JobApplicationDTOImpl;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
-import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
@@ -32,11 +32,12 @@ import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.List;
 
-@Route(value = Globals.Pages.JOBAPPLICATION_VIEW + ":appID" , layout = AppView.class)
+@Route(value = Globals.Pages.JOBADVERTISEMENT_VIEW + ":adID/" + Globals.Pages.APPLICATION_VIEW , layout = AppView.class)
 @PageTitle(Globals.PageTitles.APPLICATION_PAGE_TITLE)
-public class JobApplicationView extends Div implements BeforeEnterObserver {
+public class JobApplicationFormularView extends Div implements BeforeEnterObserver {
 
     @Autowired
     private StudentUserRepository studentUserRepository;
@@ -45,8 +46,8 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
     @Autowired
     private JobAdvertisementRepository jobAdvertisementRepository;
 
-    private JobApplicationDTO jobApplication;
     private JobAdvertisement jobAdvertisement;
+    private StudentUserDTO studentUserDTO;
 
     H2 pageHeadline = new H2("Bewerbung");
 
@@ -64,46 +65,39 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
 
         try {
-            jobApplication = jobApplicationControl.loadJobApplication(Integer.parseInt(event.getRouteParameters().get("appID").get()));
+            loadStudentUserInformation();
+            jobAdvertisement = jobAdvertisementRepository.findJobAdvertisementById(Integer.parseInt(event.getRouteParameters().get("adID").get()));
 
-            if (jobApplication != null) {
-                if (checkForAuthorization()) {
-                    pageHeadline = new H2(jobApplication.getHeadline() + " (" + jobApplication.getId() + ")");
-                    loadStudentUserInformation();
-                    createJobApplicationView();
-                } else {
-                    triggerDialogMessage("Zugriff verweigert", "Sie haben keinen Zugriff auf die angegebene Bewerbung");
-                }
+            if (jobAdvertisement != null) {
+                pageHeadline = new H2("Bewerbung auf " + jobAdvertisement.getJobTitle() + " (" + jobAdvertisement.getId() + ")");
+                createJobApplicationView();
             } else {
-                triggerDialogMessage("Fehler", "Die angegebene Bewerbung existiert nicht");
+                triggerDialogMessage("Fehler", "Das angegebene Stellenangebot existiert nicht");
             }
         } catch (NumberFormatException e) {
-            triggerDialogMessage("Fehler", "Es handelt sich um keine gültige Bewerbungs ID");
+            triggerDialogMessage("Fehler", "Es handelt sich um keine gültige Stellenagebots ID");
         } catch (Exception exception) {
-            triggerDialogMessage("Fehler", "Beim Laden der Bewerbung ist ein unerwarteter Felher aufgetreten");
+            triggerDialogMessage("Fehler", "Beim Laden des Bewerbungsformulars, ist ein Fehler aufgetreten");
         }
 
     }
 
     TextField   headline            = new TextField("Betreff");
     TextArea    text                = new TextArea("Bewerbung");
-    Label       date                = new Label();
 
-    class Application extends Div {
+    class ApplicationForm extends Div {
 
-        Application(){
+        ApplicationForm(){
 
-            headline.setValue(jobApplication.getHeadline());
-            text.setValue(jobApplication.getText());
-            date.setText(Utils.convertToGermanDateFormat(jobApplication.getDate()));
-
-            headline.setReadOnly(true);
             text.setMinHeight("350px");
-            text.setReadOnly(true);
+            text.setMaxLength(3000);
+            text.setValueChangeMode(ValueChangeMode.EAGER);
+            text.addValueChangeListener(e -> {
+                e.getSource().setHelperText(e.getValue().length() + "/" + 3000);
+            });
 
             FormLayout formLayout = new FormLayout();
             formLayout.add(
-                    date,
                     headline,
                     text
             );
@@ -113,6 +107,16 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
             this.add(formLayout);
         }
 
+        public JobApplicationDTOImpl createNewApplicationDTO() {
+            JobApplicationDTOImpl applicationDTO = new JobApplicationDTOImpl();
+            applicationDTO.setStudentUser(UserFactory.createStudentUser(studentUserDTO));
+            applicationDTO.setJobAdvertisementDTO(jobAdvertisement);
+            applicationDTO.setHeadline(headline.getValue());
+            applicationDTO.setText(text.getValue());
+            applicationDTO.setDate(LocalDate.now());
+
+            return applicationDTO;
+        }
     }
 
     public void createJobApplicationView() {
@@ -130,19 +134,11 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
         VerticalLayout section = new VerticalLayout();
         section.setWidth("50%");
 
-        Button contactApplicant = new Button("Bewerber kontaktieren");
-        contactApplicant.addClickListener(e -> {
-
-        });
-
-        Application application = new Application();
-        application.setWidth("100%");
-        application.getElement().getStyle().set("Margin", "30px");
-        section.add(pageHeadline, detailLayout, application);
-
-        if (checkIfCurrentUserIsContactPerson()) {
-            section.add(contactApplicant);
-        }
+        ApplicationForm form = new ApplicationForm();
+        form.setWidth("100%");
+        form.getElement().getStyle().set("Margin", "30px");
+        Button applyButton = new Button("Bewerbung absenden");
+        section.add(pageHeadline, detailLayout, form, applyButton);
 
         section.setPadding(true);
         section.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -156,6 +152,15 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
 
         siteLayout.add(section);
 
+        applyButton.addClickListener(e -> {
+            JobApplicationResultDTO applicationResult = jobApplicationControl.createJobApplication(form.createNewApplicationDTO());
+            if (applicationResult.getResult()) {
+                triggerDialogMessage("Bewerbung übermittelt", "Wir haben Ihre Bewerbung erfolgreich übermittelt");
+                UI.getCurrent().navigate(Globals.Pages.JOBAPPLICATION_VIEW + applicationResult.getApplicationID());
+            } else {
+                setErrorFields(applicationResult.getReasons());
+            }
+        });
         add(siteLayout);
     }
 
@@ -178,33 +183,20 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
     public void loadStudentUserInformation() {
         try {
             if(getCurrentUser() != null) {
-                StudentUser studentUser = jobApplication.getStudentUser();
-                System.out.println(studentUser.getId());
-                sSalutation = new Span(studentUser.getSalutation() + " " + studentUser.getTitle());
-                sName = new Span(studentUser.getFirstName() + " " + studentUser.getLastName());
-                sDateOfBirth = new Span(Utils.convertToGermanDateFormat(studentUser.getDateOfBirth()));
-                sEmail = new Span(studentUser.getEmail());
-                sPhone = new Span(studentUser.getPhone());
+                studentUserDTO = studentUserRepository.findStudentUserById(this.getCurrentUser().getId());
+                sSalutation = new Span(studentUserDTO.getSalutation() + " " + studentUserDTO.getTitle());
+                sName = new Span(studentUserDTO.getFirstName() + " " + studentUserDTO.getLastName());
+                sDateOfBirth = new Span(Utils.convertToGermanDateFormat(studentUserDTO.getDateOfBirth()));
+                sEmail = new Span(studentUserDTO.getEmail());
+                sPhone = new Span(studentUserDTO.getPhone());
 
-                sAddress = new Span(studentUser.getAddress().getStreet() + " " + studentUser.getAddress().getHouseNumber());
-                sLocation = new Span(studentUser.getAddress().getPostalCode() + " " + studentUser.getAddress().getCity());
-                sCountry = new Span(studentUser.getAddress().getCountry());
+                sAddress = new Span(studentUserDTO.getAddress().getStreet() + " " + studentUserDTO.getAddress().getHouseNumber());
+                sLocation = new Span(studentUserDTO.getAddress().getPostalCode() + " " + studentUserDTO.getAddress().getCity());
+                sCountry = new Span(studentUserDTO.getAddress().getCountry());
             }
         } catch (Exception exception) {
             triggerDialogMessage("Fehler", "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
         }
-    }
-
-    private boolean checkIfCurrentUserIsApplicant() {
-        return jobApplication.getStudentUser().getId() == getCurrentUser().getId();
-    }
-
-    private boolean checkIfCurrentUserIsContactPerson() {
-        return jobApplication.getJobAdvertisement().getContactPerson().getId() == getCurrentUser().getId();
-    }
-
-    private boolean checkForAuthorization() {
-        return checkIfCurrentUserIsApplicant() || checkIfCurrentUserIsContactPerson();
     }
 
     private UserDTO getCurrentUser() {

@@ -2,39 +2,53 @@ package org.hbrs.se2.project.coll.dtos.impl;
 
 import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.dtos.JobApplicationDTO;
-import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
+import org.hbrs.se2.project.coll.entities.JobAdvertisement;
+import org.hbrs.se2.project.coll.entities.StudentUser;
 
+import java.time.LocalDate;
 public class JobApplicationDTOImpl implements JobApplicationDTO {
-    private StudentUserDTO studentUserDTO;
-    private JobAdvertisementDTO jobAdvertisementDTO;
+    private int id;
+    private StudentUser studentUser;
+    private JobAdvertisement jobAdvertisement;
     private String headline;
-    private String applicationText;
+    private String text;
+    private LocalDate date;
 
-    public void setStudentUserDTO(StudentUserDTO studentUserDTO) {
-        this.studentUserDTO = studentUserDTO;
+    public void setStudentUser(StudentUser studentUser) {
+        this.studentUser = studentUser;
     }
 
-    public void setJobAdvertisementDTO(JobAdvertisementDTO jobAdvertisementDTO) {
-        this.jobAdvertisementDTO = jobAdvertisementDTO;
+    public void setJobAdvertisementDTO(JobAdvertisement jobAdvertisement) {
+        this.jobAdvertisement = jobAdvertisement;
     }
 
     public void setHeadline(String headline) {
         this.headline = headline;
     }
 
-    public void setApplicationText(String applicationText) {
-        this.applicationText = applicationText;
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     @Override
-    public StudentUserDTO getStudentUserDTO() { return studentUserDTO; }
+    public int getId() { return id; }
 
     @Override
-    public JobAdvertisementDTO getJobAdvertisementDTO() { return jobAdvertisementDTO; }
+    public StudentUser getStudentUser() { return studentUser; }
+
+    @Override
+    public JobAdvertisement getJobAdvertisement() { return jobAdvertisement; }
 
     @Override
     public String getHeadline() { return headline; }
 
     @Override
-    public String getApplicationText() { return applicationText; }
+    public String getText() { return text; }
+
+    @Override
+    public LocalDate getDate() { return this.date; }
 }

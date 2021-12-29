@@ -83,11 +83,11 @@ class StudentUserTest {
     @Test
     //TODO Implement
     void getApplications() {
-        JobAdvertisement jobAdvertisementOne = new JobAdvertisement();
-        JobAdvertisement jobAdvertisementTwo = new JobAdvertisement();
-        Set<JobAdvertisement> setJob = new HashSet<JobAdvertisement>();
-        setJob.add(jobAdvertisementOne);
-        setJob.add(jobAdvertisementTwo);
+        JobApplication jobApplicationOne = new JobApplication();
+        JobApplication jobApplicationTwo = new JobApplication();
+        Set<JobApplication> setJob = new HashSet<JobApplication>();
+        setJob.add(jobApplicationOne);
+        setJob.add(jobApplicationTwo);
         studentUser.setApplications(setJob);
 
         assertEquals(2 , studentUser.getApplications().size());

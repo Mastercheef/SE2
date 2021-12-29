@@ -22,6 +22,7 @@ public class Globals {
         public static final String CONTACTING_VIEW              = "contacting/";
         public static final String INBOX_VIEW                   = "inbox/";
         public static final String JOBADVERTISEMENT_VIEW        = "jobadvertisement/";
+        public static final String JOBAPPLICATION_VIEW          = "jobapplication/";
         public static final String JOBLIST_VIEW                 = "joblist/";
         public static final String LOGIN_VIEW                   = "login/";
         public static final String MAIN_VIEW                    = "";

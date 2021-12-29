@@ -15,4 +15,5 @@ public interface JobApplicationResultDTO {
     public List<JobApplicationResultDTO.ReasonType> getReasons();
     public void setReasons(List<JobApplicationResultDTO.ReasonType> reasons);
     public void addReason(JobApplicationResultDTO.ReasonType reason);
+    public int getApplicationID();
 }

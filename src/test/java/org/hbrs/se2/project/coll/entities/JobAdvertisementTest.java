@@ -15,6 +15,7 @@ public class JobAdvertisementTest {
     int studentId;
     StudentUser studentUser = new StudentUser();
     JobAdvertisement jobAdvertisement = new JobAdvertisement();
+    JobApplication jobApplication = new JobApplication();
 
     int id;
     boolean temporaryEmployment;
@@ -26,7 +27,7 @@ public class JobAdvertisementTest {
     int salary;
     String jobTitle;
     ContactPerson contactPerson = new ContactPerson();
-    Set<StudentUser> applicants = new HashSet<>();
+    Set<JobApplication> applicants = new HashSet<>();
 
     @BeforeEach
     void setup(){
@@ -43,7 +44,7 @@ public class JobAdvertisementTest {
         jobTitle = "Assistent";
         studentId = 20;
         studentUser.setId(studentId);
-        applicants.add(studentUser);
+        applicants.add(jobApplication);
     }
 
     @Test
