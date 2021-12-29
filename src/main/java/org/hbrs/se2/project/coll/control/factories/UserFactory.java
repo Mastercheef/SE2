@@ -101,14 +101,6 @@ public class UserFactory {
         return settings;
     }
 
-    public static Settings createSettingsFromBasicUser(UserDTO userDTO) {
-        Settings settings = new Settings();
-        settings.setId(userDTO.getId());
-        settings.setNotificationIsEnabled(true);
-
-        return settings;
-    }
-
     public static User createUser(UserDTO userDTO) {
         User user = new User();
 

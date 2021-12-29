@@ -123,7 +123,7 @@ public class User {
         this.id = id;
     }
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.ALL})
     @PrimaryKeyJoinColumn
     public Settings getSettings() {
         return settings;

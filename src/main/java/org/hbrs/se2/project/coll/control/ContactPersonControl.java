@@ -29,6 +29,11 @@ public class ContactPersonControl {
         newContactPerson.setCompany(company);
         newContactPerson.setRole("admin");
 
+        Settings settings = new Settings();
+        settings.setNotificationIsEnabled(true);
+        newContactPerson.setSettings(settings);
+        settings.setUser(newContactPerson);
+
         return saveContactPerson(newContactPerson);
     }
 

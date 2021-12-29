@@ -293,15 +293,9 @@ public class RegistrationView extends Div {
         LoginResultDTO isAuthenticated = loginControl.authentificate(userDTO.getEmail(), userDTO.getPassword());
         if (isAuthenticated.getResult()) {
             UI.getCurrent().getSession().setAttribute( Globals.CURRENT_USER, loginControl.getCurrentUser() );
-            createSettingsAfterRegistration(loginControl.getCurrentUser());
         } else {
             triggerDialogMessage(Globals.View.ERROR,"Fehler beim automatischen einloggen. Bitte versuchen Sie es erneut");
         }
-    }
-
-    private void createSettingsAfterRegistration(UserDTO userDTO) throws DatabaseUserException {
-        // Anlegen der Settings für User (einmalig)
-        settingsControl.createNewUserSettings(userDTO);
     }
 
     public void setErrorFields(List<ReasonType> reasons) {

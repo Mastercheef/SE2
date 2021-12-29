@@ -28,11 +28,6 @@ public class SettingsControl {
         return settingsRepository.findSettingsById(id);
     }
 
-    public Settings createNewUserSettings(UserDTO userDTO) throws DatabaseUserException {
-        Settings settings = UserFactory.createSettingsFromBasicUser(userDTO);
-        settings.setNotificationIsEnabled(true);
-        return saveUserSettings(settings);
-    }
 
     public Settings updateUserSettings(SettingsDTO settingsDTO, CheckboxGroup<String> checkboxGroup) throws DatabaseUserException {
         Set<String> settingsValues = checkboxGroup.getValue();

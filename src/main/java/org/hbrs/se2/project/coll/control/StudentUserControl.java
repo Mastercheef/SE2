@@ -2,9 +2,12 @@ package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.control.factories.UserFactory;
+import org.hbrs.se2.project.coll.dtos.SettingsDTO;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.dtos.impl.SettingsDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
+import org.hbrs.se2.project.coll.entities.Settings;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.slf4j.Logger;
@@ -24,8 +27,13 @@ public class StudentUserControl {
 
     public StudentUser createNewStudentUser(UserDTO userDTO) throws DatabaseUserException {
         Address address = handleAddressExistance(userDTO.getAddress());
+        Settings settings = new Settings();
+        settings.setNotificationIsEnabled(true);
+
         StudentUser newStudentUser = UserFactory.createStudentUserFromBasicUser(userDTO);
         newStudentUser.setAddress(address);
+        newStudentUser.setSettings(settings);
+        settings.setUser(newStudentUser);
 
         return saveStudentUser(newStudentUser);
     }
