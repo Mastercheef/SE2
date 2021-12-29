@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class JobAdvertisementControl {
     @Autowired
     ContactPersonRepository contactPersonRepository;
 
+    @Transactional
     public void saveAdvertisement(JobAdvertisementDTO dto) throws DatabaseUserException {
         try {
             JobAdvertisement job = JobFactory.createJob(dto);
@@ -50,6 +52,7 @@ public class JobAdvertisementControl {
         }
     }
 
+    @Transactional
     // Löschen eines Stellenangebots aus der Datenbank
     public void deleteAdvertisement(JobAdvertisement jobAdvertisement) throws DatabaseUserException {
         try {

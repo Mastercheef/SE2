@@ -3,10 +3,13 @@ package org.hbrs.se2.project.coll.views;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -21,6 +24,7 @@ import org.hbrs.se2.project.coll.control.CompanyControl;
 import org.hbrs.se2.project.coll.control.JobAdvertisementControl;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
+import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.JobAdvertisementDTOimpl;
 import org.hbrs.se2.project.coll.entities.Address;
@@ -32,6 +36,7 @@ import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.logging.Level;
@@ -57,7 +62,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
     int companyId;
 
     @Autowired
-    private JobAdvertisementControl control;
+    private JobAdvertisementControl jobAdvertisementControl;
 
     Label infoText              = new Label("Mit (*) markierte Felder sind notwendig.");
     Label jobTitle              = new Label("Jobtitel (*)");
@@ -168,11 +173,18 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         saveButton.addClickListener(e -> {
             if(!checkForEmptyInput()) {
                 try {
-                    createAndSaveNewJob();
-                } catch (DatabaseUserException ex) {
-                    ex.printStackTrace();
+                    JobAdvertisementDTO jobAdvertisementDTO = createNewJobAdvertisementDTO();
+                    jobAdvertisementControl.saveAdvertisement(jobAdvertisementDTO);
+
+                    UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+                    Dialog dialog = new Dialog();
+                    dialog.add("Ihre Stellenanzeige wurde gespeichert!");
+                    dialog.open();
+                } catch (DatabaseUserException databaseUserException) {
+                    Utils.triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein Fehler aufgetreten: " + databaseUserException.getErrorCode());
+                } catch (Exception exception) {
+                    Utils.triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein unerwarteter Fehler aufgetreten: " + exception);
                 }
-                UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
             }
         });
         cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW +
@@ -247,8 +259,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         return empty;
     }
 
-    public void createAndSaveNewJob() throws DatabaseUserException {
-
+    public JobAdvertisementDTO createNewJobAdvertisementDTO() {
         JobAdvertisementDTOimpl newJob = new JobAdvertisementDTOimpl();
         newJob.setJobTitle(lJobTitle.getValue());
         newJob.setTypeOfEmployment(lTypeOfEmployment.getValue());
@@ -268,9 +279,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         // Contact Person Id
         ContactPerson contactPerson = contactPersonRepository.findContactPersonByCompanyId(companyId);
         newJob.setContactPerson(contactPerson);
-
-        // Save in DB
-        control.saveAdvertisement(newJob);
+        return newJob;
     }
 
     public JobAdvertisementFormularView() {
