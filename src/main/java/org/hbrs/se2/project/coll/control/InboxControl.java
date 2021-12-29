@@ -111,19 +111,6 @@ public class InboxControl {
         }
     }
 
-    public String getType(int messageId) throws  DatabaseUserException {
-        try {
-            return this.messageRepository.findMessageById(messageId).getType();
-        } catch (Exception exception) {
-            LOGGER.info(Globals.LogMessage.LOG ,  exception.toString());
-            if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
-                throw new DatabaseUserException(Globals.LogMessage.CONNECTED);
-            } else {
-                throw new DatabaseUserException(Globals.LogMessage.ERROR);
-            }
-        }
-    }
-
     // Checks if Sender is either a student or a contact person.
     // If student: Returns route to student profile
     // Else: Returns route to company profile
@@ -155,7 +142,6 @@ public class InboxControl {
         readMessage.setSubject(message.getSubject());
         readMessage.setDate(message.getDate());
         readMessage.setContent(message.getContent());
-        readMessage.setType(message.getType());
 
         try {
             Message updatedMessage = MessageFactory.createMessage(readMessage);

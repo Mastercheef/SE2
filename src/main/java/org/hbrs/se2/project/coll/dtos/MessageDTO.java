@@ -10,5 +10,4 @@ public interface MessageDTO {
     public String       getSubject();
     public LocalDate    getDate();
     public boolean      getRead();
-    public String       getType();
 }

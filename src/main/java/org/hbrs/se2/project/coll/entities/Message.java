@@ -13,7 +13,6 @@ public class Message {
     private String      subject;
     private LocalDate   date;
     private boolean     read;
-    private String      type;
 
     @Id
     @GeneratedValue(
@@ -64,10 +63,5 @@ public class Message {
     @Column(name = "read")
     public boolean getRead() { return read; }
     public void setRead(boolean read) { this.read = read; }
-
-    @Basic
-    @Column(name = "type")
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
 
 }

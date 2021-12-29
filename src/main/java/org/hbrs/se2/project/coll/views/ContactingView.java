@@ -112,9 +112,6 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
         textArea.setErrorMessage("Bitte geben Sie eine Nachricht ein.");
         textArea.setMinLength(1);
 
-        // Type of message
-        String messageType = "Nachricht";
-
         // Create buttons to send message and cancel progress
         Button saveButton   = new Button("Senden");
         Button cancelButton = new Button("Abbrechen");
@@ -127,8 +124,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                             this.getCurrentUser().getId(),
                             receiver,
                             subjectField.getValue(),
-                            LocalDate.now(),
-                            messageType
+                            LocalDate.now()
                     );
                     Dialog dialog = new Dialog();
                     dialog.add("Ihre Nachricht wurde gesendet!");

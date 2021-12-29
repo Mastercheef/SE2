@@ -73,9 +73,4 @@ public class MessageTest {
         assertTrue(message.getRead());
     }
 
-    @Test
-    void testGetType(){
-        message.setType(type);
-        assertEquals("spam", message.getType());
-    }
 }
