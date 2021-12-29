@@ -2,8 +2,12 @@ package org.hbrs.se2.project.coll.layout;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.contextmenu.HasMenuItems;
+import com.vaadin.flow.component.contextmenu.MenuItem;
+import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.H1;
@@ -19,10 +23,8 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.*;
-import org.hbrs.se2.project.coll.control.LoginControl;
 import org.hbrs.se2.project.coll.control.SettingsControl;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
-import org.hbrs.se2.project.coll.dtos.impl.UserDTOImpl;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.MessageRepository;
@@ -138,29 +140,72 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         else if (Objects.equals(currentUserType, "cp"))
             navigationBar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
 
+        // Inbox and Submenu (Messages, Applications)
+        MenuItem inbox = createIconItem(navigationBar, VaadinIcon.ENVELOPE, "Posteingang", null);
+        SubMenu inboxSubMenu = inbox.getSubMenu();
+
+        MenuItem messages = createIconItem(inboxSubMenu, VaadinIcon.ENVELOPE, "Nachrichten",
+                null, true);
+        messages.addClickListener(e -> navigateToMessages());
+
+        // TODO: Add click listener for application tab
+        MenuItem applications = createIconItem(inboxSubMenu, VaadinIcon.FILE, "Bewerbungen",
+                null, true);
+        //applications.addClickListener(e -> navigateToApplications());
+
         /*  Check if:
-            - There are unread messages
             - If a user has enabled notifications
+            - There are unread messages
+            - TODO: Check for unread applications
         */
-        if(unreadMessages && settingsControl.getUserSettings(getCurrentUser().getId()).getNotificationIsEnabled()) {
-
-            Icon messageIcon = VaadinIcon.ENVELOPE.create();
-            messageIcon.setColor("#67ed42");
-
-            Label inboxLabel = new Label("Posteingang");
-            inboxLabel.getElement().getStyle().set("color", "#67ed42");
-
-            Tab envelope = new Tab(messageIcon);
-            Tab inbox = new Tab(inboxLabel);
-
-            Tabs inboxTab = new Tabs(envelope, inbox);
-            navigationBar.addItem(inboxTab, e -> navigateToMessages());
+        if(settingsControl.getUserSettings(getCurrentUser().getId()).getNotificationIsEnabled())
+        {
+            if(unreadMessages)
+            {
+                inbox.getElement().getStyle().set("color", "rgb(66, 221, 21)");
+                messages.getElement().getStyle().set("color", "rgb(66, 221, 21)");
+            }
+            // TODO
+            /*if(unreadApplications)
+            {
+                inbox.getElement().getStyle().set("color", "rgb(66, 221, 21)");
+                applications.getElement().getStyle().set("color", "rgb(66, 221, 21)");
+            }*/
         }
-        else
-            navigationBar.addItem("Posteingang", e -> navigateToMessages());
 
-        navigationBar.addItem(VaadinIcon.COG.create(), e -> navigateToOptions());
+        createIconItem(navigationBar, VaadinIcon.COG, "", null)
+                .addClickListener(e -> navigateToSettings());
         navigationBar.addItem("Logout", e -> logoutUser());
+    }
+
+    /*  Used top create Icons for the app menu bar.
+        Source: https://vaadin.com/docs/v14/ds/components/menu-bar
+    */
+    private MenuItem createIconItem(HasMenuItems menu, VaadinIcon iconName, String label, String ariaLabel) {
+        return createIconItem(menu, iconName, label, ariaLabel, false);
+    }
+    private MenuItem createIconItem(HasMenuItems menu, VaadinIcon iconName, String label,
+                                    String ariaLabel, boolean isChild) {
+        Icon icon = new Icon(iconName);
+
+        if (isChild) {
+            icon.getStyle().set("width", "var(--lumo-icon-size-s)");
+            icon.getStyle().set("height", "var(--lumo-icon-size-s)");
+            icon.getStyle().set("marginRight", "var(--lumo-space-s)");
+        }
+
+        MenuItem item = menu.addItem(icon, e -> {
+        });
+
+        if (ariaLabel != null) {
+            item.getElement().setAttribute("aria-label", ariaLabel);
+        }
+
+        if (label != null) {
+            item.add(new Text(label));
+        }
+
+        return item;
     }
 
     private void navigateToUserProfile() {
@@ -184,7 +229,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             UI.getCurrent().navigate(Globals.Pages.INBOX_VIEW + currentUserId);
     }
 
-    private void navigateToOptions() {
+    private void navigateToSettings() {
         String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
         if(!Objects.equals(currentLocation, Globals.Pages.SETTINGS_VIEW))
             UI.getCurrent().navigate(Globals.Pages.SETTINGS_VIEW);
