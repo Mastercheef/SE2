@@ -125,8 +125,8 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         // If user is not logged in, show Login/Register Buttons
         if(!checkIfUserIsLoggedIn()) {
-            navigationBar.addItem("Registrieren" , e -> UI.getCurrent().navigate(Globals.Pages.REGISTER_VIEW));
-            navigationBar.addItem("Login" , e -> UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW));
+            navigationBar.addItem("Registrieren" , e -> navigateToRegistration());
+            navigationBar.addItem("Login" , e -> navigateToLogin());
         }
         headerNavigationPanel.add(navigationBar);
         headerLayout.add( headerNavigationPanel );
@@ -221,6 +221,18 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         String currentCompanyId = Integer.toString(getContactPersonsCompanyId());
         if(!Objects.equals(currentLocation, Globals.Pages.COMPANYPROFILE_VIEW + currentCompanyId))
             UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + currentCompanyId);
+    }
+
+    private void navigateToRegistration() {
+        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
+        if(!Objects.equals(currentLocation, Globals.Pages.REGISTER_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.REGISTER_VIEW);
+    }
+
+    private void navigateToLogin() {
+        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
+        if(!Objects.equals(currentLocation, Globals.Pages.LOGIN_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
     }
 
     private void navigateToMessages() {
