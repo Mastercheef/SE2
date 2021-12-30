@@ -16,6 +16,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.textfield.TextField;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.Utils;
 
 import java.util.Objects;
 
@@ -71,19 +72,17 @@ public class MainView extends VerticalLayout {
             {
                 // Vaadin ComboBox is not great. We have to specifically handle null-values.
                 if(comboBox.isEmpty())
-                    UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW +
-                        textField.getValue());
+                    Utils.navigateToJobList(textField.getValue());
                 else
-                    UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW +
-                            textField.getValue() + "/" + comboBox.getValue());
+                    Utils.navigateToJobList(textField.getValue(), comboBox.getValue());
             }
             // Used when both fields are empty, just a normal call of the JobListView
             else
-                UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW);
+                Utils.navigateToJobList();
         });
 
         Button jobList = new Button("... oder alle Stellenangebote ansehen!");
-        jobList.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW));
+        jobList.addClickListener(e -> Utils.navigateToJobList());
 
         HorizontalLayout hl = new HorizontalLayout(comboBox, textField, searchButton);
         hl.setDefaultVerticalComponentAlignment(Alignment.BASELINE);

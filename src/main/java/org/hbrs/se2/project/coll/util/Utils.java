@@ -1,5 +1,6 @@
 package org.hbrs.se2.project.coll.util;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H3;
@@ -7,10 +8,12 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Utils {
 
@@ -62,6 +65,29 @@ public class Utils {
 
     public static String hashPassword(String plain) {
         return BCrypt.hashpw(plain, BCrypt.gensalt());
+    }
+
+    // Navigation Methods
+    public static void navigateToJobList() {
+        if(!Objects.equals(getCurrentLocation(), Globals.Pages.JOBLIST_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW);
+    }
+    public static void navigateToJobList(String keyword) {
+        if(!Objects.equals(getCurrentLocation(), Globals.Pages.JOBLIST_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW + keyword);
+    }
+    public static void navigateToJobList(String keyword, String type) {
+        if(!Objects.equals(getCurrentLocation(), Globals.Pages.JOBLIST_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW + keyword + "/" + type);
+    }
+
+    // Getters
+    public static String getCurrentLocation() {
+        return UI.getCurrent().getInternals().getActiveViewLocation().getPath();
+    }
+
+    public static UserDTO getCurrentUser() {
+        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
 
 }
