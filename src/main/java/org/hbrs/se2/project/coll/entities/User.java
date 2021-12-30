@@ -96,11 +96,9 @@ public class User {
         return password;
     }
     public void setPassword(String password) {
-        this.password = hashPassword(password);
+        this.password = password;
     }
-    private String hashPassword(String plain) {
-        return BCrypt.hashpw(plain, BCrypt.gensalt());
-    }
+
 
     @Basic
     @Column(name = "type")
