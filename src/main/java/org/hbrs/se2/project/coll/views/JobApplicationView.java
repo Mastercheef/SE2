@@ -72,15 +72,15 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
                     loadStudentUserInformation();
                     createJobApplicationView();
                 } else {
-                    triggerDialogMessage("Zugriff verweigert", "Sie haben keinen Zugriff auf die angegebene Bewerbung");
+                    Utils.triggerDialogMessage("Zugriff verweigert", "Sie haben keinen Zugriff auf die angegebene Bewerbung");
                 }
             } else {
-                triggerDialogMessage("Fehler", "Die angegebene Bewerbung existiert nicht");
+                Utils.triggerDialogMessage("Fehler", "Die angegebene Bewerbung existiert nicht");
             }
         } catch (NumberFormatException e) {
-            triggerDialogMessage("Fehler", "Es handelt sich um keine gültige Bewerbungs ID");
+            Utils.triggerDialogMessage("Fehler", "Es handelt sich um keine gültige Bewerbungs ID");
         } catch (Exception exception) {
-            triggerDialogMessage("Fehler", "Beim Laden der Bewerbung ist ein unerwarteter Felher aufgetreten");
+            Utils.triggerDialogMessage("Fehler", "Beim Laden der Bewerbung ist ein unerwarteter Felher aufgetreten");
         }
 
     }
@@ -162,7 +162,7 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
     public void setErrorFields(List<JobApplicationResultDTO.ReasonType> reasons) {
         for (JobApplicationResultDTO.ReasonType reason : reasons) {
             if (reason == JobApplicationResultDTO.ReasonType.UNEXPECTED_ERROR) {
-                triggerDialogMessage(Globals.View.ERROR, "Es ist ein unerwarteter Fehler aufgetreten");
+                Utils.triggerDialogMessage(Globals.View.ERROR, "Es ist ein unerwarteter Fehler aufgetreten");
             }
             if (reason == JobApplicationResultDTO.ReasonType.HEADLINE_MISSING) {
                 headline.setErrorMessage("Bitte geben Sie einen Betreff ein");
@@ -191,7 +191,7 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
                 sCountry = new Span(studentUser.getAddress().getCountry());
             }
         } catch (Exception exception) {
-            triggerDialogMessage("Fehler", "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
+            Utils.triggerDialogMessage("Fehler", "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
         }
     }
 
@@ -210,25 +210,4 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
     private UserDTO getCurrentUser() {
         return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
-
-    public void triggerDialogMessage(String headerText, String message) {
-        Dialog dialog = new Dialog();
-
-        H3 header = new H3(headerText);
-        Label contentText = new Label(message);
-
-        Button ok = new Button("Ok");
-
-        ok.addClickListener(e -> dialog.close());
-
-        HorizontalLayout head = new HorizontalLayout(header);
-        HorizontalLayout text = new HorizontalLayout(contentText);
-        HorizontalLayout butt = new HorizontalLayout(ok);
-
-        VerticalLayout dialogContent = new VerticalLayout(header, text, butt);
-        dialogContent.setAlignItems(FlexComponent.Alignment.CENTER);
-        dialog.add(dialogContent);
-        dialog.open();
-    }
-
 }
