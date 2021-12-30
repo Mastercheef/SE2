@@ -11,14 +11,17 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
+import org.hbrs.se2.project.coll.control.AddressControl;
 import org.hbrs.se2.project.coll.control.CompanyControl;
+import org.hbrs.se2.project.coll.control.ContactPersonControl;
+import org.hbrs.se2.project.coll.control.LoginControl;
+import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
-import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.LabelCompany;
 import org.hbrs.se2.project.coll.util.Utils;
@@ -34,13 +37,12 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyProfileEditView.class);
 
-
     @Autowired
-    private AddressRepository addressRepository;
-
+    private AddressControl addressControl;
     @Autowired
-    ContactPersonRepository contactPersonRepository;
-
+    private ContactPersonControl contactPersonControl;
+    @Autowired
+    LoginControl loginControl;
     @Autowired
     private CompanyControl profileControl;
     List<Address> existingAddresses;
@@ -85,7 +87,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
             companyId = profileDTO.getId();
             boolean ownership = checkIfUserIsProfileOwner();
             if(ownership) {
-                existingAddresses            = addressRepository.getByIdAfter(0);
+                existingAddresses = addressControl.getExistingAddresses();
 
                 // Skip ID so one can be generated. Important for saving new Addresses in DB.
                 address.setStreet(profileDTO.getAddress().getStreet());
@@ -96,6 +98,11 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
                 initLabels(profileDTO);
                 createProfile();
+            }
+            else
+            {
+                UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+                UI.getCurrent().getPage().reload();
             }
         }
     }
@@ -119,7 +126,6 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     public void createProfile() {
         H2 h2 = new H2("Editiere mein Firmenprofil");
 
-        // TODO: Get Image from Database
         // Profile Image
         Image profileImage = new Image("https://thispersondoesnotexist.com/image", "placeholder");
         profileImage.setWidth("200px");
@@ -161,7 +167,9 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         // Create buttons to save in database and cancel progress
         saveButton.addClickListener(e -> {
             if(!checkForEmptyInput()) {
-                updateProfileData();
+                // Get all data from input fields and update Profile in database
+                CompanyDTO companyDTO = createCompanyDTO();
+                updateProfileData(companyDTO);
                 UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
             }
         });
@@ -181,8 +189,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         add(div);
     }
 
-    // Used to save modified data in the database. Empty fields get marked as soon as save button is clicked.
-    public void updateProfileData() {
+    private CompanyDTO createCompanyDTO() {
         CompanyDTOImpl updatedProfile = new CompanyDTOImpl();
         updatedProfile.setId(companyId);
         updatedProfile.setCompanyName(lcompanyname.getValue());
@@ -193,28 +200,35 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         updatedProfile.setDescription(ldescription.getValue());
 
         // Address
-        address.setStreet(lstreet.getValue());
-        address.setHouseNumber(lstreetnumber.getValue());
-        address.setPostalCode(lpostalcode.getValue());
-        address.setCity(lcity.getValue());
-        address.setCountry(lcountry.getValue());
-        updatedProfile.setAddress(address);
+        Address updatedAddress = new Address();
+        updatedAddress.setStreet(lstreet.getValue());
+        updatedAddress.setHouseNumber(lstreetnumber.getValue());
+        updatedAddress.setPostalCode(lpostalcode.getValue());
+        updatedAddress.setCity(lcity.getValue());
+        updatedAddress.setCountry(lcountry.getValue());
+        updatedProfile.setAddress(updatedAddress);
 
+        return updatedProfile;
+    }
+
+    // Used to save modified data in the database. Empty fields get marked as soon as save button is clicked.
+    public void updateProfileData(CompanyDTO companyDTO) {
         // Save in DB
         try {
-            profileControl.saveCompany(updatedProfile);
+            profileControl.saveCompany(companyDTO);
+        } catch (DatabaseUserException databaseUserException) {
+            Utils.triggerDialogMessage(Globals.View.ERROR,"Während des Speicherns ist ein Fehler aufgetreten: "
+                    + databaseUserException.getErrorCode());
         } catch (Exception exception) {
-            // TODO: Exception handling with popup missing
-            LOGGER.info("LOG : {}" , exception.toString());
+            Utils.triggerDialogMessage(Globals.View.ERROR,"Während des Speicherns ist ein Fehler aufgetreten: "
+                    + exception);
         }
-
     }
 
     /*  We have to check if the address we edited in the View already exists in the DB.
         Return True  if it exists
         Return False if it does not exist
     */
-
     public boolean checkForEmptyInput() {
         return checkForEmptyTextField(lcompanyname) ||
                 checkForEmptyTextField(lstreet) ||
@@ -243,7 +257,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
     // If the user is not logged in, they get redirected to the login page
     private void checkIfUserIsLoggedIn() {
-        UserDTO userDTO = this.getCurrentUser();
+        UserDTO userDTO = loginControl.getCurrentUser();
         if (userDTO == null) {
             UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
         }
@@ -251,22 +265,6 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
     // If the user is not the owner of this profile, they get redirected to the profile
     private boolean checkIfUserIsProfileOwner() {
-        int userId = this.getCurrentUser().getId();
-        int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
-
-        if(userId == contactPersonId)
-            return true;
-        else if(userId == companyId)
-            return true;
-        else
-        {
-            UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
-            UI.getCurrent().getPage().reload();
-            return false;
-        }
-    }
-
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
+        return contactPersonControl.checkIfUserIsProfileOwner(loginControl.getCurrentUser(), companyId);
     }
 }

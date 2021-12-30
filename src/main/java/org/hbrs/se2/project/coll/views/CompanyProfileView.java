@@ -12,9 +12,9 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.CompanyControl;
+import org.hbrs.se2.project.coll.control.LoginControl;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
-import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
@@ -42,6 +42,9 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     @Autowired
     private CompanyControl companyControl;
+    @Autowired
+    private LoginControl loginControl;
+
     Address address;
     int companyId;
 
@@ -155,8 +158,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Add Edit Button ONLY when the logged-in user is the contact person of this company
         int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
 
-        if (getCurrentUser() != null) {
-            int currentUserId = getCurrentUser().getId();
+        if (loginControl.getCurrentUser() != null) {
+            int currentUserId = loginControl.getCurrentUser().getId();
             if(Objects.equals(contactPersonId, currentUserId))
                 div.add(hbuttons);
         }
@@ -211,8 +214,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Add "New Job" Button ONLY when the logged-in user is the contact person of this company
         int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
 
-        if (getCurrentUser() != null) {
-            int currentUserId = getCurrentUser().getId();
+        if (loginControl.getCurrentUser() != null) {
+            int currentUserId = loginControl.getCurrentUser().getId();
             if(Objects.equals(contactPersonId, currentUserId))
                 form.add(hbuttons);
         }
@@ -297,7 +300,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 hJobButtons.add(contactButton);
 
                 // Button to delete. Only viewable by company's contact person
-                if(contactPersonId == getCurrentUser().getId())
+                if(contactPersonId == loginControl.getCurrentUser().getId())
                 {
                     Button deleteButton = new Button("Stellenangebot löschen");
                     deleteButton.addClickListener(e -> {
@@ -337,10 +340,6 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
             }
         }
         return form;
-    }
-
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
 
     public CompanyProfileView() {
