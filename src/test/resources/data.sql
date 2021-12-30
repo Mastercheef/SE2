@@ -8,3 +8,7 @@ INSERT INTO collhbrs.col_tab_company VALUES (40000001, 'Tolle superkrasse Testfi
 INSERT INTO collhbrs.col_tab_user VALUES (19999952, 'Hans', 'Meier', 10000000, '2021-12-01', '$2a$10$Jpr8E5lKZpFtYNU4FZQgzeBM32DKPoi6mB6G/8slHPP3TuybfXEjW', '12345', 'Herr', 'Dr.', 'hans@hbrs.de', 'st');
 INSERT INTO collhbrs.col_tab_user VALUES (19999978, 'Kevin', 'Konich', 10000001, '1990-07-05', '$2a$10$mYvXOfsNFbxs3puT2f3zku6/PBjsceQt4vcRLzV1c0s/JsdWYYvTi', '12382318', 'Herr', '-', 'konich@hbrs.de', 'cp');
 INSERT INTO collhbrs.col_tab_user VALUES (19999953, 'Admin', 'Bubatz', 10000002, '2021-12-01', '$2a$10$J5UnKRTDtKNfpLbp/QYw2.UVW2zOzeTtyommHOQPcmFpYawBLXBDa', '12345', 'Herr', ' ', 'admin@bubatz.de', 'cp');
+
+INSERT INTO collhbrs.col_tab_contact_person VALUES (19999953, 40000000, 'admin');
+INSERT INTO collhbrs.col_tab_contact_person VALUES (19999978, 40000001, 'admin');
+
