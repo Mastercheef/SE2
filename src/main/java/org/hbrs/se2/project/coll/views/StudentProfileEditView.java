@@ -77,15 +77,17 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     public void setParameter(BeforeEvent event,
                              String parameter) {
         if (!Utils.stringIsEmptyOrNull(parameter)) {
-            checkIfUserIsLoggedIn();
-            profileDTO = profileControl.loadProfileDataById(Integer.parseInt(parameter));
-            studentId  = profileDTO.getId();
 
-            boolean ownership = checkIfUserIsProfileOwner();
+            if(checkIfUserIsLoggedIn()){
+                profileDTO = profileControl.loadProfileDataById(Integer.parseInt(parameter));
+                studentId  = profileDTO.getId();
 
-            if(ownership) {
-                initLabels(profileDTO);
-                createProfileEditView();
+                boolean ownership = checkIfUserIsProfileOwner();
+
+                if(ownership) {
+                    initLabels(profileDTO);
+                    createProfileEditView();
+                }
             }
         }
     }
@@ -268,12 +270,15 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         return empty;
     }
 
-    private void checkIfUserIsLoggedIn() {
+    private boolean checkIfUserIsLoggedIn() {
         // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
         UserDTO userDTO = Utils.getCurrentUser();
         if (userDTO == null) {
             UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
+            return false;
         }
+        else
+            return true;
     }
 
     // If the user is not the owner of this profile, they get redirected to the profile

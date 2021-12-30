@@ -11,6 +11,7 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
+import jdk.jshell.execution.Util;
 import org.hbrs.se2.project.coll.control.AddressControl;
 import org.hbrs.se2.project.coll.control.CompanyControl;
 import org.hbrs.se2.project.coll.control.ContactPersonControl;
@@ -30,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Objects;
 
 @Route(value = "companyprofile_edit", layout = AppView.class)
 @PageTitle("Edit your Profile")
@@ -82,27 +84,28 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     public void setParameter(BeforeEvent event,
                              String parameter) {
         if (!parameter.equals("")) {
-            checkIfUserIsLoggedIn();
-            CompanyDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
-            companyId = profileDTO.getId();
-            boolean ownership = checkIfUserIsProfileOwner();
-            if(ownership) {
-                existingAddresses = addressControl.getExistingAddresses();
+            if(checkIfUserIsLoggedIn()){
+                CompanyDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
+                companyId = profileDTO.getId();
+                boolean ownership = checkIfUserIsProfileOwner();
+                if(ownership) {
+                    existingAddresses = addressControl.getExistingAddresses();
 
-                // Skip ID so one can be generated. Important for saving new Addresses in DB.
-                address.setStreet(profileDTO.getAddress().getStreet());
-                address.setHouseNumber(profileDTO.getAddress().getHouseNumber());
-                address.setPostalCode(profileDTO.getAddress().getPostalCode());
-                address.setCity(profileDTO.getAddress().getCity());
-                address.setCountry(profileDTO.getAddress().getCountry());
+                    // Skip ID so one can be generated. Important for saving new Addresses in DB.
+                    address.setStreet(profileDTO.getAddress().getStreet());
+                    address.setHouseNumber(profileDTO.getAddress().getHouseNumber());
+                    address.setPostalCode(profileDTO.getAddress().getPostalCode());
+                    address.setCity(profileDTO.getAddress().getCity());
+                    address.setCountry(profileDTO.getAddress().getCountry());
 
-                initLabels(profileDTO);
-                createProfile();
-            }
-            else
-            {
-                UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
-                UI.getCurrent().getPage().reload();
+                    initLabels(profileDTO);
+                    createProfile();
+                }
+                else
+                {
+                    navigateToProfile(companyId);
+                    UI.getCurrent().getPage().reload();
+                }
             }
         }
     }
@@ -170,11 +173,10 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
                 // Get all data from input fields and update Profile in database
                 CompanyDTO companyDTO = createCompanyDTO();
                 updateProfileData(companyDTO);
-                UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+                navigateToProfile(companyId);
             }
         });
-        cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW +
-                companyId));
+        cancelButton.addClickListener(e -> navigateToProfile(companyId));
         hbuttons.add(saveButton, cancelButton);
 
         // Alignment of profile information
@@ -256,11 +258,19 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     }
 
     // If the user is not logged in, they get redirected to the login page
-    private void checkIfUserIsLoggedIn() {
+    private boolean checkIfUserIsLoggedIn() {
         UserDTO userDTO = Utils.getCurrentUser();
-        if (userDTO == null) {
-            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
+        if (userDTO == null)
+        {
+            Utils.navigateToLogin();
+            return false;
         }
+        else
+            return true;
+    }
+    public static void navigateToProfile(int companyId) {
+        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.COMPANYPROFILE_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
     }
 
     // If the user is not the owner of this profile, they get redirected to the profile

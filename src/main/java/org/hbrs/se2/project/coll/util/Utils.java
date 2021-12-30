@@ -81,6 +81,10 @@ public class Utils {
         if(!Objects.equals(getCurrentLocation(), Globals.Pages.MAIN_VIEW))
             UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW);
     }
+    public static void navigateToLogin() {
+        if(!Objects.equals(getCurrentLocation(), Globals.Pages.LOGIN_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
+    }
     public static void navigateToContactFormular(int companyId, int jobId) {
         if(!Objects.equals(getCurrentLocation(), Globals.Pages.CONTACTING_VIEW))
             UI.getCurrent().navigate(Globals.Pages.CONTACTING_VIEW + companyId + "/" + jobId);
