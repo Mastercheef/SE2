@@ -7,6 +7,7 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -57,6 +58,10 @@ public class Utils {
         dialogContent.setAlignItems(FlexComponent.Alignment.CENTER);
         dialog.add(dialogContent);
         dialog.open();
+    }
+
+    public static String hashPassword(String plain) {
+        return BCrypt.hashpw(plain, BCrypt.gensalt());
     }
 
 }
