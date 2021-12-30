@@ -26,83 +26,7 @@ public class CompanyViewTest {
     @Autowired
     private CompanyRepository companyRepository;
 
-    @Test
-    void getContactPersonByUserId() {
-        ContactPerson contactPerson;
-        contactPerson = contactPersonRepository.findContactPersonById(20000012);
 
-        assertEquals(contactPerson.getFirstName(), "Judith");
-        assertEquals(contactPerson.getLastName(), "Meier");
-        assertEquals(contactPerson.getPhone(), "1122334455");
-        assertEquals(contactPerson.getEmail(), "judithmeier@company.com");
-    }
-
-    @Test
-    void getContactPersonByCompanyId() {
-        ContactPerson contactPerson;
-        contactPerson = contactPersonRepository.findContactPersonByCompanyId(40000000);
-
-        assertEquals(contactPerson.getFirstName(), "Judith");
-        assertEquals(contactPerson.getLastName(), "Meier");
-        assertEquals(contactPerson.getPhone(), "1122334455");
-        assertEquals(contactPerson.getEmail(), "judithmeier@company.com");
-    }
-
-    @Test
-    void createReadAndDeleteACompanyProfile(){
-
-        Address address = new Address();
-        address.setId(10000000);
-
-        Company companyProfile = new Company();
-        companyProfile.setCompanyName("Fancy Testing Company");
-        companyProfile.setDescription("We are a fancy Company!");
-        companyProfile.setWebsite("www.a-fancy-company.com");
-        companyProfile.setFaxNumber("1093049");
-        companyProfile.setAddress(address);
-        companyRepository.save(companyProfile);
-
-        int tmpId = companyProfile.getId();
-
-        Optional<Company> wrapper = companyRepository.findById(tmpId);
-        assertTrue(wrapper.isPresent());
-        Company companyProfileAfterCreate = wrapper.get();
-        assertEquals(companyProfile.getCompanyName(), companyProfileAfterCreate.getCompanyName());
-        assertEquals(companyProfile.getEmail(), companyProfileAfterCreate.getEmail());
-        assertEquals(companyProfile.getDescription(), companyProfileAfterCreate.getDescription());
-
-        assertNotSame(companyProfile, companyProfileAfterCreate);
-
-        companyRepository.deleteById(tmpId);
-
-        wrapper = companyRepository.findById(tmpId);
-        assertFalse(wrapper.isPresent());
-    }
-
-
-    @Test
-    void createAndCheckExistingAddress() {
-        Address address = new Address();
-        address.setStreet("Landgraben");
-        address.setHouseNumber("12");
-        address.setPostalCode("53773");
-        address.setCity("Hennef");
-        address.setCountry("Deutschland");
-
-        List<Address> existingAddresses = addressRepository.getByIdAfter(0);
-        int id = checkAddressExistence(address, existingAddresses);
-
-        assertEquals(id, 10000001);
-    }
-
-    @Test
-    void useExistingAddressForCompany() {
-        Company profile = new Company();
-        Address         address = addressRepository.getById(10000000);
-
-        profile.setAddress(address);
-        assertEquals(profile.getAddress().getId(), address.getId());
-    }
 
     @Test
     void editCompanyProfileParameters()
@@ -138,19 +62,5 @@ public class CompanyViewTest {
         assertEquals(editedProfile.getAddress(), newAddress);
     }
 
-    public int checkAddressExistence(Address a, List<Address> addresses) {
-        int id = -1;
 
-        for(Address b : addresses) {
-            if(Objects.equals(a.getStreet(), b.getStreet()) &&
-                    Objects.equals(a.getHouseNumber(), b.getHouseNumber()) &&
-                    Objects.equals(a.getPostalCode(), b.getPostalCode()) &&
-                    Objects.equals(a.getCity(), b.getCity()) &&
-                    Objects.equals(a.getCountry(), b.getCountry())) {
-                id = b.getId();
-                break;
-            }
-        }
-        return id;
-    }
 }

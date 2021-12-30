@@ -111,6 +111,5 @@ public class JobAdvertisementTest {
     void testGetApplicants(){
         jobAdvertisement.setApplicants(applicants);
         assertEquals(applicants, jobAdvertisement.getApplicants());
-        assertEquals(studentUser, jobAdvertisement.getApplicants().toArray()[0]);
     }
 }
