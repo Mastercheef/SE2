@@ -16,8 +16,6 @@ import org.hbrs.se2.project.coll.dtos.SettingsDTO;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-import java.util.Set;
 
 @Route(value = "settings", layout = AppView.class)
 @PageTitle("Einstellungen")

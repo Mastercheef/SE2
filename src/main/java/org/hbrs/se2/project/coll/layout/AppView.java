@@ -309,8 +309,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         // Value: Die UI-Component, die nach dem Klick auf das Menuitem angezeigt wird.
         return new Tab[]{ createTab( "Profil", StudentProfileView.class) };
 
-        // ToDo für die Teams: Weitere Tabs aus ihrem Projekt hier einfügen!
-
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
@@ -334,7 +332,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
             // Highlight des Posteingang-Tabs, wenn es ungelesene Nachrichten gibt
             initNavigationBar(messageRepository.findMessagesByRecipientAndRead(Utils.getCurrentUser().getId(),
-                    false).size() > 0);
+                    false).isEmpty());
         }
 
         // Der aktuell-selektierte Tab wird gehighlighted.

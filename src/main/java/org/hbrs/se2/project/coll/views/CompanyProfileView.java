@@ -106,7 +106,6 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     public void createProfile() {
         H2 h2 = new H2("Firmenprofil");
 
-        // TODO: Get Image from Database
         // Profile Image
         Image profileImage = new Image("https://thispersondoesnotexist.com/image", "placeholder");
         profileImage.setWidth(WIDTH);

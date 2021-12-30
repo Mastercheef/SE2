@@ -107,7 +107,6 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         // Layout
         H2 h2 = new H2("Mein Profil");
 
-        // TODO: Get Image from Database
         // Profile Image
         Image profileImage = new Image("https://thispersondoesnotexist.com/image", "placeholder");
         profileImage.setWidth("200px");
@@ -121,7 +120,6 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         }
 
         // Profile Data
-        // TODO: Get Data from UserDTO
         HorizontalLayout hsalutation    = new HorizontalLayout(salutation, lsalutation);
         HorizontalLayout htitle         = new HorizontalLayout(title, ltitle);
         HorizontalLayout hfirstname     = new HorizontalLayout(firstname, lfirstname);

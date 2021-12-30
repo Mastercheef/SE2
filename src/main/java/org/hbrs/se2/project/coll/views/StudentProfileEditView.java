@@ -124,7 +124,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     public void createProfileEditView() {
         H2 h2 = new H2("Editiere mein Profil");
 
-        // TODO: Get Image from Database
         // Profile Image
         Image profileImage = new Image("https://thispersondoesnotexist.com/image", "placeholder");
         profileImage.setWidth("200px");

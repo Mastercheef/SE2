@@ -1,11 +1,11 @@
 package org.hbrs.se2.project.coll.views;
 
-import com.vaadin.flow.component.Text;
+
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
-import com.vaadin.flow.component.dialog.Dialog;
+
 import com.vaadin.flow.component.textfield.*;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.orderedlayout.*;
@@ -22,7 +22,7 @@ import org.hbrs.se2.project.coll.control.*;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
-import org.hbrs.se2.project.coll.dtos.UserDTO;
+
 import org.hbrs.se2.project.coll.dtos.impl.*;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;

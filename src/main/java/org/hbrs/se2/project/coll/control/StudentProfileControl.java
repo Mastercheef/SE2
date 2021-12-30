@@ -19,7 +19,6 @@ public class StudentProfileControl {
         return studentUserRepository.findStudentUserById(id);
     }
 
-    //TODO: ResultDTO mit Rückmeldung für View bei Fehler
     public StudentUser updateStudentProfile(StudentUserDTO studentUserDTO ) throws DatabaseUserException {
         // StudentUser and StudentProfile are using the same database table / datasets
         return studentUserControl.updateStudentUser(studentUserDTO);

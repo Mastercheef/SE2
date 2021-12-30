@@ -1,5 +1,5 @@
 package org.hbrs.se2.project.coll.views;
-import com.vaadin.flow.component.UI;
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.*;
@@ -18,7 +18,6 @@ import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 
-import java.util.Objects;
 
 @Route(value = "" , layout = AppView.class)
 @RouteAlias(value = "main" , layout = AppView.class)

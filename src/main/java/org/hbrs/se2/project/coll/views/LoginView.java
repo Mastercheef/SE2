@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * View zur Darstellung der Startseite. Diese zeigt dem Benutzer ein Login-Formular an.
- * ToDo: Integration einer Seite zur Registrierung von Benutzern
+
  */
 @Route(value = "login" )
 public class LoginView extends VerticalLayout {
@@ -26,8 +26,6 @@ public class LoginView extends VerticalLayout {
         LoginForm component = new LoginForm();
 
         addClassName("login-view");
-        //component.setAction("login");
-
 
         component.addLoginListener(e -> {
             LoginResultDTO isAuthenticated = loginControl.authentificate( e.getUsername() , e.getPassword() );

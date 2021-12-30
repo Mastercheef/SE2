@@ -81,7 +81,6 @@ class StudentUserTest {
     }
 
     @Test
-    //TODO Implement
     void getApplications() {
         JobApplication jobApplicationOne = new JobApplication();
         JobApplication jobApplicationTwo = new JobApplication();
