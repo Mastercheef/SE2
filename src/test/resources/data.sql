@@ -16,3 +16,15 @@ INSERT INTO collhbrs.col_tab_contact_person VALUES (20000001, 40000001, 'admin')
 INSERT INTO collhbrs.col_tab_job_advertisement VALUES (false, 'Vollzeit', 60, 'Alles', 10000001, '2021-12-01', '2024-01-14', 20000000, 'Du weißt was ich meine', 10, 'Persönliche Assistentin', 30000000);
 INSERT INTO collhbrs.col_tab_job_advertisement VALUES (true, 'Vollzeit', 60, 'Alles', 10000001, '2021-12-01', '2024-01-14', 20000000, 'Du weißt was ich meine', 10, 'Datenbankexperte', 30000001);
 
+INSERT INTO collhbrs.col_tab_student VALUES (NULL, NULL, NULL, NULL, NULL, 20000000, NULL);
+INSERT INTO collhbrs.col_tab_student VALUES (NULL, NULL, NULL, NULL, NULL, 20000001, NULL);
+
+INSERT INTO collhbrs.col_tab_application VALUES (60000000, 20000000, 30000000, 'Bewerbung auf Persönliche Assistentin', 'Kann alles und bin für alles bereit', '2021-12-29');
+INSERT INTO collhbrs.col_tab_application VALUES (60000001, 20000001, 30000001, 'Bewerbung auf Keller Mitarbeiter', 'Bin stabil', '2021-12-29');
+
+INSERT INTO collhbrs.col_tab_message VALUES (50000000, 20000000, 20000001, 'hallo', 'Frage bzgl. Super Engineer', '2021-12-29', true);
+INSERT INTO collhbrs.col_tab_message VALUES (50000001, 20000002, 20000001, 'Habe gehört su bist stabil', 'Mitarbeiter gesucht', '2021-12-29', true);
+
+INSERT INTO collhbrs.col_tab_settings VALUES (20000000, true);
+INSERT INTO collhbrs.col_tab_settings VALUES (20000001, true);
+INSERT INTO collhbrs.col_tab_settings VALUES (20000002, false);
