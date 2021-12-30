@@ -108,7 +108,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         H1 homeIcon = new H1("Coll@HBRS");
         homeIcon.getElement().getClassList().add("pointer");
-        homeIcon.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW));
+        homeIcon.addClickListener(e -> Utils.navigateToMain());
         homeIconHorizontalLayout.add(homeIcon);
         headerLayout.add(homeIconHorizontalLayout);
 
@@ -239,7 +239,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     private void logoutUser() {
         UI ui = this.getUI().get();
         ui.getSession().close();
-        ui.getCurrent().navigate(Globals.Pages.MAIN_VIEW);
+        Utils.navigateToMain();
     }
 
 
