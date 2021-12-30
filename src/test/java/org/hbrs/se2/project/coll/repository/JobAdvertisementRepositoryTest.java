@@ -51,19 +51,40 @@ class JobAdvertisementRepositoryTest {
                 "Persoenliche Assistentin","Vollzeit","Alles" ,false , LocalDate.of(2021,12,1) ,(short)60 ,10).size() == 1);
     }
 
+
+    //    List<JobAdvertisement> filterJobs(String title, String type, String requirements, LocalDate date, short hours, int salary);
     @Test
-    void testFilterJobs() {
+    void testFilterJobsListNotEmpty() {
+        assertFalse(jobAdvertisementRepository.filterJobs("Persoenliche Assistentin" , "Vollzeit" , "Alles" ,  LocalDate.of(2021,12,1) , (short) 60 , 10).isEmpty());
     }
 
     @Test
-    void testFilterJobs1() {
+    void testFilterJobsEmpty() {
+        assertTrue(jobAdvertisementRepository.filterJobs("Koch" , "Vollzeit" , "Alles" ,  LocalDate.of(2021,12,1) , (short) 60 , 10).isEmpty());
+    }
+
+    //    List<JobAdvertisement> filterJobs(String title, String requirements, boolean temporaryEmployment, LocalDate date, short hours, int salary);
+    @Test
+    void testFilterJobs1NotEmpty() {
+        assertFalse(jobAdvertisementRepository.filterJobs(
+               "Persoenliche Assistentin" , "Alles" , false ,  LocalDate.of(2021,12,1) ,  (short) 60 , 10).isEmpty());
     }
 
     @Test
-    void testFilterJobs2() {
+    void testFilterJobs1Empty() {
+        assertTrue(jobAdvertisementRepository.filterJobs(
+                "Koch" , "Alles" , false ,  LocalDate.of(2021,12,1) ,  (short) 60 , 10).isEmpty());
+    }
+
+
+
+    @Test
+    void findJobAdvertisementsByCompanyIdNotEmpty() {
+        assertFalse(jobAdvertisementRepository.findJobAdvertisementsByCompanyId(40000000).isEmpty());
     }
 
     @Test
-    void findJobAdvertisementsByCompanyId() {
+    void findJobAdvertisementsByCompanyIdEmpty() {
+        assertTrue(jobAdvertisementRepository.findJobAdvertisementsByCompanyId(40000011).isEmpty());
     }
 }
