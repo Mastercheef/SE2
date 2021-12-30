@@ -11,6 +11,7 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
+import org.hbrs.se2.project.coll.control.AddressControl;
 import org.hbrs.se2.project.coll.control.CompanyControl;
 import org.hbrs.se2.project.coll.control.ContactPersonControl;
 import org.hbrs.se2.project.coll.control.LoginControl;
@@ -21,7 +22,6 @@ import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
-import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.LabelCompany;
 import org.hbrs.se2.project.coll.util.Utils;
@@ -38,11 +38,9 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     private static final Logger LOGGER = LoggerFactory.getLogger(CompanyProfileEditView.class);
 
     @Autowired
-    private AddressRepository addressRepository;
+    private AddressControl addressControl;
     @Autowired
     private ContactPersonControl contactPersonControl;
-    @Autowired
-    ContactPersonRepository contactPersonRepository;
     @Autowired
     LoginControl loginControl;
     @Autowired
@@ -89,7 +87,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
             companyId = profileDTO.getId();
             boolean ownership = checkIfUserIsProfileOwner();
             if(ownership) {
-                existingAddresses = addressRepository.getByIdAfter(0);
+                existingAddresses = addressControl.getExistingAddresses();
 
                 // Skip ID so one can be generated. Important for saving new Addresses in DB.
                 address.setStreet(profileDTO.getAddress().getStreet());

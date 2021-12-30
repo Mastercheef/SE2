@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class AddressControl {
 
@@ -37,5 +39,8 @@ public class AddressControl {
             LOGGER.info("Created new Address with ID: {}" , newAddress.getId());
             return newAddress;
         }
+    }
+    public List<Address> getExistingAddresses() {
+        return addressRepository.getByIdAfter(0);
     }
 }
