@@ -72,12 +72,12 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
                 pageHeadline = new H2("Bewerbung auf " + jobAdvertisement.getJobTitle() + " (" + jobAdvertisement.getId() + ")");
                 createJobApplicationView();
             } else {
-                triggerDialogMessage("Fehler", "Das angegebene Stellenangebot existiert nicht");
+                Utils.triggerDialogMessage("Fehler", "Das angegebene Stellenangebot existiert nicht");
             }
         } catch (NumberFormatException e) {
-            triggerDialogMessage("Fehler", "Es handelt sich um keine gültige Stellenagebots ID");
+            Utils.triggerDialogMessage("Fehler", "Es handelt sich um keine gültige Stellenagebots ID");
         } catch (Exception exception) {
-            triggerDialogMessage("Fehler", "Beim Laden des Bewerbungsformulars, ist ein Fehler aufgetreten");
+            Utils.triggerDialogMessage("Fehler", "Beim Laden des Bewerbungsformulars, ist ein Fehler aufgetreten");
         }
 
     }
@@ -155,7 +155,7 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
         applyButton.addClickListener(e -> {
             JobApplicationResultDTO applicationResult = jobApplicationControl.createJobApplication(form.createNewApplicationDTO());
             if (applicationResult.getResult()) {
-                triggerDialogMessage("Bewerbung übermittelt", "Wir haben Ihre Bewerbung erfolgreich übermittelt");
+                Utils.triggerDialogMessage("Bewerbung übermittelt", "Wir haben Ihre Bewerbung erfolgreich übermittelt");
                 UI.getCurrent().navigate(Globals.Pages.JOBAPPLICATION_VIEW + applicationResult.getApplicationID());
             } else {
                 setErrorFields(applicationResult.getReasons());
@@ -167,7 +167,7 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
     public void setErrorFields(List<JobApplicationResultDTO.ReasonType> reasons) {
         for (JobApplicationResultDTO.ReasonType reason : reasons) {
             if (reason == JobApplicationResultDTO.ReasonType.UNEXPECTED_ERROR) {
-                triggerDialogMessage(Globals.View.ERROR, "Es ist ein unerwarteter Fehler aufgetreten");
+                Utils.triggerDialogMessage(Globals.View.ERROR, "Es ist ein unerwarteter Fehler aufgetreten");
             }
             if (reason == JobApplicationResultDTO.ReasonType.HEADLINE_MISSING) {
                 headline.setErrorMessage("Bitte geben Sie einen Betreff ein");
@@ -195,32 +195,11 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
                 sCountry = new Span(studentUserDTO.getAddress().getCountry());
             }
         } catch (Exception exception) {
-            triggerDialogMessage("Fehler", "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
+            Utils.triggerDialogMessage("Fehler", "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
         }
     }
 
     private UserDTO getCurrentUser() {
         return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
-
-    public void triggerDialogMessage(String headerText, String message) {
-        Dialog dialog = new Dialog();
-
-        H3 header = new H3(headerText);
-        Label contentText = new Label(message);
-
-        Button ok = new Button("Ok");
-
-        ok.addClickListener(e -> dialog.close());
-
-        HorizontalLayout head = new HorizontalLayout(header);
-        HorizontalLayout text = new HorizontalLayout(contentText);
-        HorizontalLayout butt = new HorizontalLayout(ok);
-
-        VerticalLayout dialogContent = new VerticalLayout(header, text, butt);
-        dialogContent.setAlignItems(FlexComponent.Alignment.CENTER);
-        dialog.add(dialogContent);
-        dialog.open();
-    }
-
 }

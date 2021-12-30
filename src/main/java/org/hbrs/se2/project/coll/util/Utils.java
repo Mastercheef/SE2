@@ -50,7 +50,6 @@ public class Utils {
 
         ok.addClickListener(e -> dialog.close());
 
-        HorizontalLayout head = new HorizontalLayout(header);
         HorizontalLayout text = new HorizontalLayout(contentText);
         HorizontalLayout butt = new HorizontalLayout(ok);
 

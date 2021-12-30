@@ -28,6 +28,7 @@ import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO.ReasonType;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -271,7 +272,7 @@ public class RegistrationView extends Div {
 
                 if (registrationResult.getResult()) {
                     // Success meldung
-                    triggerDialogMessage("Registrierung abgeschlossen", "Sie haben sich erfolgreich registriert");
+                    Utils.triggerDialogMessage("Registrierung abgeschlossen", "Sie haben sich erfolgreich registriert");
                     // automatischer Login
                     autoLoginAfterRegistration(userDTO);
                     // Routing auf main Seite
@@ -281,9 +282,9 @@ public class RegistrationView extends Div {
                     setErrorFields(registrationResult.getReasons());
                 }
             } catch (DatabaseUserException databaseUserException) {
-                triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein Fehler aufgetreten: " + databaseUserException.getErrorCode());
+                Utils.triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein Fehler aufgetreten: " + databaseUserException.getErrorCode());
             } catch (Exception exception) {
-                triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein unerwarteter Fehler aufgetreten: " + exception);
+                Utils.triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein unerwarteter Fehler aufgetreten: " + exception);
             }
         });
         add(siteLayout);
@@ -294,14 +295,14 @@ public class RegistrationView extends Div {
         if (isAuthenticated.getResult()) {
             UI.getCurrent().getSession().setAttribute( Globals.CURRENT_USER, loginControl.getCurrentUser() );
         } else {
-            triggerDialogMessage(Globals.View.ERROR,"Fehler beim automatischen einloggen. Bitte versuchen Sie es erneut");
+            Utils.triggerDialogMessage(Globals.View.ERROR,"Fehler beim automatischen einloggen. Bitte versuchen Sie es erneut");
         }
     }
 
     public void setErrorFields(List<ReasonType> reasons) {
         for (ReasonType reason : reasons) {
             if (reason == ReasonType.UNEXPECTED_ERROR) {
-                triggerDialogMessage(Globals.View.ERROR, "Es ist ein unerwarteter Fehler aufgetreten");
+                Utils.triggerDialogMessage(Globals.View.ERROR, "Es ist ein unerwarteter Fehler aufgetreten");
             }
             if (reason == ReasonType.SALUTATION_MISSING) {
                 salutation.setErrorMessage("Bitte geben Sie eine Anrede ein");
@@ -386,7 +387,7 @@ public class RegistrationView extends Div {
 
             // Company Fields
             if (reason == ReasonType.COMPANY_ALREADY_REGISTERED) {
-                triggerDialogMessage(Globals.View.ERROR, "Die angegebene Firma ist bereits registriert");
+                Utils.triggerDialogMessage(Globals.View.ERROR, "Die angegebene Firma ist bereits registriert");
             }
             if (reason == ReasonType.COMPANY_NAME_MISSING) {
                 companyName.setErrorMessage(Globals.View.POSTAL_CODE);
@@ -438,26 +439,5 @@ public class RegistrationView extends Div {
             }
         }
     }
-
-    public void triggerDialogMessage(String headerText, String message) {
-        Dialog dialog = new Dialog();
-
-        H3 header = new H3(headerText);
-        Label contentText = new Label(message);
-
-        Button ok = new Button("Ok");
-
-        ok.addClickListener(e -> dialog.close());
-
-        HorizontalLayout head = new HorizontalLayout(header);
-        HorizontalLayout text = new HorizontalLayout(contentText);
-        HorizontalLayout butt = new HorizontalLayout(ok);
-
-        VerticalLayout dialogContent = new VerticalLayout(header, text, butt);
-        dialogContent.setAlignItems(FlexComponent.Alignment.CENTER);
-        dialog.add(dialogContent);
-        dialog.open();
-    }
-
 }
 
