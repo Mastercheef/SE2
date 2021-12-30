@@ -14,7 +14,6 @@ import java.util.List;
 @Component
 public interface JobAdvertisementRepository extends JpaRepository<JobAdvertisement, Integer> {
 
-    JobAdvertisement findJobAdvertisementByJobDescription(String string);
     JobAdvertisement findJobAdvertisementById(int id);
 
     // Filter functions ...

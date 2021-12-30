@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class JobApplicationDTOImplTest {
@@ -51,5 +53,17 @@ class JobApplicationDTOImplTest {
     void getApplicationText() {
         jobApplicationDTO.setText(applicationText);
         assertEquals(applicationText , jobApplicationDTO.getText());
+    }
+
+    @Test
+    void date() {
+        LocalDate localDate = LocalDate.of(2017, 1, 13);
+        jobApplicationDTO.setDate(localDate);
+        assertEquals(localDate , jobApplicationDTO.getDate());
+    }
+
+    @Test
+    void id() {
+        assertNotNull(jobApplicationDTO.getId());
     }
 }

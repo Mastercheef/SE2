@@ -14,6 +14,5 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
 
     JobApplicationDTO findJobApplicationById(int id);
 
-    List<JobApplicationDTO> findJobApplicationsByStudentUser(StudentUser studentUser);
-    List<JobApplicationDTO> findJobApplicationsByJobAdvertisement(JobAdvertisement jobAdvertisement);
+
 }
