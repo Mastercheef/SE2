@@ -85,8 +85,7 @@ class UserFactoryTest {
         assertEquals("Mustermannstadt", studentUser.getAddress().getCity());
         assertEquals("12345", studentUser.getAddress().getPostalCode());
         assertEquals("0123456789", studentUser.getPhone(), "Phone is not set correctly,should be 0123456789");
-        assertEquals(email, studentUser.getEmail(), "Email is not set correctly,should be " + email);        assertTrue(BCrypt.checkpw("password1234", studentUser.getPassword()), "Password is not set correctly,should be password1234");
-        assertTrue(BCrypt.checkpw(password, studentUser.getPassword()), "Password is not set correctly,should be " + password);
+        assertEquals(email, studentUser.getEmail(), "Email is not set correctly,should be " + email);
         assertEquals("1.1.2000", studentUser.getGraduation(), "Graduation is not set correctly,should be: 1.1.2000");
         assertEquals("Java", studentUser.getSkills(), "Skills is not set correctly,should be:Java");
         assertEquals("Viele", studentUser.getInterests(), "Interests is not set correctly,should be Viele");
@@ -119,8 +118,6 @@ class UserFactoryTest {
         assertEquals("Max", user.getFirstName(), "First name is not set correctly,should be Max");
         assertEquals(name, user.getLastName(), "Last Name is not set correctly,should be " + name);
         assertEquals(email, user.getEmail(), "Email is not set correctly,should be " + email);
-        assertTrue(BCrypt.checkpw(password, user.getPassword()), "Password is not set correctly,should be " + password);
-
     }
 
     @Test
@@ -166,7 +163,6 @@ class UserFactoryTest {
         assertEquals("0123456789" , studentUser.getPhone());
         assertEquals(LocalDate.of(2000, 1, 23), studentUser.getDateOfBirth());
         assertEquals(email ,studentUser.getEmail());
-        assertTrue(BCrypt.checkpw(password, studentUser.getPassword()));
     }
 
     @Test
@@ -202,7 +198,6 @@ class UserFactoryTest {
         assertNotNull(contactPerson.getAddress());
         assertEquals("0123456789" , contactPerson.getPhone());
         assertEquals(email , contactPerson.getEmail());
-        assertTrue(BCrypt.checkpw(password, contactPerson.getPassword()));
         assertNotNull(contactPerson.getCompany());
         assertEquals("Datenbank-Experte" , contactPerson.getRole());
     }
@@ -246,7 +241,7 @@ class UserFactoryTest {
         assertEquals("0123456789" , contactPerson.getPhone());
         assertEquals(LocalDate.of(2000, 1, 23), contactPerson.getDateOfBirth());
         assertEquals(email , contactPerson.getEmail());
-        assertTrue(BCrypt.checkpw(password, contactPerson.getPassword()));
+
 
     }
 }
