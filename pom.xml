@@ -156,6 +156,47 @@
                     <source>10</source>
                     <target>10</target>
                 </configuration>
+
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <skipTests>false</skipTests>
+                </configuration>
+                <!-- run local unit tests with mvn test -->
+                <executions>
+                    <execution>
+                        <id>default-test</id>
+                        <configuration>
+                            <!-- select which groups or junit @Tags are run-->
+                            <groups></groups>
+                            <excludedGroups></excludedGroups>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- run local selenium acceptance tests: mvn pre-integration-test or verify -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <skipITs>false</skipITs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <configuration>
+                            <!-- select which integration test groups or junit @Tags are run-->
+                            <groups></groups>
+                            <excludedGroups></excludedGroups>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
