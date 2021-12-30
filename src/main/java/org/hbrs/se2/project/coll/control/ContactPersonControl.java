@@ -69,4 +69,12 @@ public class ContactPersonControl {
             }
         }
     }
+
+    public boolean checkIfUserIsProfileOwner(UserDTO currentUser, int companyId) {
+        ContactPerson contactPersonDTO = contactPersonRepository.findContactPersonByCompanyId(companyId);
+
+        if(currentUser.getId() == contactPersonDTO.getId())
+            return true;
+        else return currentUser.getId() == companyId;
+    }
 }

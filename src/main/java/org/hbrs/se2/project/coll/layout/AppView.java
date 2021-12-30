@@ -29,6 +29,7 @@ import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.MessageRepository;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.hbrs.se2.project.coll.views.DataProtectionView;
 import org.hbrs.se2.project.coll.views.ImpressumView;
 import org.hbrs.se2.project.coll.views.StudentProfileView;
@@ -63,7 +64,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     private SettingsControl settingsControl;
 
     public AppView() {
-        if (getCurrentUser() == null) {
+        if (Utils.getCurrentUser() == null) {
             LOGGER.info("LOG: In Constructor of App View - No User given!");
         }
         setUpUI();
@@ -134,7 +135,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private void initNavigationBar(boolean unreadMessages) {
         /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
-        String currentUserType = getCurrentUser().getType();
+        String currentUserType = Utils.getCurrentUser().getType();
         if (Objects.equals(currentUserType, "st"))
             navigationBar.addItem("Mein Profil", e -> navigateToUserProfile());
         else if (Objects.equals(currentUserType, "cp"))
@@ -158,7 +159,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             - There are unread messages
             - TODO: Check for unread applications
         */
-        if(settingsControl.getUserSettings(getCurrentUser().getId()).getNotificationIsEnabled())
+        if(settingsControl.getUserSettings(Utils.getCurrentUser().getId()).getNotificationIsEnabled())
         {
             if(unreadMessages)
             {
@@ -210,7 +211,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private void navigateToUserProfile() {
         String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-        String currentUserId = Integer.toString(getCurrentUser().getId());
+        String currentUserId = Integer.toString(Utils.getCurrentUser().getId());
         if(!Objects.equals(currentLocation, Globals.Pages.PROFILE_VIEW + currentUserId))
             UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + currentUserId);
     }
@@ -224,7 +225,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private void navigateToMessages() {
         String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-        String currentUserId = Integer.toString(getCurrentUser().getId());
+        String currentUserId = Integer.toString(Utils.getCurrentUser().getId());
         if(!Objects.equals(currentLocation, Globals.Pages.INBOX_VIEW + currentUserId))
             UI.getCurrent().navigate(Globals.Pages.INBOX_VIEW + currentUserId);
     }
@@ -332,7 +333,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             navigationBar.removeAll();
 
             // Highlight des Posteingang-Tabs, wenn es ungelesene Nachrichten gibt
-            initNavigationBar(messageRepository.findMessagesByRecipientAndRead(getCurrentUser().getId(),
+            initNavigationBar(messageRepository.findMessagesByRecipientAndRead(Utils.getCurrentUser().getId(),
                     false).size() > 0);
         }
 
@@ -351,14 +352,14 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private boolean checkIfUserIsLoggedIn() {
         // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
-        UserDTO userDTO = this.getCurrentUser();
+        UserDTO userDTO = Utils.getCurrentUser();
         return userDTO != null;
     }
 
     private boolean navigateToLoginIfSessionNeeded() {
         // Falls der Benutzer nicht eingeloggt ist, und versucht eine interne Seite aufzurufen,
         // dann wird er auf die Startseite gelenkt
-        UserDTO userDTO = this.getCurrentUser();
+        UserDTO userDTO = Utils.getCurrentUser();
         String pageTitle = getCurrentPageTitle();
         if (userDTO == null && !pageTitle.equals(Globals.PageTitles.REGISTER_PAGE_TITLE) &&
                 !pageTitle.equals(Globals.PageTitles.LOGIN_PAGE_TITLE) &&
@@ -378,15 +379,11 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     }
 
     private String getCurrentNameOfUser() {
-        return getCurrentUser().getFirstName();
-    }
-
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
+        return Utils.getCurrentUser().getFirstName();
     }
 
     private int getContactPersonsCompanyId() {
-        int contactPersonId = getCurrentUser().getId();
+        int contactPersonId = Utils.getCurrentUser().getId();
         ContactPerson contactPerson = contactPersonRepository.findContactPersonById(contactPersonId);
         return contactPerson.getCompany().getId();
     }
@@ -402,7 +399,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
      *
      */
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if (getCurrentUser() == null){
+        if (Utils.getCurrentUser() == null){
             LOGGER.info("Reroute");
             //beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
         }

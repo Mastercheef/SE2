@@ -90,6 +90,7 @@ public class UserFactory {
         contactPerson.setDateOfBirth(userDTO.getDateOfBirth());
         contactPerson.setEmail(userDTO.getEmail());
         contactPerson.setPassword(userDTO.getPassword());
+        contactPerson.setPassword(Utils.hashPassword(userDTO.getPassword()));
 
         return contactPerson;
     }
