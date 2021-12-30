@@ -293,7 +293,7 @@ public class RegistrationView extends Div {
     public void autoLoginAfterRegistration(UserDTOImpl userDTO) throws DatabaseUserException {
         LoginResultDTO isAuthenticated = loginControl.authentificate(userDTO.getEmail(), userDTO.getPassword());
         if (isAuthenticated.getResult()) {
-            UI.getCurrent().getSession().setAttribute( Globals.CURRENT_USER, loginControl.getCurrentUser() );
+            UI.getCurrent().getSession().setAttribute( Globals.CURRENT_USER, Utils.getCurrentUser() );
         } else {
             Utils.triggerDialogMessage(Globals.View.ERROR,"Fehler beim automatischen einloggen. Bitte versuchen Sie es erneut");
         }

@@ -14,6 +14,7 @@ import org.hbrs.se2.project.coll.control.SettingsControl;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.SettingsDTO;
 import org.hbrs.se2.project.coll.layout.AppView;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public class SettingsView extends VerticalLayout implements AfterNavigationObser
     // Used to show/update SettingsDTO/Settings of the current user
     @Override
     public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
-        SettingsDTO settingsDTO = settingsControl.getUserSettings(loginControl.getCurrentUser().getId());
+        SettingsDTO settingsDTO = settingsControl.getUserSettings(Utils.getCurrentUser().getId());
 
         CheckboxGroup<String> checkboxGroup = initCheckboxGroup(settingsDTO);
 

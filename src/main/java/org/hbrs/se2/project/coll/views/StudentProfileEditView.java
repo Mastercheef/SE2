@@ -270,7 +270,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
 
     private void checkIfUserIsLoggedIn() {
         // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
-        UserDTO userDTO = this.getCurrentUser();
+        UserDTO userDTO = Utils.getCurrentUser();
         if (userDTO == null) {
             UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
         }
@@ -278,7 +278,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
 
     // If the user is not the owner of this profile, they get redirected to the profile
     private boolean checkIfUserIsProfileOwner() {
-        if(this.getCurrentUser() != null && this.getCurrentUser().getId() != studentId)
+        if(Utils.getCurrentUser() != null && Utils.getCurrentUser().getId() != studentId)
         {
             UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
             UI.getCurrent().getPage().reload();
@@ -286,10 +286,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         }
         else
             return true;
-    }
-
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
 
     @Override
@@ -303,7 +299,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
      *
      */
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if (getCurrentUser() == null){
+        if (Utils.getCurrentUser() == null){
             beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
         }
     }

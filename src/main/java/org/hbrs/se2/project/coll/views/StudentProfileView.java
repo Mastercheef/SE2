@@ -18,6 +18,7 @@ import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -121,7 +122,6 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         }
 
         // Profile Data
-        // TODO: Get Data from UserDTO
         HorizontalLayout hsalutation    = new HorizontalLayout(salutation, lsalutation);
         HorizontalLayout htitle         = new HorizontalLayout(title, ltitle);
         HorizontalLayout hfirstname     = new HorizontalLayout(firstname, lfirstname);
@@ -159,17 +159,14 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
                 hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail, hnumber, hinterests, hwebsite, haboutme);
 
         // Add Edit Button ONLY when the logged-in user is the owner of this profile
-        if (getCurrentUser() != null) {
-            int currentUserId = getCurrentUser().getId();
+        if (Utils.getCurrentUser() != null) {
+            int currentUserId = Utils.getCurrentUser().getId();
             if(Objects.equals(profileDTO.getId(), currentUserId))
                 div.add(hbuttons);
         }
         add(div);
     }
 
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
-    }
 }
 
 

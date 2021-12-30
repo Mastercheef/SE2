@@ -53,8 +53,8 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                 Utils.navigateToMain();
                 event.rerouteTo(Globals.Pages.MAIN_VIEW);
             } else {
-                if (getCurrentUser() != null) {
-                    if (!getCurrentUser().getType().equals("cp")) {
+                if (Utils.getCurrentUser() != null) {
+                    if (!Utils.getCurrentUser().getType().equals("cp")) {
                         Utils.triggerDialogMessage("Zugriff Verweigert", "Sie können keine Nachricht an andere Studenten schicken");
                         Utils.navigateToMain();
                         event.rerouteTo(Globals.Pages.MAIN_VIEW);
@@ -121,7 +121,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                 try {
                     contactingControl.sendMessage(
                             textArea.getValue(),
-                            this.getCurrentUser().getId(),
+                            Utils.getCurrentUser().getId(),
                             receiver,
                             subjectField.getValue(),
                             LocalDate.now()
@@ -151,10 +151,6 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
 
         add(title, subtitle, subjectField, textArea, hbuttons);
 
-    }
-
-    public UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
 
     public boolean checkIfContactingUser() {

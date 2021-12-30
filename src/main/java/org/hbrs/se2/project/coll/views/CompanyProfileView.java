@@ -23,6 +23,7 @@ import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.LabelCompany;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -158,8 +159,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Add Edit Button ONLY when the logged-in user is the contact person of this company
         int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
 
-        if (loginControl.getCurrentUser() != null) {
-            int currentUserId = loginControl.getCurrentUser().getId();
+        if (Utils.getCurrentUser() != null) {
+            int currentUserId = Utils.getCurrentUser().getId();
             if(Objects.equals(contactPersonId, currentUserId))
                 div.add(hbuttons);
         }
@@ -214,8 +215,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Add "New Job" Button ONLY when the logged-in user is the contact person of this company
         int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
 
-        if (loginControl.getCurrentUser() != null) {
-            int currentUserId = loginControl.getCurrentUser().getId();
+        if (Utils.getCurrentUser() != null) {
+            int currentUserId = Utils.getCurrentUser().getId();
             if(Objects.equals(contactPersonId, currentUserId))
                 form.add(hbuttons);
         }
@@ -300,7 +301,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 hJobButtons.add(contactButton);
 
                 // Button to delete. Only viewable by company's contact person
-                if(contactPersonId == loginControl.getCurrentUser().getId())
+                if(contactPersonId == Utils.getCurrentUser().getId())
                 {
                     Button deleteButton = new Button("Stellenangebot löschen");
                     deleteButton.addClickListener(e -> {

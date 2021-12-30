@@ -257,7 +257,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
     // If the user is not logged in, they get redirected to the login page
     private void checkIfUserIsLoggedIn() {
-        UserDTO userDTO = loginControl.getCurrentUser();
+        UserDTO userDTO = Utils.getCurrentUser();
         if (userDTO == null) {
             UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
         }
@@ -265,6 +265,6 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
     // If the user is not the owner of this profile, they get redirected to the profile
     private boolean checkIfUserIsProfileOwner() {
-        return contactPersonControl.checkIfUserIsProfileOwner(loginControl.getCurrentUser(), companyId);
+        return contactPersonControl.checkIfUserIsProfileOwner(Utils.getCurrentUser(), companyId);
     }
 }
