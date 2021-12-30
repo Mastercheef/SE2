@@ -26,11 +26,11 @@ class ContactPersonRepositoryTest {
 
     @Test
     void findContactPersonByIdNotNull() {
-        assertNotNull(contactPersonRepository.findContactPersonById(19999978));
+        assertNotNull(contactPersonRepository.findContactPersonById(20000001));
     }
     @Test
     void findContactPersonByCompanyIdNull() {
-        assertNull(        contactPersonRepository.findContactPersonByCompanyId(40560000));
+        assertNull(        contactPersonRepository.findContactPersonByCompanyId(40004010));
     }
     @Test
     void findContactPersonByIdNull() {
@@ -44,6 +44,6 @@ class ContactPersonRepositoryTest {
 
     @Test
     void findContactPersonById() {
-        assertEquals("admin",contactPersonRepository.findContactPersonById(19999978).getRole());
+        assertEquals("admin",contactPersonRepository.findContactPersonById(20000001).getRole());
     }
 }

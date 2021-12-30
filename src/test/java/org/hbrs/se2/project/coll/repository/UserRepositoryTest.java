@@ -9,7 +9,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.*;
-@RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureEmbeddedDatabase(provider = AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY )
 @Sql( {"/schema.sql" , "/data.sql"})
@@ -28,24 +27,24 @@ class UserRepositoryTest {
     }
     @Test
     void findUserByEmail() {
-        assertEquals(19999952,userRepository.findUserByEmail("hans@hbrs.de").getId());
+        assertEquals(20000000,userRepository.findUserByEmail("hans@hbrs.de").getId());
     }
 
     @Test
     void findUserByIdNotNull() {
-        assertNotNull(userRepository.findUserById(19999952));
+        assertNotNull(userRepository.findUserById(20000000));
     }
     @Test
     void findUserByIdNull() {
-        assertNull(userRepository.findUserById(19939952));
+        assertNull(userRepository.findUserById(204445000));
 
     }
     @Test
     void findUserById() {
-        assertEquals("Hans",userRepository.findUserById(19999952).getFirstName());
-        assertEquals("Meier",userRepository.findUserById(19999952).getLastName());
-        assertEquals("st",userRepository.findUserById(19999952).getType());
-        assertEquals("hans@hbrs.de",userRepository.findUserById(19999952).getEmail());
+        assertEquals("Hans",userRepository.findUserById(20000000).getFirstName());
+        assertEquals("Meier",userRepository.findUserById(20000000).getLastName());
+        assertEquals("st",userRepository.findUserById(20000000).getType());
+        assertEquals("hans@hbrs.de",userRepository.findUserById(20000000).getEmail());
 
     }
 }
