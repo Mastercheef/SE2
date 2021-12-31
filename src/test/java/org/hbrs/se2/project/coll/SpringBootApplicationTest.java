@@ -11,5 +11,6 @@ class SpringBootApplicationTest {
 
     @Test
     void contextLoads() {
+        //Testing CollApplication
     }
 }

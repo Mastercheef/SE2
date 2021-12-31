@@ -2,7 +2,6 @@ package org.hbrs.se2.project.coll.views;
 
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.Company;
-import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.repository.AddressRepository;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
@@ -10,9 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
