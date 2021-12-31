@@ -108,7 +108,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         H1 homeIcon = new H1("Coll@HBRS");
         homeIcon.getElement().getClassList().add("pointer");
-        homeIcon.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW));
+        homeIcon.addClickListener(e -> Utils.navigateToMain());
         homeIconHorizontalLayout.add(homeIcon);
         headerLayout.add(homeIconHorizontalLayout);
 
@@ -125,8 +125,8 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         // If user is not logged in, show Login/Register Buttons
         if(!checkIfUserIsLoggedIn()) {
-            navigationBar.addItem("Registrieren" , e -> UI.getCurrent().navigate(Globals.Pages.REGISTER_VIEW));
-            navigationBar.addItem("Login" , e -> UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW));
+            navigationBar.addItem("Registrieren" , e -> navigateToRegistration());
+            navigationBar.addItem("Login" , e -> navigateToLogin());
         }
         headerNavigationPanel.add(navigationBar);
         headerLayout.add( headerNavigationPanel );
@@ -223,6 +223,18 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + currentCompanyId);
     }
 
+    private void navigateToRegistration() {
+        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
+        if(!Objects.equals(currentLocation, Globals.Pages.REGISTER_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.REGISTER_VIEW);
+    }
+
+    private void navigateToLogin() {
+        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
+        if(!Objects.equals(currentLocation, Globals.Pages.LOGIN_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
+    }
+
     private void navigateToMessages() {
         String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
         String currentUserId = Integer.toString(Utils.getCurrentUser().getId());
@@ -239,7 +251,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     private void logoutUser() {
         UI ui = this.getUI().get();
         ui.getSession().close();
-        ui.getCurrent().navigate(Globals.Pages.MAIN_VIEW);
+        Utils.navigateToMain();
     }
 
 

@@ -21,6 +21,10 @@ public class ContactPersonControl {
     @Autowired
     private AddressControl addressControl;
 
+    public ContactPerson findContactPersonById(int id) {
+        return contactPersonRepository.findContactPersonById(id);
+    }
+
     public ContactPerson createNewContactPerson(UserDTO userDTO, Company company) throws DatabaseUserException {
         Address address = handleAddressExistance(userDTO.getAddress());
         ContactPerson newContactPerson = UserFactory.createContactPersonFromBasicUser(userDTO);

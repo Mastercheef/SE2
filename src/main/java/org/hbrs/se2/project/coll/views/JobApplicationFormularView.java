@@ -182,8 +182,8 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
 
     public void loadStudentUserInformation() {
         try {
-            if(getCurrentUser() != null) {
-                studentUserDTO = studentUserRepository.findStudentUserById(this.getCurrentUser().getId());
+            if(Utils.getCurrentUser() != null) {
+                studentUserDTO = studentUserRepository.findStudentUserById(Utils.getCurrentUser().getId());
                 sSalutation = new Span(studentUserDTO.getSalutation() + " " + studentUserDTO.getTitle());
                 sName = new Span(studentUserDTO.getFirstName() + " " + studentUserDTO.getLastName());
                 sDateOfBirth = new Span(Utils.convertToGermanDateFormat(studentUserDTO.getDateOfBirth()));
@@ -199,7 +199,4 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
         }
     }
 
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
-    }
 }

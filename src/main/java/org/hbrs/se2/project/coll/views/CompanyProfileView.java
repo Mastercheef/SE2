@@ -23,6 +23,7 @@ import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.LabelCompany;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -129,8 +130,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Edit Profile Button
         HorizontalLayout hbuttons = new HorizontalLayout();
         Button button = new Button("Profil editieren");
-        button.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_EDIT_VIEW +
-                companyId));
+        button.addClickListener(e -> navigateToEdit(companyId));
         hbuttons.add(button);
 
         // Alignment of profile information
@@ -157,8 +157,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Add Edit Button ONLY when the logged-in user is the contact person of this company
         int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
 
-        if (loginControl.getCurrentUser() != null) {
-            int currentUserId = loginControl.getCurrentUser().getId();
+        if (Utils.getCurrentUser() != null) {
+            int currentUserId = Utils.getCurrentUser().getId();
             if(Objects.equals(contactPersonId, currentUserId))
                 div.add(hbuttons);
         }
@@ -206,15 +206,14 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         form.add(jobHeadline);
 
         Button newJob = new Button("Neues Stellenangebot");
-        newJob.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.RECRUITMENT_VIEW +
-                companyId));
+        newJob.addClickListener(e -> navigateToCreateJob(companyId));
         HorizontalLayout hbuttons = new HorizontalLayout(newJob);
 
         // Add "New Job" Button ONLY when the logged-in user is the contact person of this company
         int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
 
-        if (loginControl.getCurrentUser() != null) {
-            int currentUserId = loginControl.getCurrentUser().getId();
+        if (Utils.getCurrentUser() != null) {
+            int currentUserId = Utils.getCurrentUser().getId();
             if(Objects.equals(contactPersonId, currentUserId))
                 form.add(hbuttons);
         }
@@ -294,12 +293,11 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 // Create Buttons to get in contact with the Company
                 HorizontalLayout hJobButtons = new HorizontalLayout();
                 Button contactButton = new Button("Kontakt aufnehmen");
-                contactButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.CONTACTING_VIEW +
-                        companyId + "/" + job.getId()));
+                contactButton.addClickListener(e -> Utils.navigateToContactFormular(companyId, job.getId()));
                 hJobButtons.add(contactButton);
 
                 // Button to delete. Only viewable by company's contact person
-                if(contactPersonId == loginControl.getCurrentUser().getId())
+                if(contactPersonId == Utils.getCurrentUser().getId())
                 {
                     Button deleteButton = new Button("Stellenangebot löschen");
                     deleteButton.addClickListener(e -> {
@@ -339,6 +337,15 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
             }
         }
         return form;
+    }
+
+    public static void navigateToEdit(int companyId) {
+        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.COMPANYPROFILE_EDIT_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_EDIT_VIEW + companyId);
+    }
+    public static void navigateToCreateJob(int companyId) {
+        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.RECRUITMENT_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.RECRUITMENT_VIEW + companyId);
     }
 
     public CompanyProfileView() {

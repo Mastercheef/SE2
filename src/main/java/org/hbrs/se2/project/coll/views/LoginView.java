@@ -9,6 +9,7 @@ import org.hbrs.se2.project.coll.control.LoginControl;
 import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -49,6 +50,6 @@ public class LoginView extends VerticalLayout {
     }
 
     private void navigateToMainPage() {
-        UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW);
+        Utils.navigateToMain();
     }
 }

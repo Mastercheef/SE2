@@ -199,7 +199,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
 
     // If the user is not logged in, they get redirected to the login page
     private boolean checkIfUserIsLoggedIn() {
-        UserDTO userDTO = this.getCurrentUser();
+        UserDTO userDTO = Utils.getCurrentUser();
         if (userDTO == null) {
             UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
             return false;
@@ -209,7 +209,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
 
     // If the user is not the owner of this profile, they get redirected to the profile
     private boolean checkIfUserIsProfileOwner(int parameter) {
-        int userId = this.getCurrentUser().getId();
+        int userId = Utils.getCurrentUser().getId();
         int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(parameter).getId();
 
         if(userId == contactPersonId)
@@ -222,10 +222,6 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
             UI.getCurrent().getPage().reload();
             return false;
         }
-    }
-
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
 
     public boolean checkForEmptyInput() {

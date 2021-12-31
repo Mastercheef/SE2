@@ -23,6 +23,7 @@ import org.hbrs.se2.project.coll.dtos.MessageDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -116,7 +117,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         });
 
         // Fetch messages for current user and fill grid with them
-        messages = inboxControl.getMessages(getCurrentUser().getId());
+        messages = inboxControl.getMessages(Utils.getCurrentUser().getId());
         grid.setItems(messages);
 
         // Hint if user has no messages
@@ -333,7 +334,4 @@ public class InboxView extends Div implements HasUrlParameter<String> {
 
     }
 
-    public UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
-    }
 }

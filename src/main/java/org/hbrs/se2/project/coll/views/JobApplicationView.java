@@ -177,7 +177,7 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
 
     public void loadStudentUserInformation() {
         try {
-            if(getCurrentUser() != null) {
+            if(Utils.getCurrentUser() != null) {
                 StudentUser studentUser = jobApplication.getStudentUser();
                 System.out.println(studentUser.getId());
                 sSalutation = new Span(studentUser.getSalutation() + " " + studentUser.getTitle());
@@ -196,18 +196,14 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
     }
 
     private boolean checkIfCurrentUserIsApplicant() {
-        return jobApplication.getStudentUser().getId() == getCurrentUser().getId();
+        return jobApplication.getStudentUser().getId() == Utils.getCurrentUser().getId();
     }
 
     private boolean checkIfCurrentUserIsContactPerson() {
-        return jobApplication.getJobAdvertisement().getContactPerson().getId() == getCurrentUser().getId();
+        return jobApplication.getJobAdvertisement().getContactPerson().getId() == Utils.getCurrentUser().getId();
     }
 
     private boolean checkForAuthorization() {
         return checkIfCurrentUserIsApplicant() || checkIfCurrentUserIsContactPerson();
-    }
-
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
 }

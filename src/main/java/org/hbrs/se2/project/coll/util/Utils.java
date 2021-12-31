@@ -67,7 +67,28 @@ public class Utils {
         return BCrypt.hashpw(plain, BCrypt.gensalt());
     }
 
+    // Getters
+    public static String getCurrentLocation() {
+        return UI.getCurrent().getInternals().getActiveViewLocation().getPath();
+    }
+
+    public static UserDTO getCurrentUser() {
+        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
+    }
+
     // Navigation Methods
+    public static void navigateToMain() {
+        if(!Objects.equals(getCurrentLocation(), Globals.Pages.MAIN_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW);
+    }
+    public static void navigateToLogin() {
+        if(!Objects.equals(getCurrentLocation(), Globals.Pages.LOGIN_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
+    }
+    public static void navigateToContactFormular(int companyId, int jobId) {
+        if(!Objects.equals(getCurrentLocation(), Globals.Pages.CONTACTING_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.CONTACTING_VIEW + companyId + "/" + jobId);
+    }
     public static void navigateToJobList() {
         if(!Objects.equals(getCurrentLocation(), Globals.Pages.JOBLIST_VIEW))
             UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW);
@@ -79,15 +100,6 @@ public class Utils {
     public static void navigateToJobList(String keyword, String type) {
         if(!Objects.equals(getCurrentLocation(), Globals.Pages.JOBLIST_VIEW))
             UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW + keyword + "/" + type);
-    }
-
-    // Getters
-    public static String getCurrentLocation() {
-        return UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-    }
-
-    public static UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
 
 }
