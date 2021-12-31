@@ -329,7 +329,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     }
 
     public InboxView() {
-
+        //Required for Vaadin
     }
 
 }

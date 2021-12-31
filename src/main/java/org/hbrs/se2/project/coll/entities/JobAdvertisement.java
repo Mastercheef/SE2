@@ -132,16 +132,7 @@ public class JobAdvertisement {
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
-/*
-    @ManyToOne
-    @JoinTable(name = "col_tab_contact_person", schema = "collhbrs", joinColumns = @JoinColumn(name = "company_id"))
-    public CompanyProfile getCompany() {
-        return company;
-    }
-    public void setCompany(CompanyProfile company) {
-        this.company = company;
-    }
-*/
+
     @OneToMany(mappedBy = "jobAdvertisement")
     public Set<JobApplication> getApplicants() {
         return applications;

@@ -80,7 +80,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         // Erstellung der vertikalen Navigationsleiste (Drawer)
         menu = createMenu();
-        //addToDrawer(createDrawerContent(menu));
+
     }
 
     /**
@@ -98,7 +98,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         headerLayout.setJustifyContentMode( FlexComponent.JustifyContentMode.EVENLY );
 
         // Hinzufügen des Toogle ('Big Mac') zum Ein- und Ausschalten des Drawers
-        //layout.add(new DrawerToggle());
+
         HorizontalLayout homeIconHorizontalLayout = new HorizontalLayout();
         homeIconHorizontalLayout.setHeightFull();
         homeIconHorizontalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -149,10 +149,9 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
                 null, true);
         messages.addClickListener(e -> navigateToMessages());
 
-        // TODO: Add click listener for application tab
         MenuItem applications = createIconItem(inboxSubMenu, VaadinIcon.FILE, "Bewerbungen",
                 null, true);
-        //applications.addClickListener(e -> navigateToApplications());
+
 
         /*  Check if:
             - If a user has enabled notifications
@@ -166,12 +165,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
                 inbox.getElement().getStyle().set("color", "rgb(66, 221, 21)");
                 messages.getElement().getStyle().set("color", "rgb(66, 221, 21)");
             }
-            // TODO
-            /*if(unreadApplications)
-            {
-                inbox.getElement().getStyle().set("color", "rgb(66, 221, 21)");
-                applications.getElement().getStyle().set("color", "rgb(66, 221, 21)");
-            }*/
+
         }
 
         createIconItem(navigationBar, VaadinIcon.COG, "", null)

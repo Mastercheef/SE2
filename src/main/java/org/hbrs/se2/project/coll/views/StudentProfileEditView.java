@@ -32,8 +32,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
 
     //automatisches binding der Textfelder in ein DTO kann nicht durchgeführt werden,
     //da address eigene Entity ist und kein String
-    //private Binder<StudentUserDTOImpl> binder = new Binder(StudentUserDTOImpl.class);
-
     Label       infoText        = new Label("Mit (*) markierte Felder sind notwendig.");
     Label       lsalutation     = new Label("Anrede (*):");
     Label       ltitle          = new Label("Titel:");
