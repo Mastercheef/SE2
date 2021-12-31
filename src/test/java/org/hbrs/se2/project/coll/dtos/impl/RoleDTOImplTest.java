@@ -9,22 +9,22 @@ class RoleDTOImplTest {
 
     private RoleDTOImpl roleDTO;
 
-    private final String manager = "Manager";
+    private final String MANAGER = "Manager";
 
     @BeforeEach
     void setUp() {
         roleDTO = new RoleDTOImpl();
-        roleDTO.setDesignation(manager);
+        roleDTO.setDesignation(MANAGER);
     }
 
     @Test
     void setLabel() {
-        assertEquals(manager , roleDTO.getDesignation());
+        assertEquals(MANAGER , roleDTO.getDesignation());
     }
 
     @Test
     void getBezeichhnung() {
-        assertEquals(manager , roleDTO.getDesignation());
+        assertEquals(MANAGER , roleDTO.getDesignation());
     }
 
     @Test

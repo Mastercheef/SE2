@@ -8,43 +8,48 @@ class AddressTest {
 
     private Address address = new Address();
 
+    private static final String POSTAL_CODE = "12345";
+    private static final int ID = 20;
+    private static final String COUNTRY = "Deutschland";
+    private static final String STREET = "Musterstrasse";
+    private static final String HOUSE_NUMBER = "1";
     @Test
     void testGetId(){
-        address.setId(20);
-        assertEquals(20, address.getId());
+        address.setId(ID);
+        assertEquals(ID, address.getId());
     }
 
     @Test
     void testGetPostal(){
-        address.setPostalCode("12345");
-        assertEquals("12345", address.getPostalCode());
+        address.setPostalCode(POSTAL_CODE);
+        assertEquals(POSTAL_CODE, address.getPostalCode());
     }
 
     @Test
     void testGetCountry(){
-        address.setCountry("Deutschland");
-        assertEquals("Deutschland", address.getCountry());
+        address.setCountry(COUNTRY);
+        assertEquals(COUNTRY, address.getCountry());
     }
 
     @Test
     void testGetStreet(){
-        address.setStreet("Musterstrasse");
-        assertEquals("Musterstrasse", address.getStreet());
+        address.setStreet(STREET);
+        assertEquals(STREET, address.getStreet());
     }
 
     @Test
     void testGetHouseNumber(){
-        address.setHouseNumber("1");
-        assertEquals("1", address.getHouseNumber());
+        address.setHouseNumber(HOUSE_NUMBER);
+        assertEquals(HOUSE_NUMBER, address.getHouseNumber());
     }
 
     @Test
     void testToString() {
-        address.setPostalCode("12345");
-        address.setStreet("Musterstrasse");
+        address.setPostalCode(POSTAL_CODE);
+        address.setStreet(STREET);
         address.setCity("Musterstadt");
-        address.setCountry("Deutschland");
-        address.setHouseNumber("1");
+        address.setCountry(COUNTRY);
+        address.setHouseNumber(HOUSE_NUMBER);
 
         assertEquals(
                 "Musterstrasse 1\n" +

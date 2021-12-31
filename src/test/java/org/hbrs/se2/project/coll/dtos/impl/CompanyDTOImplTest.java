@@ -74,7 +74,7 @@ class CompanyDTOImplTest {
         JobAdvertisementDTOimpl jobAdvertisementDTOimplTwo = new JobAdvertisementDTOimpl();
         JobAdvertisementDTOimpl jobAdvertisementDTOimplThree = new JobAdvertisementDTOimpl();
 
-        Set<JobAdvertisementDTO> jobAdvertisementDTOSet = new HashSet<JobAdvertisementDTO>();
+        Set<JobAdvertisementDTO> jobAdvertisementDTOSet = new HashSet<>();
         jobAdvertisementDTOSet.add(jobAdvertisementDTOimplOne);
         jobAdvertisementDTOSet.add(jobAdvertisementDTOimplTwo);
         jobAdvertisementDTOSet.add(jobAdvertisementDTOimplThree);
