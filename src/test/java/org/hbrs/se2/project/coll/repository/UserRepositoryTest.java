@@ -23,7 +23,7 @@ class UserRepositoryTest {
     }
     @Test
     void findUserByEmailNull() {
-        assertNull(userRepository.findUserByEmail(EMAIL));
+        assertNull(userRepository.findUserByEmail("Hans@hans.de"));
     }
     @Test
     void findUserByEmail() {
@@ -44,7 +44,7 @@ class UserRepositoryTest {
         assertEquals("Hans",userRepository.findUserById(20000000).getFirstName());
         assertEquals("Meier",userRepository.findUserById(20000000).getLastName());
         assertEquals("st",userRepository.findUserById(20000000).getType());
-        assertEquals("EMAIL",userRepository.findUserById(20000000).getEmail());
+        assertEquals(EMAIL,userRepository.findUserById(20000000).getEmail());
 
     }
 }
