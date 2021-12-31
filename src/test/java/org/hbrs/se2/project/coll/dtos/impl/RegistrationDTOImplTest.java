@@ -24,7 +24,9 @@ class RegistrationDTOImplTest {
 
     @Test
     void setUserDTO() {
+        assertNull(registrationDTO.getUserDTO());
         registrationDTO.setUserDTO(userDTO);
+        assertNotNull(registrationDTO.getUserDTO());
     }
 
     @Test

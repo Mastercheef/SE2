@@ -4,8 +4,6 @@ import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
