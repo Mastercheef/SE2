@@ -16,7 +16,7 @@ import static org.mockito.Mockito.spy;
 
 class JobFactoryTest {
 
-    private static final String errorMessage = "class org.hbrs.se2.project.coll.control.factories.JobFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.JobFactory with modifiers \"private\"";
+    private static final String ERROR_MESSAGE = "class org.hbrs.se2.project.coll.control.factories.JobFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.JobFactory with modifiers \"private\"";
 
     private JobAdvertisementDTOimpl dto;
 
@@ -73,7 +73,7 @@ class JobFactoryTest {
         Constructor<JobFactory> constructor = JobFactory.class.getDeclaredConstructor();
         assertTrue(Modifier.isPrivate(constructor.getModifiers()));
         Throwable exceptionThatWasThrown = assertThrows(IllegalAccessException.class, constructor::newInstance);
-        assertEquals(errorMessage, exceptionThatWasThrown.getMessage());
+        assertEquals(ERROR_MESSAGE, exceptionThatWasThrown.getMessage());
         constructor.setAccessible(true);
         assertThrows(ReflectiveOperationException.class,constructor::newInstance);
     }

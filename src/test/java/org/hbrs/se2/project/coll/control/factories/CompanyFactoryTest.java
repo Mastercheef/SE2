@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CompanyFactoryTest {
 
-    private static final String errorMessage = "class org.hbrs.se2.project.coll.control.factories.CompanyFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.CompanyFactory with modifiers \"private\"";
+    private static final String ERROR_MESSAGE = "class org.hbrs.se2.project.coll.control.factories.CompanyFactoryTest cannot access a member of class org.hbrs.se2.project.coll.control.factories.CompanyFactory with modifiers \"private\"";
 
     @Mock
     private CompanyDTO companyDTO;
@@ -52,7 +52,7 @@ class CompanyFactoryTest {
         Constructor<CompanyFactory> constructor = CompanyFactory.class.getDeclaredConstructor();
         assertTrue(Modifier.isPrivate(constructor.getModifiers()));
         Throwable exceptionThatWasThrown = assertThrows(IllegalAccessException.class, constructor::newInstance);
-        assertEquals(errorMessage, exceptionThatWasThrown.getMessage());
+        assertEquals(ERROR_MESSAGE, exceptionThatWasThrown.getMessage());
         constructor.setAccessible(true);
         assertThrows(ReflectiveOperationException.class,constructor::newInstance);
     }
