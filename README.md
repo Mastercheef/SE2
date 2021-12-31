@@ -2,30 +2,25 @@
 
 ### Inhaltsverzeichnis
 
-[About](#About)<br>
-[Prerequisites](#Prerequisites)<br>
-[Getting Started](#Getting Started)<br>
-[Install](#Install)<br>
-[Built Using](#Built Using)<br>
+[About](#about)<br>
+[Prerequisites](#prerequisites)<br>
+[Getting Started](#getting_started)<br>
+[Built Using](#built_using)<br>
 
-## About
+## About <a name = "about"></a>
 Coll@HBRS is an employment website to connect students and employers
 
-## Prerequisites
+## Prerequisites <a name = "prerequisites"></a>
 Make sure you have installed all of the following prerequisites on your development machine:
 * Git - [Download & Install Git](https://git-scm.com/downloads).
 + JDK 11- [Download & Install JDK 11](https://openjdk.java.net/projects/jdk/11/)
 
 
-## Getting Started
+## Getting Started <a name = "getting_started"></a>
 The Spring Boot Maven plugin includes a run goal which can be used to quickly compile and run your application. 
 >$ mvn spring-boot:run
 
-## Install
-
-npm install
-
-##  Built Using
+##  Built Using <a name = "built_using"></a>
 
 - [PostgreSQL](https://www.postgresql.org/) - Database
 - [Vaadin](https://vaadin.com/) - Web Framework
