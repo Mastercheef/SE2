@@ -16,7 +16,7 @@ INSERT INTO collhbrs.col_tab_contact_person VALUES (20000001, 40000001, 'admin')
 INSERT INTO collhbrs.col_tab_job_advertisement VALUES (false, 'Vollzeit', 60, 'Alles', 10000001, '2021-12-01', '2024-01-14', 20000000, 'Du weißt was ich meine', 10, 'Persoenliche Assistentin', 30000000);
 INSERT INTO collhbrs.col_tab_job_advertisement VALUES (true, 'Vollzeit', 60, 'Alles', 10000001, '2021-12-01', '2024-01-14', 20000000, 'Du weißt was ich meine', 10, 'Datenbankexperte', 30000001);
 
-INSERT INTO collhbrs.col_tab_student VALUES ('student_description', 'website', 'graduation', 'skills', 'interests', 20000000, 'subject_field');
+INSERT INTO collhbrs.col_tab_student VALUES ('student_description', 'website.de', '2000-1-2', 'Ganz viele Skillz', 'Viele Interessen', 20000000, 'subject_field');
 INSERT INTO collhbrs.col_tab_student VALUES (NULL, NULL, NULL, NULL, NULL, 20000001, NULL);
 
 INSERT INTO collhbrs.col_tab_application VALUES (60000001, 20000001, 30000001, 'Bewerbung auf Keller Mitarbeiter', 'Bin stabil', '2021-12-29');

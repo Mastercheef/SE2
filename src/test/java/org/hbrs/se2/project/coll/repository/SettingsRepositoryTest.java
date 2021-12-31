@@ -33,4 +33,6 @@ class SettingsRepositoryTest {
     void findSettingsByIdFalse() {
         assertFalse(settingsRepository.findSettingsById(20000002).getNotificationIsEnabled());
     }
+
+
 }
