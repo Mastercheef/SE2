@@ -25,6 +25,7 @@ INSERT INTO collhbrs.col_tab_message VALUES (50000000, 20000000, 20000001, 'hall
 INSERT INTO collhbrs.col_tab_message VALUES (50000001, 20000000, 20000001, 'eine frage', 'Frage bzgl. Super Engineer', '2021-12-29', false);
 INSERT INTO collhbrs.col_tab_message VALUES (50000002, 20000002, 20000001, 'Habe gehört su bist stabil', 'Mitarbeiter gesucht', '2021-12-29', true);
 INSERT INTO collhbrs.col_tab_message VALUES (50000003, 20000001, 20000000, 'hey', 'Frage bzgl. Super Engineer', '2021-12-29', false);
+
 INSERT INTO collhbrs.col_tab_settings VALUES (20000000, true);
 INSERT INTO collhbrs.col_tab_settings VALUES (20000001, true);
 INSERT INTO collhbrs.col_tab_settings VALUES (20000002, false);
