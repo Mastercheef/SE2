@@ -1,8 +1,5 @@
 package org.hbrs.se2.project.coll.entities;
 
-
-import org.mindrot.jbcrypt.BCrypt;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;

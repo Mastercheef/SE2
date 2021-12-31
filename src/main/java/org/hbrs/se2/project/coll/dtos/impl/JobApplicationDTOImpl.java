@@ -1,6 +1,5 @@
 package org.hbrs.se2.project.coll.dtos.impl;
 
-import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.dtos.JobApplicationDTO;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.entities.StudentUser;
