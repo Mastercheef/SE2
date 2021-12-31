@@ -135,6 +135,22 @@ class UserFactoryTest {
 
         StudentUser studentUser;
 
+        mocking();
+
+        studentUser = UserFactory.createStudentUserFromBasicUser(userDTO);
+
+        assertEquals(100 , studentUser.getId());
+        assertEquals("st" , studentUser.getType());
+        assertEquals("Herr" , studentUser.getSalutation());
+        assertEquals("Dr." , studentUser.getTitle());
+        assertEquals("Max" , studentUser.getFirstName());
+        assertEquals("Mustermann" , studentUser.getLastName());
+        assertEquals("0123456789" , studentUser.getPhone());
+        assertEquals(LocalDate.of(2000, 1, 23), studentUser.getDateOfBirth());
+        assertEquals(email ,studentUser.getEmail());
+    }
+
+    private void mocking() {
         when(userDTO.getId()).thenReturn(100);
         when(userDTO.getType()).thenReturn("st");
         when(userDTO.getSalutation()).thenReturn("Herr");
@@ -151,18 +167,6 @@ class UserFactoryTest {
         when(userDTO.getPhone()).thenReturn("0123456789");
         when(userDTO.getEmail()).thenReturn(email);
         when(userDTO.getPassword()).thenReturn(password);
-
-        studentUser = UserFactory.createStudentUserFromBasicUser(userDTO);
-
-        assertEquals(100 , studentUser.getId());
-        assertEquals("st" , studentUser.getType());
-        assertEquals("Herr" , studentUser.getSalutation());
-        assertEquals("Dr." , studentUser.getTitle());
-        assertEquals("Max" , studentUser.getFirstName());
-        assertEquals("Mustermann" , studentUser.getLastName());
-        assertEquals("0123456789" , studentUser.getPhone());
-        assertEquals(LocalDate.of(2000, 1, 23), studentUser.getDateOfBirth());
-        assertEquals(email ,studentUser.getEmail());
     }
 
     @Test
@@ -207,23 +211,7 @@ class UserFactoryTest {
 
         ContactPerson contactPerson;
 
-        when(userDTO.getId()).thenReturn(100);
-        when(userDTO.getType()).thenReturn("st");
-        when(userDTO.getSalutation()).thenReturn("Herr");
-        when(userDTO.getTitle()).thenReturn("Dr.");
-        when(userDTO.getFirstName()).thenReturn("Max");
-        when(userDTO.getLastName()).thenReturn(name);
-        when(userDTO.getDateOfBirth()).thenReturn(localDate);
-        when(userDTO.getAddress()).thenReturn(address);
-        when(userDTO.getAddress().getStreet()).thenReturn("Mustermannstraße");
-        when(userDTO.getAddress().getCountry()).thenReturn("DE");
-        when(userDTO.getAddress().getHouseNumber()).thenReturn("2");
-        when(userDTO.getAddress().getCity()).thenReturn("Mustermannstadt");
-        when(userDTO.getAddress().getPostalCode()).thenReturn("12345");
-        when(userDTO.getPhone()).thenReturn("0123456789");
-        when(userDTO.getEmail()).thenReturn(email);
-        when(userDTO.getPassword()).thenReturn(password);
-
+        mocking();
         contactPerson = UserFactory.createContactPersonFromBasicUser(userDTO);
         assertSame(contactPerson.getClass(), ContactPerson.class, "Returned type is not a ContactPerson");
 
