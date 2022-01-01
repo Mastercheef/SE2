@@ -18,6 +18,14 @@ class CompanyRepositoryTest {
     @Autowired
     CompanyRepository companyRepository;
 
+
+    private static final String COMPANY_NAME = "Dicker Bubatz";
+    private static final String WEBSITE = "www.bubatz.de";
+    private static final String PHONENUMBER = "12345";
+    private static final String E_MAIL = "firma@bubatz.de";
+    private static final String FAX_NUMBER = "12345";
+    private static final int ID = 40000000;
+
     @Test
     void findCompanyProfileByIDNotNull() {
         assertNotNull(companyRepository.findCompanyProfileById(40000000));
@@ -26,13 +34,13 @@ class CompanyRepositoryTest {
 
     @Test
     void findCompanyProfileById() {
-        assertEquals("Dicker Bubatz" , companyRepository.findCompanyProfileById(40000000).getCompanyName());
-        assertEquals("www.bubatz.de" , companyRepository.findCompanyProfileById(40000000).getWebsite());
-        assertEquals("12345" , companyRepository.findCompanyProfileById(40000000).getPhoneNumber());
-        assertEquals("firma@bubatz.de" , companyRepository.findCompanyProfileById(40000000).getEmail());
-        assertEquals("Dicker Bubatz" , companyRepository.findCompanyProfileById(40000000).getDescription());
-        assertEquals("12345" , companyRepository.findCompanyProfileById(40000000).getFaxNumber());
-        assertEquals(40000000, companyRepository.findCompanyProfileById(40000000).getId());
+        assertEquals(COMPANY_NAME , companyRepository.findCompanyProfileById(40000000).getCompanyName());
+        assertEquals(WEBSITE , companyRepository.findCompanyProfileById(40000000).getWebsite());
+        assertEquals(PHONENUMBER , companyRepository.findCompanyProfileById(40000000).getPhoneNumber());
+        assertEquals(E_MAIL , companyRepository.findCompanyProfileById(40000000).getEmail());
+        assertEquals(COMPANY_NAME , companyRepository.findCompanyProfileById(40000000).getDescription());
+        assertEquals(FAX_NUMBER , companyRepository.findCompanyProfileById(40000000).getFaxNumber());
+        assertEquals(ID, companyRepository.findCompanyProfileById(40000000).getId());
     }
     @Test
     void findCompanyProfileByIDNull() {
@@ -44,22 +52,22 @@ class CompanyRepositoryTest {
     @Test
     void findCompanyByCompanyNameAndEmailAndWebsiteNotNull() {
         assertNotNull(companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
-                "Dicker Bubatz" , "firma@bubatz.de" , "www.bubatz.de" ));
+                COMPANY_NAME , E_MAIL , WEBSITE ));
     }
     @Test
     void findCompanyByCompanyNameAndEmailAndWebsiteID() {
-        assertEquals(40000000 , companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
-                "Dicker Bubatz" , "firma@bubatz.de" , "www.bubatz.de" ).getId());
+        assertEquals(ID , companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
+                COMPANY_NAME , E_MAIL , WEBSITE ).getId());
     }
 
     @Test
     void findCompanyByCompanyNameAndEmailAndWebsiteNull() {
         assertNull(companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
-                "Bubatz" , "firma@bubatz.de" , "www.bubatz.de" ));
+                "Bubatz" , E_MAIL , WEBSITE ));
         assertNull(companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
-                "Dicker Bubatz" , "firma@bubatz.gmx" , "www.bubatz.de" ));
+                COMPANY_NAME , "firma@bubatz.gmx" , WEBSITE ));
         assertNull(companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
-                "Dicker Bubatz" , "firma@bubatz.de" , "www.bubatz.com" ));
+                COMPANY_NAME , E_MAIL , "www.bubatz.com" ));
         assertNull(companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
                 "" , "firma@" , "" ));
 
