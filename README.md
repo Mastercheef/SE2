@@ -7,6 +7,8 @@
 [Running Tests](#running_tests)<br>
 [Getting Started](#getting_started)<br>
 [Built Using](#built_using)<br>
+[Roadmap](#roadmap)<br>
+[License](#license)<br>
 
 ## About <a name = "about"></a>
 Coll@HBRS is an employment website to connect students and employers
@@ -33,6 +35,15 @@ The Spring Boot Maven plugin includes a run goal which can be used to quickly co
 
 
 
+## Roadmap  <a name = "roadmap"></a>
+
+See the [open issues](https://gitlab.unige.ch/Joakim.Tutt/Best-README-Template/-/issues) for a list of proposed features (and known issues).
+
+
+
+## License <a name = "license"></a>
+
+Distributed under the MIT License. See `LICENSE` for more information.
 
 
 
