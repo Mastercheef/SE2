@@ -14,6 +14,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @Sql( {"/schema.sql" , "/data.sql"})
 class JobAdvertisementRepositoryTest {
 
+    private static final String JOB_TITLE = "Persoenliche Assistentin";
+    private static final String TYPE_OF_EMPLOYMENT = "Vollzeit";
+    private static final String REQUIREMENTS = "Alles";
+    private static final LocalDate START_OF_WORK = LocalDate.of(2021,12,1);
+    private static final LocalDate END_OF_WORK = LocalDate.of(2024,1,14);
+    private static final short WORKING_HOURS = 60;
+    private static final int SALARY = 10;
+
     @Autowired
     JobAdvertisementRepository jobAdvertisementRepository;
 
@@ -28,14 +36,14 @@ class JobAdvertisementRepositoryTest {
 
     @Test
     void findJobAdvertisementByIde() {
-        assertEquals("Persoenliche Assistentin",   jobAdvertisementRepository.findJobAdvertisementById(30000000).getJobTitle());
-        assertEquals("Vollzeit",   jobAdvertisementRepository.findJobAdvertisementById(30000000).getTypeOfEmployment());
-        assertEquals("Alles",   jobAdvertisementRepository.findJobAdvertisementById(30000000).getRequirements());
+        assertEquals(JOB_TITLE,   jobAdvertisementRepository.findJobAdvertisementById(30000000).getJobTitle());
+        assertEquals(TYPE_OF_EMPLOYMENT,   jobAdvertisementRepository.findJobAdvertisementById(30000000).getTypeOfEmployment());
+        assertEquals(REQUIREMENTS,   jobAdvertisementRepository.findJobAdvertisementById(30000000).getRequirements());
         assertEquals(false,   jobAdvertisementRepository.findJobAdvertisementById(30000000).getTemporaryEmployment());
-        assertEquals(LocalDate.of(2021,12,1),   jobAdvertisementRepository.findJobAdvertisementById(30000000).getStartOfWork());
-        assertEquals(LocalDate.of(2024,1,14),   jobAdvertisementRepository.findJobAdvertisementById(30000000).getEndOfWork());
-        assertEquals((short)60,   jobAdvertisementRepository.findJobAdvertisementById(30000000).getWorkingHours());
-        assertEquals(10,   jobAdvertisementRepository.findJobAdvertisementById(30000000).getSalary());
+        assertEquals(START_OF_WORK,   jobAdvertisementRepository.findJobAdvertisementById(30000000).getStartOfWork());
+        assertEquals(END_OF_WORK,   jobAdvertisementRepository.findJobAdvertisementById(30000000).getEndOfWork());
+        assertEquals(WORKING_HOURS,   jobAdvertisementRepository.findJobAdvertisementById(30000000).getWorkingHours());
+        assertEquals(SALARY,   jobAdvertisementRepository.findJobAdvertisementById(30000000).getSalary());
 
     }
 
@@ -48,32 +56,30 @@ class JobAdvertisementRepositoryTest {
     @Test
     void filterJobsNotemptyList() {
         assertTrue(jobAdvertisementRepository.filterJobs(
-                "Persoenliche Assistentin","Vollzeit","Alles" ,false , LocalDate.of(2021,12,1) ,(short)60 ,10).size() == 1);
+                JOB_TITLE,TYPE_OF_EMPLOYMENT,REQUIREMENTS ,false , START_OF_WORK ,WORKING_HOURS ,SALARY).size() == 1);
     }
 
 
-    //    List<JobAdvertisement> filterJobs(String title, String type, String requirements, LocalDate date, short hours, int salary);
     @Test
     void testFilterJobsListNotEmpty() {
-        assertFalse(jobAdvertisementRepository.filterJobs("Persoenliche Assistentin" , "Vollzeit" , "Alles" ,  LocalDate.of(2021,12,1) , (short) 60 , 10).isEmpty());
+        assertFalse(jobAdvertisementRepository.filterJobs(JOB_TITLE , TYPE_OF_EMPLOYMENT , REQUIREMENTS ,  START_OF_WORK , WORKING_HOURS , SALARY).isEmpty());
     }
 
     @Test
     void testFilterJobsEmpty() {
-        assertTrue(jobAdvertisementRepository.filterJobs("Koch" , "Vollzeit" , "Alles" ,  LocalDate.of(2021,12,1) , (short) 60 , 10).isEmpty());
+        assertTrue(jobAdvertisementRepository.filterJobs("Koch" , TYPE_OF_EMPLOYMENT , REQUIREMENTS ,  START_OF_WORK , WORKING_HOURS , SALARY).isEmpty());
     }
 
-    //    List<JobAdvertisement> filterJobs(String title, String requirements, boolean temporaryEmployment, LocalDate date, short hours, int salary);
     @Test
     void testFilterJobs1NotEmpty() {
         assertFalse(jobAdvertisementRepository.filterJobs(
-               "Persoenliche Assistentin" , "Alles" , false ,  LocalDate.of(2021,12,1) ,  (short) 60 , 10).isEmpty());
+                JOB_TITLE , REQUIREMENTS , false ,  START_OF_WORK ,  WORKING_HOURS , SALARY).isEmpty());
     }
 
     @Test
     void testFilterJobs1Empty() {
         assertTrue(jobAdvertisementRepository.filterJobs(
-                "Koch" , "Alles" , false ,  LocalDate.of(2021,12,1) ,  (short) 60 , 10).isEmpty());
+                "Koch" , REQUIREMENTS , false ,  START_OF_WORK ,  WORKING_HOURS , SALARY).isEmpty());
     }
 
 
