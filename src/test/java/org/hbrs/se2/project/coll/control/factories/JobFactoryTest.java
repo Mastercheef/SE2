@@ -1,8 +1,7 @@
 package org.hbrs.se2.project.coll.control.factories;
+import org.hbrs.se2.project.coll.dtos.JobApplicationDTO;
 import org.hbrs.se2.project.coll.dtos.impl.JobAdvertisementDTOimpl;
-import org.hbrs.se2.project.coll.entities.Address;
-import org.hbrs.se2.project.coll.entities.ContactPerson;
-import org.hbrs.se2.project.coll.entities.JobAdvertisement;
+import org.hbrs.se2.project.coll.entities.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -13,6 +12,7 @@ import java.lang.reflect.Modifier;
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 class JobFactoryTest {
 
@@ -27,6 +27,9 @@ class JobFactoryTest {
 
     @Mock
     ContactPerson contactPerson;
+
+    @Mock
+    JobApplicationDTO jobApplicationDTO;
 
     @BeforeEach
     void setUp() {
@@ -76,5 +79,31 @@ class JobFactoryTest {
         assertEquals(ERROR_MESSAGE, exceptionThatWasThrown.getMessage());
         constructor.setAccessible(true);
         assertThrows(ReflectiveOperationException.class,constructor::newInstance);
+    }
+
+    @Test
+    void createJobDTO() {
+    }
+
+    @Test
+    void createJobApplication() {
+
+        String jobApplicationHeadline = "jobApplicationDTO Headline";
+        String jobApplicationDTOText = "jobApplicationDTO Text";
+        LocalDate dtoDate = LocalDate.of(2000,1,2);
+
+        when(jobApplicationDTO.getStudentUser()).thenReturn(new StudentUser());
+        when(jobApplicationDTO.getJobAdvertisement()).thenReturn(new JobAdvertisement());
+        when(jobApplicationDTO.getHeadline()).thenReturn(jobApplicationHeadline);
+        when(jobApplicationDTO.getText()).thenReturn("jobApplicationDTO Text");
+        when(jobApplicationDTO.getDate()).thenReturn(dtoDate);
+
+        JobApplication jobApplication = JobFactory.createJobApplication(jobApplicationDTO);
+        assertNotNull(jobApplication.getStudentUser());
+        assertNotNull(jobApplication.getJobAdvertisement());
+        assertEquals( jobApplicationHeadline , jobApplication.getHeadline());
+        assertEquals(jobApplicationDTOText , jobApplication.getText());
+        assertEquals(dtoDate , jobApplication.getDate());
+
     }
 }

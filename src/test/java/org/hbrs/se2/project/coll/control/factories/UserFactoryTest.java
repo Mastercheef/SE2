@@ -1,6 +1,7 @@
 package org.hbrs.se2.project.coll.control.factories;
 
 import org.hbrs.se2.project.coll.dtos.ContactPersonDTO;
+import org.hbrs.se2.project.coll.dtos.SettingsDTO;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.*;
@@ -36,6 +37,9 @@ class UserFactoryTest {
 
     @Mock
     ContactPersonDTO contactPersonDTO;
+
+    @Mock
+    SettingsDTO settingsDTO;
 
     private final LocalDate localDate = LocalDate.of(2000, 1, 23);
 
@@ -232,5 +236,16 @@ class UserFactoryTest {
         assertEquals(EMAIL, contactPerson.getEmail());
 
 
+    }
+
+    @Test
+    void createSetting() {
+
+        when(settingsDTO.getId()).thenReturn(100);
+        when(settingsDTO.getNotificationIsEnabled()).thenReturn(true);
+        Settings settings= UserFactory.createSettings(settingsDTO);
+
+        assertEquals(100 , settings.getId());
+        assertTrue(settings.getNotificationIsEnabled());
     }
 }
