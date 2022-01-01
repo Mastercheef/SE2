@@ -23,11 +23,6 @@ class StudentProfileControlTest {
     @Mock
     StudentUserDTO studentUserDTO;
 
-
-    @Before
-    public void setup(){
-        MockitoAnnotations.openMocks(this); //without this you will get NPE
-    }
     @Test
     void loadProfileDataById() {
         when(studentProfileControl.loadProfileDataById(100)).thenReturn(studentUserDTO);
