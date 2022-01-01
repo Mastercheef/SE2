@@ -35,7 +35,6 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
     private String jobId = null;
     private int userId;
     private UserDTO receiverUser;
-    private int contactPersonId;
     private int receiver = 0;
 
     @Override
@@ -75,14 +74,13 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
         }
     }
 
-    private H2 title;
-    private H4 subtitle;
-
     public void initContacting() {
         setSizeFull();
         TextField subjectField = new TextField();
 
         // Title
+        H2 title;
+        H4 subtitle;
         if (checkIfContactingUser()) {
             title = new H2("Nachricht an " + receiverUser.getFirstName() + " " + receiverUser.getLastName());
             subtitle = new H4();

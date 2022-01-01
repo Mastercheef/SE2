@@ -172,30 +172,30 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
         // Labels
         H3 contactHeadline  = new H3("Kontaktperson dieser Firma");
-        Label name          = new Label("Name:");
-        Label phone         = new Label("Telefon:");
-        Label email         = new Label("E-Mail:");
-        Label position      = new Label("Abteilung:");
+        Label contactName          = new Label("Name:");
+        Label contactPhone         = new Label("Telefon:");
+        Label contactEmail         = new Label("E-Mail:");
+        Label contactPosition      = new Label("Abteilung:");
 
-        Label lname         = new Label(contactPerson.getFirstName() + " " + contactPerson.getLastName());
-        Label lphone        = new Label(contactPerson.getPhone());
-        Label lemail        = new Label(contactPerson.getEmail());
-        Label lposition     = new Label(contactPerson.getRole());
+        Label lcontactName         = new Label(contactPerson.getFirstName() + " " + contactPerson.getLastName());
+        Label lcontactPhone        = new Label(contactPerson.getPhone());
+        Label lcontactEmail        = new Label(contactPerson.getEmail());
+        Label lcontactPosition     = new Label(contactPerson.getRole());
 
         // Styling
-        for (Label label : new Label[]{ name, phone, email, position }) {
+        for (Label label : new Label[]{ contactName, contactPhone, contactEmail, contactPosition }) {
             label.getElement().getStyle().set(FONT, "bold");
             label.setWidth("100px");
         }
 
         // Alignment
-        HorizontalLayout hname      = new HorizontalLayout(name, lname);
-        HorizontalLayout hphone     = new HorizontalLayout(phone, lphone);
-        HorizontalLayout hemail     = new HorizontalLayout(email, lemail);
-        HorizontalLayout hposition  = new HorizontalLayout(position, lposition);
+        HorizontalLayout hContactName      = new HorizontalLayout(contactName, lcontactName);
+        HorizontalLayout hContactPhone     = new HorizontalLayout(contactPhone, lcontactPhone);
+        HorizontalLayout hContactEmail     = new HorizontalLayout(contactEmail, lcontactEmail);
+        HorizontalLayout hContactPosition  = new HorizontalLayout(contactPosition, lcontactPosition);
 
         // Add to div
-        form.add(contactHeadline, hname, hphone, hemail, hposition);
+        form.add(contactHeadline, hContactName, hContactPhone, hContactEmail, hContactPosition);
         return form;
     }
 

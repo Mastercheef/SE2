@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Objects;
 
 @Route(value = "companyprofile_edit", layout = AppView.class)
 @PageTitle("Edit your Profile")
@@ -81,8 +80,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     @Override
     public void setParameter(BeforeEvent event,
                              String parameter) {
-        if (!parameter.equals("")) {
-            if(checkIfUserIsLoggedIn()){
+        if (!parameter.equals("") && checkIfUserIsLoggedIn()) {
                 CompanyDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
                 companyId = profileDTO.getId();
                 boolean ownership = checkIfUserIsProfileOwner();
@@ -104,7 +102,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
                     Utils.navigateToCompanyProfile(companyId);
                     UI.getCurrent().getPage().reload();
                 }
-            }
+
         }
     }
 
