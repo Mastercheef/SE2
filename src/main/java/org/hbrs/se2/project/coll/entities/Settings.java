@@ -1,6 +1,7 @@
 package org.hbrs.se2.project.coll.entities;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table( name ="col_tab_settings" , schema = "collhbrs" )
@@ -32,4 +33,14 @@ public class Settings {
         this.notificationIsEnabled = notificationIsEnabled;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash( this.getId(), this.getUser() , this.getNotificationIsEnabled());
+    }
+
+    @Override
+    public String toString() {
+        return ( this.getId()  +  " " + this.getUser().getId() + " " + this.getNotificationIsEnabled() );
+
+    }
 }
