@@ -1,28 +1,29 @@
 package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
-import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.StudentUserDTOImpl;
-import org.hbrs.se2.project.coll.entities.StudentUser;
-import org.junit.Before;
+import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 class StudentProfileControlTest {
 
-    @Mock
-    private StudentProfileControl studentProfileControl;
+    @InjectMocks
+    private StudentProfileControl studentProfileControl = new StudentProfileControl();
 
     @Mock
+    private StudentUserRepository studentUserRepository;
+
     StudentUserDTOImpl studentUserDTO;
 
     @BeforeEach
@@ -33,20 +34,16 @@ class StudentProfileControlTest {
 
     @Test
     void loadProfileDataById() {
-        when(studentProfileControl.loadProfileDataById(100)).thenReturn(studentUserDTO);
+        MockitoAnnotations.openMocks(this);
+        doReturn(studentUserDTO).when(studentUserRepository).findStudentUserById(100);
         assertNotNull(studentProfileControl.loadProfileDataById(100));
+        assertEquals(studentUserDTO , studentProfileControl.loadProfileDataById(100));
 
-        assertEquals(100 , studentUserDTO.getId());
+
     }
 
     @Test
     void updateStudentProfile() throws DatabaseUserException {
-
-
-
-        when(studentProfileControl.updateStudentProfile(studentUserDTO)).thenReturn(new StudentUser());
-        assertEquals(new StudentUser(), studentProfileControl.updateStudentProfile(studentUserDTO));
-
 
     }
 }
