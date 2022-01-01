@@ -133,7 +133,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         return headerLayout;
     }
 
-    private void initNavigationBar(boolean unreadMessages) {
+    private void initNavigationBar(boolean allMessagesRead) {
         /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
         String currentUserType = Utils.getCurrentUser().getType();
         if (Objects.equals(currentUserType, "st"))
@@ -160,7 +160,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         */
         if(settingsControl.getUserSettings(Utils.getCurrentUser().getId()).getNotificationIsEnabled())
         {
-            if(unreadMessages)
+            if(!allMessagesRead)
             {
                 inbox.getElement().getStyle().set("color", "rgb(66, 221, 21)");
                 messages.getElement().getStyle().set("color", "rgb(66, 221, 21)");
@@ -370,8 +370,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
                 !pageTitle.equals(Globals.PageTitles.MAIN_PAGE_TITLE) &&
                 !pageTitle.equals(Globals.PageTitles.JOBADVERTISEMENT_PAGE_TITLE) &&
                 !pageTitle.equals(Globals.PageTitles.JOBLIST_PAGE_TITLE)) {
-            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
-            //UI.getCurrent().getPage().reload();
+            navigateToLogin();
             return false;
         }
         return true;

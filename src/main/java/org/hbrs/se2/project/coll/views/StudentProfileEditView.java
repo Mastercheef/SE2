@@ -19,6 +19,8 @@ import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Objects;
+
 @Route(value = "profile_edit", layout = AppView.class)
 @PageTitle("StudentProfileEdit")
 public class StudentProfileEditView extends VerticalLayout implements HasUrlParameter<String>, BeforeEnterObserver {
@@ -171,11 +173,10 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         saveButton.addClickListener(e -> {
             if(!checkForEmptyInput()) {
                 updateProfileData();
-                UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
+                navigateToProfile(studentId);
             }
         });
-        cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW +
-                studentId));
+        cancelButton.addClickListener(e -> navigateToProfile(studentId));
         hbuttons.add(saveButton, cancelButton);
 
         // Alignment of profile information
@@ -267,11 +268,16 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         return empty;
     }
 
+    public static void navigateToProfile(int studentId) {
+        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.PROFILE_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
+    }
+
     private boolean checkIfUserIsLoggedIn() {
         // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
         UserDTO userDTO = Utils.getCurrentUser();
         if (userDTO == null) {
-            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
+            Utils.navigateToLogin();
             return false;
         }
         else
@@ -282,7 +288,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     private boolean checkIfUserIsProfileOwner() {
         if(Utils.getCurrentUser() != null && Utils.getCurrentUser().getId() != studentId)
         {
-            UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
+            navigateToProfile(studentId);
             UI.getCurrent().getPage().reload();
             return false;
         }

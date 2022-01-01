@@ -141,8 +141,7 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         // Edit Profile Button
         HorizontalLayout hbuttons = new HorizontalLayout();
         Button button = new Button("Profil editieren");
-        button.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_EDIT_VIEW +
-                profileDTO.getId()));
+        button.addClickListener(e -> navigateToEdit(profileDTO.getId()));
         hbuttons.add(button);
 
         // Alignment of profile information
@@ -163,6 +162,10 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
                 div.add(hbuttons);
         }
         add(div);
+    }
+    public static void navigateToEdit(int studentId) {
+        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.PROFILE_EDIT_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.PROFILE_EDIT_VIEW + studentId);
     }
 
 }
