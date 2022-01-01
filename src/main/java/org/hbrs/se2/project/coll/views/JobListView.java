@@ -244,15 +244,18 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
         Span requirements       = new Span(jobAdvertisement.getRequirements());
 
         // Buttons for engagement
-        Button details = new Button("Details");
-        Button message = new Button("Frage stellen");
-        Button apply = new Button("Jetzt bewerben!");
+        Button details  = new Button("Details");
+        Button message  = new Button("Frage stellen");
+        Button profile  = new Button("Profil besuchen");
+        Button apply    = new Button("Jetzt bewerben!");
 
         // Button functionality
         details.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.JOBADVERTISEMENT_VIEW +
                 jobAdvertisement.getId()));
         message.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.CONTACTING_VIEW +
                 companyId + "/" + jobAdvertisement.getId(), "_blank"));
+        profile.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.COMPANYPROFILE_VIEW
+                + companyId));
         apply.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.JOBADVERTISEMENT_VIEW +
                 jobAdvertisement.getId() + "/" + Globals.Pages.APPLICATION_VIEW));
 
@@ -264,7 +267,7 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
         HorizontalLayout dateAndHours = new HorizontalLayout(new Span("Ab:"), startOfWork,
                 new Span("Stunden/Woche:"), workingHours);
 
-        HorizontalLayout buttons            = new HorizontalLayout(details, message, apply);
+        HorizontalLayout buttons            = new HorizontalLayout(details, message, profile, apply);
         HorizontalLayout salaryInfo         = new HorizontalLayout(new Span("Vergütung:"), salary);
         HorizontalLayout requirementsInfo   = new HorizontalLayout(new Span("Voraussetzungen:"), requirements,
                                                 buttons);
