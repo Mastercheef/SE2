@@ -2,8 +2,10 @@ package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
+import org.hbrs.se2.project.coll.dtos.impl.StudentUserDTOImpl;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -21,12 +23,20 @@ class StudentProfileControlTest {
     private StudentProfileControl studentProfileControl;
 
     @Mock
-    StudentUserDTO studentUserDTO;
+    StudentUserDTOImpl studentUserDTO;
+
+    @BeforeEach
+    void setup() {
+        studentUserDTO = new StudentUserDTOImpl();
+        studentUserDTO.setId(100);
+    }
 
     @Test
     void loadProfileDataById() {
         when(studentProfileControl.loadProfileDataById(100)).thenReturn(studentUserDTO);
         assertNotNull(studentProfileControl.loadProfileDataById(100));
+
+        assertEquals(100 , studentUserDTO.getId());
     }
 
     @Test
