@@ -64,7 +64,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     private SettingsControl settingsControl;
 
     // Constants
-    private final String NOTIFICATION_COLOR = "rgb(66, 221, 21)";
+    private static final String NOTIFICATION_COLOR = "rgb(66, 221, 21)";
 
     public AppView() {
         if (Utils.getCurrentUser() == null) {
