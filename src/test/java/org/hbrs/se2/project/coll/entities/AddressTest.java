@@ -13,6 +13,7 @@ class AddressTest {
     private static final String COUNTRY = "Deutschland";
     private static final String STREET = "Musterstrasse";
     private static final String HOUSE_NUMBER = "1";
+    private static final String CITY = "Musterstadt";
     @Test
     void testGetId(){
         address.setId(ID);
@@ -44,16 +45,22 @@ class AddressTest {
     }
 
     @Test
+    void getCity(){
+        address.setCity(CITY);
+        assertEquals(CITY, address.getCity());
+    }
+
+    @Test
     void testToString() {
         address.setPostalCode(POSTAL_CODE);
         address.setStreet(STREET);
-        address.setCity("Musterstadt");
+        address.setCity(CITY);
         address.setCountry(COUNTRY);
         address.setHouseNumber(HOUSE_NUMBER);
 
         assertEquals(
-                "Musterstrasse 1\n" +
-                "12345 Musterstadt\n" +
-                "Deutschland",address.toString());
+                STREET + " " +  HOUSE_NUMBER+ "\n" +
+                POSTAL_CODE + " " + CITY + "\n" +
+                COUNTRY,address.toString());
     }
 }

@@ -80,7 +80,7 @@ class UserFactoryTest {
         assertEquals("Herr", studentUser.getSalutation(), "Salutation is not set correctly,should be Herr");
         assertNull(studentUser.getTitle(), "Title is not set correctly,should be null");
         assertEquals("Max", studentUser.getFirstName(), "First name is not set correctly,should be Max");
-        assertEquals("Mustermann", studentUser.getLastName(), "Last Name is not set correctly,should be " + NAME);
+        assertEquals(NAME, studentUser.getLastName(), "Last Name is not set correctly,should be " + NAME);
         assertEquals(STREET, studentUser.getAddress().getStreet());
         assertEquals("DE", studentUser.getAddress().getCountry());
         assertEquals(Integer.valueOf(2), Integer.valueOf(studentUser.getAddress().getHouseNumber()));

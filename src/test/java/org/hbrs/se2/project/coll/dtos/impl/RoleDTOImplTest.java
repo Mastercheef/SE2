@@ -9,7 +9,7 @@ class RoleDTOImplTest {
 
     private RoleDTOImpl roleDTO;
 
-    private final String MANAGER = "Manager";
+    private static final String MANAGER = "Manager";
 
     @BeforeEach
     void setUp() {
