@@ -144,7 +144,7 @@ class UserFactoryTest {
         assertEquals("Herr" , studentUser.getSalutation());
         assertEquals("Dr." , studentUser.getTitle());
         assertEquals("Max" , studentUser.getFirstName());
-        assertEquals("Mustermann" , studentUser.getLastName());
+        assertEquals(NAME , studentUser.getLastName());
         assertEquals(PHONE_NUMBER , studentUser.getPhone());
         assertEquals(LocalDate.of(2000, 1, 23), studentUser.getDateOfBirth());
         assertEquals(EMAIL,studentUser.getEmail());
