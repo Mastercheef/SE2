@@ -101,7 +101,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
                 }
                 else
                 {
-                    navigateToProfile(companyId);
+                    Utils.navigateToCompanyProfile(companyId);
                     UI.getCurrent().getPage().reload();
                 }
             }
@@ -171,10 +171,10 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
                 // Get all data from input fields and update Profile in database
                 CompanyDTO companyDTO = createCompanyDTO();
                 updateProfileData(companyDTO);
-                navigateToProfile(companyId);
+                Utils.navigateToCompanyProfile(companyId);
             }
         });
-        cancelButton.addClickListener(e -> navigateToProfile(companyId));
+        cancelButton.addClickListener(e -> Utils.navigateToCompanyProfile(companyId));
         hbuttons.add(saveButton, cancelButton);
 
         // Alignment of profile information
@@ -265,10 +265,6 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         }
         else
             return true;
-    }
-    public static void navigateToProfile(int companyId) {
-        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.COMPANYPROFILE_VIEW))
-            UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
     }
 
     // If the user is not the owner of this profile, they get redirected to the profile

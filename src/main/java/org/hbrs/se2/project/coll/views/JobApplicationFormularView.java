@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Route(value = Globals.Pages.JOBADVERTISEMENT_VIEW + ":adID/" + Globals.Pages.APPLICATION_VIEW , layout = AppView.class)
 @PageTitle(Globals.PageTitles.APPLICATION_PAGE_TITLE)
@@ -152,12 +153,16 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
             JobApplicationResultDTO applicationResult = jobApplicationControl.createJobApplication(form.createNewApplicationDTO());
             if (applicationResult.getResult()) {
                 Utils.triggerDialogMessage("Bewerbung übermittelt", "Wir haben Ihre Bewerbung erfolgreich übermittelt");
-                UI.getCurrent().navigate(Globals.Pages.JOBAPPLICATION_VIEW + applicationResult.getApplicationID());
+                navigateToJobApplication(applicationResult.getApplicationID());
             } else {
                 setErrorFields(applicationResult.getReasons());
             }
         });
         add(siteLayout);
+    }
+    public static void navigateToJobApplication(int id) {
+        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.JOBAPPLICATION_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.JOBAPPLICATION_VIEW + id);
     }
 
     public void setErrorFields(List<JobApplicationResultDTO.ReasonType> reasons) {

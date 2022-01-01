@@ -77,6 +77,10 @@ public class Utils {
     }
 
     // Navigation Methods
+    public static void navigateToCompanyProfile(int companyId) {
+        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.COMPANYPROFILE_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+    }
     public static void navigateToMain() {
         if(!Objects.equals(getCurrentLocation(), Globals.Pages.MAIN_VIEW))
             UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW);

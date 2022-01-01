@@ -276,7 +276,7 @@ public class RegistrationView extends Div {
                     // automatischer Login
                     autoLoginAfterRegistration(userDTO);
                     // Routing auf main Seite
-                    UI.getCurrent().navigate(Globals.Pages.MENU_VIEW);
+                    Utils.navigateToMain();
                 } else {
                     // Fehlerbehandlung: Fehlerhafte TextFields mit Error Message versehen und auf invalid setzen
                     setErrorFields(registrationResult.getReasons());

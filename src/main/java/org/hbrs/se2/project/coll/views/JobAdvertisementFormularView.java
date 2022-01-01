@@ -173,7 +173,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
                     JobAdvertisementDTO jobAdvertisementDTO = createNewJobAdvertisementDTO();
                     jobAdvertisementControl.saveAdvertisement(jobAdvertisementDTO);
 
-                    UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+                    Utils.navigateToCompanyProfile(companyId);
                     Dialog dialog = new Dialog();
                     dialog.add("Ihre Stellenanzeige wurde gespeichert!");
                     dialog.open();
@@ -184,8 +184,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
                 }
             }
         });
-        cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW +
-                companyId));
+        cancelButton.addClickListener(e -> Utils.navigateToCompanyProfile(companyId));
         hbuttons.add(saveButton, cancelButton);
 
         // Append to site
@@ -215,7 +214,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
             return true;
         else
         {
-            UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+            Utils.navigateToCompanyProfile(companyId);
             UI.getCurrent().getPage().reload();
             return false;
         }

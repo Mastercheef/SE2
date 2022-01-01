@@ -1,6 +1,5 @@
 package org.hbrs.se2.project.coll.views;
 
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H2;
@@ -131,7 +130,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                     if (checkIfContactingUser())
                         Utils.navigateToMain();
                     else
-                        UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+                        Utils.navigateToCompanyProfile(Integer.parseInt(companyId));
                 } catch (DatabaseUserException ex) {
                     ex.printStackTrace();
                     Dialog dialog = new Dialog();
@@ -143,8 +142,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                 textArea.setInvalid(true);
 
         });
-        cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW +
-                companyId));
+        cancelButton.addClickListener(e -> Utils.navigateToCompanyProfile(Integer.parseInt(companyId)));
 
         HorizontalLayout hbuttons = new HorizontalLayout(saveButton, cancelButton);
 
