@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,7 +25,12 @@ class StudentProfileControlTest {
     @Mock
     private StudentUserRepository studentUserRepository;
 
+    @Mock
+    StudentUserControl studentUserControl;
+
+
     StudentUserDTOImpl studentUserDTO;
+    StudentUserDTOImpl studentUserDTOUpdated;
 
     @BeforeEach
     void setup() {
@@ -44,6 +50,8 @@ class StudentProfileControlTest {
 
     @Test
     void updateStudentProfile() throws DatabaseUserException {
-
+        MockitoAnnotations.openMocks(this);
+        doReturn(studentUserDTOUpdated).when(studentUserControl).updateStudentUser(studentUserDTO);
+        assertEquals(studentUserDTOUpdated , studentProfileControl.updateStudentProfile(studentUserDTO));
     }
 }
