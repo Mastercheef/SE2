@@ -84,7 +84,7 @@ class StudentUserTest {
     void getApplications() {
         JobApplication jobApplicationOne = new JobApplication();
         JobApplication jobApplicationTwo = new JobApplication();
-        Set<JobApplication> setJob = new HashSet<JobApplication>();
+        Set<JobApplication> setJob = new HashSet<>();
         setJob.add(jobApplicationOne);
         setJob.add(jobApplicationTwo);
         studentUser.setApplications(setJob);
