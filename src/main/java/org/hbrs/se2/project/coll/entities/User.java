@@ -147,6 +147,7 @@ public class User {
         return Objects.hash( firstName, lastName, address, phone, dateOfBirth, email, password, id);
     }
 
+
     @Override
     public String toString() {
         return this.getId()  + ", " +

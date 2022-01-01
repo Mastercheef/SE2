@@ -43,4 +43,16 @@ public class Settings {
         return ( this.getId()  +  " " + this.getUser().getId() + " " + this.getNotificationIsEnabled() );
 
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Settings settings = (Settings) o;
+        return
+                        Objects.equals(id, settings.getId()) &&
+                        Objects.equals(user, settings.user) &&
+                        Objects.equals(notificationIsEnabled, settings.getNotificationIsEnabled());
+    }
+
 }
