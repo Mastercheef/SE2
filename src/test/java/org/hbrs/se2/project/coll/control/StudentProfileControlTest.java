@@ -42,8 +42,7 @@ class StudentProfileControlTest {
     @Test
     void updateStudentProfile() throws DatabaseUserException {
 
-        when(studentUserDTO.getId()).thenReturn(100);
-        assertEquals(100,studentUserDTO.getId());
+
 
         when(studentProfileControl.updateStudentProfile(studentUserDTO)).thenReturn(new StudentUser());
         assertEquals(new StudentUser(), studentProfileControl.updateStudentProfile(studentUserDTO));
