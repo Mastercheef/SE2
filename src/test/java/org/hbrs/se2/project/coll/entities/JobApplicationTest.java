@@ -15,8 +15,8 @@ public class JobApplicationTest {
     StudentUser studentUser= new StudentUser();
     JobAdvertisement jobAdvertisement = new JobAdvertisement();
 
-    private final String HEADLINE = "Headline";
-    private final String TEXT = "Text";
+    private static final String HEADLINE = "Headline";
+    private static final String TEXT = "Text";
     private final LocalDate localDate = LocalDate.of(2000,1,2);
     @Test
     void testGetId() {
