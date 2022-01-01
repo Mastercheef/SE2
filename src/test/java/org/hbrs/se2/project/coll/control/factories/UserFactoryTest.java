@@ -46,11 +46,12 @@ class UserFactoryTest {
     private static final String CITY = "Mustermannstadt";
     private static final String PLZ = "12345";
     private static final String PHONE_NUMBER = "0123456789";
+    private static final int ID  = 100;
     @Test
     void createStudentUser() {
         StudentUser studentUser;
 
-        when(studentDTO.getId()).thenReturn(100);
+        when(studentDTO.getId()).thenReturn(ID);
         when(studentDTO.getType()).thenReturn("st");
         when(studentDTO.getSalutation()).thenReturn("Herr");
         when(studentDTO.getTitle()).thenReturn(null);
@@ -75,7 +76,7 @@ class UserFactoryTest {
         studentUser = UserFactory.createStudentUser(studentDTO);
         assertTrue(studentUser instanceof StudentUser, "Returned type is not a studentUser");
 
-        assertEquals(100, studentUser.getId(), "ID is not set correctly,should be 100");
+        assertEquals(ID, studentUser.getId(), "ID is not set correctly,should be 100");
         assertEquals("st", studentUser.getType(), "Type is not set correctly,should be st");
         assertEquals("Herr", studentUser.getSalutation(), "Salutation is not set correctly,should be Herr");
         assertNull(studentUser.getTitle(), "Title is not set correctly,should be null");
@@ -102,7 +103,7 @@ class UserFactoryTest {
     void createUser() {
         User user;
 
-        when(userDTO.getId()).thenReturn(100);
+        when(userDTO.getId()).thenReturn(ID);
         when(userDTO.getType()).thenReturn("st");
         when(userDTO.getSalutation()).thenReturn("Herr");
         when(userDTO.getTitle()).thenReturn(null);
@@ -111,7 +112,7 @@ class UserFactoryTest {
         when(userDTO.getEmail()).thenReturn(EMAIL);
         when(userDTO.getPassword()).thenReturn(PASSWORD);
         user = UserFactory.createUser(userDTO);
-        assertEquals(100, user.getId(), "ID is not set correctly,should be 100");
+        assertEquals(ID, user.getId(), "ID is not set correctly,should be 100");
         assertEquals("st", user.getType(), "Type is not set correctly,should be st");
         assertEquals("Herr", user.getSalutation(), "Salutation is not set correctly,should be Herr");
         assertNull(user.getTitle(), "Title is not set correctly,should be null");
@@ -139,7 +140,7 @@ class UserFactoryTest {
 
         studentUser = UserFactory.createStudentUserFromBasicUser(userDTO);
 
-        assertEquals(100 , studentUser.getId());
+        assertEquals(ID , studentUser.getId());
         assertEquals("st" , studentUser.getType());
         assertEquals("Herr" , studentUser.getSalutation());
         assertEquals("Dr." , studentUser.getTitle());
@@ -151,7 +152,7 @@ class UserFactoryTest {
     }
 
     private void mocking() {
-        when(userDTO.getId()).thenReturn(100);
+        when(userDTO.getId()).thenReturn(ID);
         when(userDTO.getType()).thenReturn("st");
         when(userDTO.getSalutation()).thenReturn("Herr");
         when(userDTO.getTitle()).thenReturn("Dr.");
@@ -172,7 +173,7 @@ class UserFactoryTest {
     @Test
     void createContactPerson() {
         ContactPerson contactPerson ;
-        when(contactPersonDTO.getId()).thenReturn(100);
+        when(contactPersonDTO.getId()).thenReturn(ID);
         when(contactPersonDTO.getType()).thenReturn("st");
         when(contactPersonDTO.getSalutation()).thenReturn("Herr");
         when(contactPersonDTO.getTitle()).thenReturn("Prof.");
@@ -192,12 +193,12 @@ class UserFactoryTest {
         when(contactPersonDTO.getRole()).thenReturn("Datenbank-Experte");
 
         contactPerson = UserFactory.createContactPerson(contactPersonDTO);
-        assertEquals(100 , contactPerson.getId());
+        assertEquals(ID , contactPerson.getId());
         assertEquals("st" , contactPerson.getType());
         assertEquals("Herr" , contactPerson.getSalutation());
         assertEquals("Prof." , contactPerson.getTitle());
         assertEquals("Max" , contactPerson.getFirstName());
-        assertEquals("Mustermann" , contactPerson.getLastName());
+        assertEquals(NAME , contactPerson.getLastName());
         assertEquals(localDate , contactPerson.getDateOfBirth());
         assertNotNull(contactPerson.getAddress());
         assertEquals(PHONE_NUMBER , contactPerson.getPhone());
@@ -215,12 +216,12 @@ class UserFactoryTest {
         contactPerson = UserFactory.createContactPersonFromBasicUser(userDTO);
         assertSame(contactPerson.getClass(), ContactPerson.class, "Returned type is not a ContactPerson");
 
-        assertEquals(100 , contactPerson.getId());
+        assertEquals(ID , contactPerson.getId());
         assertEquals("st" , contactPerson.getType());
         assertEquals("Herr" , contactPerson.getSalutation());
         assertEquals("Dr." , contactPerson.getTitle());
         assertEquals("Max" , contactPerson.getFirstName());
-        assertEquals("Mustermann" , contactPerson.getLastName());
+        assertEquals(NAME , contactPerson.getLastName());
         assertEquals(STREET, contactPerson.getAddress().getStreet());
         assertEquals("DE", contactPerson.getAddress().getCountry());
         assertEquals(Integer.valueOf(2), Integer.valueOf(contactPerson.getAddress().getHouseNumber()));
