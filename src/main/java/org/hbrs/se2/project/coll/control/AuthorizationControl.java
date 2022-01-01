@@ -10,10 +10,10 @@ public class AuthorizationControl {
     private ContactPersonControl contactPersonControl;
 
     public AuthorizationControl() {
-
+        // May be of use in the future
     }
 
-    public boolean IsUserAllowedToAccessCompanyApplications(UserDTO user, int companyId) {
+    public boolean isUserAllowedToAccessCompanyApplications(UserDTO user, int companyId) {
         ContactPerson contactPerson = contactPersonControl.findContactPersonById(user.getId());
 
         if (contactPerson == null)

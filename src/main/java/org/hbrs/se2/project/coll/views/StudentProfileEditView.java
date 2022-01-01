@@ -76,18 +76,13 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     @Override
     public void setParameter(BeforeEvent event,
                              String parameter) {
-        if (!Utils.stringIsEmptyOrNull(parameter)) {
+        if (!Utils.stringIsEmptyOrNull(parameter) && checkIfUserIsLoggedIn()) {
+            profileDTO = profileControl.loadProfileDataById(Integer.parseInt(parameter));
+            studentId  = profileDTO.getId();
 
-            if(checkIfUserIsLoggedIn()){
-                profileDTO = profileControl.loadProfileDataById(Integer.parseInt(parameter));
-                studentId  = profileDTO.getId();
-
-                boolean ownership = checkIfUserIsProfileOwner();
-
-                if(ownership) {
-                    initLabels(profileDTO);
-                    createProfileEditView();
-                }
+            if(checkIfUserIsProfileOwner()) {
+                initLabels(profileDTO);
+                createProfileEditView();
             }
         }
     }

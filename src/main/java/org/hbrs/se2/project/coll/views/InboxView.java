@@ -37,8 +37,8 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     @Autowired
     InboxControl inboxControl;
 
-    private static  List<MessageDTO> messages = new ArrayList<>();
-    private static  Grid<MessageDTO> grid;
+    private static final Grid<MessageDTO> grid = new Grid<>(MessageDTO.class, false);
+    private static  List<MessageDTO> messages  = new ArrayList<>();
     private static  Div hint;
     private         SplitLayout splitLayout = new SplitLayout();
 
@@ -58,7 +58,6 @@ public class InboxView extends Div implements HasUrlParameter<String> {
 
     private void setupGrid() {
 
-        grid = new Grid<>(MessageDTO.class, false);
         grid.setAllRowsVisible(true);
 
         // Read/Not read
@@ -94,23 +93,17 @@ public class InboxView extends Div implements HasUrlParameter<String> {
 
         // Clicking a message opens it in the lower part of the window
         grid.addItemClickListener(message -> {
-            if(grid.getSelectionModel().getFirstSelectedItem().isPresent()) {
-                try {
+            try {
+                if(grid.getSelectionModel().getFirstSelectedItem().isPresent()) {
                     toggleReply(message.getItem(), true);
-
-                    // If needed: change envelope (read) icon
                     if(!message.getItem().getRead())
                         inboxControl.setMessageAsRead(message.getItem());
-                } catch (DatabaseUserException e) {
-                    e.printStackTrace();
                 }
-            }
-            else {
-                try {
+                else
                     toggleReply(null, false);
-                } catch (DatabaseUserException e) {
-                    e.printStackTrace();
-                }
+
+            } catch(DatabaseUserException e) {
+                e.printStackTrace();
             }
         });
 
@@ -121,17 +114,13 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         // Hint if user has no messages
         hint = new Div();
         hint.setText("Sie haben keine Nachrichten.");
-        hint.getStyle().set("padding", "var(--lumo-size-l)")
-                .set("text-align", "center").set("font-style", "italic")
-                .set("color", "var(--lumo-contrast-70pct)");
+        setDivStyle(hint);
 
         // Setup right side of the Layout, which works as a message Display / Answering UI
         // Hint if no message has been chosen (standard)
         Div hint2 = new Div();
         hint2.setText("Es wurde keine Nachricht ausgewählt.");
-        hint2.getStyle().set("padding", "var(--lumo-size-l)")
-                .set("text-align", "center").set("font-style", "italic")
-                .set("color", "var(--lumo-contrast-70pct)");
+        setDivStyle(hint2);
 
         VerticalLayout inbox = new VerticalLayout(hint, grid);
         VerticalLayout reply = new VerticalLayout(hint2);
@@ -153,29 +142,21 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         {
             // "Header" for message (Data that is in grid as well)
             Label sender = new Label("Absender:");
-            sender.getElement().getStyle().set("font-size", "14px")
-                    .set("font-weight", "bold");
-
             Label senderVal = new Label(inboxControl.getUserName(message.getSender()));
-            senderVal.getElement().getStyle().set("font-size", "14px");
-
             Label subject = new Label("Betreff:");
-            subject.getElement().getStyle().set("font-size", "14px")
-                    .set("font-weight", "bold");
-
             Label subjectVal = new Label(inboxControl.getSubject(message.getId()));
-            subjectVal.getElement().getStyle().set("font-size", "14px");
-
             Label date = new Label("Datum:");
-            date.getElement().getStyle().set("font-size", "14px")
-                    .set("font-weight", "bold");
-
             Label dateVal = new Label(message.getDate().toString());
-            dateVal.getElement().getStyle().set("font-size", "14px");
+            Label mess = new Label("Nachricht:");
+
+            // Styling
+            for(Label label : new Label[] { sender, senderVal, subject, subjectVal, date, dateVal, mess})
+                label.getElement().getStyle().set("font-size", "14px");
+
+            for(Label label : new Label[] { sender, subject, date})
+                label.getElement().getStyle().set("font-weight", "bold");
 
             // Layout for when a message has been chosen
-            Label label = new Label("Nachricht:");
-            label.getElement().getStyle().set("font-size", "13px");
 
             // The actual message
             Paragraph messageContent = new Paragraph(message.getContent());
@@ -286,7 +267,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
             HorizontalLayout hButtons1 = new HorizontalLayout(profile, delete);
             HorizontalLayout hButtons2 = new HorizontalLayout(replyButton, cancelButton);
 
-            VerticalLayout inboxReply = new VerticalLayout(header, label, messageContent, hButtons1,
+            VerticalLayout inboxReply = new VerticalLayout(header, mess, messageContent, hButtons1,
                     messageReply, hButtons2);
             inboxReply.setWidth("100%");
 
@@ -301,9 +282,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     private void cleanSecondary() {
         hint = new Div();
         hint.setText("Es wurde keine Nachricht ausgewählt.");
-        hint.getStyle().set("padding", "var(--lumo-size-l)")
-                .set("text-align", "center").set("font-style", "italic")
-                .set("color", "var(--lumo-contrast-70pct)");
+        setDivStyle(hint);
         splitLayout.remove(splitLayout.getSecondaryComponent());
         VerticalLayout vHint = new VerticalLayout(hint);
         splitLayout.addToSecondary(vHint);
@@ -326,6 +305,12 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         messages.remove(message);
         inboxControl.deleteMessage(message);
         this.refreshGrid();
+    }
+
+    private void setDivStyle(Div item) {
+        item.getStyle().set("padding", "var(--lumo-size-l)")
+                .set("text-align", "center").set("font-style", "italic")
+                .set("color", "var(--lumo-contrast-70pct)");
     }
 
     public InboxView() {

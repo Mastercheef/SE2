@@ -63,6 +63,9 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     @Autowired
     private SettingsControl settingsControl;
 
+    // Constants
+    private final String NOTIFICATION_COLOR = "rgb(66, 221, 21)";
+
     public AppView() {
         if (Utils.getCurrentUser() == null) {
             LOGGER.info("LOG: In Constructor of App View - No User given!");
@@ -133,7 +136,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         return headerLayout;
     }
 
-    private void initNavigationBar(boolean allMessagesRead) {
+    private void initNavigationBar(boolean allMessagesRead, boolean allApplicationsRead) {
         /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
         String currentUserType = Utils.getCurrentUser().getType();
         if (Objects.equals(currentUserType, "st"))
@@ -160,14 +163,15 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         */
         if(settingsControl.getUserSettings(Utils.getCurrentUser().getId()).getNotificationIsEnabled())
         {
+            if(!allMessagesRead || !allApplicationsRead)
+                colorItem(inbox, NOTIFICATION_COLOR);
+
             if(!allMessagesRead)
-            {
-                inbox.getElement().getStyle().set("color", "rgb(66, 221, 21)");
-                messages.getElement().getStyle().set("color", "rgb(66, 221, 21)");
-            }
+                colorItem(messages, NOTIFICATION_COLOR);
 
+            if(!allApplicationsRead)
+                colorItem(applications, NOTIFICATION_COLOR);
         }
-
         createIconItem(navigationBar, VaadinIcon.COG, "", null)
                 .addClickListener(e -> navigateToSettings());
         navigationBar.addItem("Logout", e -> logoutUser());
@@ -201,6 +205,10 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         }
 
         return item;
+    }
+
+    private void colorItem(MenuItem item, String color) {
+        item.getElement().getStyle().set("color", color);
     }
 
     private void navigateToUserProfile() {
@@ -303,7 +311,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         tabs.setId("tabs");
 
         // Anlegen der einzelnen Menuitems
-        //tabs.add(createMenuItems());
         return tabs;
     }
 
@@ -337,16 +344,15 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             navigationBar.removeAll();
 
             // Highlight des Posteingang-Tabs, wenn es ungelesene Nachrichten gibt
-            initNavigationBar(messageRepository.findMessagesByRecipientAndRead(Utils.getCurrentUser().getId(),
-                    false).isEmpty());
+            // TODO: allApplicationsRead Parameter durch repository-call ersetzen für Applications
+            initNavigationBar(
+                    messageRepository.findMessagesByRecipientAndRead(Utils.getCurrentUser().getId(),false).isEmpty(),
+                    true
+                    );
         }
 
         // Der aktuell-selektierte Tab wird gehighlighted.
         getTabForComponent(getContent()).ifPresent(menu::setSelectedTab);
-
-        // Setzen des aktuellen Names des Tabs
-        //viewTitle.setText(getCurrentPageTitle());
-
     }
 
     private Optional<Tab> getTabForComponent(Component component) {
@@ -404,7 +410,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if (Utils.getCurrentUser() == null){
             LOGGER.info("Reroute");
-            //beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
         }
 
     }

@@ -64,13 +64,7 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
     public JobListView() {
 
         // Filter
-        companyFilter.setPlaceholder("Firmen filtern ...");
-        jobTitleFilter.setPlaceholder("Jobtitel filtern ...");
-        requirementsFilter.setPlaceholder("Voraussetzungen filtern ...");
-        jobTypeFilter.setPlaceholder("Jobtypen filtern ...");
-        temporaryFilter.setPlaceholder("Kurzfristige Beschäftigung?");
-        workingHoursFilter.setPlaceholder("Filtern ...");
-        salaryFilter.setPlaceholder("Filtern ...");
+        setAllPlaceholders();
 
         companyFilter.setLabel("Firma:");
         jobTitleFilter.setLabel("Titel:");
@@ -84,7 +78,7 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
         // Dropdown for Job Type
         jobTypeFilter.setItems("Praktikum", "Minijob", "Vollzeit", "Teilzeit");
         temporaryFilter.setItems(true, false);
-        temporaryFilter.setItemLabelGenerator(bool -> { return bool ? "Ja" : "Nein";});
+        temporaryFilter.setItemLabelGenerator(bool -> bool ? "Ja" : "Nein");
 
 
         // Clicklistener etc
@@ -193,23 +187,17 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
         Button filterDelete = new Button("Alle Filter löschen");
         filterDelete.addClickListener(e-> {
             companyFilter.setValue("");
-            companyFilter.setPlaceholder("Firmen filtern ...");
             jobTitleFilter.setValue("");
-            jobTitleFilter.setPlaceholder("Jobtitel filtern ...");
             jobTypeFilter.setValue("");
-            jobTypeFilter.setPlaceholder("Jobtypen filtern ...");
             requirementsFilter.setValue("");
-            requirementsFilter.setPlaceholder("Voraussetzungen filtern ...");
             temporaryFilter.setValue(null);
-            temporaryFilter.setPlaceholder("Kurzfristige Beschäftigung?");
             workingHoursFilter.setValue(60);
-            workingHoursFilter.setPlaceholder("Filtern ...");
             oldWorkingHours = 60;
             salaryFilter.setValue(1);
-            salaryFilter.setPlaceholder("Filtern ...");
             oldSalary = 1;
             LocalDate newDate = LocalDate.of(LocalDate.now().getYear(), 1, 1);
             oldDate = newDate;
+            setAllPlaceholders();
             entryDateFilter.setValue(newDate);
         });
 
@@ -278,6 +266,16 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
 
         card.add(cardLayout);
         return card;
+    }
+
+    private void setAllPlaceholders() {
+        companyFilter.setPlaceholder("Firmen filtern ...");
+        jobTitleFilter.setPlaceholder("Jobtitel filtern ...");
+        requirementsFilter.setPlaceholder("Voraussetzungen filtern ...");
+        jobTypeFilter.setPlaceholder("Jobtypen filtern ...");
+        temporaryFilter.setPlaceholder("Kurzfristige Beschäftigung?");
+        workingHoursFilter.setPlaceholder("Filtern ...");
+        salaryFilter.setPlaceholder("Filtern ...");
     }
 
     @Override
