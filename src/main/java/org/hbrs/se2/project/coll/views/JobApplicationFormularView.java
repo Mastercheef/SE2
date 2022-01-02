@@ -46,6 +46,9 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
     private JobAdvertisement jobAdvertisement;
     private StudentUserDTO studentUserDTO;
 
+    private String error = "\"Fehler\"";
+
+
     H2 pageHeadline = new H2("Bewerbung");
 
     Span sSalutation = new Span();
@@ -69,12 +72,12 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
                 pageHeadline = new H2("Bewerbung auf " + jobAdvertisement.getJobTitle() + " (" + jobAdvertisement.getId() + ")");
                 createJobApplicationView();
             } else {
-                Utils.triggerDialogMessage("Fehler", "Das angegebene Stellenangebot existiert nicht");
+                Utils.triggerDialogMessage(error, "Das angegebene Stellenangebot existiert nicht");
             }
         } catch (NumberFormatException e) {
-            Utils.triggerDialogMessage("Fehler", "Es handelt sich um keine gültige Stellenagebots ID");
+            Utils.triggerDialogMessage(error, "Es handelt sich um keine gültige Stellenagebots ID");
         } catch (Exception exception) {
-            Utils.triggerDialogMessage("Fehler", "Beim Laden des Bewerbungsformulars, ist ein Fehler aufgetreten");
+            Utils.triggerDialogMessage(error, "Beim Laden des Bewerbungsformulars, ist ein Fehler aufgetreten");
         }
 
     }
@@ -196,7 +199,7 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
                 sCountry = new Span(studentUserDTO.getAddress().getCountry());
             }
         } catch (Exception exception) {
-            Utils.triggerDialogMessage("Fehler", "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
+            Utils.triggerDialogMessage(error, "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
         }
     }
 

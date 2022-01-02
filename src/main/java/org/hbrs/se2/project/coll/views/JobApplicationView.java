@@ -16,12 +16,12 @@ import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.JobApplicationControl;
 import org.hbrs.se2.project.coll.dtos.JobApplicationDTO;
 import org.hbrs.se2.project.coll.dtos.JobApplicationResultDTO;
-import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.JobApplicationUtil;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,7 +39,7 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
     private JobAdvertisementRepository jobAdvertisementRepository;
 
     private JobApplicationDTO jobApplication;
-    private JobAdvertisement jobAdvertisement;
+    private String error ="Fehler";
 
     H2 pageHeadline = new H2("Bewerbung");
 
@@ -68,12 +68,12 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
                     Utils.triggerDialogMessage("Zugriff verweigert", "Sie haben keinen Zugriff auf die angegebene Bewerbung");
                 }
             } else {
-                Utils.triggerDialogMessage("Fehler", "Die angegebene Bewerbung existiert nicht");
+                Utils.triggerDialogMessage(error, "Die angegebene Bewerbung existiert nicht");
             }
         } catch (NumberFormatException e) {
-            Utils.triggerDialogMessage("Fehler", "Es handelt sich um keine gültige Bewerbungs ID");
+            Utils.triggerDialogMessage(error, "Es handelt sich um keine gültige Bewerbungs ID");
         } catch (Exception exception) {
-            Utils.triggerDialogMessage("Fehler", "Beim Laden der Bewerbung ist ein unerwarteter Felher aufgetreten");
+            Utils.triggerDialogMessage(error, "Beim Laden der Bewerbung ist ein unerwarteter Felher aufgetreten");
         }
 
     }
@@ -173,18 +173,10 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
             if(Utils.getCurrentUser() != null) {
                 StudentUser studentUser = jobApplication.getStudentUser();
                 System.out.println(studentUser.getId());
-                sSalutation = new Span(studentUser.getSalutation() + " " + studentUser.getTitle());
-                sName = new Span(studentUser.getFirstName() + " " + studentUser.getLastName());
-                sDateOfBirth = new Span(Utils.convertToGermanDateFormat(studentUser.getDateOfBirth()));
-                sEmail = new Span(studentUser.getEmail());
-                sPhone = new Span(studentUser.getPhone());
-
-                sAddress = new Span(studentUser.getAddress().getStreet() + " " + studentUser.getAddress().getHouseNumber());
-                sLocation = new Span(studentUser.getAddress().getPostalCode() + " " + studentUser.getAddress().getCity());
-                sCountry = new Span(studentUser.getAddress().getCountry());
+                JobApplicationUtil.loadStudentUserInfo(studentUser);
             }
         } catch (Exception exception) {
-            Utils.triggerDialogMessage("Fehler", "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
+            Utils.triggerDialogMessage(error, "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
         }
     }
 
