@@ -39,6 +39,7 @@ class CompanyControlTest {
         MockitoAnnotations.openMocks(this);
         doReturn(companyDTO).when(repository).findCompanyProfileById(100);
         assertNotNull(repository.findCompanyProfileById(100));
+        assertNotNull(companyControl.loadCompanyProfileDataById(100));
         assertEquals(companyDTO , companyControl.loadCompanyProfileDataById(100));
     }
 
@@ -49,11 +50,11 @@ class CompanyControlTest {
     @Test
     void findCompanyProfileByCompanyId() {
 
-
         MockitoAnnotations.openMocks(this);
         doReturn(companyDTO).when(repository).findCompanyProfileById(100);
         assertNotNull(repository.findCompanyProfileById(100));
-        assertEquals(companyDTO , repository.findCompanyProfileById(100));
+        assertNotNull(companyControl.findCompanyProfileByCompanyId(100));
+        assertEquals(companyDTO , companyControl.findCompanyProfileByCompanyId(100));
     }
 
     @Test
