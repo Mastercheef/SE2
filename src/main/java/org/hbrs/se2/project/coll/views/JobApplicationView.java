@@ -15,17 +15,14 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.JobApplicationControl;
 import org.hbrs.se2.project.coll.dtos.JobApplicationDTO;
-import org.hbrs.se2.project.coll.dtos.JobApplicationResultDTO;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
-import org.hbrs.se2.project.coll.util.JobApplicationUtil;
+import org.hbrs.se2.project.coll.util.JobApplicationFormularUtil;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 @Route(value = Globals.Pages.JOBAPPLICATION_VIEW + ":appID" , layout = AppView.class)
 @PageTitle(Globals.PageTitles.APPLICATION_PAGE_TITLE)
@@ -40,6 +37,8 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
 
     private JobApplicationDTO jobApplication;
     private String error ="Fehler";
+
+    JobApplicationFormularUtil jobApplicationFormularUtil = new JobApplicationFormularUtil();
 
     H2 pageHeadline = new H2("Bewerbung");
 
@@ -158,7 +157,7 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
             if(Utils.getCurrentUser() != null) {
                 StudentUser studentUser = jobApplication.getStudentUser();
                 System.out.println(studentUser.getId());
-                JobApplicationUtil.loadStudentUserInfo(studentUser);
+                jobApplicationFormularUtil.loadStudentUserInfo(studentUser);
             }
         } catch (Exception exception) {
             Utils.triggerDialogMessage(error, "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);

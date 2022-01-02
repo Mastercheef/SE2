@@ -1,16 +1,15 @@
-package org.hbrs.se2.project.coll.views;
+package org.hbrs.se2.project.coll.util;
 
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import org.hbrs.se2.project.coll.dtos.JobApplicationResultDTO;
-import org.hbrs.se2.project.coll.util.Globals;
-import org.hbrs.se2.project.coll.util.Utils;
+import org.hbrs.se2.project.coll.entities.StudentUser;
 
 import java.util.List;
 
-public class JobApplicationFormularVariables {
+public class JobApplicationFormularUtil {
 
     private String error = "\"Fehler\"";
 
@@ -123,5 +122,17 @@ public class JobApplicationFormularVariables {
                 text.setInvalid(true);
             }
         }
+    }
+
+    public  void loadStudentUserInfo(StudentUser studentUser) {
+        sSalutation = new Span(studentUser.getSalutation() + " " + studentUser.getTitle());
+        sName = new Span(studentUser.getFirstName() + " " + studentUser.getLastName());
+        sDateOfBirth = new Span(Utils.convertToGermanDateFormat(studentUser.getDateOfBirth()));
+        sEmail = new Span(studentUser.getEmail());
+        sPhone = new Span(studentUser.getPhone());
+
+        sAddress = new Span(studentUser.getAddress().getStreet() + " " + studentUser.getAddress().getHouseNumber());
+        sLocation = new Span(studentUser.getAddress().getPostalCode() + " " + studentUser.getAddress().getCity());
+        sCountry = new Span(studentUser.getAddress().getCountry());
     }
 }
