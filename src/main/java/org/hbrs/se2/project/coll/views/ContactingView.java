@@ -45,8 +45,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
             event.getRouteParameters().get("jobId").ifPresent((value -> jobId = value));
             event.getRouteParameters().get("userId").ifPresent((value -> userId = Integer.parseInt(value)));
 
-            if(companyId == null && jobId == null && userId < 1 || companyId != null && jobId == null && userId < 1 ||
-                    companyId == null && jobId != null && userId < 1) {
+            if(beforeEnterbolean()) {
                 Utils.triggerDialogMessage("Fehler", "Die übergebenen Parameter sind ungültig");
                 Utils.navigateToMain();
                 event.rerouteTo(Globals.Pages.MAIN_VIEW);
@@ -73,6 +72,11 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
             Utils.navigateToMain();
             event.rerouteTo(Globals.Pages.MAIN_VIEW);
         }
+    }
+
+
+    private boolean beforeEnterbolean() {
+        return beforeEnterbolean();
     }
 
     public void initContacting() {
