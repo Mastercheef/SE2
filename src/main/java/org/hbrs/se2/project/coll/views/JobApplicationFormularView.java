@@ -21,10 +21,12 @@ import org.hbrs.se2.project.coll.dtos.JobApplicationResultDTO;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.JobApplicationDTOImpl;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
+import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.JobApplicationUtil;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -92,9 +94,9 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
             text.setMinHeight("350px");
             text.setMaxLength(3000);
             text.setValueChangeMode(ValueChangeMode.EAGER);
-            text.addValueChangeListener(e -> {
-                e.getSource().setHelperText(e.getValue().length() + "/" + 3000);
-            });
+            text.addValueChangeListener(e ->
+                e.getSource().setHelperText(e.getValue().length() + "/" + 3000)
+            );
 
             FormLayout formLayout = new FormLayout();
             formLayout.add(
@@ -188,15 +190,8 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
         try {
             if(Utils.getCurrentUser() != null) {
                 studentUserDTO = studentUserRepository.findStudentUserById(Utils.getCurrentUser().getId());
-                sSalutation = new Span(studentUserDTO.getSalutation() + " " + studentUserDTO.getTitle());
-                sName = new Span(studentUserDTO.getFirstName() + " " + studentUserDTO.getLastName());
-                sDateOfBirth = new Span(Utils.convertToGermanDateFormat(studentUserDTO.getDateOfBirth()));
-                sEmail = new Span(studentUserDTO.getEmail());
-                sPhone = new Span(studentUserDTO.getPhone());
-
-                sAddress = new Span(studentUserDTO.getAddress().getStreet() + " " + studentUserDTO.getAddress().getHouseNumber());
-                sLocation = new Span(studentUserDTO.getAddress().getPostalCode() + " " + studentUserDTO.getAddress().getCity());
-                sCountry = new Span(studentUserDTO.getAddress().getCountry());
+                StudentUser studentUser =  UserFactory.createStudentUser(studentUserDTO);
+                JobApplicationUtil.loadStudentUserInfo(studentUser);
             }
         } catch (Exception exception) {
             Utils.triggerDialogMessage(error, "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
