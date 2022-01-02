@@ -22,6 +22,10 @@ class JobFactoryTest {
 
     private short workingHours = 40;
 
+    private String typeOfEmployment = "Vollzeit";
+    private String requirements = "Lorem Ipsum";
+    private String jobDescription = "Sed ut perspiciatis";
+    private String jobTitle = "Datenbankexperte";
     @Mock
     Address address;
 
@@ -39,14 +43,14 @@ class JobFactoryTest {
         dto = new JobAdvertisementDTOimpl();
         dto.setId(100);
         dto.setTemporaryEmployment(true);
-        dto.setTypeOfEmployment("Vollzeit");
+        dto.setTypeOfEmployment(typeOfEmployment);
         dto.setWorkingHours(workingHours);
-        dto.setRequirements("Lorem Ipsum");
+        dto.setRequirements(requirements);
         dto.setAddress(address);
         dto.setStartOfWork(LocalDate.of(1999,1,23));
         dto.setEndOfWork(LocalDate.of(2000,1,2));
-        dto.setJobDescription("Sed ut perspiciatis");
-        dto.setJobTitle("Datenbankexperte");
+        dto.setJobDescription(jobDescription);
+        dto.setJobTitle(jobTitle);
         dto.setContactPerson(contactPerson);
 
     }
@@ -57,15 +61,15 @@ class JobFactoryTest {
         JobAdvertisement jobAdvertisement = JobFactory.createJob(dto);
         assertEquals( 100 , jobAdvertisement.getId());
         assertTrue(jobAdvertisement.getTemporaryEmployment());
-        assertEquals("Vollzeit" , jobAdvertisement.getTypeOfEmployment());
+        assertEquals(typeOfEmployment , jobAdvertisement.getTypeOfEmployment());
         assertEquals(Integer.valueOf(40) , Integer.valueOf(jobAdvertisement.getWorkingHours()));
-        assertEquals("Lorem Ipsum" , jobAdvertisement.getRequirements());
+        assertEquals(requirements , jobAdvertisement.getRequirements());
         assertNotNull(jobAdvertisement.getWorkingLocation());
         assertSame(address, jobAdvertisement.getWorkingLocation());
         assertEquals("1999-01-23" , jobAdvertisement.getStartOfWork().toString());
         assertEquals("2000-01-02" , jobAdvertisement.getEndOfWork().toString());
-        assertEquals("Sed ut perspiciatis" , jobAdvertisement.getJobDescription());
-        assertEquals("Datenbankexperte" , jobAdvertisement.getJobTitle());
+        assertEquals(jobDescription , jobAdvertisement.getJobDescription());
+        assertEquals(jobTitle , jobAdvertisement.getJobTitle());
         assertNotNull(jobAdvertisement.getContactPerson());
         assertSame(contactPerson, jobAdvertisement.getContactPerson());
 
@@ -95,7 +99,7 @@ class JobFactoryTest {
         when(jobApplicationDTO.getStudentUser()).thenReturn(new StudentUser());
         when(jobApplicationDTO.getJobAdvertisement()).thenReturn(new JobAdvertisement());
         when(jobApplicationDTO.getHeadline()).thenReturn(jobApplicationHeadline);
-        when(jobApplicationDTO.getText()).thenReturn("jobApplicationDTO Text");
+        when(jobApplicationDTO.getText()).thenReturn(jobApplicationDTOText);
         when(jobApplicationDTO.getDate()).thenReturn(dtoDate);
 
         JobApplication jobApplication = JobFactory.createJobApplication(jobApplicationDTO);
