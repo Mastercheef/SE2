@@ -2,6 +2,13 @@ package org.hbrs.se2.project.coll.views;
 
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.textfield.TextField;
+import org.hbrs.se2.project.coll.dtos.JobApplicationResultDTO;
+import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.Utils;
+
+import java.util.List;
 
 public class JobApplicationFormularVariables {
 
@@ -100,5 +107,21 @@ public class JobApplicationFormularVariables {
 
     public void setsCountry(Span sCountry) {
         this.sCountry = sCountry;
+    }
+
+    public void setErrorFields(List<JobApplicationResultDTO.ReasonType> reasons, TextField headline, TextArea text) {
+        for (JobApplicationResultDTO.ReasonType reason : reasons) {
+            if (reason == JobApplicationResultDTO.ReasonType.UNEXPECTED_ERROR) {
+                Utils.triggerDialogMessage(Globals.View.ERROR, "Es ist ein unerwarteter Fehler aufgetreten");
+            }
+            if (reason == JobApplicationResultDTO.ReasonType.HEADLINE_MISSING) {
+                headline.setErrorMessage("Bitte geben Sie einen Betreff ein");
+                headline.setInvalid(true);
+            }
+            if (reason == JobApplicationResultDTO.ReasonType.TEXT_MISSING) {
+                text.setErrorMessage("Bitte geben Sie einen Bewerbungstext ein");
+                text.setInvalid(true);
+            }
+        }
     }
 }

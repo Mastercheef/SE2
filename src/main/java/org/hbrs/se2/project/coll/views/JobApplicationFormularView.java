@@ -151,7 +151,8 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
                 Utils.triggerDialogMessage("Bewerbung übermittelt", "Wir haben Ihre Bewerbung erfolgreich übermittelt");
                 navigateToJobApplication(applicationResult.getApplicationID());
             } else {
-                setErrorFields(applicationResult.getReasons());
+                jobApplicationFormularVariables.setErrorFields(applicationResult.getReasons(),headline,text);
+
             }
         });
         add(siteLayout);
@@ -159,22 +160,6 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
     public static void navigateToJobApplication(int id) {
         if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.JOBAPPLICATION_VIEW))
             UI.getCurrent().navigate(Globals.Pages.JOBAPPLICATION_VIEW + id);
-    }
-
-    public void setErrorFields(List<JobApplicationResultDTO.ReasonType> reasons) {
-        for (JobApplicationResultDTO.ReasonType reason : reasons) {
-            if (reason == JobApplicationResultDTO.ReasonType.UNEXPECTED_ERROR) {
-                Utils.triggerDialogMessage(Globals.View.ERROR, "Es ist ein unerwarteter Fehler aufgetreten");
-            }
-            if (reason == JobApplicationResultDTO.ReasonType.HEADLINE_MISSING) {
-                headline.setErrorMessage("Bitte geben Sie einen Betreff ein");
-                headline.setInvalid(true);
-            }
-            if (reason == JobApplicationResultDTO.ReasonType.TEXT_MISSING) {
-                text.setErrorMessage("Bitte geben Sie einen Bewerbungstext ein");
-                text.setInvalid(true);
-            }
-        }
     }
 
     public void loadStudentUserInformation() {

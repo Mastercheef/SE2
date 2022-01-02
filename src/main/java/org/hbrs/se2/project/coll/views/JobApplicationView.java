@@ -152,21 +152,6 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
         add(siteLayout);
     }
 
-    public void setErrorFields(List<JobApplicationResultDTO.ReasonType> reasons) {
-        for (JobApplicationResultDTO.ReasonType reason : reasons) {
-            if (reason == JobApplicationResultDTO.ReasonType.UNEXPECTED_ERROR) {
-                Utils.triggerDialogMessage(Globals.View.ERROR, "Es ist ein unerwarteter Fehler aufgetreten");
-            }
-            if (reason == JobApplicationResultDTO.ReasonType.HEADLINE_MISSING) {
-                headline.setErrorMessage("Bitte geben Sie einen Betreff ein");
-                headline.setInvalid(true);
-            }
-            if (reason == JobApplicationResultDTO.ReasonType.TEXT_MISSING) {
-                text.setErrorMessage("Bitte geben Sie einen Bewerbungstext ein");
-                text.setInvalid(true);
-            }
-        }
-    }
 
     public void loadStudentUserInformation() {
         try {
