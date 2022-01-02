@@ -3,7 +3,7 @@ package org.hbrs.se2.project.coll.util;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import org.hbrs.se2.project.coll.entities.StudentUser;
-import org.jetbrains.annotations.NotNull;
+
 
 public class JobApplicationUtil {
 
@@ -19,7 +19,7 @@ public class JobApplicationUtil {
     static Span sLocation = new Span();
     static Span sCountry = new Span();
 
-    public static void loadStudentUserInfo(@NotNull StudentUser studentUser) {
+    public static void loadStudentUserInfo(StudentUser studentUser) {
         sSalutation = new Span(studentUser.getSalutation() + " " + studentUser.getTitle());
         sName = new Span(studentUser.getFirstName() + " " + studentUser.getLastName());
         sDateOfBirth = new Span(Utils.convertToGermanDateFormat(studentUser.getDateOfBirth()));
