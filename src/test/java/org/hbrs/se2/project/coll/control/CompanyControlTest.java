@@ -1,18 +1,23 @@
 package org.hbrs.se2.project.coll.control;
 
+import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
-import org.hbrs.se2.project.coll.dtos.impl.StudentUserDTOImpl;
+import org.hbrs.se2.project.coll.dtos.impl.JobAdvertisementDTOimpl;
+import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
-
+import static org.mockito.Mockito.when;
+@ExtendWith(MockitoExtension.class)
 class CompanyControlTest {
 
 
@@ -27,6 +32,8 @@ class CompanyControlTest {
     private JobAdvertisementControl jobAdvertisementControl;
 
     CompanyDTOImpl companyDTO;
+    @Mock
+    JobAdvertisement jobAdvertisement;
 
     @BeforeEach
     void setup() {
@@ -63,5 +70,8 @@ class CompanyControlTest {
 
     @Test
     void createJobDTO() {
+        when(jobAdvertisementControl.createJobDTO(jobAdvertisement)).thenReturn(new JobAdvertisementDTOimpl());
+        assertNotNull(companyControl.createJobDTO(jobAdvertisement));
+        assertEquals(new JobAdvertisementDTOimpl().getClass() , companyControl.createJobDTO(jobAdvertisement).getClass());
     }
 }

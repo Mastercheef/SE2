@@ -39,6 +39,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
+
         try {
             event.getRouteParameters().get("companyId").ifPresent((value -> companyId = value));
             event.getRouteParameters().get("jobId").ifPresent((value -> jobId = value));
