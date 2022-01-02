@@ -48,20 +48,8 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
     private JobAdvertisement jobAdvertisement;
     private StudentUserDTO studentUserDTO;
 
-    private String error = "\"Fehler\"";
+    JobApplicationFormularVariables jobApplicationFormularVariables = new JobApplicationFormularVariables();
 
-
-    H2 pageHeadline = new H2("Bewerbung");
-
-    Span sSalutation = new Span();
-    Span sName = new Span();
-    Span sDateOfBirth = new Span();
-    Span sEmail = new Span();
-    Span sPhone = new Span();
-
-    Span sAddress = new Span();
-    Span sLocation = new Span();
-    Span sCountry = new Span();
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
@@ -71,15 +59,15 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
             jobAdvertisement = jobAdvertisementRepository.findJobAdvertisementById(Integer.parseInt(event.getRouteParameters().get("adID").get()));
 
             if (jobAdvertisement != null) {
-                pageHeadline = new H2("Bewerbung auf " + jobAdvertisement.getJobTitle() + " (" + jobAdvertisement.getId() + ")");
+                jobApplicationFormularVariables.setPageHeadline(new H2("Bewerbung auf " + jobAdvertisement.getJobTitle() + " (" + jobAdvertisement.getId() + ")"));
                 createJobApplicationView();
             } else {
-                Utils.triggerDialogMessage(error, "Das angegebene Stellenangebot existiert nicht");
+                Utils.triggerDialogMessage(jobApplicationFormularVariables.getError(), "Das angegebene Stellenangebot existiert nicht");
             }
         } catch (NumberFormatException e) {
-            Utils.triggerDialogMessage(error, "Es handelt sich um keine gültige Stellenagebots ID");
+            Utils.triggerDialogMessage(jobApplicationFormularVariables.getError(), "Es handelt sich um keine gültige Stellenagebots ID");
         } catch (Exception exception) {
-            Utils.triggerDialogMessage(error, "Beim Laden des Bewerbungsformulars, ist ein Fehler aufgetreten");
+            Utils.triggerDialogMessage(jobApplicationFormularVariables.getError(), "Beim Laden des Bewerbungsformulars, ist ein Fehler aufgetreten");
         }
 
     }
@@ -123,7 +111,10 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
 
     public void createJobApplicationView() {
 
-        VerticalLayout personalInformation = new VerticalLayout(sSalutation, sName, sAddress, sLocation, sCountry, sEmail, sPhone);
+        VerticalLayout personalInformation = new VerticalLayout(
+                jobApplicationFormularVariables.getsSalutation(), jobApplicationFormularVariables.getsName(), jobApplicationFormularVariables.getsAddress(),
+                jobApplicationFormularVariables.getsLocation(), jobApplicationFormularVariables.getsCountry(), jobApplicationFormularVariables.getsEmail(),
+                jobApplicationFormularVariables.getsPhone());
         personalInformation.setSpacing(false);
         personalInformation.setPadding(false);
 
@@ -140,7 +131,7 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
         form.setWidth("100%");
         form.getElement().getStyle().set("Margin", "30px");
         Button applyButton = new Button("Bewerbung absenden");
-        section.add(pageHeadline, detailLayout, form, applyButton);
+        section.add(jobApplicationFormularVariables.getPageHeadline(), detailLayout, form, applyButton);
 
         section.setPadding(true);
         section.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -194,7 +185,7 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
                 JobApplicationUtil.loadStudentUserInfo(studentUser);
             }
         } catch (Exception exception) {
-            Utils.triggerDialogMessage(error, "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
+            Utils.triggerDialogMessage(jobApplicationFormularVariables.getError(), "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
         }
     }
 
