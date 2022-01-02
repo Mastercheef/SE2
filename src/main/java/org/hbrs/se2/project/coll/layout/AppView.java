@@ -11,14 +11,12 @@ import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
@@ -30,9 +28,6 @@ import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.MessageRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
-import org.hbrs.se2.project.coll.views.DataProtectionView;
-import org.hbrs.se2.project.coll.views.ImpressumView;
-import org.hbrs.se2.project.coll.views.StudentProfileView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +59,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     private SettingsControl settingsControl;
 
     // Constants
-    private final String NOTIFICATION_COLOR = "rgb(66, 221, 21)";
+    private static final String NOTIFICATION_COLOR = "rgb(66, 221, 21)";
 
     public AppView() {
         if (Utils.getCurrentUser() == null) {
@@ -257,46 +252,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     }
 
 
-    /**
-     * Hinzufügen der vertikalen Leiste (Drawer)
-     * Diese besteht aus dem Logo ganz oben links sowie den Menu-Einträgen (menu items).
-     * Die Menu Items sind zudem verlinkt zu den internen Tab-Components.
-     * @param menu
-     * @return
-     */
-    private Component createDrawerContent(Tabs menu) {
-        VerticalLayout layout = new VerticalLayout();
-        layout.setSizeFull();
-        layout.setPadding(false);
-        layout.setSpacing(false);
-        layout.getThemeList().set("spacing-s", true);
-        layout.setAlignItems(FlexComponent.Alignment.STRETCH);
-
-        HorizontalLayout logoLayout = new HorizontalLayout();
-
-        // Hinzufügen des Logos
-        logoLayout.setId("logo");
-        logoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-        logoLayout.add(new Image("images/logo.png", "HelloCar logo"));
-        logoLayout.add(new H1("HelloCar"));
-
-        HorizontalLayout footer = new HorizontalLayout(copyright);
-        footer.add(new RouterLink("Impressum", ImpressumView.class));
-        footer.add(new RouterLink("Datenschutz", DataProtectionView.class));
-        footer.setJustifyContentMode(FlexComponent.JustifyContentMode.START);
-        footer.setWidth("100%");
-        footer.setPadding(true);
-        footer.getElement().getStyle().set("background-color", "#233348");
-        footer.getElement().getStyle().set("color", "white");
-        footer.getElement().getStyle().set("clear", "both");
-        footer.getElement().getStyle().set("bottom", "0");
-        footer.getElement().getStyle().set("left", "0");
-        footer.getElement().getStyle().set("position", "fixed");
-
-        // Hinzufügen des Menus inklusive der Tabs
-        layout.add(logoLayout, menu, footer);
-        return layout;
-    }
 
     /**
      * Erzeugung des Menu auf der vertikalen Leiste (Drawer)
@@ -314,15 +269,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         return tabs;
     }
 
-    private Component[] createMenuItems() {
-
-        // Jeder User sollte Autos sehen können, von daher wird dieser schon mal erzeugt und
-        // und dem Tabs-Array hinzugefügt. In der Methode createTab wird ein (Key, Value)-Pair übergeben:
-        // Key: der sichtbare String des Menu-Items
-        // Value: Die UI-Component, die nach dem Klick auf das Menuitem angezeigt wird.
-        return new Tab[]{ createTab( "Profil", StudentProfileView.class) };
-
-    }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
         final Tab tab = new Tab();

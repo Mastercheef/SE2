@@ -40,7 +40,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     private static final Grid<MessageDTO> grid = new Grid<>(MessageDTO.class, false);
     private static  List<MessageDTO> messages  = new ArrayList<>();
     private static  Div hint;
-    private         SplitLayout splitLayout = new SplitLayout();
+    private static SplitLayout splitLayout = new SplitLayout();
 
     private static final Logger LOGGER = Logger.getLogger(InboxView.class.getName());
 
@@ -279,7 +279,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     }
 
     // Layout when a message has been deselected
-    private void cleanSecondary() {
+    private static  void cleanSecondary() {
         hint = new Div();
         hint.setText("Es wurde keine Nachricht ausgewählt.");
         setDivStyle(hint);
@@ -307,7 +307,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         this.refreshGrid();
     }
 
-    private void setDivStyle(Div item) {
+    private static void setDivStyle(Div item) {
         item.getStyle().set("padding", "var(--lumo-size-l)")
                 .set("text-align", "center").set("font-style", "italic")
                 .set("color", "var(--lumo-contrast-70pct)");

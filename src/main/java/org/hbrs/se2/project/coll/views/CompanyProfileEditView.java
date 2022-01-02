@@ -24,8 +24,6 @@ import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.LabelCompany;
 import org.hbrs.se2.project.coll.util.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -33,8 +31,6 @@ import java.util.List;
 @Route(value = "companyprofile_edit", layout = AppView.class)
 @PageTitle("Edit your Profile")
 public class CompanyProfileEditView extends VerticalLayout  implements HasUrlParameter<String> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyProfileEditView.class);
 
     @Autowired
     private AddressControl addressControl;
