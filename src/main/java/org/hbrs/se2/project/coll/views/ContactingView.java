@@ -76,7 +76,8 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
 
 
     private boolean beforeEnterbolean() {
-        return beforeEnterbolean();
+        return (companyId == null && jobId == null && userId < 1 || companyId != null && jobId == null && userId < 1 ||
+                companyId == null && jobId != null && userId < 1);
     }
 
     public void initContacting() {
