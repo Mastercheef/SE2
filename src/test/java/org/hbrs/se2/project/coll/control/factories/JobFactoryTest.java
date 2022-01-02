@@ -1,4 +1,5 @@
 package org.hbrs.se2.project.coll.control.factories;
+import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.dtos.JobApplicationDTO;
 import org.hbrs.se2.project.coll.dtos.impl.JobAdvertisementDTOimpl;
 import org.hbrs.se2.project.coll.entities.*;
@@ -57,7 +58,6 @@ class JobFactoryTest {
 
     @Test
     void createJob() {
-
         JobAdvertisement jobAdvertisement = JobFactory.createJob(dto);
         assertEquals( 100 , jobAdvertisement.getId());
         assertTrue(jobAdvertisement.getTemporaryEmployment());
@@ -87,7 +87,34 @@ class JobFactoryTest {
 
     @Test
     void createJobDTO() {
+        JobAdvertisement job = new JobAdvertisement();
+        job.setId(12345);
+        job.setTemporaryEmployment(true);
+        job.setTypeOfEmployment("Vollzeit");
+        job.setWorkingHours((short) 22);
+        job.setRequirements("C++, HTML, CSS, JavaScript, Java");
+        job.setStartOfWork(LocalDate.of(2022, 1, 1));
+        job.setEndOfWork(LocalDate.of(2022, 3, 1));
+        job.setContactPerson(contactPerson);
+        job.setJobDescription("Lorem ipsum");
+        job.setJobTitle("Lorem");
+        job.setSalary(1234);
+
+        JobAdvertisementDTO jobAdvertisementDTO = JobFactory.createJobDTO(job);
+        assertEquals(jobAdvertisementDTO.getJobTitle(), job.getJobTitle());
+        assertEquals(jobAdvertisementDTO.getId(), job.getId());
+        assertEquals(jobAdvertisementDTO.getJobDescription(), job.getJobDescription());
+        assertEquals(jobAdvertisementDTO.getTemporaryEmployment(), job.getTemporaryEmployment());
+        assertEquals(jobAdvertisementDTO.getTypeOfEmployment(), job.getTypeOfEmployment());
+        assertEquals(jobAdvertisementDTO.getWorkingHours(), job.getWorkingHours());
+        assertEquals(jobAdvertisementDTO.getRequirements(), job.getRequirements());
+        assertEquals(jobAdvertisementDTO.getStartOfWork(), job.getStartOfWork());
+        assertEquals(jobAdvertisementDTO.getEndOfWork(), job.getEndOfWork());
+        assertEquals(jobAdvertisementDTO.getContactPerson(), job.getContactPerson());
+        assertEquals(jobAdvertisementDTO.getSalary(), job.getSalary());
     }
+
+
 
     @Test
     void createJobApplication() {
