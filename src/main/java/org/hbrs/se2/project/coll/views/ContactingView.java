@@ -17,7 +17,6 @@ import org.hbrs.se2.project.coll.repository.UserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDate;
 
 

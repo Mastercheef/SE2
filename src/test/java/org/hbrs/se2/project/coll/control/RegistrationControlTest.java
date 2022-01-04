@@ -1,9 +1,9 @@
 package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
-import org.hbrs.se2.project.coll.dtos.RegistrationDTO;
+
 import org.hbrs.se2.project.coll.dtos.UserDTO;
-import org.hbrs.se2.project.coll.dtos.impl.RegistrationResultDTOImpl;
+
 import org.hbrs.se2.project.coll.dtos.impl.UserDTOImpl;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.UserRepository;
@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;

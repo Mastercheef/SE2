@@ -1,6 +1,5 @@
 package org.hbrs.se2.project.coll.control;
 
-import org.hbrs.se2.project.coll.control.factories.JobFactory;
 import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
@@ -13,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
