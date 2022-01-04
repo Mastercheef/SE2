@@ -1,5 +1,6 @@
 package org.hbrs.se2.project.coll.util;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -204,7 +205,10 @@ class JobApplicationFormularUtilTest {
         jobApplicationFormularUtil.setErrorFields(arrayList , new TextField() , new TextArea());
         assertEquals("\"Fehler\"" , jobApplicationFormularUtil.getError());
 
-
+        UI ui = UI.getCurrent();
+        arrayList.clear();
+        arrayList.add(JobApplicationResultDTO.ReasonType.UNEXPECTED_ERROR);
+        jobApplicationFormularUtil.setErrorFields(arrayList , new TextField() , new TextArea());
 
     }
 

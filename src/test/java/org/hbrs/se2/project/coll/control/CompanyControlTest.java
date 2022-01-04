@@ -1,23 +1,30 @@
 package org.hbrs.se2.project.coll.control;
 
+import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
 import org.hbrs.se2.project.coll.dtos.impl.JobAdvertisementDTOimpl;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
+import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class CompanyControlTest {
 
 
@@ -30,6 +37,8 @@ class CompanyControlTest {
     private AddressControl addressControl;
     @Mock
     private JobAdvertisementControl jobAdvertisementControl;
+    @Mock
+    JobAdvertisementRepository jobAdvertisementRepository;
 
     CompanyDTOImpl companyDTO;
     @Mock
@@ -73,5 +82,12 @@ class CompanyControlTest {
         when(jobAdvertisementControl.createJobDTO(jobAdvertisement)).thenReturn(new JobAdvertisementDTOimpl());
         assertNotNull(companyControl.createJobDTO(jobAdvertisement));
         assertEquals(new JobAdvertisementDTOimpl().getClass() , companyControl.createJobDTO(jobAdvertisement).getClass());
+    }
+
+    @Test
+    void testDeleteAdvertisement() throws DatabaseUserException {
+        Mockito.doNothing().when(jobAdvertisementRepository).delete(jobAdvertisement);
+        companyControl.deleteAdvertisement( jobAdvertisement);
+        verify(jobAdvertisementControl).deleteAdvertisement(jobAdvertisement);
     }
 }
