@@ -205,10 +205,6 @@ class JobApplicationFormularUtilTest {
         jobApplicationFormularUtil.setErrorFields(arrayList , new TextField() , new TextArea());
         assertEquals("\"Fehler\"" , jobApplicationFormularUtil.getError());
 
-        UI ui = UI.getCurrent();
-        arrayList.clear();
-        arrayList.add(JobApplicationResultDTO.ReasonType.UNEXPECTED_ERROR);
-        jobApplicationFormularUtil.setErrorFields(arrayList , new TextField() , new TextArea());
 
     }
 
