@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class JobApplicationFormularUtilTest {
@@ -197,6 +198,14 @@ class JobApplicationFormularUtilTest {
 
         jobApplicationFormularUtil.setErrorFields(arrayList , new TextField() , new TextArea());
         assertEquals("\"Fehler\"" , jobApplicationFormularUtil.getError());
+
+        arrayList.clear();
+        arrayList.add(JobApplicationResultDTO.ReasonType.TEXT_MISSING);
+        jobApplicationFormularUtil.setErrorFields(arrayList , new TextField() , new TextArea());
+        assertEquals("\"Fehler\"" , jobApplicationFormularUtil.getError());
+
+
+
     }
 
 
