@@ -55,9 +55,6 @@ class CompanyControlTest {
         assertEquals(companyDTO , companyControl.loadCompanyProfileDataById(100));
     }
 
-    @Test
-    void saveCompany() {
-    }
 
     @Test
     void findCompanyProfileByCompanyId() {
@@ -69,9 +66,6 @@ class CompanyControlTest {
         assertEquals(companyDTO , companyControl.findCompanyProfileByCompanyId(100));
     }
 
-    @Test
-    void deleteAdvertisement() {
-    }
 
     @Test
     void createJobDTO() {

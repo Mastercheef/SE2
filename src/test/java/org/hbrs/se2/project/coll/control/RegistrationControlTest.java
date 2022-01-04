@@ -83,13 +83,5 @@ class RegistrationControlTest {
 
     }
 
-    @Test
-    void checkRepeatedEmail() {
-    }
-
-    @Test
-    void checkRepeatedPassword() {
-    }
-
 
 }
