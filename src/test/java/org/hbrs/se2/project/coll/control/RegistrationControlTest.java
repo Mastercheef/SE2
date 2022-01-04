@@ -1,5 +1,6 @@
 package org.hbrs.se2.project.coll.control;
 
+import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.RegistrationDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.RegistrationResultDTOImpl;
@@ -27,9 +28,14 @@ class RegistrationControlTest {
     UserRepository userRepository;
     @Mock
     UserDTO userDTO = new UserDTOImpl();
-
+    @Mock
+    CompanyRepository companyRepository;
     String email = "test@mail.de";
+    String companyName ="Mustermann GMBH";
+    String website = "mustermann.de";
 
+    @Mock
+    CompanyDTO companyDTO;
     @Test
     void checkIfEmailAlreadyInUse() {
 
@@ -54,6 +60,28 @@ class RegistrationControlTest {
     }
     @Test
     void checkIfCompanyAlreadyRegistered() {
+        when(companyDTO.getCompanyName()).thenReturn(companyName);
+        when(companyDTO.getEmail()).thenReturn(email);
+        when(companyDTO.getWebsite()).thenReturn(website);
+
+        when(companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
+                companyDTO.getCompanyName(),
+                companyDTO.getEmail(),
+                companyDTO.getWebsite()
+        )).thenReturn(companyDTO);
+
+        when(companyDTO.getId()).thenReturn(100);
+        assertTrue(registrationControl.checkIfCompanyAlreadyRegistered(companyDTO));
+        when(companyDTO.getId()).thenReturn(0);
+        assertFalse(registrationControl.checkIfCompanyAlreadyRegistered(companyDTO));
+
+        when(companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
+                companyDTO.getCompanyName(),
+                companyDTO.getEmail(),
+                companyDTO.getWebsite()
+        )).thenReturn(null);
+        assertFalse(registrationControl.checkIfCompanyAlreadyRegistered(companyDTO));
+
     }
 
     @Test
@@ -63,4 +91,6 @@ class RegistrationControlTest {
     @Test
     void checkRepeatedPassword() {
     }
+
+
 }
