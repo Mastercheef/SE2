@@ -16,9 +16,6 @@ class SpringBootApplicationTest {
         //Testing CollApplication
     }
 
-    @Test
-    void main() {
-        assertDoesNotThrow(() -> CollApplication.main(new String[]{}));
-    }
+
 
 }
