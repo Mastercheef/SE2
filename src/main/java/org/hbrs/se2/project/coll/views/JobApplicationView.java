@@ -24,9 +24,13 @@ import org.hbrs.se2.project.coll.util.JobApplicationFormularUtil;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.logging.Logger;
+
 @Route(value = Globals.Pages.JOBAPPLICATION_VIEW + ":appID" , layout = AppView.class)
 @PageTitle(Globals.PageTitles.APPLICATION_PAGE_TITLE)
 public class JobApplicationView extends Div implements BeforeEnterObserver {
+
+    private static final Logger LOGGER = Logger.getLogger(JobApplicationView.class.getName());
 
     @Autowired
     private StudentUserRepository studentUserRepository;
@@ -156,7 +160,7 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
         try {
             if(Utils.getCurrentUser() != null) {
                 StudentUser studentUser = jobApplication.getStudentUser();
-                System.out.println(studentUser.getId());
+                LOGGER.info("StudentID:" + studentUser.getId());
                 jobApplicationFormularUtil.loadStudentUserInfo(studentUser);
             }
         } catch (Exception exception) {

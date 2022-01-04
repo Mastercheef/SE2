@@ -18,12 +18,15 @@ import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
+import java.util.logging.Logger;
 
 
 @Route(value = "contacting/:companyId/:jobId", layout = AppView.class)
 @RouteAlias(value = "contacting/:userId", layout = AppView.class)
 @PageTitle("Kontaktaufnahme")
 public class ContactingView extends VerticalLayout implements BeforeEnterObserver {
+
+    private static final Logger LOGGER = Logger.getLogger(ContactingView.class.getName());
 
     @Autowired
     ContactingControl contactingControl;
@@ -66,7 +69,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                 }
             }
         } catch (Exception exception) {
-            System.out.println("Exception" + exception);
+            LOGGER.info("Exception" + exception);
             Utils.triggerDialogMessage("Fehler", "Es ist ein unerwarteter Fehler aufgetreten");
             Utils.navigateToMain();
             event.rerouteTo(Globals.Pages.MAIN_VIEW);
