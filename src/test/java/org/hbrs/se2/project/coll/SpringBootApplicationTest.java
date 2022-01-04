@@ -5,6 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CollApplication.class)
 class SpringBootApplicationTest {
@@ -13,4 +15,10 @@ class SpringBootApplicationTest {
     void contextLoads() {
         //Testing CollApplication
     }
+
+    @Test
+    void main() {
+        assertDoesNotThrow(() -> CollApplication.main(new String[]{}));
+    }
+
 }
