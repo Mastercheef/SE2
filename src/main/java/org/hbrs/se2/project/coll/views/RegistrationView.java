@@ -290,7 +290,7 @@ public class RegistrationView extends Div {
         add(siteLayout);
     }
 
-    public void autoLoginAfterRegistration(UserDTOImpl userDTO) throws DatabaseUserException {
+    public void autoLoginAfterRegistration(UserDTOImpl userDTO)  {
         LoginResultDTO isAuthenticated = loginControl.authentificate(userDTO.getEmail(), userDTO.getPassword());
         if (isAuthenticated.getResult()) {
             UI.getCurrent().getSession().setAttribute( Globals.CURRENT_USER, loginControl.getCurrentUser() );

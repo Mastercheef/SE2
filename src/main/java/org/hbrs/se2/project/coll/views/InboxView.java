@@ -149,12 +149,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
             Label dateVal = new Label(message.getDate().toString());
             Label mess = new Label("Nachricht:");
 
-            // Styling
-            for(Label label : new Label[] { sender, senderVal, subject, subjectVal, date, dateVal, mess})
-                label.getElement().getStyle().set("font-size", "14px");
-
-            for(Label label : new Label[] { sender, subject, date})
-                label.getElement().getStyle().set("font-weight", "bold");
+            styling(sender, senderVal, subject, subjectVal, date, dateVal, mess);
 
             // Layout for when a message has been chosen
 
@@ -167,15 +162,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
 
             // Visit profile button
             Button profile = new Button("Profil besuchen");
-            profile.addClickListener(e ->
-                    {
-                        try {
-                            UI.getCurrent().navigate(inboxControl.callProfileRoute(message.getSender()));
-                        } catch (DatabaseUserException ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-            );
+            profileButton(message, profile);
 
             // Delete button for messages
             Button delete = new Button("Nachricht löschen");
@@ -220,47 +207,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
             Button replyButton = new Button("Senden");
             Button cancelButton = new Button("Verwerfen");
 
-            replyButton.addClickListener(e -> {
-                // Check if messageReply field is empty. If not, send an answer to the sender of the email
-                if(!Objects.equals(messageReply.getValue(), ""))
-                {
-                    MessageDTO newMessage;
-                    if(grid.getSelectionModel().getFirstSelectedItem().isPresent())
-                    {
-                        newMessage = inboxControl.prepareSending(
-                                grid.getSelectionModel().getFirstSelectedItem().get(),
-                                messageReply.getValue());
-                        try {
-                            // Send message, show confirmation, deselect content
-                            inboxControl.sendMessage(newMessage);
-                            messageReply.setValue("");
-                            splitLayout.setSplitterPosition(1000);
-                            grid.deselectAll();
-                            cleanSecondary();
-
-                            Dialog dialog = new Dialog();
-                            dialog.add("Ihre Nachricht wurde gesendet!");
-                            dialog.open();
-
-                        } catch (DatabaseUserException ex) {
-                            ex.printStackTrace();
-                            Dialog dialog = new Dialog();
-                            dialog.add("Während dem Senden der Nachricht ist ein Fehler aufgetreten. Bitte kontaktieren " +
-                                    "Sie den Administrator dieser Webseite.");
-                            dialog.open();
-                        }
-                    }
-                    else
-                    {
-                        Dialog dialog = new Dialog();
-                        dialog.add("Während dem Senden der Nachricht ist ein Fehler aufgetreten. Bitte kontaktieren " +
-                                "Sie den Administrator dieser Webseite.");
-                        dialog.open();
-                    }
-                }
-                else
-                    messageReply.setInvalid(true);
-            });
+            replyButton(messageReply, replyButton);
             cancelButton.addClickListener(e -> messageReply.setValue(""));
 
             HorizontalLayout header = new HorizontalLayout(sender, senderVal, subject, subjectVal, date, dateVal);
@@ -276,6 +223,71 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         }
         else
             cleanSecondary();
+    }
+
+    private void replyButton(TextArea messageReply, Button replyButton) {
+        replyButton.addClickListener(e -> {
+            // Check if messageReply field is empty. If not, send an answer to the sender of the email
+            if(!Objects.equals(messageReply.getValue(), ""))
+            {
+                MessageDTO newMessage;
+                if(grid.getSelectionModel().getFirstSelectedItem().isPresent())
+                {
+                    newMessage = inboxControl.prepareSending(
+                            grid.getSelectionModel().getFirstSelectedItem().get(),
+                            messageReply.getValue());
+                    try {
+                        // Send message, show confirmation, deselect content
+                        inboxControl.sendMessage(newMessage);
+                        messageReply.setValue("");
+                        splitLayout.setSplitterPosition(1000);
+                        grid.deselectAll();
+                        cleanSecondary();
+
+                        Dialog dialog = new Dialog();
+                        dialog.add("Ihre Nachricht wurde gesendet!");
+                        dialog.open();
+
+                    } catch (DatabaseUserException ex) {
+                        ex.printStackTrace();
+                        Dialog dialog = new Dialog();
+                        dialog.add("Während dem Senden der Nachricht ist ein Fehler aufgetreten. Bitte kontaktieren " +
+                                "Sie den Administrator dieser Webseite.");
+                        dialog.open();
+                    }
+                }
+                else
+                {
+                    Dialog dialog = new Dialog();
+                    dialog.add("Während dem Senden der Nachricht ist ein Fehler aufgetreten. Bitte kontaktieren " +
+                            "Sie den Administrator dieser Webseite.");
+                    dialog.open();
+                }
+            }
+            else
+                messageReply.setInvalid(true);
+        });
+    }
+
+    private void profileButton(MessageDTO message, Button profile) {
+        profile.addClickListener(e ->
+                {
+                    try {
+                        UI.getCurrent().navigate(inboxControl.callProfileRoute(message.getSender()));
+                    } catch (DatabaseUserException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+    }
+
+    private void styling(Label sender, Label senderVal, Label subject, Label subjectVal, Label date, Label dateVal, Label mess) {
+        // Styling
+        for(Label label : new Label[] {sender, senderVal, subject, subjectVal, date, dateVal, mess})
+            label.getElement().getStyle().set("font-size", "14px");
+
+        for(Label label : new Label[] {sender, subject, date})
+            label.getElement().getStyle().set("font-weight", "bold");
     }
 
     // Layout when a message has been deselected
