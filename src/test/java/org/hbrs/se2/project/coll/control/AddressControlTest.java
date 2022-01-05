@@ -48,6 +48,16 @@ class AddressControlTest {
         when(address.getId()).thenReturn(0);
         assertEquals(newAddress , addressControl.checkAddressExistence(address));
         assertNotEquals(address , addressControl.checkAddressExistence(address));
+
+        when(addressRepository.getAddressByStreetAndHouseNumberAndPostalCodeAndCityAndCountry(
+                address.getStreet(),
+                address.getHouseNumber(),
+                address.getPostalCode(),
+                address.getCity(),
+                address.getCountry())).thenReturn(null);
+        assertEquals(newAddress , addressControl.checkAddressExistence(address));
+        assertNotEquals(address , addressControl.checkAddressExistence(address));
+
     }
 
     private void mocking() {
