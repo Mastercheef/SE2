@@ -11,7 +11,6 @@ import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
@@ -46,7 +45,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private Tabs menu;
     private H1 helloUser;
-    private final Label copyright = new Label("Copyright © 2021-2022");
     MenuBar navigationBar = new MenuBar();
 
     @Autowired
@@ -269,13 +267,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         return tabs;
     }
 
-
-    private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
-        final Tab tab = new Tab();
-        tab.add(new RouterLink(text, navigationTarget));
-        ComponentUtil.setData(tab, Class.class, navigationTarget);
-        return tab;
-    }
 
     @Override
     protected void afterNavigation() {

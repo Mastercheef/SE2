@@ -37,7 +37,7 @@ class InboxControlTest {
     MessageDTO messageDTO;
     @Test
     void getMessages() {
-        ArrayList<MessageDTO> messageDTOArrayList = new ArrayList<MessageDTO>();
+        ArrayList<MessageDTO> messageDTOArrayList = new ArrayList<>();
         messageDTOArrayList.add(messageDTO);
         when(messageRepository.findMessagesByRecipient(100)).thenReturn(messageDTOArrayList);
         assertEquals(1 , inboxControl.getMessages(100).size());
