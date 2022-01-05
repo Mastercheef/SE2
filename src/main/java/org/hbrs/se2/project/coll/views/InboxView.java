@@ -40,7 +40,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     private static final Grid<MessageDTO> grid = new Grid<>(MessageDTO.class, false);
     private static  List<MessageDTO> messages  = new ArrayList<>();
     private static  Div hint;
-    private static SplitLayout splitLayout = new SplitLayout();
+    private static  SplitLayout splitLayout = new SplitLayout();
 
     private static final Logger LOGGER = Logger.getLogger(InboxView.class.getName());
 
@@ -108,12 +108,12 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         });
 
         // Fetch messages for current user and fill grid with them
-        messages = inboxControl.getMessages(Utils.getCurrentUser().getId());
+        InboxView.messages = inboxControl.getMessages(Utils.getCurrentUser().getId());
         grid.setItems(messages);
 
         // Hint if user has no messages
-        hint = new Div();
-        hint.setText("Sie haben keine Nachrichten.");
+        InboxView.hint = new Div();
+        InboxView.hint.setText("Sie haben keine Nachrichten.");
         setDivStyle(hint);
 
         // Setup right side of the Layout, which works as a message Display / Answering UI
@@ -126,15 +126,15 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         VerticalLayout reply = new VerticalLayout(hint2);
 
         // Compose both sides
-        splitLayout = new SplitLayout(inbox, reply);
-        splitLayout.setSplitterPosition(1000);
-        splitLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
+        InboxView.splitLayout = new SplitLayout(inbox, reply);
+        InboxView.splitLayout.setSplitterPosition(1000);
+        InboxView.splitLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
 
-        splitLayout.setSizeFull();
-        splitLayout.setHeight("100%");
+        InboxView.splitLayout.setSizeFull();
+        InboxView.splitLayout.setHeight("100%");
         setSizeFull();
         setHeight("100%");
-        add(splitLayout);
+        add(InboxView.splitLayout);
     }
 
     private void toggleReply(MessageDTO message, boolean selected) throws DatabaseUserException {

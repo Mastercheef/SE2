@@ -187,7 +187,7 @@ class JobApplicationFormularUtilTest {
 
     @Test
     void setErrorFields() {
-        ArrayList<JobApplicationResultDTO.ReasonType> arrayList = new ArrayList<JobApplicationResultDTO.ReasonType>();
+        ArrayList<JobApplicationResultDTO.ReasonType> arrayList = new ArrayList<>();
         arrayList.add(  JobApplicationResultDTO.ReasonType.HEADLINE_MISSING);
 
         jobApplicationFormularUtil.setErrorFields(arrayList , new TextField() , new TextArea());
