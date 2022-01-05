@@ -61,5 +61,8 @@ class ContactPersonControlTest {
         assertFalse(contactPersonControl.checkIfUserIsProfileOwner(currentUser, 200));
         when(currentUser.getId()).thenReturn(200);
         assertTrue(contactPersonControl.checkIfUserIsProfileOwner(currentUser, 200));
+        when(currentUser.getId()).thenReturn(200);
+        when(contactPersonDTO.getId()).thenReturn(300);
+        assertTrue(contactPersonControl.checkIfUserIsProfileOwner(currentUser, 200));
     }
 }
