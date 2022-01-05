@@ -212,11 +212,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Add "New Job" Button ONLY when the logged-in user is the contact person of this company
         int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
 
-        if (Utils.getCurrentUser() != null) {
-            int currentUserId = Utils.getCurrentUser().getId();
-            if(Objects.equals(contactPersonId, currentUserId))
-                form.add(hbuttons);
-        }
+        getIDCurrentUser(form, hbuttons, contactPersonId);
 
         // Find Job Advertisements for this company
         List<JobAdvertisement> jobAdvertisements =
@@ -275,10 +271,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 lJobSalary          = new Label(Integer.toString(job.getSalary()));
 
 
-                if(String.valueOf(job.getTemporaryEmployment()).equals("true"))
-                    lJobTemporary = new Label("Ja");
-                else
-                    lJobTemporary = new Label("Nein");
+                lJobTemporary = getLabel(job);
 
                 HorizontalLayout hJobTitle          = new HorizontalLayout(jobTitle, lJobTitle);
                 HorizontalLayout hJobType           = new HorizontalLayout(jobType, lJobType);
@@ -310,15 +303,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                         Button yesButton = new Button("Ja");
                         Button noButton  = new Button ("Nein");
 
-                        yesButton.addClickListener(jo -> {
-                            dialog.close();
-                            try {
-                                companyControl.deleteAdvertisement(job);
-                            } catch (DatabaseUserException ex) {
-                                ex.printStackTrace();
-                            }
-                            UI.getCurrent().getPage().reload();
-                        });
+                        createYesButton(job, dialog, yesButton);
                         noButton.addClickListener(no -> dialog.close());
 
                         HorizontalLayout buttons = new HorizontalLayout(yesButton, noButton);
@@ -337,6 +322,35 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
             }
         }
         return form;
+    }
+
+    private void createYesButton(JobAdvertisement job, Dialog dialog, Button yesButton) {
+        yesButton.addClickListener(jo -> {
+            dialog.close();
+            try {
+                companyControl.deleteAdvertisement(job);
+            } catch (DatabaseUserException ex) {
+                ex.printStackTrace();
+            }
+            UI.getCurrent().getPage().reload();
+        });
+    }
+
+    private void getIDCurrentUser(Div form, HorizontalLayout hbuttons, int contactPersonId) {
+        if (Utils.getCurrentUser() != null) {
+            int currentUserId = Utils.getCurrentUser().getId();
+            if(Objects.equals(contactPersonId, currentUserId))
+                form.add(hbuttons);
+        }
+    }
+
+    private Label getLabel(JobAdvertisement job) {
+        Label lJobTemporary;
+        if(String.valueOf(job.getTemporaryEmployment()).equals("true"))
+            lJobTemporary = new Label("Ja");
+        else
+            lJobTemporary = new Label("Nein");
+        return lJobTemporary;
     }
 
     public static void navigateToEdit(int companyId) {
