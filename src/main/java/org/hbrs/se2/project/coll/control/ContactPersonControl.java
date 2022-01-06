@@ -53,7 +53,7 @@ public class ContactPersonControl {
         return addressControl.checkAddressExistence(address);
     }
 
-    private ContactPerson saveContactPerson(ContactPerson contactPerson ) throws DatabaseUserException {
+    protected ContactPerson saveContactPerson(ContactPerson contactPerson ) throws DatabaseUserException {
         try {
             // Abspeicherung der Entity in die DB
             ContactPerson savedContactPerson = this.contactPersonRepository.save( contactPerson );

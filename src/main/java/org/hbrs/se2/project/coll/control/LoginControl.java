@@ -35,7 +35,7 @@ public class LoginControl {
         return this.userDTO;
     }
 
-    private UserDTO getUser(String email , String plainTextPassword ) {
+    protected UserDTO getUser(String email , String plainTextPassword ) {
         UserDTO userTmp = null;
         try {
             userTmp = repository.findUserByEmail(email);

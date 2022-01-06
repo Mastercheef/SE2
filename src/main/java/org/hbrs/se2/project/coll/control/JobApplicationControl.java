@@ -50,12 +50,12 @@ public class JobApplicationControl {
         return applicationResultDTO;
     }
 
-    private void checkForRequiredApplicationInput() {
+    protected void checkForRequiredApplicationInput() {
         checkValueAndSetResponse(jobApplicationDTO.getHeadline(), JobApplicationResultDTO.ReasonType.HEADLINE_MISSING);
         checkValueAndSetResponse(jobApplicationDTO.getText(), JobApplicationResultDTO.ReasonType.TEXT_MISSING);
     }
 
-    private void checkValueAndSetResponse(String value, JobApplicationResultDTO.ReasonType reason){
+    protected void checkValueAndSetResponse(String value, JobApplicationResultDTO.ReasonType reason){
         if(Utils.stringIsEmptyOrNull(value)) {
             applicationResultDTO.addReason(reason);
         }

@@ -48,7 +48,7 @@ public class StudentUserControl {
         return addressControl.checkAddressExistence(address);
     }
 
-    private StudentUser saveStudentUser(StudentUser studentUser ) throws DatabaseUserException {
+    protected StudentUser saveStudentUser(StudentUser studentUser ) throws DatabaseUserException {
         try {
             // Abspeicherung der Entity in die DB
             StudentUser savedStudentUser = this.studentUserRepository.save( studentUser );
