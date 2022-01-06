@@ -125,6 +125,7 @@ public class User {
 
 
     @OneToOne
+    @JoinColumn(name = "user_id")
     public Settings getSettings() {
         return settings;
     }
