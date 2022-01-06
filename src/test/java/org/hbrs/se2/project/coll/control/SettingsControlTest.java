@@ -37,8 +37,6 @@ class SettingsControlTest {
     CheckboxGroup<String> checkboxGroup;
     @Mock
     Settings settings;
-    @Mock
-    Settings settingsReturn;
     @Test
     void getUserSettings() {
         when(settingsRepository.findSettingsById(100)).thenReturn(settingsDTO);
