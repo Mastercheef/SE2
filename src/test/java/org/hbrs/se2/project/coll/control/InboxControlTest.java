@@ -1,7 +1,6 @@
 package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.dtos.MessageDTO;
-import org.hbrs.se2.project.coll.dtos.impl.MessageDTOImpl;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.repository.MessageRepository;

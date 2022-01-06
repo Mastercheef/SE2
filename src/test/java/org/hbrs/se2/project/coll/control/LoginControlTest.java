@@ -1,12 +1,9 @@
 package org.hbrs.se2.project.coll.control;
-
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.LoginResultDTOImpl;
-import org.hbrs.se2.project.coll.entities.User;
 import org.hbrs.se2.project.coll.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
