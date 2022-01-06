@@ -24,7 +24,9 @@ class RegistrationDTOImplTest {
 
     @Test
     void setUserDTO() {
+        assertNull(registrationDTO.getUserDTO());
         registrationDTO.setUserDTO(userDTO);
+        assertNotNull(registrationDTO.getUserDTO());
     }
 
     @Test
@@ -71,7 +73,7 @@ class RegistrationDTOImplTest {
 
     @Test
     void testConstructor() {
-        RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl(userDTO , repeatedEmail, repeatedPassword);
+        registrationDTO = new RegistrationDTOImpl(userDTO , repeatedEmail, repeatedPassword);
         assertNotNull(registrationDTO.getUserDTO());
         assertEquals(repeatedEmail , registrationDTO.getRepeatedEmail());
         assertEquals(repeatedPassword , registrationDTO.getRepeatedPassword());

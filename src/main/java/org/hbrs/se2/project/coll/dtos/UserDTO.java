@@ -1,8 +1,8 @@
 package org.hbrs.se2.project.coll.dtos;
 
 import org.hbrs.se2.project.coll.entities.Address;
-
 import java.time.LocalDate;
+
 
 public interface UserDTO {
     public String getSalutation();
@@ -16,5 +16,4 @@ public interface UserDTO {
     public String getPassword();
     public String getType();
     public int getId();
-
 }

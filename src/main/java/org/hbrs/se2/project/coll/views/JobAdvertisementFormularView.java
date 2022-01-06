@@ -3,6 +3,7 @@ package org.hbrs.se2.project.coll.views;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
@@ -21,6 +22,7 @@ import org.hbrs.se2.project.coll.control.CompanyControl;
 import org.hbrs.se2.project.coll.control.JobAdvertisementControl;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
+import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.JobAdvertisementDTOimpl;
 import org.hbrs.se2.project.coll.entities.Address;
@@ -57,7 +59,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
     int companyId;
 
     @Autowired
-    private JobAdvertisementControl control;
+    private JobAdvertisementControl jobAdvertisementControl;
 
     Label infoText              = new Label("Mit (*) markierte Felder sind notwendig.");
     Label jobTitle              = new Label("Jobtitel (*)");
@@ -168,15 +170,21 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         saveButton.addClickListener(e -> {
             if(!checkForEmptyInput()) {
                 try {
-                    createAndSaveNewJob();
-                } catch (DatabaseUserException ex) {
-                    ex.printStackTrace();
+                    JobAdvertisementDTO jobAdvertisementDTO = createNewJobAdvertisementDTO();
+                    jobAdvertisementControl.saveAdvertisement(jobAdvertisementDTO);
+
+                    Utils.navigateToCompanyProfile(companyId);
+                    Dialog dialog = new Dialog();
+                    dialog.add("Ihre Stellenanzeige wurde gespeichert!");
+                    dialog.open();
+                } catch (DatabaseUserException databaseUserException) {
+                    Utils.triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein Fehler aufgetreten: " + databaseUserException.getErrorCode());
+                } catch (Exception exception) {
+                    Utils.triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein unerwarteter Fehler aufgetreten: " + exception);
                 }
-                UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
             }
         });
-        cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW +
-                companyId));
+        cancelButton.addClickListener(e -> Utils.navigateToCompanyProfile(companyId));
         hbuttons.add(saveButton, cancelButton);
 
         // Append to site
@@ -187,7 +195,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
 
     // If the user is not logged in, they get redirected to the login page
     private boolean checkIfUserIsLoggedIn() {
-        UserDTO userDTO = this.getCurrentUser();
+        UserDTO userDTO = Utils.getCurrentUser();
         if (userDTO == null) {
             UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
             return false;
@@ -197,7 +205,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
 
     // If the user is not the owner of this profile, they get redirected to the profile
     private boolean checkIfUserIsProfileOwner(int parameter) {
-        int userId = this.getCurrentUser().getId();
+        int userId = Utils.getCurrentUser().getId();
         int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(parameter).getId();
 
         if(userId == contactPersonId)
@@ -206,14 +214,10 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
             return true;
         else
         {
-            UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
+            Utils.navigateToCompanyProfile(companyId);
             UI.getCurrent().getPage().reload();
             return false;
         }
-    }
-
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
     }
 
     public boolean checkForEmptyInput() {
@@ -247,8 +251,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         return empty;
     }
 
-    public void createAndSaveNewJob() throws DatabaseUserException {
-
+    public JobAdvertisementDTO createNewJobAdvertisementDTO() {
         JobAdvertisementDTOimpl newJob = new JobAdvertisementDTOimpl();
         newJob.setJobTitle(lJobTitle.getValue());
         newJob.setTypeOfEmployment(lTypeOfEmployment.getValue());
@@ -268,9 +271,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         // Contact Person Id
         ContactPerson contactPerson = contactPersonRepository.findContactPersonByCompanyId(companyId);
         newJob.setContactPerson(contactPerson);
-
-        // Save in DB
-        control.saveAdvertisement(newJob);
+        return newJob;
     }
 
     public JobAdvertisementFormularView() {

@@ -1,6 +1,5 @@
 package org.hbrs.se2.project.coll.util;
 
-
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,6 +21,7 @@ public class Globals {
         public static final String CONTACTING_VIEW              = "contacting/";
         public static final String INBOX_VIEW                   = "inbox/";
         public static final String JOBADVERTISEMENT_VIEW        = "jobadvertisement/";
+        public static final String JOBAPPLICATION_VIEW          = "jobapplication/";
         public static final String JOBLIST_VIEW                 = "joblist/";
         public static final String LOGIN_VIEW                   = "login/";
         public static final String MAIN_VIEW                    = "";
@@ -37,10 +37,12 @@ public class Globals {
         private PageTitles() {
             throw new IllegalStateException(ExceptionMessage.UTILITY);
         }
-        public static final String REGISTER_PAGE_TITLE          = "Registration";
+        public static final String APPLICATION_PAGE_TITLE       = "Application";
+        public static final String JOBADVERTISEMENT_PAGE_TITLE  = "Stellenangebot";
+        public static final String JOBLIST_PAGE_TITLE           = "Liste der Stellenangebote";
         public static final String LOGIN_PAGE_TITLE             = "Login";
         public static final String MAIN_PAGE_TITLE              = "Main";
-        public static final String APPLICATION_PAGE_TITLE              = "Application";
+        public static final String REGISTER_PAGE_TITLE          = "Registration";
     }
 
     public static class LogMessage {
@@ -71,6 +73,7 @@ public class Globals {
         public static final String POSTAL_CODE = "Bitte geben Sie eine Postleitzahl ein";
 
     }
+
 
     public static class Regex {
 

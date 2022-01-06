@@ -1,8 +1,5 @@
 package org.hbrs.se2.project.coll.entities;
 
-
-import org.mindrot.jbcrypt.BCrypt;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -96,11 +93,9 @@ public class User {
         return password;
     }
     public void setPassword(String password) {
-        this.password = hashPassword(password);
+        this.password = password;
     }
-    private String hashPassword(String plain) {
-        return BCrypt.hashpw(plain, BCrypt.gensalt());
-    }
+
 
     @Basic
     @Column(name = "type")
@@ -123,9 +118,8 @@ public class User {
         this.id = id;
     }
 
-
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.ALL})
+    @PrimaryKeyJoinColumn
     public Settings getSettings() {
         return settings;
     }
@@ -152,6 +146,7 @@ public class User {
     public int hashCode() {
         return Objects.hash( firstName, lastName, address, phone, dateOfBirth, email, password, id);
     }
+
 
     @Override
     public String toString() {

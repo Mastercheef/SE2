@@ -13,11 +13,11 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
-import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -107,7 +107,6 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         // Layout
         H2 h2 = new H2("Mein Profil");
 
-        // TODO: Get Image from Database
         // Profile Image
         Image profileImage = new Image("https://thispersondoesnotexist.com/image", "placeholder");
         profileImage.setWidth("200px");
@@ -121,7 +120,6 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         }
 
         // Profile Data
-        // TODO: Get Data from UserDTO
         HorizontalLayout hsalutation    = new HorizontalLayout(salutation, lsalutation);
         HorizontalLayout htitle         = new HorizontalLayout(title, ltitle);
         HorizontalLayout hfirstname     = new HorizontalLayout(firstname, lfirstname);
@@ -143,8 +141,7 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         // Edit Profile Button
         HorizontalLayout hbuttons = new HorizontalLayout();
         Button button = new Button("Profil editieren");
-        button.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_EDIT_VIEW +
-                profileDTO.getId()));
+        button.addClickListener(e -> navigateToEdit(profileDTO.getId()));
         hbuttons.add(button);
 
         // Alignment of profile information
@@ -159,17 +156,18 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
                 hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail, hnumber, hinterests, hwebsite, haboutme);
 
         // Add Edit Button ONLY when the logged-in user is the owner of this profile
-        if (getCurrentUser() != null) {
-            int currentUserId = getCurrentUser().getId();
+        if (Utils.getCurrentUser() != null) {
+            int currentUserId = Utils.getCurrentUser().getId();
             if(Objects.equals(profileDTO.getId(), currentUserId))
                 div.add(hbuttons);
         }
         add(div);
     }
-
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
+    public static void navigateToEdit(int studentId) {
+        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.PROFILE_EDIT_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.PROFILE_EDIT_VIEW + studentId);
     }
+
 }
 
 

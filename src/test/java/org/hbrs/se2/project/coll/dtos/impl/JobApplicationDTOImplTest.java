@@ -1,8 +1,10 @@
 package org.hbrs.se2.project.coll.dtos.impl;
 
+import org.hbrs.se2.project.coll.entities.JobAdvertisement;
+import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,9 +13,9 @@ class JobApplicationDTOImplTest {
     JobApplicationDTOImpl jobApplicationDTO;
 
 
-    StudentUserDTOImpl studentUserDTO;
+    StudentUser studentUser;
 
-    JobAdvertisementDTOimpl jobAdvertisementDTOimpl;
+    JobAdvertisement jobAdvertisement;
 
     String headline = "Headline 1";
     String applicationText = "Lorem Ipsum";
@@ -21,22 +23,22 @@ class JobApplicationDTOImplTest {
     void setUp() {
         jobApplicationDTO = new JobApplicationDTOImpl();
 
-        jobApplicationDTO.setStudentUserDTO(studentUserDTO);
+        jobApplicationDTO.setStudentUser(studentUser);
     }
 
     @Test
     void getStudentUserDTO() {
-        studentUserDTO = new StudentUserDTOImpl();
-        jobApplicationDTO.setStudentUserDTO(studentUserDTO);
-        assertNotNull(jobApplicationDTO.getStudentUserDTO());
+        studentUser = new StudentUser();
+        jobApplicationDTO.setStudentUser(studentUser);
+        assertNotNull(jobApplicationDTO.getStudentUser());
 
     }
 
     @Test
     void getJobAdvertisementDTO() {
-        jobAdvertisementDTOimpl = new JobAdvertisementDTOimpl();
-        jobApplicationDTO.setJobAdvertisementDTO(jobAdvertisementDTOimpl);
-        assertNotNull(jobApplicationDTO.getJobAdvertisementDTO());
+        jobAdvertisement = new JobAdvertisement();
+        jobApplicationDTO.setJobAdvertisementDTO(jobAdvertisement);
+        assertNotNull(jobApplicationDTO.getJobAdvertisement());
     }
 
     @Test
@@ -47,7 +49,19 @@ class JobApplicationDTOImplTest {
 
     @Test
     void getApplicationText() {
-        jobApplicationDTO.setApplicationText(applicationText);
-        assertEquals(applicationText , jobApplicationDTO.getApplicationText());
+        jobApplicationDTO.setText(applicationText);
+        assertEquals(applicationText , jobApplicationDTO.getText());
+    }
+
+    @Test
+    void date() {
+        LocalDate localDate = LocalDate.of(2017, 1, 13);
+        jobApplicationDTO.setDate(localDate);
+        assertEquals(localDate , jobApplicationDTO.getDate());
+    }
+
+    @Test
+    void id() {
+        assertNotNull(jobApplicationDTO.getId());
     }
 }

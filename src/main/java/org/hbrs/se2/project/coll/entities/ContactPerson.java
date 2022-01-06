@@ -8,7 +8,6 @@ import java.util.Set;
 @Table( name ="col_tab_contact_person" , schema = "collhbrs" )
 public class ContactPerson extends User {
 
-    //TODO Maybe change String to a custom Datatype or enum
     private String role;
     private Company company;
     private Set<JobAdvertisement> advertisements;

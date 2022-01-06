@@ -1,5 +1,5 @@
 package org.hbrs.se2.project.coll.views;
-import com.vaadin.flow.component.UI;
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.*;
@@ -16,6 +16,8 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.textfield.TextField;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.Utils;
+
 
 @Route(value = "" , layout = AppView.class)
 @RouteAlias(value = "main" , layout = AppView.class)
@@ -48,6 +50,13 @@ public class MainView extends VerticalLayout {
         start.add(logo,slogan,suchenText);
         start.setAlignSelf(Alignment.BASELINE);
 
+        ComboBox<String> comboBox;
+        comboBox = new ComboBox<>("Arbeit");
+        comboBox.setItems("Praktikum", "Minijob", "Vollzeit", "Teilzeit");
+
+        comboBox.setAllowCustomValue(false);
+        comboBox.setPlaceholder("Arbeit");
+
         TextField textField = new TextField();
         textField.getElement().setAttribute("aria-label", "search");
         textField.setPlaceholder("z.B. Beruf,Stichwort ");
@@ -55,17 +64,26 @@ public class MainView extends VerticalLayout {
         textField.setPrefixComponent(VaadinIcon.SEARCH.create());
         add(textField);
 
-        ComboBox<String> comboBox;
-        comboBox = new ComboBox<>("Arbeit");
-        comboBox.setItems("Job" , "Praktikum");
-
-        comboBox.setAllowCustomValue(false);
-        comboBox.setPlaceholder("Arbeit");
+        // Fetch values from fields and redirect to JobListView, after that use filter-function
+        Button searchButton = new Button("Suchen!");
+        searchButton.addClickListener(e -> {
+            if(!comboBox.isEmpty() || !textField.isEmpty())
+            {
+                // Vaadin ComboBox is not great. We have to specifically handle null-values.
+                if(comboBox.isEmpty())
+                    Utils.navigateToJobList(textField.getValue());
+                else
+                    Utils.navigateToJobList(textField.getValue(), comboBox.getValue());
+            }
+            // Used when both fields are empty, just a normal call of the JobListView
+            else
+                Utils.navigateToJobList();
+        });
 
         Button jobList = new Button("... oder alle Stellenangebote ansehen!");
-        jobList.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW));
+        jobList.addClickListener(e -> Utils.navigateToJobList());
 
-        HorizontalLayout hl = new HorizontalLayout(comboBox, textField);
+        HorizontalLayout hl = new HorizontalLayout(comboBox, textField, searchButton);
         hl.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
         hl.setSpacing(false);
         hl.setWidthFull();

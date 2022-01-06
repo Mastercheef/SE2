@@ -1,9 +1,7 @@
 package org.hbrs.se2.project.coll.control.exceptions;
 
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
-import org.hbrs.se2.project.coll.util.Globals;
 
-import javax.xml.crypto.Data;
 
 public class DatabaseUserException extends Exception {
 

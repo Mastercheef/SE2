@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface SettingsRepository extends JpaRepository<Settings, Integer> {
-
     SettingsDTO findSettingsById(int id);
-
 }
+
+

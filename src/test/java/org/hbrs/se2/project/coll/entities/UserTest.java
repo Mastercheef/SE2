@@ -13,8 +13,10 @@ class UserTest {
     private User userTwo = new User();
     private Address addressOne = new Address();
     private Address addressTwo = new Address();
+    private Settings settingsOne = new Settings();
     @BeforeEach
     void setUp() {
+        userOne.setSettings(settingsOne);
         userOne.setId(197);
         userOne.setSalutation("Herr");
         userOne.setTitle("Dr.");
@@ -49,6 +51,62 @@ class UserTest {
         userTwo.setType("!st");
         userTwo.setPassword("passwd2");
     }
+
+    @Test
+    void testGetSalutation(){
+        assertEquals("Herr", userOne.getSalutation());
+    }
+
+    @Test
+    void testGetTitle(){
+        assertEquals("Dr.", userOne.getTitle());
+    }
+
+    @Test
+    void testGetFirstName(){
+        assertEquals("Max", userOne.getFirstName());
+    }
+
+    @Test
+    void testGetLastName(){
+        assertEquals("Mustermann", userOne.getLastName());
+    }
+
+    @Test
+    void testGetAddress(){
+        assertEquals(addressOne, userOne.getAddress());
+    }
+
+    @Test
+    void testGetPhone(){
+        assertEquals("0123456789", userOne.getPhone());
+    }
+
+    @Test
+    void testGetDateOfBirth(){
+        assertEquals(LocalDate.of(2000,1,1), userOne.getDateOfBirth());
+    }
+
+    @Test
+    void testGetEmail(){
+        assertEquals("max@gmx.de", userOne.getEmail());
+    }
+
+    @Test
+    void testGetType(){
+        assertEquals("st", userOne.getType());
+    }
+
+    @Test
+    void testGetId(){
+        assertEquals(197, userOne.getId());
+    }
+
+    @Test
+    void testGetSettings(){
+        assertEquals(settingsOne, userOne.getSettings());
+    }
+
     @Test
     void testEqualsSameUser() {
         assertTrue(userOne.equals(userOne));

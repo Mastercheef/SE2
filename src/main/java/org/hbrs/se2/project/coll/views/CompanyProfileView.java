@@ -12,9 +12,9 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.CompanyControl;
+import org.hbrs.se2.project.coll.control.LoginControl;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
-import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
@@ -23,6 +23,7 @@ import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.LabelCompany;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -42,6 +43,9 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     @Autowired
     private CompanyControl companyControl;
+    @Autowired
+    private LoginControl loginControl;
+
     Address address;
     int companyId;
 
@@ -103,7 +107,6 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     public void createProfile() {
         H2 h2 = new H2("Firmenprofil");
 
-        // TODO: Get Image from Database
         // Profile Image
         Image profileImage = new Image("https://thispersondoesnotexist.com/image", "placeholder");
         profileImage.setWidth(WIDTH);
@@ -127,8 +130,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Edit Profile Button
         HorizontalLayout hbuttons = new HorizontalLayout();
         Button button = new Button("Profil editieren");
-        button.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_EDIT_VIEW +
-                companyId));
+        button.addClickListener(e -> navigateToEdit(companyId));
         hbuttons.add(button);
 
         // Alignment of profile information
@@ -155,8 +157,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Add Edit Button ONLY when the logged-in user is the contact person of this company
         int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
 
-        if (getCurrentUser() != null) {
-            int currentUserId = getCurrentUser().getId();
+        if (Utils.getCurrentUser() != null) {
+            int currentUserId = Utils.getCurrentUser().getId();
             if(Objects.equals(contactPersonId, currentUserId))
                 div.add(hbuttons);
         }
@@ -170,30 +172,30 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
         // Labels
         H3 contactHeadline  = new H3("Kontaktperson dieser Firma");
-        Label name          = new Label("Name:");
-        Label phone         = new Label("Telefon:");
-        Label email         = new Label("E-Mail:");
-        Label position      = new Label("Abteilung:");
+        Label contactName          = new Label("Name:");
+        Label contactPhone         = new Label("Telefon:");
+        Label contactEmail         = new Label("E-Mail:");
+        Label contactPosition      = new Label("Abteilung:");
 
-        Label lname         = new Label(contactPerson.getFirstName() + " " + contactPerson.getLastName());
-        Label lphone        = new Label(contactPerson.getPhone());
-        Label lemail        = new Label(contactPerson.getEmail());
-        Label lposition     = new Label(contactPerson.getRole());
+        Label lcontactName         = new Label(contactPerson.getFirstName() + " " + contactPerson.getLastName());
+        Label lcontactPhone        = new Label(contactPerson.getPhone());
+        Label lcontactEmail        = new Label(contactPerson.getEmail());
+        Label lcontactPosition     = new Label(contactPerson.getRole());
 
         // Styling
-        for (Label label : new Label[]{ name, phone, email, position }) {
+        for (Label label : new Label[]{ contactName, contactPhone, contactEmail, contactPosition }) {
             label.getElement().getStyle().set(FONT, "bold");
             label.setWidth("100px");
         }
 
         // Alignment
-        HorizontalLayout hname      = new HorizontalLayout(name, lname);
-        HorizontalLayout hphone     = new HorizontalLayout(phone, lphone);
-        HorizontalLayout hemail     = new HorizontalLayout(email, lemail);
-        HorizontalLayout hposition  = new HorizontalLayout(position, lposition);
+        HorizontalLayout hContactName      = new HorizontalLayout(contactName, lcontactName);
+        HorizontalLayout hContactPhone     = new HorizontalLayout(contactPhone, lcontactPhone);
+        HorizontalLayout hContactEmail     = new HorizontalLayout(contactEmail, lcontactEmail);
+        HorizontalLayout hContactPosition  = new HorizontalLayout(contactPosition, lcontactPosition);
 
         // Add to div
-        form.add(contactHeadline, hname, hphone, hemail, hposition);
+        form.add(contactHeadline, hContactName, hContactPhone, hContactEmail, hContactPosition);
         return form;
     }
 
@@ -204,18 +206,13 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         form.add(jobHeadline);
 
         Button newJob = new Button("Neues Stellenangebot");
-        newJob.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.RECRUITMENT_VIEW +
-                companyId));
+        newJob.addClickListener(e -> navigateToCreateJob(companyId));
         HorizontalLayout hbuttons = new HorizontalLayout(newJob);
 
         // Add "New Job" Button ONLY when the logged-in user is the contact person of this company
         int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
 
-        if (getCurrentUser() != null) {
-            int currentUserId = getCurrentUser().getId();
-            if(Objects.equals(contactPersonId, currentUserId))
-                form.add(hbuttons);
-        }
+        getIDCurrentUser(form, hbuttons, contactPersonId);
 
         // Find Job Advertisements for this company
         List<JobAdvertisement> jobAdvertisements =
@@ -274,10 +271,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 lJobSalary          = new Label(Integer.toString(job.getSalary()));
 
 
-                if(String.valueOf(job.getTemporaryEmployment()).equals("true"))
-                    lJobTemporary = new Label("Ja");
-                else
-                    lJobTemporary = new Label("Nein");
+                lJobTemporary = getLabel(job);
 
                 HorizontalLayout hJobTitle          = new HorizontalLayout(jobTitle, lJobTitle);
                 HorizontalLayout hJobType           = new HorizontalLayout(jobType, lJobType);
@@ -292,12 +286,11 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 // Create Buttons to get in contact with the Company
                 HorizontalLayout hJobButtons = new HorizontalLayout();
                 Button contactButton = new Button("Kontakt aufnehmen");
-                contactButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.CONTACTING_VIEW +
-                        companyId + "/" + job.getId()));
+                contactButton.addClickListener(e -> Utils.navigateToContactFormular(companyId, job.getId()));
                 hJobButtons.add(contactButton);
 
                 // Button to delete. Only viewable by company's contact person
-                if(contactPersonId == getCurrentUser().getId())
+                if(contactPersonId == Utils.getCurrentUser().getId())
                 {
                     Button deleteButton = new Button("Stellenangebot löschen");
                     deleteButton.addClickListener(e -> {
@@ -310,15 +303,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                         Button yesButton = new Button("Ja");
                         Button noButton  = new Button ("Nein");
 
-                        yesButton.addClickListener(jo -> {
-                            dialog.close();
-                            try {
-                                companyControl.deleteAdvertisement(job);
-                            } catch (DatabaseUserException ex) {
-                                ex.printStackTrace();
-                            }
-                            UI.getCurrent().getPage().reload();
-                        });
+                        createYesButton(job, dialog, yesButton);
                         noButton.addClickListener(no -> dialog.close());
 
                         HorizontalLayout buttons = new HorizontalLayout(yesButton, noButton);
@@ -339,8 +324,42 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         return form;
     }
 
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
+    private void createYesButton(JobAdvertisement job, Dialog dialog, Button yesButton) {
+        yesButton.addClickListener(jo -> {
+            dialog.close();
+            try {
+                companyControl.deleteAdvertisement(job);
+            } catch (DatabaseUserException ex) {
+                ex.printStackTrace();
+            }
+            UI.getCurrent().getPage().reload();
+        });
+    }
+
+    private void getIDCurrentUser(Div form, HorizontalLayout hbuttons, int contactPersonId) {
+        if (Utils.getCurrentUser() != null) {
+            int currentUserId = Utils.getCurrentUser().getId();
+            if(Objects.equals(contactPersonId, currentUserId))
+                form.add(hbuttons);
+        }
+    }
+
+    private Label getLabel(JobAdvertisement job) {
+        Label lJobTemporary;
+        if(String.valueOf(job.getTemporaryEmployment()).equals("true"))
+            lJobTemporary = new Label("Ja");
+        else
+            lJobTemporary = new Label("Nein");
+        return lJobTemporary;
+    }
+
+    public static void navigateToEdit(int companyId) {
+        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.COMPANYPROFILE_EDIT_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_EDIT_VIEW + companyId);
+    }
+    public static void navigateToCreateJob(int companyId) {
+        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.RECRUITMENT_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.RECRUITMENT_VIEW + companyId);
     }
 
     public CompanyProfileView() {

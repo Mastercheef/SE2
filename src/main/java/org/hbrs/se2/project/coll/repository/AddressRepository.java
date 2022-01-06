@@ -9,7 +9,6 @@ import java.util.List;
 @Component
 public interface AddressRepository extends JpaRepository<Address, Integer> {
 
-    List<Address> getAllByPostalCode(String postalCode);
     List<Address>   getByIdAfter(int id);
     Address         getById(int id);
     Address         getAddressByStreetAndHouseNumberAndPostalCodeAndCityAndCountry

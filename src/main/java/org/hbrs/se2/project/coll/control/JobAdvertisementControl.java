@@ -12,9 +12,13 @@ import org.hbrs.se2.project.coll.util.Globals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-
+import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Component
 public class JobAdvertisementControl {
@@ -30,6 +34,7 @@ public class JobAdvertisementControl {
     @Autowired
     ContactPersonRepository contactPersonRepository;
 
+    @Transactional
     public void saveAdvertisement(JobAdvertisementDTO dto) throws DatabaseUserException {
         try {
             JobAdvertisement job = JobFactory.createJob(dto);
@@ -44,6 +49,7 @@ public class JobAdvertisementControl {
         }
     }
 
+    @Transactional
     // Löschen eines Stellenangebots aus der Datenbank
     public void deleteAdvertisement(JobAdvertisement jobAdvertisement) throws DatabaseUserException {
         try {
@@ -97,12 +103,51 @@ public class JobAdvertisementControl {
                 getId()).getCompany().getId();
     }
 
+    // Used to find all available Jobs and filter them by entry date
     public List<JobAdvertisement> getAllJobs() {
-        return jobAdvertisementRepository.findAll();
+        return jobAdvertisementRepository.findAll(Sort.by(Sort.Direction.DESC, "startOfWork"));
+
     }
 
-    public List<JobAdvertisement> filterJobs(String title, String type, String requirements) {
-        return jobAdvertisementRepository.findJobAdvertisementsByJobTitleContainsIgnoreCaseAndTypeOfEmploymentContainsIgnoreCaseAndRequirementsContainsIgnoreCase(title, type, requirements);
+    /* We need multiple filter functions because of Vaadin Combo Boxes. */
+
+    // All filters set
+    public List<JobAdvertisement> filterJobs(String title, String type, String requirements,
+                                             boolean temporaryEmployment, LocalDate date, short hours,
+                                             int salary) {
+        return jobAdvertisementRepository.filterJobs(title, type, requirements, temporaryEmployment,
+                date, hours, salary);
+    }
+
+    // Only "JobType" filter set
+    public List<JobAdvertisement> filterJobs(String title, String type, String requirements,
+                                             LocalDate date, short hours, int salary) {
+        return jobAdvertisementRepository.filterJobs(title, type, requirements, date, hours, salary);
+    }
+
+    // Only "Temporary Employment" filter set
+    public List<JobAdvertisement> filterJobs(String title, String requirements, boolean temporaryEmployment,
+                                             LocalDate date, short hours, int salary) {
+        return jobAdvertisementRepository.filterJobs(title, requirements, temporaryEmployment, date,
+                hours, salary);
+    }
+
+    // "Job Type" and "Temporary Employment" filters not set
+    public List<JobAdvertisement> filterJobs(String title, String requirements, LocalDate date,
+                                             short hours, int salary) {
+        return jobAdvertisementRepository.filterJobs(title, requirements, date, hours, salary);
+    }
+
+    public List<JobAdvertisement> filterCompanies(List<JobAdvertisement> jobs, String companyName) {
+        List<JobAdvertisement> companyJobs = new ArrayList<>();
+        if(!jobs.isEmpty()) {
+            for (JobAdvertisement job : jobs)
+                // Used because of case sensitivity. Otherwise, works like str1.contains(str2)
+                if (Pattern.compile(Pattern.quote(companyName),
+                        Pattern.CASE_INSENSITIVE).matcher(getCompanyName(job)).find())
+                    companyJobs.add(job);
+        }
+        return companyJobs;
     }
 
 }

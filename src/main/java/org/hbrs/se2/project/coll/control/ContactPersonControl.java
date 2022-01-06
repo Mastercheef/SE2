@@ -21,6 +21,10 @@ public class ContactPersonControl {
     @Autowired
     private AddressControl addressControl;
 
+    public ContactPerson findContactPersonById(int id) {
+        return contactPersonRepository.findContactPersonById(id);
+    }
+
     public ContactPerson createNewContactPerson(UserDTO userDTO, Company company) throws DatabaseUserException {
         Address address = handleAddressExistance(userDTO.getAddress());
         ContactPerson newContactPerson = UserFactory.createContactPersonFromBasicUser(userDTO);
@@ -28,6 +32,11 @@ public class ContactPersonControl {
         // In the registration process of a contact person, a new company must be created.
         newContactPerson.setCompany(company);
         newContactPerson.setRole("admin");
+
+        Settings settings = new Settings();
+        settings.setNotificationIsEnabled(true);
+        newContactPerson.setSettings(settings);
+        settings.setUser(newContactPerson);
 
         return saveContactPerson(newContactPerson);
     }
@@ -44,7 +53,7 @@ public class ContactPersonControl {
         return addressControl.checkAddressExistence(address);
     }
 
-    private ContactPerson saveContactPerson(ContactPerson contactPerson ) throws DatabaseUserException {
+    protected ContactPerson saveContactPerson(ContactPerson contactPerson ) throws DatabaseUserException {
         try {
             // Abspeicherung der Entity in die DB
             ContactPerson savedContactPerson = this.contactPersonRepository.save( contactPerson );
@@ -63,5 +72,13 @@ public class ContactPersonControl {
                 throw new DatabaseUserException("Es ist ein unerwarteter Fehler aufgetreten.");
             }
         }
+    }
+
+    public boolean checkIfUserIsProfileOwner(UserDTO currentUser, int companyId) {
+        ContactPerson contactPersonDTO = contactPersonRepository.findContactPersonByCompanyId(companyId);
+
+        if(currentUser.getId() == contactPersonDTO.getId())
+            return true;
+        else return currentUser.getId() == companyId;
     }
 }

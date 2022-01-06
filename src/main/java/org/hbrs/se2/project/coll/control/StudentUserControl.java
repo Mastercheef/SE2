@@ -5,6 +5,7 @@ import org.hbrs.se2.project.coll.control.factories.UserFactory;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
+import org.hbrs.se2.project.coll.entities.Settings;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.slf4j.Logger;
@@ -24,8 +25,13 @@ public class StudentUserControl {
 
     public StudentUser createNewStudentUser(UserDTO userDTO) throws DatabaseUserException {
         Address address = handleAddressExistance(userDTO.getAddress());
+        Settings settings = new Settings();
+        settings.setNotificationIsEnabled(true);
+
         StudentUser newStudentUser = UserFactory.createStudentUserFromBasicUser(userDTO);
         newStudentUser.setAddress(address);
+        newStudentUser.setSettings(settings);
+        settings.setUser(newStudentUser);
 
         return saveStudentUser(newStudentUser);
     }
@@ -42,7 +48,7 @@ public class StudentUserControl {
         return addressControl.checkAddressExistence(address);
     }
 
-    private StudentUser saveStudentUser(StudentUser studentUser ) throws DatabaseUserException {
+    protected StudentUser saveStudentUser(StudentUser studentUser ) throws DatabaseUserException {
         try {
             // Abspeicherung der Entity in die DB
             StudentUser savedStudentUser = this.studentUserRepository.save( studentUser );

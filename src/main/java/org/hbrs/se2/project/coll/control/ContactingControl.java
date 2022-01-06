@@ -43,7 +43,7 @@ public class ContactingControl {
     public int getContactPerson(int id) { return contactPersonRepository.findContactPersonByCompanyId(id).getId(); }
 
     public void sendMessage(String content, int sender, int recipient, String subject,
-                            LocalDate date, String type) throws DatabaseUserException {
+                            LocalDate date) throws DatabaseUserException {
         try {
             // Create new message
             MessageDTOImpl newMessage = new MessageDTOImpl();
@@ -52,7 +52,6 @@ public class ContactingControl {
             newMessage.setRecipient(recipient);
             newMessage.setSubject(subject);
             newMessage.setDate(date);
-            newMessage.setType(type);
 
             // Send the message / save in DB
             Message message = MessageFactory.createMessage(newMessage);

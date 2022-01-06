@@ -1,8 +1,10 @@
 package org.hbrs.se2.project.coll.control.factories;
 
 import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
+import org.hbrs.se2.project.coll.dtos.JobApplicationDTO;
 import org.hbrs.se2.project.coll.dtos.impl.JobAdvertisementDTOimpl;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
+import org.hbrs.se2.project.coll.entities.JobApplication;
 
 public class JobFactory {
 
@@ -43,5 +45,16 @@ public class JobFactory {
         jobAdvertisementDTOimpl.setJobTitle(jobAdvertisement.getJobTitle());
         jobAdvertisementDTOimpl.setSalary(jobAdvertisement.getSalary());
         return jobAdvertisementDTOimpl;
+    }
+
+    public static JobApplication createJobApplication(JobApplicationDTO dto) {
+        JobApplication newJobApplication = new JobApplication();
+        newJobApplication.setStudentUser(dto.getStudentUser());
+        newJobApplication.setJobAdvertisement(dto.getJobAdvertisement());
+        newJobApplication.setHeadline(dto.getHeadline());
+        newJobApplication.setText(dto.getText());
+        newJobApplication.setDate(dto.getDate());
+
+        return newJobApplication;
     }
 }

@@ -20,7 +20,7 @@ public class JobAdvertisement {
     private String jobDescription;
     private int salary;
     private String jobTitle;
-    private Set<StudentUser> applicants;
+    private Set<JobApplication> applications;
 
     @Id
     @GeneratedValue(
@@ -132,21 +132,12 @@ public class JobAdvertisement {
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
-/*
-    @ManyToOne
-    @JoinTable(name = "col_tab_contact_person", schema = "collhbrs", joinColumns = @JoinColumn(name = "company_id"))
-    public CompanyProfile getCompany() {
-        return company;
+
+    @OneToMany(mappedBy = "jobAdvertisement")
+    public Set<JobApplication> getApplicants() {
+        return applications;
     }
-    public void setCompany(CompanyProfile company) {
-        this.company = company;
-    }
-*/
-    @ManyToMany(mappedBy = "applications")
-    public Set<StudentUser> getApplicants() {
-        return applicants;
-    }
-    public void setApplicants(Set<StudentUser> applicants) {
-        this.applicants = applicants;
+    public void setApplicants(Set<JobApplication> applications) {
+        this.applications = applications;
     }
 }

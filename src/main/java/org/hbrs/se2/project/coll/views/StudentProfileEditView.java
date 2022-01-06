@@ -19,6 +19,8 @@ import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Objects;
+
 @Route(value = "profile_edit", layout = AppView.class)
 @PageTitle("StudentProfileEdit")
 public class StudentProfileEditView extends VerticalLayout implements HasUrlParameter<String>, BeforeEnterObserver {
@@ -32,8 +34,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
 
     //automatisches binding der Textfelder in ein DTO kann nicht durchgeführt werden,
     //da address eigene Entity ist und kein String
-    //private Binder<StudentUserDTOImpl> binder = new Binder(StudentUserDTOImpl.class);
-
     Label       infoText        = new Label("Mit (*) markierte Felder sind notwendig.");
     Label       lsalutation     = new Label("Anrede (*):");
     Label       ltitle          = new Label("Titel:");
@@ -76,14 +76,11 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     @Override
     public void setParameter(BeforeEvent event,
                              String parameter) {
-        if (!Utils.stringIsEmptyOrNull(parameter)) {
-            checkIfUserIsLoggedIn();
+        if (!Utils.stringIsEmptyOrNull(parameter) && checkIfUserIsLoggedIn()) {
             profileDTO = profileControl.loadProfileDataById(Integer.parseInt(parameter));
             studentId  = profileDTO.getId();
 
-            boolean ownership = checkIfUserIsProfileOwner();
-
-            if(ownership) {
+            if(checkIfUserIsProfileOwner()) {
                 initLabels(profileDTO);
                 createProfileEditView();
             }
@@ -124,7 +121,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     public void createProfileEditView() {
         H2 h2 = new H2("Editiere mein Profil");
 
-        // TODO: Get Image from Database
         // Profile Image
         Image profileImage = new Image("https://thispersondoesnotexist.com/image", "placeholder");
         profileImage.setWidth("200px");
@@ -172,11 +168,10 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         saveButton.addClickListener(e -> {
             if(!checkForEmptyInput()) {
                 updateProfileData();
-                UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
+                navigateToProfile(studentId);
             }
         });
-        cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW +
-                studentId));
+        cancelButton.addClickListener(e -> navigateToProfile(studentId));
         hbuttons.add(saveButton, cancelButton);
 
         // Alignment of profile information
@@ -268,28 +263,32 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         return empty;
     }
 
-    private void checkIfUserIsLoggedIn() {
-        // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
-        UserDTO userDTO = this.getCurrentUser();
-        if (userDTO == null) {
-            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
-        }
+    public static void navigateToProfile(int studentId) {
+        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.PROFILE_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
     }
 
-    // If the user is not the owner of this profile, they get redirected to the profile
-    private boolean checkIfUserIsProfileOwner() {
-        if(this.getCurrentUser() != null && this.getCurrentUser().getId() != studentId)
-        {
-            UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
-            UI.getCurrent().getPage().reload();
+    private boolean checkIfUserIsLoggedIn() {
+        // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
+        UserDTO userDTO = Utils.getCurrentUser();
+        if (userDTO == null) {
+            Utils.navigateToLogin();
             return false;
         }
         else
             return true;
     }
 
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
+    // If the user is not the owner of this profile, they get redirected to the profile
+    private boolean checkIfUserIsProfileOwner() {
+        if(Utils.getCurrentUser() != null && Utils.getCurrentUser().getId() != studentId)
+        {
+            navigateToProfile(studentId);
+            UI.getCurrent().getPage().reload();
+            return false;
+        }
+        else
+            return true;
     }
 
     @Override
@@ -303,7 +302,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
      *
      */
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if (getCurrentUser() == null){
+        if (Utils.getCurrentUser() == null){
             beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
         }
     }

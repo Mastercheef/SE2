@@ -1,40 +1,75 @@
 package org.hbrs.se2.project.coll.repository;
 
-import org.hbrs.se2.project.coll.dtos.CompanyDTO;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-
 @RunWith(SpringRunner.class)
-@AutoConfigureTestEntityManager
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureEmbeddedDatabase(provider = AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY )
+@Sql( {"/schema.sql" , "/data.sql"})
 class CompanyRepositoryTest {
 
     @Autowired
-    private TestEntityManager entityManager;
+    CompanyRepository companyRepository;
 
-    @Autowired
-    private CompanyRepository companyRepository;
+
+    private static final String COMPANY_NAME = "Dicker Bubatz";
+    private static final String WEBSITE = "www.bubatz.de";
+    private static final String PHONENUMBER = "12345";
+    private static final String E_MAIL = "firma@bubatz.de";
+    private static final String FAX_NUMBER = "12345";
+    private static final int ID = 40000000;
+
+    @Test
+    void findCompanyProfileByIDNotNull() {
+        assertNotNull(companyRepository.findCompanyProfileById(40000000));
+    }
+
 
     @Test
     void findCompanyProfileById() {
-        CompanyDTO dto = this.companyRepository.findCompanyProfileById(40000000);
-        assertThat(dto.getCompanyName()).isEqualTo("Erfolgreiche Testfirma GmbH");
+        assertEquals(COMPANY_NAME , companyRepository.findCompanyProfileById(40000000).getCompanyName());
+        assertEquals(WEBSITE , companyRepository.findCompanyProfileById(40000000).getWebsite());
+        assertEquals(PHONENUMBER , companyRepository.findCompanyProfileById(40000000).getPhoneNumber());
+        assertEquals(E_MAIL , companyRepository.findCompanyProfileById(40000000).getEmail());
+        assertEquals(COMPANY_NAME , companyRepository.findCompanyProfileById(40000000).getDescription());
+        assertEquals(FAX_NUMBER , companyRepository.findCompanyProfileById(40000000).getFaxNumber());
+        assertEquals(ID, companyRepository.findCompanyProfileById(40000000).getId());
+    }
+    @Test
+    void findCompanyProfileByIDNull() {
+        assertNull(companyRepository.findCompanyProfileById(40999990));
+    }
 
+
+
+    @Test
+    void findCompanyByCompanyNameAndEmailAndWebsiteNotNull() {
+        assertNotNull(companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
+                COMPANY_NAME , E_MAIL , WEBSITE ));
+    }
+    @Test
+    void findCompanyByCompanyNameAndEmailAndWebsiteID() {
+        assertEquals(ID , companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
+                COMPANY_NAME , E_MAIL , WEBSITE ).getId());
     }
 
     @Test
-    void findCompanyProfileByCompanyName() {
-        CompanyDTO dto = this.companyRepository.findCompanyProfileByCompanyName("Erfolgreiche Testfirma GmbH");
-        assertEquals(40000000 , dto.getId());
+    void findCompanyByCompanyNameAndEmailAndWebsiteNull() {
+        assertNull(companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
+                "Bubatz" , E_MAIL , WEBSITE ));
+        assertNull(companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
+                COMPANY_NAME , "firma@bubatz.gmx" , WEBSITE ));
+        assertNull(companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
+                COMPANY_NAME , E_MAIL , "www.bubatz.com" ));
+        assertNull(companyRepository.findCompanyByCompanyNameAndEmailAndWebsite(
+                "" , "firma@" , "" ));
+
     }
 }

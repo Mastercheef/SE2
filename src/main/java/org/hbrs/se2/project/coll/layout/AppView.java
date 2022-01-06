@@ -2,32 +2,31 @@ package org.hbrs.se2.project.coll.layout;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.contextmenu.HasMenuItems;
+import com.vaadin.flow.component.contextmenu.MenuItem;
+import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.*;
+import org.hbrs.se2.project.coll.control.SettingsControl;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
-import org.hbrs.se2.project.coll.dtos.impl.UserDTOImpl;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.MessageRepository;
 import org.hbrs.se2.project.coll.util.Globals;
-import org.hbrs.se2.project.coll.views.DataProtectionView;
-import org.hbrs.se2.project.coll.views.ImpressumView;
-import org.hbrs.se2.project.coll.views.StudentProfileView;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private Tabs menu;
     private H1 helloUser;
-    private final Label copyright = new Label("Copyright © 2021-2022");
     MenuBar navigationBar = new MenuBar();
 
     @Autowired
@@ -55,8 +53,14 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     @Autowired
     private MessageRepository messageRepository;
 
+    @Autowired
+    private SettingsControl settingsControl;
+
+    // Constants
+    private static final String NOTIFICATION_COLOR = "rgb(66, 221, 21)";
+
     public AppView() {
-        if (getCurrentUser() == null) {
+        if (Utils.getCurrentUser() == null) {
             LOGGER.info("LOG: In Constructor of App View - No User given!");
         }
         setUpUI();
@@ -72,7 +76,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         // Erstellung der vertikalen Navigationsleiste (Drawer)
         menu = createMenu();
-        //addToDrawer(createDrawerContent(menu));
+
     }
 
     /**
@@ -90,7 +94,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         headerLayout.setJustifyContentMode( FlexComponent.JustifyContentMode.EVENLY );
 
         // Hinzufügen des Toogle ('Big Mac') zum Ein- und Ausschalten des Drawers
-        //layout.add(new DrawerToggle());
+
         HorizontalLayout homeIconHorizontalLayout = new HorizontalLayout();
         homeIconHorizontalLayout.setHeightFull();
         homeIconHorizontalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -100,7 +104,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         H1 homeIcon = new H1("Coll@HBRS");
         homeIcon.getElement().getClassList().add("pointer");
-        homeIcon.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW));
+        homeIcon.addClickListener(e -> Utils.navigateToMain());
         homeIconHorizontalLayout.add(homeIcon);
         headerLayout.add(homeIconHorizontalLayout);
 
@@ -117,45 +121,92 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         // If user is not logged in, show Login/Register Buttons
         if(!checkIfUserIsLoggedIn()) {
-            navigationBar.addItem("Registrieren" , e -> UI.getCurrent().navigate(Globals.Pages.REGISTER_VIEW));
-            navigationBar.addItem("Login" , e -> UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW));
+            navigationBar.addItem("Registrieren" , e -> navigateToRegistration());
+            navigationBar.addItem("Login" , e -> navigateToLogin());
         }
         headerNavigationPanel.add(navigationBar);
         headerLayout.add( headerNavigationPanel );
         return headerLayout;
     }
 
-    private void initNavigationBar(boolean unreadMessages) {
+    private void initNavigationBar(boolean allMessagesRead, boolean allApplicationsRead) {
         /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
-        String currentUserType = getCurrentUser().getType();
+        String currentUserType = Utils.getCurrentUser().getType();
         if (Objects.equals(currentUserType, "st"))
             navigationBar.addItem("Mein Profil", e -> navigateToUserProfile());
         else if (Objects.equals(currentUserType, "cp"))
             navigationBar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
 
-        if(!unreadMessages)
-            navigationBar.addItem("Posteingang", e -> navigateToMessages());
-        else
+        // Inbox and Submenu (Messages, Applications)
+        MenuItem inbox = createIconItem(navigationBar, VaadinIcon.ENVELOPE, "Posteingang", null);
+        SubMenu inboxSubMenu = inbox.getSubMenu();
+
+        MenuItem messages = createIconItem(inboxSubMenu, VaadinIcon.ENVELOPE, "Nachrichten",
+                null, true);
+        messages.addClickListener(e -> navigateToMessages());
+
+        MenuItem applications = createIconItem(inboxSubMenu, VaadinIcon.FILE, "Bewerbungen",
+                null, true);
+
+
+        /*  Check if:
+            - If a user has enabled notifications
+            - There are unread messages
+            - TODO: Check for unread applications
+        */
+        if(settingsControl.getUserSettings(Utils.getCurrentUser().getId()).getNotificationIsEnabled())
         {
-            Icon messageIcon = VaadinIcon.ENVELOPE.create();
-            messageIcon.setColor("#67ed42");
+            if(!allMessagesRead || !allApplicationsRead)
+                colorItem(inbox, NOTIFICATION_COLOR);
 
-            Label inboxLabel = new Label("Posteingang");
-            inboxLabel.getElement().getStyle().set("color", "#67ed42");
+            if(!allMessagesRead)
+                colorItem(messages, NOTIFICATION_COLOR);
 
-            Tab envelope = new Tab(messageIcon);
-            Tab inbox = new Tab(inboxLabel);
-
-            Tabs inboxTab = new Tabs(envelope, inbox);
-            navigationBar.addItem(inboxTab, e-> navigateToMessages());
+            if(!allApplicationsRead)
+                colorItem(applications, NOTIFICATION_COLOR);
         }
-        navigationBar.addItem(VaadinIcon.COG.create(), e -> navigateToOptions());
+        createIconItem(navigationBar, VaadinIcon.COG, "", null)
+                .addClickListener(e -> navigateToSettings());
         navigationBar.addItem("Logout", e -> logoutUser());
+    }
+
+    /*  Used top create Icons for the app menu bar.
+        Source: https://vaadin.com/docs/v14/ds/components/menu-bar
+    */
+    private MenuItem createIconItem(HasMenuItems menu, VaadinIcon iconName, String label, String ariaLabel) {
+        return createIconItem(menu, iconName, label, ariaLabel, false);
+    }
+    private MenuItem createIconItem(HasMenuItems menu, VaadinIcon iconName, String label,
+                                    String ariaLabel, boolean isChild) {
+        Icon icon = new Icon(iconName);
+
+        if (isChild) {
+            icon.getStyle().set("width", "var(--lumo-icon-size-s)");
+            icon.getStyle().set("height", "var(--lumo-icon-size-s)");
+            icon.getStyle().set("marginRight", "var(--lumo-space-s)");
+        }
+
+        MenuItem item = menu.addItem(icon, e -> {
+        });
+
+        if (ariaLabel != null) {
+            item.getElement().setAttribute("aria-label", ariaLabel);
+        }
+
+        if (label != null) {
+            item.add(new Text(label));
+        }
+
+        return item;
+    }
+
+    private void colorItem(MenuItem item, String color) {
+        item.getElement().getStyle().set("color", color);
     }
 
     private void navigateToUserProfile() {
         String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-        String currentUserId = Integer.toString(getCurrentUser().getId());
+        String currentUserId = Integer.toString(Utils.getCurrentUser().getId());
         if(!Objects.equals(currentLocation, Globals.Pages.PROFILE_VIEW + currentUserId))
             UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + currentUserId);
     }
@@ -167,14 +218,26 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + currentCompanyId);
     }
 
+    private void navigateToRegistration() {
+        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
+        if(!Objects.equals(currentLocation, Globals.Pages.REGISTER_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.REGISTER_VIEW);
+    }
+
+    private void navigateToLogin() {
+        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
+        if(!Objects.equals(currentLocation, Globals.Pages.LOGIN_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
+    }
+
     private void navigateToMessages() {
         String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-        String currentUserId = Integer.toString(getCurrentUser().getId());
+        String currentUserId = Integer.toString(Utils.getCurrentUser().getId());
         if(!Objects.equals(currentLocation, Globals.Pages.INBOX_VIEW + currentUserId))
             UI.getCurrent().navigate(Globals.Pages.INBOX_VIEW + currentUserId);
     }
 
-    private void navigateToOptions() {
+    private void navigateToSettings() {
         String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
         if(!Objects.equals(currentLocation, Globals.Pages.SETTINGS_VIEW))
             UI.getCurrent().navigate(Globals.Pages.SETTINGS_VIEW);
@@ -183,50 +246,10 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     private void logoutUser() {
         UI ui = this.getUI().get();
         ui.getSession().close();
-        ui.getCurrent().navigate(Globals.Pages.MAIN_VIEW);
+        Utils.navigateToMain();
     }
 
 
-    /**
-     * Hinzufügen der vertikalen Leiste (Drawer)
-     * Diese besteht aus dem Logo ganz oben links sowie den Menu-Einträgen (menu items).
-     * Die Menu Items sind zudem verlinkt zu den internen Tab-Components.
-     * @param menu
-     * @return
-     */
-    private Component createDrawerContent(Tabs menu) {
-        VerticalLayout layout = new VerticalLayout();
-        layout.setSizeFull();
-        layout.setPadding(false);
-        layout.setSpacing(false);
-        layout.getThemeList().set("spacing-s", true);
-        layout.setAlignItems(FlexComponent.Alignment.STRETCH);
-
-        HorizontalLayout logoLayout = new HorizontalLayout();
-
-        // Hinzufügen des Logos
-        logoLayout.setId("logo");
-        logoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-        logoLayout.add(new Image("images/logo.png", "HelloCar logo"));
-        logoLayout.add(new H1("HelloCar"));
-
-        HorizontalLayout footer = new HorizontalLayout(copyright);
-        footer.add(new RouterLink("Impressum", ImpressumView.class));
-        footer.add(new RouterLink("Datenschutz", DataProtectionView.class));
-        footer.setJustifyContentMode(FlexComponent.JustifyContentMode.START);
-        footer.setWidth("100%");
-        footer.setPadding(true);
-        footer.getElement().getStyle().set("background-color", "#233348");
-        footer.getElement().getStyle().set("color", "white");
-        footer.getElement().getStyle().set("clear", "both");
-        footer.getElement().getStyle().set("bottom", "0");
-        footer.getElement().getStyle().set("left", "0");
-        footer.getElement().getStyle().set("position", "fixed");
-
-        // Hinzufügen des Menus inklusive der Tabs
-        layout.add(logoLayout, menu, footer);
-        return layout;
-    }
 
     /**
      * Erzeugung des Menu auf der vertikalen Leiste (Drawer)
@@ -241,28 +264,9 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         tabs.setId("tabs");
 
         // Anlegen der einzelnen Menuitems
-        //tabs.add(createMenuItems());
         return tabs;
     }
 
-    private Component[] createMenuItems() {
-
-        // Jeder User sollte Autos sehen können, von daher wird dieser schon mal erzeugt und
-        // und dem Tabs-Array hinzugefügt. In der Methode createTab wird ein (Key, Value)-Pair übergeben:
-        // Key: der sichtbare String des Menu-Items
-        // Value: Die UI-Component, die nach dem Klick auf das Menuitem angezeigt wird.
-        return new Tab[]{ createTab( "Profil", StudentProfileView.class) };
-
-        // ToDo für die Teams: Weitere Tabs aus ihrem Projekt hier einfügen!
-
-    }
-
-    private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
-        final Tab tab = new Tab();
-        tab.add(new RouterLink(text, navigationTarget));
-        ComponentUtil.setData(tab, Class.class, navigationTarget);
-        return tab;
-    }
 
     @Override
     protected void afterNavigation() {
@@ -277,16 +281,15 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             navigationBar.removeAll();
 
             // Highlight des Posteingang-Tabs, wenn es ungelesene Nachrichten gibt
-            initNavigationBar(messageRepository.findMessagesByRecipientAndRead(getCurrentUser().getId(),
-                    false).size() > 0);
+            // TODO: allApplicationsRead Parameter durch repository-call ersetzen für Applications
+            initNavigationBar(
+                    messageRepository.findMessagesByRecipientAndRead(Utils.getCurrentUser().getId(),false).isEmpty(),
+                    true
+                    );
         }
 
         // Der aktuell-selektierte Tab wird gehighlighted.
         getTabForComponent(getContent()).ifPresent(menu::setSelectedTab);
-
-        // Setzen des aktuellen Names des Tabs
-        //viewTitle.setText(getCurrentPageTitle());
-
     }
 
     private Optional<Tab> getTabForComponent(Component component) {
@@ -296,20 +299,21 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private boolean checkIfUserIsLoggedIn() {
         // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
-        UserDTO userDTO = this.getCurrentUser();
+        UserDTO userDTO = Utils.getCurrentUser();
         return userDTO != null;
     }
 
     private boolean navigateToLoginIfSessionNeeded() {
         // Falls der Benutzer nicht eingeloggt ist, und versucht eine interne Seite aufzurufen,
         // dann wird er auf die Startseite gelenkt
-        UserDTO userDTO = this.getCurrentUser();
+        UserDTO userDTO = Utils.getCurrentUser();
         String pageTitle = getCurrentPageTitle();
         if (userDTO == null && !pageTitle.equals(Globals.PageTitles.REGISTER_PAGE_TITLE) &&
                 !pageTitle.equals(Globals.PageTitles.LOGIN_PAGE_TITLE) &&
-                !pageTitle.equals(Globals.PageTitles.MAIN_PAGE_TITLE)) {
-            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
-            //UI.getCurrent().getPage().reload();
+                !pageTitle.equals(Globals.PageTitles.MAIN_PAGE_TITLE) &&
+                !pageTitle.equals(Globals.PageTitles.JOBADVERTISEMENT_PAGE_TITLE) &&
+                !pageTitle.equals(Globals.PageTitles.JOBLIST_PAGE_TITLE)) {
+            navigateToLogin();
             return false;
         }
         return true;
@@ -321,15 +325,11 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     }
 
     private String getCurrentNameOfUser() {
-        return getCurrentUser().getFirstName();
-    }
-
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
+        return Utils.getCurrentUser().getFirstName();
     }
 
     private int getContactPersonsCompanyId() {
-        int contactPersonId = getCurrentUser().getId();
+        int contactPersonId = Utils.getCurrentUser().getId();
         ContactPerson contactPerson = contactPersonRepository.findContactPersonById(contactPersonId);
         return contactPerson.getCompany().getId();
     }
@@ -345,9 +345,8 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
      *
      */
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if (getCurrentUser() == null){
+        if (Utils.getCurrentUser() == null){
             LOGGER.info("Reroute");
-            //beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
         }
 
     }

@@ -42,6 +42,7 @@ class MessageDTOImplTest {
     @Test
     void getDate() {
         messageDTO.setDate(LocalDate.of(2000,1,2));
+        assertEquals(LocalDate.of(2000,1,2) , messageDTO.getDate());
 
     }
 
@@ -50,4 +51,5 @@ class MessageDTOImplTest {
         messageDTO.setRead(true);
         assertTrue(messageDTO.getRead());
     }
+
 }

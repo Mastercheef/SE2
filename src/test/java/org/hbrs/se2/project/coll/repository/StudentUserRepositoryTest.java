@@ -1,34 +1,36 @@
 package org.hbrs.se2.project.coll.repository;
 
-import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-@RunWith(SpringRunner.class)
-@AutoConfigureTestEntityManager
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureEmbeddedDatabase(provider = AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY )
+@Sql( {"/schema.sql" , "/data.sql"})
 class StudentUserRepositoryTest {
 
     @Autowired
-    private TestEntityManager entityManager;
-
-    @Autowired
-    private StudentUserRepository studentUserRepository;
-
+    StudentUserRepository studentUserRepository;
+    @Test
+    void findStudentUserByIdNotNull() {
+        assertNotNull(studentUserRepository.findStudentUserById(20000000));
+    }
 
     @Test
-    void findStudentUserById() {
-        StudentUserDTO studentUserDTO;
-        studentUserDTO = studentUserRepository.findStudentUserById(20000000);
-        assertEquals("email@hbrs.de" ,studentUserDTO.getEmail());
+    void findStudentUserByIDNull() {
+        assertNull(studentUserRepository.findStudentUserById(20000123));
+    }
+
+    @Test
+    void findStudentUserBy() {
+        assertEquals("student_description" , studentUserRepository.findStudentUserById(20000000).getDescription());
+        assertEquals("2000-1-2" , studentUserRepository.findStudentUserById(20000000).getGraduation());
+        assertEquals("Viele Interessen" , studentUserRepository.findStudentUserById(20000000).getInterests());
+        assertEquals("Ganz viele Skillz" , studentUserRepository.findStudentUserById(20000000).getSkills());
+        assertEquals("website.de" , studentUserRepository.findStudentUserById(20000000).getWebsite());
+
     }
 }

@@ -28,7 +28,6 @@ public class CompanyControl {
         return repository.findCompanyProfileById(id);
     }
 
-    //TODO: ResultDTO mit Rückmeldung für View bei Fehler
     public Company saveCompany(CompanyDTO companyDTO )  throws DatabaseUserException {
         try {
             Company company = CompanyFactory.createCompany(companyDTO);

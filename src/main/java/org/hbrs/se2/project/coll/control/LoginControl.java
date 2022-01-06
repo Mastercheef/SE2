@@ -28,16 +28,14 @@ public class LoginControl {
             loginResult.setResult(false);
             loginResult.setReason("Benutzername oder Passwort falsch");
         }
-
         return loginResult;
     }
 
     public UserDTO getCurrentUser(){
         return this.userDTO;
-
     }
 
-    private UserDTO getUser(String email , String plainTextPassword ) {
+    protected UserDTO getUser(String email , String plainTextPassword ) {
         UserDTO userTmp = null;
         try {
             userTmp = repository.findUserByEmail(email);
@@ -54,5 +52,4 @@ public class LoginControl {
         }
         return userTmp;
     }
-
 }

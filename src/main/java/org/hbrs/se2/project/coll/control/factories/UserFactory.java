@@ -8,8 +8,7 @@ import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.Settings;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.entities.User;
-
-import java.awt.*;
+import org.hbrs.se2.project.coll.util.Utils;
 
 public class UserFactory {
 
@@ -51,7 +50,7 @@ public class UserFactory {
         studentUser.setPhone(userDTO.getPhone());
         studentUser.setDateOfBirth(userDTO.getDateOfBirth());
         studentUser.setEmail(userDTO.getEmail());
-        studentUser.setPassword(userDTO.getPassword());
+        studentUser.setPassword(Utils.hashPassword(userDTO.getPassword()));
 
         return studentUser;
     }
@@ -88,6 +87,7 @@ public class UserFactory {
         contactPerson.setDateOfBirth(userDTO.getDateOfBirth());
         contactPerson.setEmail(userDTO.getEmail());
         contactPerson.setPassword(userDTO.getPassword());
+        contactPerson.setPassword(Utils.hashPassword(userDTO.getPassword()));
 
         return contactPerson;
     }
@@ -96,14 +96,6 @@ public class UserFactory {
         Settings settings = new Settings();
         settings.setId(settingsDTO.getId());
         settings.setNotificationIsEnabled(settingsDTO.getNotificationIsEnabled());
-
-        return settings;
-    }
-
-    public static Settings createSettingsFromBasicUser(UserDTO userDTO) {
-        Settings settings = new Settings();
-        settings.setId(userDTO.getId());
-        settings.setNotificationIsEnabled(true);
 
         return settings;
     }
@@ -123,5 +115,6 @@ public class UserFactory {
 
         return user;
     }
+
 
 }

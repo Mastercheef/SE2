@@ -140,11 +140,10 @@ create table col_tab_message (
     message_id bigint not null default nextval('col_seq_message_id'),
     sender_id bigint not null,
     recipient_id bigint not null,
-    content varchar(256) not null,
-    subject varchar(64) not null,
+    content varchar not null,
+    subject varchar not null,
     date date not null,
     read boolean not null default false,
-    type varchar(8) not null,
     constraint col_pk_message_id primary key (message_id));
 
 create table col_tab_settings (
