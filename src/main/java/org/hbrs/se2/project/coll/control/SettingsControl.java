@@ -37,7 +37,7 @@ public class SettingsControl {
         return saveUserSettings(settings);
     }
 
-    private Settings saveUserSettings(Settings settings) throws DatabaseUserException {
+    protected Settings saveUserSettings(Settings settings) throws DatabaseUserException {
         try {
             // Speichere Entity in DB
             Settings savedSettings = this.settingsRepository.save(settings);
