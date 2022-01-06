@@ -1,18 +1,18 @@
 package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
+import org.hbrs.se2.project.coll.control.factories.CompanyFactory;
+import org.hbrs.se2.project.coll.control.factories.UserFactory;
 import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
 import org.hbrs.se2.project.coll.dtos.impl.JobAdvertisementDTOimpl;
+import org.hbrs.se2.project.coll.entities.Company;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -39,6 +39,8 @@ class CompanyControlTest {
     CompanyDTOImpl companyDTO;
     @Mock
     JobAdvertisement jobAdvertisement;
+    @Mock
+    Company company;
 
     @BeforeEach
     void setup() {
@@ -79,5 +81,13 @@ class CompanyControlTest {
         Mockito.doNothing().when(jobAdvertisementRepository).delete(jobAdvertisement);
         companyControl.deleteAdvertisement( jobAdvertisement);
         verify(jobAdvertisementControl).deleteAdvertisement(jobAdvertisement);
+    }
+
+    @Test
+    void saveCompany() {
+        try (MockedStatic<CompanyFactory> classMock = mockStatic(CompanyFactory.class)) {
+
+            classMock.when(() -> CompanyFactory.createCompany(companyDTO)).thenReturn(company);
+        }
     }
 }

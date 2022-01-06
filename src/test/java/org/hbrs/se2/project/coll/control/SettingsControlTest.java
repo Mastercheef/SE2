@@ -6,15 +6,19 @@ import org.hbrs.se2.project.coll.control.factories.UserFactory;
 import org.hbrs.se2.project.coll.dtos.SettingsDTO;
 import org.hbrs.se2.project.coll.entities.Settings;
 import org.hbrs.se2.project.coll.repository.SettingsRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.dao.DataAccessResourceFailureException;
 
+import javax.xml.crypto.Data;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -73,5 +77,15 @@ class SettingsControlTest {
         when(settings.getId()).thenReturn(0);
         when(settings.getId()).thenReturn(0);
         assertEquals(settings , settingsControl.saveUserSettings(settings));
+    }
+
+    @Test
+    void saveUserSettingsException(){
+        when(settingsRepository.save(settings)).thenThrow(DataAccessResourceFailureException.class);
+        try {
+            assertThrows(DataAccessResourceFailureException.class , (Executable) settingsControl.saveUserSettings(settings));
+        } catch (DatabaseUserException e) {
+            e.printStackTrace();
+        }
     }
 }
