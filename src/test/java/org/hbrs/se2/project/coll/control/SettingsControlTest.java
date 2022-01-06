@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import javax.xml.crypto.Data;
 import java.util.HashSet;
@@ -80,10 +81,20 @@ class SettingsControlTest {
     }
 
     @Test
-    void saveUserSettingsException(){
+    void saveUserSettingsDataAccessResourceFailureException(){
         when(settingsRepository.save(settings)).thenThrow(DataAccessResourceFailureException.class);
         try {
             assertThrows(DataAccessResourceFailureException.class , (Executable) settingsControl.saveUserSettings(settings));
+        } catch (DatabaseUserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void saveUserSettingsOtherError() {
+        when(settingsRepository.save(settings)).thenThrow(DataIntegrityViolationException.class);
+        try {
+            assertThrows(DataIntegrityViolationException.class , (Executable) settingsControl.saveUserSettings(settings));
         } catch (DatabaseUserException e) {
             e.printStackTrace();
         }
