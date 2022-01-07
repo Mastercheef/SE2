@@ -13,7 +13,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.time.LocalDate;
 import java.util.Arrays;
 
-@Generated
 public class Utils {
 
     private Utils() {
