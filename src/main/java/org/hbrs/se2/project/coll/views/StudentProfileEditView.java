@@ -72,6 +72,9 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     TextField   description     = new TextField();
 
     Div         div           = new Div();
+    Div         leftDiv = new Div();
+    Div         rightDiv = new Div();
+    Div         bottomDiv = new Div();
 
     @Override
     public void setParameter(BeforeEvent event,
@@ -182,9 +185,24 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         }
 
         // Append everything to the site
-        div.add(h2, profileImage, hinfotext, hsalutation, htitle, hfirstname, hlastname, hoccupation, hbirthdate,
-                hstreet, hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail, hnumber, hinterests, hwebsite,
-                haboutme, hbuttons);
+        leftDiv.add(profileImage, hsalutation, htitle, hfirstname, hlastname, hbirthdate,
+                hstreet, hstreetnumber, hpostalcode, hcity, hcountry, hemail, hnumber);
+        rightDiv.add(hoccupation, hwebsite, hskills, hinterests, haboutme);
+        bottomDiv.add(hbuttons);
+        div.add(h2, leftDiv, rightDiv, bottomDiv);
+        add(div);
+
+        // Css Changes for split View
+        leftDiv.setWidth("40%");
+        leftDiv.setMinWidth("300px");
+        rightDiv.setWidth("60%");
+        rightDiv.setMinWidth("400px");
+        bottomDiv.setWidth("100%");
+        bottomDiv.getStyle().set("float", "left");
+        div.setClassName("centered");
+        div.setWidth("80%");
+        leftDiv.getStyle().set("float", "left");
+        rightDiv.getStyle().set("float", "left");
         add(div);
     }
 

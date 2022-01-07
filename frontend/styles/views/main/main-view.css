@@ -13,7 +13,7 @@ vaadin-app-layout[dir='rtl'] #header vaadin-avatar {
     margin-right: auto;
 }
 #header h1 {
-    font-size: var(--lumo-font-size-l);
+    font-size: var(--lumo-font-size-xxl);
     margin: 0;
 }
 #logo {
@@ -48,4 +48,8 @@ vaadin-tab[selected] {
 
 .pointer:hover {
     cursor: pointer;
+}
+
+.centered {
+    margin: auto;
 }

@@ -38,11 +38,7 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     Label lastname      = new Label("Nachname:");
     Label occupation    = new Label("Abschluss:");
     Label birthdate     = new Label("Geburtsdatum:");
-    Label street        = new Label("Strasse:");
-    Label streetnumber  = new Label("Hausnummer:");
-    Label postalcode    = new Label("PLZ:");
-    Label city          = new Label("Ort:");
-    Label country       = new Label("Land:");
+    Label address = new Label("Anschrift:");
     Label skills        = new Label("Skills:");
     Label email         = new Label("E-Mail:");
     Label number        = new Label("Telefon:");
@@ -57,10 +53,6 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     Label loccupation;
     Label lbirthdate;
     Label lstreet;
-    Label lstreetnumber;
-    Label lpostalcode;
-    Label lcity;
-    Label lcountry;
     Label lskills;
     Label lemail;
     Label lnumber;
@@ -69,6 +61,9 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     Label laboutme;
 
     Div   div = new Div();
+    Div   leftDiv = new Div();
+    Div   rightDiv = new Div();
+    Div   bottomDiv = new Div();
 
     @Override
     public void setParameter(BeforeEvent event,
@@ -88,11 +83,8 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         llastname       = new Label(profileDTO.getLastName());
         loccupation     = new Label(profileDTO.getGraduation() == null ? "" : profileDTO.getGraduation());
         lbirthdate      = new Label(profileDTO.getDateOfBirth().toString());
-        lstreet         = new Label(addr.getStreet());
-        lstreetnumber   = new Label(addr.getHouseNumber());
-        lpostalcode     = new Label(addr.getPostalCode());
-        lcity           = new Label(addr.getCity());
-        lcountry        = new Label(addr.getCountry());
+        lstreet         = new Label();
+        lstreet.getElement().setProperty("innerHTML", addr.toString().replaceAll("\n", "<br>"));
         lskills         = new Label(profileDTO.getSkills() == null ? "" : profileDTO.getSkills());
         lemail          = new Label(profileDTO.getEmail() == null ? "" : profileDTO.getEmail());
         lnumber         = new Label(profileDTO.getPhone() == null ? "" : profileDTO.getPhone());
@@ -113,8 +105,8 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         profileImage.getElement().getStyle().set("border", "1px solid black");
 
         // Styling
-        for (Label label : new Label[]{ salutation, title, firstname, lastname, occupation, birthdate, street,
-                streetnumber, postalcode, city, country, skills, email, number, interests, website, aboutme }) {
+        for (Label label : new Label[]{ salutation, title, firstname, lastname, occupation, birthdate, address,
+                skills, email, number, interests, website, aboutme }) {
             label.getElement().getStyle().set("font-weight", "bold");
             label.getElement().getStyle().set("width", "200px");        // For alignment
         }
@@ -126,11 +118,7 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         HorizontalLayout hlastname      = new HorizontalLayout(lastname, llastname);
         HorizontalLayout hoccupation    = new HorizontalLayout(occupation, loccupation);
         HorizontalLayout hbirthdate     = new HorizontalLayout(birthdate, lbirthdate);
-        HorizontalLayout hstreet        = new HorizontalLayout(street, lstreet);
-        HorizontalLayout hstreetnumber  = new HorizontalLayout(streetnumber, lstreetnumber);
-        HorizontalLayout hpostalcode    = new HorizontalLayout(postalcode, lpostalcode);
-        HorizontalLayout hcity          = new HorizontalLayout(city, lcity);
-        HorizontalLayout hcountry       = new HorizontalLayout(country, lcountry);
+        HorizontalLayout haddress        = new HorizontalLayout(address, lstreet);
         HorizontalLayout hskills        = new HorizontalLayout(skills, lskills);
         HorizontalLayout hemail         = new HorizontalLayout(email, lemail);
         HorizontalLayout hnumber        = new HorizontalLayout(number, lnumber);
@@ -146,21 +134,33 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
 
         // Alignment of profile information
         for (HorizontalLayout HL : new HorizontalLayout[]{ hsalutation, htitle, hfirstname, hlastname, hoccupation,
-                hbirthdate, hstreet, hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail, hnumber, hinterests,
+                hbirthdate, haddress, hskills, hemail, hnumber, hinterests,
                 hwebsite, haboutme, hbuttons }) {
             HL.getElement().getStyle().set("margin-top", "11px");
         }
 
         // Append everything to the site
-        div.add(h2, profileImage, hsalutation, htitle, hfirstname, hlastname, hoccupation, hbirthdate, hstreet,
-                hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail, hnumber, hinterests, hwebsite, haboutme);
+        leftDiv.add(profileImage, hsalutation, htitle, hfirstname, hlastname, hbirthdate, haddress, hemail, hnumber);
+        rightDiv.add(hoccupation, hwebsite, hskills, hinterests, haboutme);
+        div.add(h2, leftDiv, rightDiv, bottomDiv);
 
         // Add Edit Button ONLY when the logged-in user is the owner of this profile
         if (Utils.getCurrentUser() != null) {
             int currentUserId = Utils.getCurrentUser().getId();
             if(Objects.equals(profileDTO.getId(), currentUserId))
-                div.add(hbuttons);
+                bottomDiv.add(hbuttons);
         }
+        // Css Changes for split View
+        bottomDiv.setWidth("100%");
+        bottomDiv.getStyle().set("float", "left");
+        leftDiv.setWidth("40%");
+        leftDiv.setMinWidth("300px");
+        rightDiv.setWidth("60%");
+        rightDiv.setMinWidth("400px");
+        div.setClassName("centered");
+        div.setWidth("80%");
+        leftDiv.getStyle().set("float", "left");
+        rightDiv.getStyle().set("float", "left");
         add(div);
     }
     public static void navigateToEdit(int studentId) {
