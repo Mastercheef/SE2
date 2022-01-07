@@ -2,9 +2,9 @@ package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.control.factories.CompanyFactory;
-import org.hbrs.se2.project.coll.control.factories.UserFactory;
 import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
 import org.hbrs.se2.project.coll.dtos.impl.JobAdvertisementDTOimpl;
+import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.Company;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
@@ -41,12 +41,16 @@ class CompanyControlTest {
     JobAdvertisement jobAdvertisement;
     @Mock
     Company company;
+    @Mock
+    Company companyReturn;
 
     @BeforeEach
     void setup() {
         companyDTO = new CompanyDTOImpl();
         companyDTO.setId(100);
     }
+    @Mock
+    Address address;
 
     @Test
     void loadCompanyProfileDataById() {
@@ -87,7 +91,18 @@ class CompanyControlTest {
     void saveCompany() {
         try (MockedStatic<CompanyFactory> classMock = mockStatic(CompanyFactory.class)) {
 
+            when(company.getAddress()).thenReturn(address);
+            doReturn(address).when(addressControl).checkAddressExistence(address);
+            doNothing().when(company).setAddress(address);
+            when(repository.save(company)).thenReturn(companyReturn);
+            when(company.getId()).thenReturn(100);
             classMock.when(() -> CompanyFactory.createCompany(companyDTO)).thenReturn(company);
+            assertEquals(companyReturn , companyControl.saveCompany(companyDTO));
+
+            when(company.getId()).thenReturn(0);
+            assertEquals(companyReturn , companyControl.saveCompany(companyDTO));
+        } catch (DatabaseUserException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -6,7 +6,6 @@ import org.hbrs.se2.project.coll.control.factories.UserFactory;
 import org.hbrs.se2.project.coll.dtos.SettingsDTO;
 import org.hbrs.se2.project.coll.entities.Settings;
 import org.hbrs.se2.project.coll.repository.SettingsRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
@@ -18,8 +17,6 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.dao.DataIntegrityViolationException;
-
-import javax.xml.crypto.Data;
 import java.util.HashSet;
 import java.util.Set;
 

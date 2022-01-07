@@ -44,8 +44,8 @@ public class InboxControl {
     public MessageDTO prepareSending(MessageDTO selectedMessage, String message) {
         MessageDTOImpl newMessage = new MessageDTOImpl();
         newMessage.setContent(message);
-        newMessage.setSender(selectedMessage.getRecipient());
-        newMessage.setRecipient(selectedMessage.getSender());
+        newMessage.setSender(selectedMessage.getSender());
+        newMessage.setRecipient(selectedMessage.getRecipient());
         newMessage.setSubject(selectedMessage.getSubject());
         newMessage.setDate(LocalDate.now());
         return newMessage;

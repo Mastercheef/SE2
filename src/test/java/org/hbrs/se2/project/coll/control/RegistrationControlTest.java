@@ -32,7 +32,6 @@ class RegistrationControlTest {
     String email = "test@mail.de";
     String companyName ="Mustermann GMBH";
     String website = "mustermann.de";
-
     @Mock
     CompanyDTO companyDTO;
     @Test
@@ -82,6 +81,5 @@ class RegistrationControlTest {
         assertFalse(registrationControl.checkIfCompanyAlreadyRegistered(companyDTO));
 
     }
-
 
 }
