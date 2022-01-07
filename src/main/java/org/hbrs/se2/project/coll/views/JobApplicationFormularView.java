@@ -27,6 +27,7 @@ import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.JobApplicationFormularUtil;
+import org.hbrs.se2.project.coll.util.UtilCurrent;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -158,14 +159,14 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
         add(siteLayout);
     }
     public static void navigateToJobApplication(int id) {
-        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.JOBAPPLICATION_VIEW))
+        if(!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.JOBAPPLICATION_VIEW))
             UI.getCurrent().navigate(Globals.Pages.JOBAPPLICATION_VIEW + id);
     }
 
     public void loadStudentUserInformation() {
         try {
-            if(Utils.getCurrentUser() != null) {
-                studentUserDTO = studentUserRepository.findStudentUserById(Utils.getCurrentUser().getId());
+            if(UtilCurrent.getCurrentUser() != null) {
+                studentUserDTO = studentUserRepository.findStudentUserById(UtilCurrent.getCurrentUser().getId());
                 StudentUser studentUser =  UserFactory.createStudentUser(studentUserDTO);
                 jobApplicationFormularUtil.loadStudentUserInfo(studentUser);
             }

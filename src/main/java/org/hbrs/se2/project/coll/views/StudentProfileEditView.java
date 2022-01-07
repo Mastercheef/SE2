@@ -16,6 +16,8 @@ import org.hbrs.se2.project.coll.dtos.impl.StudentUserDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.UtilCurrent;
+import org.hbrs.se2.project.coll.util.UtilNavigation;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -282,15 +284,15 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     }
 
     public static void navigateToProfile(int studentId) {
-        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.PROFILE_VIEW))
+        if(!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.PROFILE_VIEW))
             UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
     }
 
     private boolean checkIfUserIsLoggedIn() {
         // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
-        UserDTO userDTO = Utils.getCurrentUser();
+        UserDTO userDTO = UtilCurrent.getCurrentUser();
         if (userDTO == null) {
-            Utils.navigateToLogin();
+            UtilNavigation.navigateToLogin();
             return false;
         }
         else
@@ -299,7 +301,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
 
     // If the user is not the owner of this profile, they get redirected to the profile
     private boolean checkIfUserIsProfileOwner() {
-        if(Utils.getCurrentUser() != null && Utils.getCurrentUser().getId() != studentId)
+        if(UtilCurrent.getCurrentUser() != null && UtilCurrent.getCurrentUser().getId() != studentId)
         {
             navigateToProfile(studentId);
             UI.getCurrent().getPage().reload();
@@ -320,7 +322,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
      *
      */
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if (Utils.getCurrentUser() == null){
+        if (UtilCurrent.getCurrentUser() == null){
             beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
         }
     }

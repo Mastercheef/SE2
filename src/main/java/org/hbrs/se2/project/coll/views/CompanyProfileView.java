@@ -21,9 +21,7 @@ import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
-import org.hbrs.se2.project.coll.util.Globals;
-import org.hbrs.se2.project.coll.util.LabelCompany;
-import org.hbrs.se2.project.coll.util.Utils;
+import org.hbrs.se2.project.coll.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -157,8 +155,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Add Edit Button ONLY when the logged-in user is the contact person of this company
         int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
 
-        if (Utils.getCurrentUser() != null) {
-            int currentUserId = Utils.getCurrentUser().getId();
+        if (UtilCurrent.getCurrentUser() != null) {
+            int currentUserId = UtilCurrent.getCurrentUser().getId();
             if(Objects.equals(contactPersonId, currentUserId))
                 div.add(hbuttons);
         }
@@ -286,11 +284,11 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 // Create Buttons to get in contact with the Company
                 HorizontalLayout hJobButtons = new HorizontalLayout();
                 Button contactButton = new Button("Kontakt aufnehmen");
-                contactButton.addClickListener(e -> Utils.navigateToContactFormular(companyId, job.getId()));
+                contactButton.addClickListener(e -> UtilNavigation.navigateToContactFormular(companyId, job.getId()));
                 hJobButtons.add(contactButton);
 
                 // Button to delete. Only viewable by company's contact person
-                if(contactPersonId == Utils.getCurrentUser().getId())
+                if(contactPersonId == UtilCurrent.getCurrentUser().getId())
                 {
                     Button deleteButton = new Button("Stellenangebot löschen");
                     deleteButton.addClickListener(e -> {
@@ -337,8 +335,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     }
 
     private void getIDCurrentUser(Div form, HorizontalLayout hbuttons, int contactPersonId) {
-        if (Utils.getCurrentUser() != null) {
-            int currentUserId = Utils.getCurrentUser().getId();
+        if (UtilCurrent.getCurrentUser() != null) {
+            int currentUserId = UtilCurrent.getCurrentUser().getId();
             if(Objects.equals(contactPersonId, currentUserId))
                 form.add(hbuttons);
         }
@@ -354,11 +352,11 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     }
 
     public static void navigateToEdit(int companyId) {
-        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.COMPANYPROFILE_EDIT_VIEW))
+        if(!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.COMPANYPROFILE_EDIT_VIEW))
             UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_EDIT_VIEW + companyId);
     }
     public static void navigateToCreateJob(int companyId) {
-        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.RECRUITMENT_VIEW))
+        if(!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.RECRUITMENT_VIEW))
             UI.getCurrent().navigate(Globals.Pages.RECRUITMENT_VIEW + companyId);
     }
 

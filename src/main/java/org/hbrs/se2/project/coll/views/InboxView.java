@@ -21,7 +21,7 @@ import org.hbrs.se2.project.coll.control.InboxControl;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.MessageDTO;
 import org.hbrs.se2.project.coll.layout.AppView;
-import org.hbrs.se2.project.coll.util.Utils;
+import org.hbrs.se2.project.coll.util.UtilCurrent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -108,7 +108,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         });
 
         // Fetch messages for current user and fill grid with them
-        InboxView.messages = inboxControl.getMessages(Utils.getCurrentUser().getId());
+        InboxView.messages = inboxControl.getMessages(UtilCurrent.getCurrentUser().getId());
         grid.setItems(messages);
 
         // Hint if user has no messages

@@ -17,7 +17,7 @@ import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
-import org.hbrs.se2.project.coll.util.Utils;
+import org.hbrs.se2.project.coll.util.UtilCurrent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -145,8 +145,8 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         div.add(h2, leftDiv, rightDiv, bottomDiv);
 
         // Add Edit Button ONLY when the logged-in user is the owner of this profile
-        if (Utils.getCurrentUser() != null) {
-            int currentUserId = Utils.getCurrentUser().getId();
+        if (UtilCurrent.getCurrentUser() != null) {
+            int currentUserId = UtilCurrent.getCurrentUser().getId();
             if(Objects.equals(profileDTO.getId(), currentUserId))
                 bottomDiv.add(hbuttons);
         }
@@ -164,7 +164,7 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         add(div);
     }
     public static void navigateToEdit(int studentId) {
-        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.PROFILE_EDIT_VIEW))
+        if(!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.PROFILE_EDIT_VIEW))
             UI.getCurrent().navigate(Globals.Pages.PROFILE_EDIT_VIEW + studentId);
     }
 

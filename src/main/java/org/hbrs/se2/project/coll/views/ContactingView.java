@@ -15,6 +15,8 @@ import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.UserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.UtilCurrent;
+import org.hbrs.se2.project.coll.util.UtilNavigation;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
@@ -49,13 +51,13 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
 
             if(beforeEnterbolean()) {
                 Utils.triggerDialogMessage("Fehler", "Die übergebenen Parameter sind ungültig");
-                Utils.navigateToMain();
+                UtilNavigation.navigateToMain();
                 event.rerouteTo(Globals.Pages.MAIN_VIEW);
             } else {
-                if (Utils.getCurrentUser() != null) {
-                    if (!Utils.getCurrentUser().getType().equals("cp")) {
+                if (UtilCurrent.getCurrentUser() != null) {
+                    if (!UtilCurrent.getCurrentUser().getType().equals("cp")) {
                         Utils.triggerDialogMessage("Zugriff Verweigert", "Sie können keine Nachricht an andere Studenten schicken");
-                        Utils.navigateToMain();
+                        UtilNavigation.navigateToMain();
                         event.rerouteTo(Globals.Pages.MAIN_VIEW);
                     }
 
@@ -71,7 +73,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
         } catch (Exception exception) {
             LOGGER.info("Exception" + exception);
             Utils.triggerDialogMessage("Fehler", "Es ist ein unerwarteter Fehler aufgetreten");
-            Utils.navigateToMain();
+            UtilNavigation.navigateToMain();
             event.rerouteTo(Globals.Pages.MAIN_VIEW);
         }
     }
@@ -125,7 +127,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                 try {
                     contactingControl.sendMessage(
                             textArea.getValue(),
-                            Utils.getCurrentUser().getId(),
+                            UtilCurrent.getCurrentUser().getId(),
                             receiver,
                             subjectField.getValue(),
                             LocalDate.now()
@@ -134,9 +136,9 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                     dialog.add("Ihre Nachricht wurde gesendet!");
                     dialog.open();
                     if (checkIfContactingUser())
-                        Utils.navigateToMain();
+                        UtilNavigation.navigateToMain();
                     else
-                        Utils.navigateToCompanyProfile(Integer.parseInt(companyId));
+                        UtilNavigation.navigateToCompanyProfile(Integer.parseInt(companyId));
                 } catch (DatabaseUserException ex) {
                     ex.printStackTrace();
                     Dialog dialog = new Dialog();
@@ -148,7 +150,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                 textArea.setInvalid(true);
 
         });
-        cancelButton.addClickListener(e -> Utils.navigateToCompanyProfile(Integer.parseInt(companyId)));
+        cancelButton.addClickListener(e -> UtilNavigation.navigateToCompanyProfile(Integer.parseInt(companyId)));
 
         HorizontalLayout hbuttons = new HorizontalLayout(saveButton, cancelButton);
 

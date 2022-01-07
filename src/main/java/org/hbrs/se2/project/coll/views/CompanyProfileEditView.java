@@ -21,9 +21,7 @@ import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
-import org.hbrs.se2.project.coll.util.Globals;
-import org.hbrs.se2.project.coll.util.LabelCompany;
-import org.hbrs.se2.project.coll.util.Utils;
+import org.hbrs.se2.project.coll.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -95,7 +93,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
                 }
                 else
                 {
-                    Utils.navigateToCompanyProfile(companyId);
+                    UtilNavigation.navigateToCompanyProfile(companyId);
                     UI.getCurrent().getPage().reload();
                 }
 
@@ -165,10 +163,10 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
                 // Get all data from input fields and update Profile in database
                 CompanyDTO companyDTO = createCompanyDTO();
                 updateProfileData(companyDTO);
-                Utils.navigateToCompanyProfile(companyId);
+                UtilNavigation.navigateToCompanyProfile(companyId);
             }
         });
-        cancelButton.addClickListener(e -> Utils.navigateToCompanyProfile(companyId));
+        cancelButton.addClickListener(e -> UtilNavigation.navigateToCompanyProfile(companyId));
         hbuttons.add(saveButton, cancelButton);
 
         // Alignment of profile information
@@ -251,10 +249,10 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
     // If the user is not logged in, they get redirected to the login page
     private boolean checkIfUserIsLoggedIn() {
-        UserDTO userDTO = Utils.getCurrentUser();
+        UserDTO userDTO = UtilCurrent.getCurrentUser();
         if (userDTO == null)
         {
-            Utils.navigateToLogin();
+            UtilNavigation.navigateToLogin();
             return false;
         }
         else
@@ -263,6 +261,6 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
     // If the user is not the owner of this profile, they get redirected to the profile
     private boolean checkIfUserIsProfileOwner() {
-        return contactPersonControl.checkIfUserIsProfileOwner(Utils.getCurrentUser(), companyId);
+        return contactPersonControl.checkIfUserIsProfileOwner(UtilCurrent.getCurrentUser(), companyId);
     }
 }

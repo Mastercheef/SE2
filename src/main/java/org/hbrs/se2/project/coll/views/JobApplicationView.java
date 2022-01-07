@@ -21,6 +21,7 @@ import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.JobApplicationFormularUtil;
+import org.hbrs.se2.project.coll.util.UtilCurrent;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -158,7 +159,7 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
 
     public void loadStudentUserInformation() {
         try {
-            if(Utils.getCurrentUser() != null) {
+            if(UtilCurrent.getCurrentUser() != null) {
                 StudentUser studentUser = jobApplication.getStudentUser();
                 LOGGER.info("StudentID:" + studentUser.getId());
                 jobApplicationFormularUtil.loadStudentUserInfo(studentUser);
@@ -169,11 +170,11 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
     }
 
     private boolean checkIfCurrentUserIsApplicant() {
-        return jobApplication.getStudentUser().getId() == Utils.getCurrentUser().getId();
+        return jobApplication.getStudentUser().getId() == UtilCurrent.getCurrentUser().getId();
     }
 
     private boolean checkIfCurrentUserIsContactPerson() {
-        return jobApplication.getJobAdvertisement().getContactPerson().getId() == Utils.getCurrentUser().getId();
+        return jobApplication.getJobAdvertisement().getContactPerson().getId() == UtilCurrent.getCurrentUser().getId();
     }
 
     private boolean checkForAuthorization() {

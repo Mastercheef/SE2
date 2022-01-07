@@ -1,6 +1,5 @@
 package org.hbrs.se2.project.coll.util;
 
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H3;
@@ -8,13 +7,13 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.Generated;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Objects;
 
+@Generated
 public class Utils {
 
     private Utils() {
@@ -65,45 +64,6 @@ public class Utils {
 
     public static String hashPassword(String plain) {
         return BCrypt.hashpw(plain, BCrypt.gensalt());
-    }
-
-    // Getters
-    public static String getCurrentLocation() {
-        return UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-    }
-
-    public static UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
-    }
-
-    // Navigation Methods
-    public static void navigateToCompanyProfile(int companyId) {
-        if(!Objects.equals(Utils.getCurrentLocation(), Globals.Pages.COMPANYPROFILE_VIEW))
-            UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
-    }
-    public static void navigateToMain() {
-        if(!Objects.equals(getCurrentLocation(), Globals.Pages.MAIN_VIEW))
-            UI.getCurrent().navigate(Globals.Pages.MAIN_VIEW);
-    }
-    public static void navigateToLogin() {
-        if(!Objects.equals(getCurrentLocation(), Globals.Pages.LOGIN_VIEW))
-            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
-    }
-    public static void navigateToContactFormular(int companyId, int jobId) {
-        if(!Objects.equals(getCurrentLocation(), Globals.Pages.CONTACTING_VIEW))
-            UI.getCurrent().navigate(Globals.Pages.CONTACTING_VIEW + companyId + "/" + jobId);
-    }
-    public static void navigateToJobList() {
-        if(!Objects.equals(getCurrentLocation(), Globals.Pages.JOBLIST_VIEW))
-            UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW);
-    }
-    public static void navigateToJobList(String keyword) {
-        if(!Objects.equals(getCurrentLocation(), Globals.Pages.JOBLIST_VIEW))
-            UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW + keyword);
-    }
-    public static void navigateToJobList(String keyword, String type) {
-        if(!Objects.equals(getCurrentLocation(), Globals.Pages.JOBLIST_VIEW))
-            UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW + keyword + "/" + type);
     }
 
 }

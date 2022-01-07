@@ -28,6 +28,7 @@ import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO.ReasonType;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.UtilNavigation;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -276,7 +277,7 @@ public class RegistrationView extends Div {
                     // automatischer Login
                     autoLoginAfterRegistration(userDTO);
                     // Routing auf main Seite
-                    Utils.navigateToMain();
+                    UtilNavigation.navigateToMain();
                 } else {
                     // Fehlerbehandlung: Fehlerhafte TextFields mit Error Message versehen und auf invalid setzen
                     setErrorFields(registrationResult.getReasons());

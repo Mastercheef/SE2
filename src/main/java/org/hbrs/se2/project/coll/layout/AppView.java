@@ -26,7 +26,8 @@ import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.MessageRepository;
 import org.hbrs.se2.project.coll.util.Globals;
-import org.hbrs.se2.project.coll.util.Utils;
+import org.hbrs.se2.project.coll.util.UtilCurrent;
+import org.hbrs.se2.project.coll.util.UtilNavigation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     private static final String NOTIFICATION_COLOR = "rgb(66, 221, 21)";
 
     public AppView() {
-        if (Utils.getCurrentUser() == null) {
+        if (UtilCurrent.getCurrentUser() == null) {
             LOGGER.info("LOG: In Constructor of App View - No User given!");
         }
         setUpUI();
@@ -104,7 +105,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         H1 homeIcon = new H1("Coll@HBRS");
         homeIcon.getElement().getClassList().add("pointer");
-        homeIcon.addClickListener(e -> Utils.navigateToMain());
+        homeIcon.addClickListener(e -> UtilNavigation.navigateToMain());
         homeIconHorizontalLayout.add(homeIcon);
         headerLayout.add(homeIconHorizontalLayout);
 
@@ -131,7 +132,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private void initNavigationBar(boolean allMessagesRead, boolean allApplicationsRead) {
         /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
-        String currentUserType = Utils.getCurrentUser().getType();
+        String currentUserType = UtilCurrent.getCurrentUser().getType();
         if (Objects.equals(currentUserType, "st"))
             navigationBar.addItem("Mein Profil", e -> navigateToUserProfile());
         else if (Objects.equals(currentUserType, "cp"))
@@ -154,7 +155,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             - There are unread messages
             - TODO: Check for unread applications
         */
-        if(settingsControl.getUserSettings(Utils.getCurrentUser().getId()).getNotificationIsEnabled())
+        if(settingsControl.getUserSettings(UtilCurrent.getCurrentUser().getId()).getNotificationIsEnabled())
         {
             if(!allMessagesRead || !allApplicationsRead)
                 colorItem(inbox, NOTIFICATION_COLOR);
@@ -206,7 +207,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private void navigateToUserProfile() {
         String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-        String currentUserId = Integer.toString(Utils.getCurrentUser().getId());
+        String currentUserId = Integer.toString(UtilCurrent.getCurrentUser().getId());
         if(!Objects.equals(currentLocation, Globals.Pages.PROFILE_VIEW + currentUserId))
             UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + currentUserId);
     }
@@ -232,7 +233,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private void navigateToMessages() {
         String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-        String currentUserId = Integer.toString(Utils.getCurrentUser().getId());
+        String currentUserId = Integer.toString(UtilCurrent.getCurrentUser().getId());
         if(!Objects.equals(currentLocation, Globals.Pages.INBOX_VIEW + currentUserId))
             UI.getCurrent().navigate(Globals.Pages.INBOX_VIEW + currentUserId);
     }
@@ -246,7 +247,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     private void logoutUser() {
         UI ui = this.getUI().get();
         ui.getSession().close();
-        Utils.navigateToMain();
+        UtilNavigation.navigateToMain();
     }
 
 
@@ -283,7 +284,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             // Highlight des Posteingang-Tabs, wenn es ungelesene Nachrichten gibt
             // TODO: allApplicationsRead Parameter durch repository-call ersetzen für Applications
             initNavigationBar(
-                    messageRepository.findMessagesByRecipientAndRead(Utils.getCurrentUser().getId(),false).isEmpty(),
+                    messageRepository.findMessagesByRecipientAndRead(UtilCurrent.getCurrentUser().getId(),false).isEmpty(),
                     true
                     );
         }
@@ -299,14 +300,14 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private boolean checkIfUserIsLoggedIn() {
         // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
-        UserDTO userDTO = Utils.getCurrentUser();
+        UserDTO userDTO = UtilCurrent.getCurrentUser();
         return userDTO != null;
     }
 
     private boolean navigateToLoginIfSessionNeeded() {
         // Falls der Benutzer nicht eingeloggt ist, und versucht eine interne Seite aufzurufen,
         // dann wird er auf die Startseite gelenkt
-        UserDTO userDTO = Utils.getCurrentUser();
+        UserDTO userDTO = UtilCurrent.getCurrentUser();
         String pageTitle = getCurrentPageTitle();
         if (userDTO == null && !pageTitle.equals(Globals.PageTitles.REGISTER_PAGE_TITLE) &&
                 !pageTitle.equals(Globals.PageTitles.LOGIN_PAGE_TITLE) &&
@@ -325,11 +326,11 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     }
 
     private String getCurrentNameOfUser() {
-        return Utils.getCurrentUser().getFirstName();
+        return UtilCurrent.getCurrentUser().getFirstName();
     }
 
     private int getContactPersonsCompanyId() {
-        int contactPersonId = Utils.getCurrentUser().getId();
+        int contactPersonId = UtilCurrent.getCurrentUser().getId();
         ContactPerson contactPerson = contactPersonRepository.findContactPersonById(contactPersonId);
         return contactPerson.getCompany().getId();
     }
@@ -345,7 +346,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
      *
      */
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if (Utils.getCurrentUser() == null){
+        if (UtilCurrent.getCurrentUser() == null){
             LOGGER.info("Reroute");
         }
 

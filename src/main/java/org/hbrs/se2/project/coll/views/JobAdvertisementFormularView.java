@@ -32,6 +32,8 @@ import org.hbrs.se2.project.coll.repository.AddressRepository;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.UtilCurrent;
+import org.hbrs.se2.project.coll.util.UtilNavigation;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -173,7 +175,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
                     JobAdvertisementDTO jobAdvertisementDTO = createNewJobAdvertisementDTO();
                     jobAdvertisementControl.saveAdvertisement(jobAdvertisementDTO);
 
-                    Utils.navigateToCompanyProfile(companyId);
+                    UtilNavigation.navigateToCompanyProfile(companyId);
                     Dialog dialog = new Dialog();
                     dialog.add("Ihre Stellenanzeige wurde gespeichert!");
                     dialog.open();
@@ -184,7 +186,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
                 }
             }
         });
-        cancelButton.addClickListener(e -> Utils.navigateToCompanyProfile(companyId));
+        cancelButton.addClickListener(e -> UtilNavigation.navigateToCompanyProfile(companyId));
         hbuttons.add(saveButton, cancelButton);
 
         // Append to site
@@ -195,7 +197,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
 
     // If the user is not logged in, they get redirected to the login page
     private boolean checkIfUserIsLoggedIn() {
-        UserDTO userDTO = Utils.getCurrentUser();
+        UserDTO userDTO = UtilCurrent.getCurrentUser();
         if (userDTO == null) {
             UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
             return false;
@@ -205,7 +207,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
 
     // If the user is not the owner of this profile, they get redirected to the profile
     private boolean checkIfUserIsProfileOwner(int parameter) {
-        int userId = Utils.getCurrentUser().getId();
+        int userId = UtilCurrent.getCurrentUser().getId();
         int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(parameter).getId();
 
         if(userId == contactPersonId)
@@ -214,7 +216,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
             return true;
         else
         {
-            Utils.navigateToCompanyProfile(companyId);
+            UtilNavigation.navigateToCompanyProfile(companyId);
             UI.getCurrent().getPage().reload();
             return false;
         }

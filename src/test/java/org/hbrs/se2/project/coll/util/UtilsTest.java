@@ -1,16 +1,24 @@
 package org.hbrs.se2.project.coll.util;
 
+import com.vaadin.flow.component.UI;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockedStatic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class UtilsTest {
 
     String errorMessage = "class org.hbrs.se2.project.coll.util.UtilsTest cannot access a member of class org.hbrs.se2.project.coll.util.Utils with modifiers \"private\"";
+
+    @Mock
+    UserDTO userDTO;
 
     @Test
     void itShouldThrowIllegalAccessExceptionWhenInstancing() throws NoSuchMethodException {
@@ -68,4 +76,13 @@ class UtilsTest {
         assertEquals("9.7.2001", Utils.convertToGermanDateFormat(date1));
     }
 
+    @Test
+    void getCurrentUser() {
+/*
+        try (MockedStatic<UI> classMock = mockStatic(UI.class)) {
+            classMock.when(() -> UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER)).thenReturn(userDTO);
+            assertEquals(userDTO , UtilCurrent.getCurrentUser());
+        }
+ */
+    }
 }
