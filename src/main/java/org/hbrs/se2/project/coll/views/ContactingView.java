@@ -55,7 +55,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                 event.rerouteTo(Globals.Pages.MAIN_VIEW);
             } else {
                 if (UtilCurrent.getCurrentUser() != null) {
-                    if (!UtilCurrent.getCurrentUser().getType().equals("cp")) {
+                    if (contactingControl.checkIfUserIsAllowedToSendMessage(UtilCurrent.getCurrentUser(), userId)) {
                         Utils.triggerDialogMessage("Zugriff Verweigert", "Sie können keine Nachricht an andere Studenten schicken");
                         UtilNavigation.navigateToMain();
                         event.rerouteTo(Globals.Pages.MAIN_VIEW);
