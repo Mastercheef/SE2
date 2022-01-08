@@ -157,7 +157,7 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
     public void loadStudentUserInformation() {
         try {
             StudentUser studentUser = jobApplication.getStudentUser();
-            System.out.println(studentUser.getFirstName());
+            LOGGER.info(studentUser.getFirstName());
             jobApplicationFormularUtil.loadStudentUserInfo(studentUser);
         } catch (Exception exception) {
             Utils.triggerDialogMessage(error, "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
