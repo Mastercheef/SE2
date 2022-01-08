@@ -86,7 +86,7 @@ public class JobApplicationControl {
         return jobApplications;
     }
 
-    public boolean IsUserAllowedToAccessJobApplications(UserDTO user) {
+    public boolean isUserAllowedToAccessJobApplications(UserDTO user) {
 
         if (user.getType().equals("st")) {
             return this.jobApplicationDTO.getStudentUser().getId() == user.getId();
