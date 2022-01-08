@@ -4,7 +4,15 @@ import com.vaadin.flow.component.UI;
 
 import java.util.Objects;
 public class UtilNavigation {
+
+    private UtilNavigation() {
+        throw new IllegalStateException("Utility Class");
+    }
+
+
+
     // Navigation Methods
+
 
     public static void navigateToCompanyProfile(int companyId) {
         if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.COMPANYPROFILE_VIEW))

@@ -6,6 +6,10 @@ import org.hbrs.se2.project.coll.dtos.UserDTO;
 
 public class UtilCurrent {// Getters
 
+    private UtilCurrent() {
+        throw new IllegalStateException("Utility Class");
+    }
+
     public static String getCurrentLocation() {
         return UI.getCurrent().getInternals().getActiveViewLocation().getPath();
     }
