@@ -44,7 +44,7 @@ class LoginViewTest {
 
         driver = WebDriverManager.getInstance(webDriverClass).create();
         driver.manage().window().maximize();
-        driver.get("htt://sepp-test.inf.h-brs.de:8080/Team_ALT-F4/login");
+        driver.get("http://sepp-test.inf.h-brs.de:8080/Team_ALT-F4/login");
         WebElement username=driver.findElement(By.id("vaadinLoginUsername"));
         WebElement password=driver.findElement(By.id("vaadinLoginPassword"));
         username.sendKeys("olaf@gmbh.de");
