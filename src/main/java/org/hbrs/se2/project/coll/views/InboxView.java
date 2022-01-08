@@ -37,10 +37,11 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     @Autowired
     InboxControl inboxControl;
 
-    private static final Grid<MessageDTO> grid = new Grid<>(MessageDTO.class, false);
-    private static  List<MessageDTO> messages  = new ArrayList<>();
-    private static  Div hint;
-    private static  SplitLayout splitLayout = new SplitLayout();
+    // Grid may NOT be final.
+    private static Grid<MessageDTO> grid;
+    private static List<MessageDTO> messages  = new ArrayList<>();
+    private static Div hint;
+    private static SplitLayout splitLayout = new SplitLayout();
 
     private static final Logger LOGGER = Logger.getLogger(InboxView.class.getName());
 
@@ -58,6 +59,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
 
     private void setupGrid() {
 
+        grid = new Grid<>(MessageDTO.class, false);
         grid.setAllRowsVisible(true);
 
         // Read/Not read
