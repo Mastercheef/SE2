@@ -153,7 +153,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         /*  Check if:
             - If a user has enabled notifications
             - There are unread messages
-            - TODO: Check for unread applications
         */
         if(settingsControl.getUserSettings(UtilCurrent.getCurrentUser().getId()).getNotificationIsEnabled())
         {
@@ -282,7 +281,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             navigationBar.removeAll();
 
             // Highlight des Posteingang-Tabs, wenn es ungelesene Nachrichten gibt
-            // TODO: allApplicationsRead Parameter durch repository-call ersetzen für Applications
             initNavigationBar(
                     messageRepository.findMessagesByRecipientAndRead(UtilCurrent.getCurrentUser().getId(),false).isEmpty(),
                     true
