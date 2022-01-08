@@ -56,7 +56,6 @@ class LoginViewTest {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.findElement(By.xpath("/html/body/vaadin-app-layout/vaadin-vertical-layout/vaadin-vertical-layout/vaadin-vertical-layout/img"));
         assertEquals("http://sepp-test.inf.h-brs.de:8080/Team_ALT-F4/" , driver.getCurrentUrl());
-
     }
 
     @Disabled
