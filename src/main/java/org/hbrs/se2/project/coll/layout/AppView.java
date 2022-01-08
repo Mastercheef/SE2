@@ -315,6 +315,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
                 !pageTitle.equals(Globals.PageTitles.JOBADVERTISEMENT_PAGE_TITLE) &&
                 !pageTitle.equals(Globals.PageTitles.JOBLIST_PAGE_TITLE)) {
             navigateToLogin();
+            UI.getCurrent().getPage().reload();
             return false;
         }
         return true;
