@@ -1,21 +1,24 @@
 package org.hbrs.se2.project.coll.views;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Ignore
+@Disabled("Disabled because Jenkins is not able to use Selenium!")
+@ExtendWith(SpringExtension.class)
 class LoginViewTest {
 
 
-
+    @Disabled
     @Test
     public synchronized  void login()  {
 
@@ -39,8 +42,9 @@ class LoginViewTest {
 
     }
 
+    @Disabled
     @Test
-    public synchronized  void loginFail()  {
+    public   void loginFail()  {
 
         WebDriverManager.chromedriver().setup();
         ChromeDriver driver = new ChromeDriver();
