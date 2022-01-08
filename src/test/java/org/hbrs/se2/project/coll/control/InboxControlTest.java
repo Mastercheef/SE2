@@ -65,8 +65,8 @@ class InboxControlTest {
         messageDTOMethod = inboxControl.prepareSending(messageDTO,message);
 
         assertEquals(message , messageDTOMethod.getContent());
-        assertEquals(200 , messageDTOMethod.getRecipient());
-        assertEquals(400 , messageDTOMethod.getSender());
+        assertEquals(400 , messageDTOMethod.getRecipient());
+        assertEquals(200 , messageDTOMethod.getSender());
         assertEquals(subbject , messageDTOMethod.getSubject());
         assertEquals(message , messageDTOMethod.getContent());
         assertEquals(LocalDate.now() , messageDTOMethod.getDate());

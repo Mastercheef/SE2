@@ -41,6 +41,7 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     List<Address> existingAddresses;
     Address address = new Address();
     int companyId;
+    String oldEmail;
 
     LabelCompany labelCompany = new LabelCompany();
 
@@ -51,7 +52,6 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     Label postalcode    = new Label("PLZ (*):");
     Label city          = new Label("Ort (*):");
     Label country       = new Label("Land (*):");
-    Label email         = new Label("E-Mail (*):");
     Label phone         = new Label("Telefon (*):");
     Label fax           = new Label("Fax (*):");
     Label website       = new Label("Webseite (*):");
@@ -63,7 +63,6 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
     TextField lpostalcode   = new TextField();
     TextField lcity         = new TextField();
     TextField lcountry      = new TextField();
-    TextField lemail        = new TextField();
     TextField lphone        = new TextField();
     TextField lfax          = new TextField();
     TextField lwebsite      = new TextField();
@@ -108,11 +107,11 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         lpostalcode.setValue(address.getPostalCode());
         lcity.setValue(address.getCity());
         lcountry.setValue(address.getCountry());
-        lemail.setValue(profileDTO.getEmail());
         lphone.setValue(String.valueOf(profileDTO.getPhoneNumber()));
         lfax.setValue(String.valueOf(profileDTO.getFaxNumber()));
         lwebsite.setValue(profileDTO.getWebsite());
         ldescription.setValue(profileDTO.getDescription());
+        oldEmail = profileDTO.getEmail();
     }
 
     // Build profile content
@@ -126,13 +125,13 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
         // Styling
         for (Label label : new Label[]{ companyname, street, streetnumber, postalcode, city, country,
-                email, phone, fax, website, description}) {
+                phone, fax, website, description}) {
             label.getElement().getStyle().set("font-weight", "bold");
             label.getElement().getStyle().set("width", "200px");        // For alignment
         }
 
         for (TextField textfield : new TextField[]{ lcompanyname, lstreet, lstreetnumber, lpostalcode, lcity, lcountry,
-                lemail, lphone, lfax, lwebsite, ldescription}) {
+                lphone, lfax, lwebsite, ldescription}) {
             textfield.getElement().getStyle().set("height", "20px");
             textfield.getElement().getStyle().set("width", "300px");
             textfield.setRequired(true);
@@ -146,7 +145,6 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         HorizontalLayout hpostalcode    = new HorizontalLayout(postalcode, lpostalcode);
         HorizontalLayout hcity          = new HorizontalLayout(city, lcity);
         HorizontalLayout hcountry       = new HorizontalLayout(country, lcountry);
-        HorizontalLayout hemail         = new HorizontalLayout(email, lemail);
         HorizontalLayout hphone         = new HorizontalLayout(phone, lphone);
         HorizontalLayout hfax           = new HorizontalLayout(fax, lfax);
         HorizontalLayout hwebsite       = new HorizontalLayout(website, lwebsite);
@@ -171,13 +169,13 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
 
         // Alignment of profile information
         for (HorizontalLayout HL : new HorizontalLayout[]{ hinfotext, hcompanyname, hstreet, hstreetnumber, hpostalcode,
-                hcity, hcountry, hemail, hphone, hfax, hwebsite, hdescription, hbuttons }) {
+                hcity, hcountry, hphone, hfax, hwebsite, hdescription, hbuttons }) {
             HL.getElement().getStyle().set("margin-top", "11px");
         }
 
         // Append everything to the site
         div.add(h2, profileImage, hinfotext, hcompanyname, hstreet, hstreetnumber, hpostalcode,
-                hcity, hcountry, hemail, hphone, hfax, hwebsite, hdescription, hbuttons);
+                hcity, hcountry, hphone, hfax, hwebsite, hdescription, hbuttons);
         add(div);
     }
 
@@ -185,11 +183,11 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
         CompanyDTOImpl updatedProfile = new CompanyDTOImpl();
         updatedProfile.setId(companyId);
         updatedProfile.setCompanyName(lcompanyname.getValue());
-        updatedProfile.setEmail(lemail.getValue());
         updatedProfile.setPhoneNumber(lphone.getValue());
         updatedProfile.setFaxNumber(lfax.getValue());
         updatedProfile.setWebsite(lwebsite.getValue());
         updatedProfile.setDescription(ldescription.getValue());
+        updatedProfile.setEmail(oldEmail);
 
         // Address
         Address updatedAddress = new Address();
@@ -228,7 +226,6 @@ public class CompanyProfileEditView extends VerticalLayout  implements HasUrlPar
                 checkForEmptyTextField(lpostalcode) ||
                 checkForEmptyTextField(lcity) ||
                 checkForEmptyTextField(lcountry) ||
-                checkForEmptyTextField(lemail) ||
                 checkForEmptyTextField(lphone) ||
                 checkForEmptyTextField(lfax) ||
                 checkForEmptyTextField(lwebsite) ||
