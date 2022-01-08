@@ -40,7 +40,8 @@ public class LoginView extends VerticalLayout {
         });
 
         add(component);
-        add(new RouterLink("Don't have an account yet? Register here.", RegistrationView.class));
+
+        add(new RouterLink("Sie haben noch kein Konto? Registrieren Sie sich hier!", RegistrationView.class));
         this.setAlignItems( Alignment.CENTER );
     }
 
