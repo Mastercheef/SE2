@@ -16,11 +16,13 @@ public class Message {
 
     @Id
     @GeneratedValue(
+            strategy=GenerationType.AUTO,
             generator = "message_id"
     )
     @SequenceGenerator(
             name = "message_id",
-            sequenceName = "collhbrs.col_seq_message_id"
+            sequenceName = "collhbrs.col_seq_message_id" ,
+            allocationSize=1
     )
     @Column(name = "message_id")
     public int getId() {
