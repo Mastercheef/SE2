@@ -112,14 +112,8 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
 
     public void createJobApplicationView() {
 
-        VerticalLayout personalInformation = new VerticalLayout(
-                jobApplicationFormularUtil.getsSalutation(), jobApplicationFormularUtil.getsName(), jobApplicationFormularUtil.getsAddress(),
-                jobApplicationFormularUtil.getsLocation(), jobApplicationFormularUtil.getsCountry(), jobApplicationFormularUtil.getsEmail(),
-                jobApplicationFormularUtil.getsPhone());
-        personalInformation.setSpacing(false);
-        personalInformation.setPadding(false);
-
-        Details personalDetails = new Details("Persönliche Informationen", personalInformation);
+        Details personalDetails = new Details("Persönliche Informationen",
+                jobApplicationFormularUtil.personalInformationVerticalLayout());
         personalDetails.setOpened(true);
 
         HorizontalLayout detailLayout = new HorizontalLayout(personalDetails);
