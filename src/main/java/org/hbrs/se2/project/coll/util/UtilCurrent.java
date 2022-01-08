@@ -1,7 +1,6 @@
 package org.hbrs.se2.project.coll.util;
 
 import com.vaadin.flow.component.UI;
-import org.hbrs.se2.project.coll.Generated;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 
 

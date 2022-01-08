@@ -1,7 +1,6 @@
 package org.hbrs.se2.project.coll.util;
 
 import com.vaadin.flow.component.UI;
-import org.hbrs.se2.project.coll.Generated;
 
 import java.util.Objects;
 public class UtilNavigation {
