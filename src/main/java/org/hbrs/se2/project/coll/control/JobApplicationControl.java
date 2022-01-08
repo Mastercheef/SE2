@@ -3,7 +3,10 @@ package org.hbrs.se2.project.coll.control;
 import org.hbrs.se2.project.coll.control.factories.JobFactory;
 import org.hbrs.se2.project.coll.dtos.JobApplicationDTO;
 import org.hbrs.se2.project.coll.dtos.JobApplicationResultDTO;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.JobApplicationResultDTOImpl;
+import org.hbrs.se2.project.coll.entities.ContactPerson;
+import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.entities.JobApplication;
 import org.hbrs.se2.project.coll.repository.JobApplicationRepository;
 import org.hbrs.se2.project.coll.util.Utils;
@@ -12,6 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class JobApplicationControl {
 
@@ -19,6 +25,10 @@ public class JobApplicationControl {
 
     @Autowired
     JobApplicationRepository jobApplicationRepository;
+    @Autowired
+    private ContactPersonControl contactPersonControl;
+    @Autowired
+    private JobAdvertisementControl jobAdvertisementControl;
 
     private JobApplicationResultDTOImpl applicationResultDTO;
     private JobApplicationDTO jobApplicationDTO;
@@ -62,6 +72,32 @@ public class JobApplicationControl {
     }
 
     public JobApplicationDTO loadJobApplication(int applicationID) {
-        return jobApplicationRepository.findJobApplicationById(applicationID);
+        this.jobApplicationDTO = jobApplicationRepository.findJobApplicationById(applicationID);
+        return this.jobApplicationDTO;
+    }
+
+    public List<JobApplicationDTO> loadJobApplicationsFromCompany(UserDTO user) {
+        ContactPerson contactPerson = contactPersonControl.findContactPersonById(user.getId());
+        List<JobAdvertisement> jobAdds = jobAdvertisementControl.getJobsByCompanyId(contactPerson.getCompany().getId());
+        List<JobApplicationDTO> jobApplications = new ArrayList<>();
+        for(JobAdvertisement jobAdd : jobAdds) {
+            jobApplications.addAll(jobApplicationRepository.findJobApplicationsByJobAdvertisement(jobAdd));
+        }
+        return jobApplications;
+    }
+
+    public boolean IsUserAllowedToAccessJobApplications(UserDTO user) {
+
+        if (user.getType().equals("st")) {
+            return this.jobApplicationDTO.getStudentUser().getId() == user.getId();
+        } else {
+            return this.jobApplicationDTO.getJobAdvertisement().getContactPerson().getCompany().getId() ==
+                    getContactPersonFromSessionUser(user).getCompany().getId();
+        }
+
+    }
+
+    public ContactPerson getContactPersonFromSessionUser(UserDTO user) {
+        return contactPersonControl.findContactPersonById(user.getId());
     }
 }
