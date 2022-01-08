@@ -1,5 +1,6 @@
 package org.hbrs.se2.project.coll.views;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -113,12 +114,8 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
     }
 
     public void createJobApplicationView() {
-
-        VerticalLayout personalInformation = new VerticalLayout(sSalutation, sName, sAddress, sLocation, sCountry, sEmail, sPhone);
-        personalInformation.setSpacing(false);
-        personalInformation.setPadding(false);
-
-        Details personalDetails = new Details("Persönliche Informationen", personalInformation);
+        Details personalDetails = new Details("Persönliche Informationen",
+                jobApplicationFormularUtil.personalInformationVerticalLayout());
         personalDetails.setOpened(true);
 
         HorizontalLayout detailLayout = new HorizontalLayout(personalDetails);
@@ -129,7 +126,7 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
 
         Button contactApplicant = new Button("Bewerber kontaktieren");
         contactApplicant.addClickListener(e -> {
-
+            UI.getCurrent().navigate(Globals.Pages.CONTACTING_VIEW + jobApplication.getStudentUser().getId());
         });
 
         Application application = new Application();
@@ -159,11 +156,9 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
 
     public void loadStudentUserInformation() {
         try {
-            if(UtilCurrent.getCurrentUser() != null) {
-                StudentUser studentUser = jobApplication.getStudentUser();
-                LOGGER.info("StudentID:" + studentUser.getId());
-                jobApplicationFormularUtil.loadStudentUserInfo(studentUser);
-            }
+            StudentUser studentUser = jobApplication.getStudentUser();
+            System.out.println(studentUser.getFirstName());
+            jobApplicationFormularUtil.loadStudentUserInfo(studentUser);
         } catch (Exception exception) {
             Utils.triggerDialogMessage(error, "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
         }
