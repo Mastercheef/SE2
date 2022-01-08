@@ -27,11 +27,13 @@ public class Company {
 
     @Id
     @GeneratedValue(
+            strategy=GenerationType.AUTO,
             generator = "company_id"
     )
     @SequenceGenerator(
             name = "company_id",
-            sequenceName = "collhbrs.col_seq_company_id"
+            sequenceName = "collhbrs.col_seq_company_id",
+            allocationSize=1
     )
     @Column(name = "company_id")
     public int getId() {

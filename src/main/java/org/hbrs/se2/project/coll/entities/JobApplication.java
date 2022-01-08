@@ -15,11 +15,13 @@ public class JobApplication {
 
     @Id
     @GeneratedValue(
+            strategy=GenerationType.AUTO,
             generator = "application_id"
     )
     @SequenceGenerator(
             name = "application_id",
-            sequenceName = "collhbrs.col_seq_application_id"
+            sequenceName = "collhbrs.col_seq_application_id",
+            allocationSize=1
     )
     @Column(name = "application_id")
     public int getId() {
