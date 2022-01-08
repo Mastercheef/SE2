@@ -20,10 +20,12 @@ import org.hbrs.se2.project.coll.control.JobAdvertisementControl;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.UtilCurrent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Route(value = "joblist/:jobTitle?/:jobType?", layout = AppView.class)
 @PageTitle(Globals.PageTitles.MAIN_PAGE_TITLE)
@@ -255,7 +257,15 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
         HorizontalLayout dateAndHours = new HorizontalLayout(new Span("Ab:"), startOfWork,
                 new Span("Stunden/Woche:"), workingHours);
 
-        HorizontalLayout buttons            = new HorizontalLayout(details, message, profile, apply);
+        HorizontalLayout buttons            = new HorizontalLayout(details, profile);
+        // Only add Contacting and Application Buttons if user is a student
+        if(UtilCurrent.getCurrentUser() != null )
+            if(Objects.equals(UtilCurrent.getCurrentUser().getType(), "st"))
+            {
+                buttons.add(message);
+                buttons.add(apply);
+            }
+
         HorizontalLayout salaryInfo         = new HorizontalLayout(new Span("Vergütung:"), salary);
         HorizontalLayout requirementsInfo   = new HorizontalLayout(new Span("Voraussetzungen:"), requirements,
                                                 buttons);
