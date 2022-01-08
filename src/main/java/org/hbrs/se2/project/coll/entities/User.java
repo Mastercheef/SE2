@@ -104,11 +104,13 @@ public class User {
 
     @Id
     @GeneratedValue(
+            strategy=GenerationType.AUTO,
             generator = "user_id"
     )
     @SequenceGenerator(
             name = "user_id",
-            sequenceName = "collhbrs.col_seq_user_id"
+            sequenceName = "collhbrs.col_seq_user_id",
+            allocationSize=1
     )
     @Column(name = "user_id")
     public int getId() {

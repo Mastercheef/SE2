@@ -14,11 +14,13 @@ public class Address {
 
     @Id
     @GeneratedValue(
+            strategy=GenerationType.AUTO,
             generator = "address_id"
     )
     @SequenceGenerator(
             name = "address_id",
-            sequenceName = "collhbrs.col_seq_address_id"
+            sequenceName = "collhbrs.col_seq_address_id",
+            allocationSize=1
     )
     @Column(name = "address_id")
     public int getId() {
