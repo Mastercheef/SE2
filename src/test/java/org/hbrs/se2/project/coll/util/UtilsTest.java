@@ -5,6 +5,7 @@ import com.vaadin.flow.server.VaadinSession;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -21,21 +22,6 @@ class UtilsTest {
     @Mock
     UserDTO userDTO;
 
-    static UI ui = new UI();
-
-    @BeforeAll
-    public static void setUp() {
-        UI.setCurrent(ui);
-
-        VaadinSession session = Mockito.mock(VaadinSession.class);
-        Mockito.when(session.hasLock()).thenReturn(true);
-        ui.getInternals().setSession(session);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        UI.setCurrent(null);
-    }
 
     @Test
     void itShouldThrowIllegalAccessExceptionWhenInstancing() throws NoSuchMethodException {
@@ -105,6 +91,15 @@ class UtilsTest {
 
     @Test
     void triggerDialogMessage() {
+        UI ui = new UI();
+        UI.setCurrent(ui);
+
+        VaadinSession session = Mockito.mock(VaadinSession.class);
+        Mockito.when(session.hasLock()).thenReturn(true);
+        ui.getInternals().setSession(session);
         Utils.triggerDialogMessage("headerText" , "message");
+        UI.setCurrent(null);
+
+
     }
 }

@@ -8,10 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import static org.junit.jupiter.api.Assertions.*;
-
+@MockitoSettings(strictness = Strictness.LENIENT)
 @ExtendWith(MockitoExtension.class)
 class UtilCurrentTest {
 
@@ -45,12 +48,32 @@ class UtilCurrentTest {
 
     @Test
     void getCurrentLocation() {
+        uiSetup();
         assertEquals("" , UtilCurrent.getCurrentLocation());
+        shutdown();
+
 
     }
 
     @Test
     void getCurrentUser() {
+        uiSetup();
         assertNull( UtilCurrent.getCurrentUser());
+        shutdown();
     }
+
+
+    private void uiSetup() {
+        UI ui = new UI();
+        UI.setCurrent(ui);
+
+        VaadinSession session = Mockito.mock(VaadinSession.class);
+        Mockito.when(session.hasLock()).thenReturn(true);
+        ui.getInternals().setSession(session);
+    }
+
+    private void shutdown() {
+        UI.setCurrent(null);
+    }
+
 }
