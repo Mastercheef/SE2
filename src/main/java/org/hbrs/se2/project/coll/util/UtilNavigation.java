@@ -12,7 +12,15 @@ public class UtilNavigation {
 
 
     // Navigation Methods
+    public static void navigateToRegistration() {
+        if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.REGISTER_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.REGISTER_VIEW);
+    }
 
+    public static void navigateToStudentProfile(int studentId) {
+        if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.PROFILE_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
+    }
 
     public static void navigateToCompanyProfile(int companyId) {
         if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.COMPANYPROFILE_VIEW))
@@ -48,4 +56,20 @@ public class UtilNavigation {
         if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.JOBLIST_VIEW))
             UI.getCurrent().navigate(Globals.Pages.JOBLIST_VIEW + keyword + "/" + type);
     }
+
+    public static void navigateToDashboard() {
+        if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.DASHBAORD_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.DASHBAORD_VIEW);
+    }
+
+    public static void navigateToMessages(int userId) {
+        if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.INBOX_VIEW + userId))
+            UI.getCurrent().navigate(Globals.Pages.INBOX_VIEW + userId);
+    }
+
+    public static void navigateToSettings() {
+        if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.SETTINGS_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.SETTINGS_VIEW);
+    }
+
 }
