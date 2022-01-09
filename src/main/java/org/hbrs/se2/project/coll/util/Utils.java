@@ -41,6 +41,8 @@ public class Utils {
         return dateString;
     }
 
+
+
     public static void triggerDialogMessage(String headerText, String message) {
         Dialog dialog = new Dialog();
 

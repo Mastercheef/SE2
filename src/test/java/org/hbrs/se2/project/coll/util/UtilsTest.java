@@ -1,17 +1,18 @@
 package org.hbrs.se2.project.coll.util;
 
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.server.VaadinSession;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
-
+import org.mockito.Mockito;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+
 
 class UtilsTest {
 
@@ -19,6 +20,22 @@ class UtilsTest {
 
     @Mock
     UserDTO userDTO;
+
+    static UI ui = new UI();
+
+    @BeforeAll
+    public static void setUp() {
+        UI.setCurrent(ui);
+
+        VaadinSession session = Mockito.mock(VaadinSession.class);
+        Mockito.when(session.hasLock()).thenReturn(true);
+        ui.getInternals().setSession(session);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        UI.setCurrent(null);
+    }
 
     @Test
     void itShouldThrowIllegalAccessExceptionWhenInstancing() throws NoSuchMethodException {
@@ -84,5 +101,10 @@ class UtilsTest {
             assertEquals(userDTO , UtilCurrent.getCurrentUser());
         }
  */
+    }
+
+    @Test
+    void triggerDialogMessage() {
+        Utils.triggerDialogMessage("headerText" , "message");
     }
 }
