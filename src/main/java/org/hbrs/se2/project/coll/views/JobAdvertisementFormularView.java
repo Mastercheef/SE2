@@ -175,7 +175,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
                     JobAdvertisementDTO jobAdvertisementDTO = createNewJobAdvertisementDTO();
                     jobAdvertisementControl.saveAdvertisement(jobAdvertisementDTO);
 
-                    UtilNavigation.navigateToCompanyProfile(companyId);
+                    UtilNavigation.navigateToDashboard();
                     Dialog dialog = new Dialog();
                     dialog.add("Ihre Stellenanzeige wurde gespeichert!");
                     dialog.open();

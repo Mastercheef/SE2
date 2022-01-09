@@ -31,6 +31,7 @@ public class Globals {
         public static final String RECRUITMENT_VIEW             = "recruitment_formular/";
         public static final String REGISTER_VIEW                = "register/";
         public static final String SETTINGS_VIEW                = "settings/";
+        public static final String DASHBAORD_VIEW               = "dashboard/";
     }
 
     public static class PageTitles {
@@ -129,6 +130,14 @@ public class Globals {
             }
             return countryNames;
         }
+    }
+
+    public static class DateRanges {
+        public static final String all = "Gesamt";
+        public static final String day = "Letze 24 Stunden";
+        public static final String week = "Letze Woche";
+        public static final String month = "Letzer Monat";
+
     }
 
 }

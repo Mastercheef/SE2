@@ -9,14 +9,17 @@ import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.entities.JobApplication;
 import org.hbrs.se2.project.coll.repository.JobApplicationRepository;
+import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Component
 public class JobApplicationControl {
@@ -99,5 +102,62 @@ public class JobApplicationControl {
 
     public ContactPerson getContactPersonFromSessionUser(UserDTO user) {
         return contactPersonControl.findContactPersonById(user.getId());
+    }
+
+    public List<JobApplicationDTO> filterApplicationsByHeadline(List<JobApplicationDTO> applications, String header) {
+        List<JobApplicationDTO> filteredApplications = new ArrayList<>();
+        if(!applications.isEmpty()) {
+            for (JobApplicationDTO app : applications)
+                // Used because of case sensitivity. Otherwise, works like str1.contains(str2)
+                if (Pattern.compile(Pattern.quote(header),
+                        Pattern.CASE_INSENSITIVE).matcher(app.getHeadline()).find())
+                    filteredApplications.add(app);
+        }
+        return filteredApplications;
+    }
+
+    public List<JobApplicationDTO> filterApplicationsByUsername(List<JobApplicationDTO> applications, String name) {
+        List<JobApplicationDTO> filteredApplications = new ArrayList<>();
+        if(!applications.isEmpty()) {
+            for (JobApplicationDTO app : applications)
+                // Used because of case sensitivity. Otherwise, works like str1.contains(str2)
+                if (Pattern.compile(Pattern.quote(name),
+                        Pattern.CASE_INSENSITIVE).matcher(app.getStudentUser().getFirstName() + " " +
+                        app.getStudentUser().getLastName()).find())
+                    filteredApplications.add(app);
+        }
+        return filteredApplications;
+    }
+
+    public List<JobApplicationDTO> filterApplicationsByDateRange(List<JobApplicationDTO> applications, String range) {
+        List<JobApplicationDTO> filteredApplications = new ArrayList<>();
+        if(!applications.isEmpty()) {
+            for (JobApplicationDTO app : applications) {
+                // Used because of case sensitivity. Otherwise, works like str1.contains(str2)
+                if (range.equals(Globals.DateRanges.all)) {
+                    filteredApplications.add(app);
+                } else {
+                    if (dateIsInRange(app.getDate(), mapDateRange(range)))
+                        filteredApplications.add(app);
+                }
+            }
+        }
+        return filteredApplications;
+    }
+
+    private int mapDateRange(String rangeString) {
+        if (rangeString.equals(Globals.DateRanges.day))
+            return 1;
+        else if (rangeString.equals(Globals.DateRanges.week))
+            return 7;
+        else
+            return 31;
+    }
+
+    private boolean dateIsInRange(LocalDate date, int dayRange) {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate currentDateMinusRange = currentDate.minusDays(dayRange);
+
+        return date.isAfter(currentDateMinusRange);
     }
 }
