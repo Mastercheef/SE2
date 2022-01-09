@@ -50,6 +50,8 @@ public class JobDashboardView extends Div implements AfterNavigationObserver, Be
     Grid<JobAdvertisement> grid = new Grid<>();
     Grid<JobApplicationDTO> applicationGrid = new Grid<>();
 
+    private String filter = "Filtern ...";
+    private String content = "content";
     private int companyId = 0;
 
     TextField jobTitleFilter            = new TextField();
@@ -70,7 +72,7 @@ public class JobDashboardView extends Div implements AfterNavigationObserver, Be
     //Applications
     TextField appHeadlineFilter         = new TextField();
     TextField appUserFilter             = new TextField();
-    ComboBox<String> appDateFilter      = new ComboBox<String>();
+    ComboBox<String> appDateFilter      = new ComboBox<>();
 
     String preJobType   = null;
     String preJobTitle  = null;
@@ -126,8 +128,8 @@ public class JobDashboardView extends Div implements AfterNavigationObserver, Be
         requirementsFilter.setPlaceholder("Voraussetzungen filtern ...");
         jobTypeFilter.setPlaceholder("Jobtypen filtern ...");
         temporaryFilter.setPlaceholder("Kurzfristige Beschäftigung?");
-        workingHoursFilter.setPlaceholder("Filtern ...");
-        salaryFilter.setPlaceholder("Filtern ...");
+        workingHoursFilter.setPlaceholder(filter);
+        salaryFilter.setPlaceholder(filter);
 
         jobTitleFilter.setLabel("Titel:");
         jobTypeFilter.setLabel("Typ:");
@@ -194,10 +196,10 @@ public class JobDashboardView extends Div implements AfterNavigationObserver, Be
         HeaderRow filterBar = grid.appendHeaderRow();
 
         // Prepare Content of Grid (jobs)
-        grid.addComponentColumn(this::createJobCard).setKey("content");
+        grid.addComponentColumn(this::createJobCard).setKey(content);
 
         // Set Header Content
-        filterBar.getCell(grid.getColumnByKey("content")).setComponent(createHeaderCard());
+        filterBar.getCell(grid.getColumnByKey(content)).setComponent(createHeaderCard());
 
         VerticalLayout addDiv = new VerticalLayout(advertisementHeader, addAdvertisementBtn, grid);
         addDiv.setWidth("90%");
@@ -226,15 +228,15 @@ public class JobDashboardView extends Div implements AfterNavigationObserver, Be
         }
         appDateFilter.addValueChangeListener(e -> updateApplicationGrid());
 
-        appDateFilter.setItems(DateRanges.all, DateRanges.day, DateRanges.week, DateRanges.month);
+        appDateFilter.setItems(DateRanges.ALL, DateRanges.DAY, DateRanges.WEEK, DateRanges.MONTH);
 
         H2 applicationHeader = new H2("Bewerbungen");
 
         applicationGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
         HeaderRow appFilterBar = applicationGrid.appendHeaderRow();
 
-        applicationGrid.addComponentColumn(this::createAppCard).setKey("content");
-        appFilterBar.getCell(applicationGrid.getColumnByKey("content")).setComponent(createApplicationHeaderCard());
+        applicationGrid.addComponentColumn(this::createAppCard).setKey(content);
+        appFilterBar.getCell(applicationGrid.getColumnByKey(content)).setComponent(createApplicationHeaderCard());
 
         VerticalLayout applicationDiv = new VerticalLayout(applicationHeader, applicationGrid);
         applicationDiv.setWidth("90%");
@@ -428,10 +430,10 @@ public class JobDashboardView extends Div implements AfterNavigationObserver, Be
             temporaryFilter.setValue(null);
             temporaryFilter.setPlaceholder("Kurzfristige Beschäftigung?");
             workingHoursFilter.setValue(60);
-            workingHoursFilter.setPlaceholder("Filtern ...");
+            workingHoursFilter.setPlaceholder(filter);
             oldWorkingHours = 60;
             salaryFilter.setValue(1);
-            salaryFilter.setPlaceholder("Filtern ...");
+            salaryFilter.setPlaceholder(filter);
             oldSalary = 1;
             LocalDate newDate = LocalDate.of(LocalDate.now().getYear(), 1, 1);
             oldDate = newDate;
@@ -453,7 +455,7 @@ public class JobDashboardView extends Div implements AfterNavigationObserver, Be
             appHeadlineFilter.setPlaceholder("Überschrift filtern ...");
             appUserFilter.setValue("");
             appUserFilter.setPlaceholder("Benutzer filtern ...");
-            appDateFilter.setValue(DateRanges.all);
+            appDateFilter.setValue(DateRanges.ALL);
         });
 
         card.add(appHeadlineFilter, appUserFilter, appDateFilter, filterDelete);

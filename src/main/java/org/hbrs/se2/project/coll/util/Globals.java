@@ -133,10 +133,14 @@ public class Globals {
     }
 
     public static class DateRanges {
-        public static final String all = "Gesamt";
-        public static final String day = "Letze 24 Stunden";
-        public static final String week = "Letze Woche";
-        public static final String month = "Letzer Monat";
+        private DateRanges() {
+            throw new IllegalStateException(ExceptionMessage.UTILITY);
+        }
+
+        public static final String ALL = "Gesamt";
+        public static final String DAY = "Letze 24 Stunden";
+        public static final String WEEK = "Letze Woche";
+        public static final String MONTH = "Letzer Monat";
 
     }
 

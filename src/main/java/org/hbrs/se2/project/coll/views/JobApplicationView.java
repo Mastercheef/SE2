@@ -32,8 +32,6 @@ import java.util.logging.Logger;
 @PageTitle(Globals.PageTitles.APPLICATION_PAGE_TITLE)
 public class JobApplicationView extends Div implements BeforeEnterObserver {
 
-    private static final Logger LOGGER = Logger.getLogger(JobApplicationView.class.getName());
-
     @Autowired
     private StudentUserRepository studentUserRepository;
     @Autowired

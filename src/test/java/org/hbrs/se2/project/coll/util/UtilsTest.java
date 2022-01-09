@@ -3,9 +3,7 @@ package org.hbrs.se2.project.coll.util;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.VaadinSession;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -18,9 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class UtilsTest {
 
     String errorMessage = "class org.hbrs.se2.project.coll.util.UtilsTest cannot access a member of class org.hbrs.se2.project.coll.util.Utils with modifiers \"private\"";
-
-    @Mock
-    UserDTO userDTO;
 
 
     @Test

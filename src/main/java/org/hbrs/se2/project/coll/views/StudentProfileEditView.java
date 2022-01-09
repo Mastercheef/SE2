@@ -76,6 +76,9 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     Div         rightDiv = new Div();
     Div         bottomDiv = new Div();
 
+    private String floatVar = "float";
+    private String left = "left";
+
     @Override
     public void setParameter(BeforeEvent event,
                              String parameter) {
@@ -196,11 +199,11 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         rightDiv.setWidth("60%");
         rightDiv.setMinWidth("400px");
         bottomDiv.setWidth("100%");
-        bottomDiv.getStyle().set("float", "left");
+        bottomDiv.getStyle().set(floatVar, left);
         div.setClassName("centered");
         div.setWidth("80%");
-        leftDiv.getStyle().set("float", "left");
-        rightDiv.getStyle().set("float", "left");
+        leftDiv.getStyle().set(floatVar, left);
+        rightDiv.getStyle().set(floatVar,left);
         add(div);
     }
 

@@ -20,21 +20,6 @@ class UtilCurrentTest {
 
     String errorMessage = "class org.hbrs.se2.project.coll.util.UtilCurrentTest cannot access a member of class org.hbrs.se2.project.coll.util.UtilCurrent with modifiers \"private\"";
 
-    static UI ui = new UI();
-
-    @BeforeAll
-    public static void setUp() {
-        UI.setCurrent(ui);
-
-        VaadinSession session = Mockito.mock(VaadinSession.class);
-        Mockito.when(session.hasLock()).thenReturn(true);
-        ui.getInternals().setSession(session);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        UI.setCurrent(null);
-    }
 
     @Test
     void itShouldThrowIllegalAccessExceptionWhenInstancing() throws NoSuchMethodException {

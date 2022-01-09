@@ -134,7 +134,7 @@ public class JobApplicationControl {
         if(!applications.isEmpty()) {
             for (JobApplicationDTO app : applications) {
                 // Used because of case sensitivity. Otherwise, works like str1.contains(str2)
-                if (range.equals(Globals.DateRanges.all)) {
+                if (range.equals(Globals.DateRanges.ALL)) {
                     filteredApplications.add(app);
                 } else {
                     if (dateIsInRange(app.getDate(), mapDateRange(range)))
@@ -146,9 +146,9 @@ public class JobApplicationControl {
     }
 
     private int mapDateRange(String rangeString) {
-        if (rangeString.equals(Globals.DateRanges.day))
+        if (rangeString.equals(Globals.DateRanges.DAY))
             return 1;
-        else if (rangeString.equals(Globals.DateRanges.week))
+        else if (rangeString.equals(Globals.DateRanges.WEEK))
             return 7;
         else
             return 31;

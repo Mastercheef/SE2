@@ -70,6 +70,6 @@ public class ContactingControl {
 
     public boolean checkIfUserIsAllowedToSendMessage(UserDTO user, int reveiverId) {
         UserDTO receiver = userRepository.findUserById(reveiverId);
-        return receiver != null && receiver.getType() == "cp";
+        return (receiver != null && receiver.getType() == "cp" && (user.getId()  > 0));
     }
 }
