@@ -37,7 +37,7 @@ class AuthorizationControlTest {
 
         Mockito.when(contactPersonControl.findContactPersonById(anyInt())).thenReturn(contactPerson);
 
-        boolean result = authorizationControl.isUserAllowedToAccessCompanyApplications(user, 10);
+        boolean result = authorizationControl.isUserCompanyContactPerson(user, 10);
 
         assertTrue(result);
     }
@@ -47,7 +47,7 @@ class AuthorizationControlTest {
 
         Mockito.when(contactPersonControl.findContactPersonById(anyInt())).thenReturn(null);
 
-        boolean result = authorizationControl.isUserAllowedToAccessCompanyApplications(user, 10);
+        boolean result = authorizationControl.isUserCompanyContactPerson(user, 10);
 
         assertFalse(result);
     }
@@ -57,7 +57,7 @@ class AuthorizationControlTest {
 
         Mockito.when(contactPersonControl.findContactPersonById(anyInt())).thenReturn(contactPerson);
 
-        boolean result = authorizationControl.isUserAllowedToAccessCompanyApplications(user, 100);
+        boolean result = authorizationControl.isUserCompanyContactPerson(user, 100);
 
         assertFalse(result);
     }

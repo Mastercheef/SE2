@@ -15,7 +15,7 @@ public class AuthorizationControl {
         // May be of use in the future
     }
 
-    public boolean isUserAllowedToAccessCompanyApplications(UserDTO user, int companyId) {
+    public boolean isUserCompanyContactPerson(UserDTO user, int companyId) {
         ContactPerson contactPerson = contactPersonControl.findContactPersonById(user.getId());
 
         if (contactPerson == null)

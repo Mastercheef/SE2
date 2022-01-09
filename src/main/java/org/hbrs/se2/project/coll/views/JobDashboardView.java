@@ -18,6 +18,7 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.*;
+import org.hbrs.se2.project.coll.control.AuthorizationControl;
 import org.hbrs.se2.project.coll.control.JobAdvertisementControl;
 import org.hbrs.se2.project.coll.control.JobApplicationControl;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
@@ -26,6 +27,7 @@ import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.UtilCurrent;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,6 +44,8 @@ public class JobDashboardView extends Div implements AfterNavigationObserver, Be
     JobAdvertisementControl jobAdvertisementControl;
     @Autowired
     JobApplicationControl jobApplicationControl;
+    @Autowired
+    AuthorizationControl authorizationControl;
 
     Grid<JobAdvertisement> grid = new Grid<>();
     Grid<JobApplicationDTO> applicationGrid = new Grid<>();
@@ -347,39 +351,9 @@ public class JobDashboardView extends Div implements AfterNavigationObserver, Be
 
         // Buttons for engagement
         Button details = new Button("Details");
-        Button delete = new Button("Löschen");
-
         // Button functionality
         details.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.JOBADVERTISEMENT_VIEW +
                 jobAdvertisement.getId()));
-        delete.addClickListener(e -> {
-            // Preventing missclicks by opening a dialog box
-            Dialog dialog   = new Dialog();
-            Label question  = new Label("Sind sie sicher, dass Sie dieses Stellenangebot löschen möchten?");
-            Label info      = new Label("(Dieser Vorgang ist unwiderruflich.)");
-            Button yesButton = new Button("Ja");
-            Button noButton  = new Button ("Nein");
-
-            yesButton.addClickListener(jo -> {
-                dialog.close();
-                try {
-                    this.jobAdvertisementControl.deleteAdvertisement(jobAdvertisement);
-                    Notification notification = Notification.show("Stellenangebot gelöscht", 5000,
-                            Notification.Position.TOP_END);
-                    notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                    updateGrid();
-                } catch (DatabaseUserException ex) {
-                    ex.printStackTrace();
-                }
-            });
-            noButton.addClickListener(no -> dialog.close());
-
-            HorizontalLayout buttons = new HorizontalLayout(yesButton, noButton);
-            VerticalLayout dialogContent = new VerticalLayout(question, info, buttons);
-            dialogContent.setAlignItems(FlexComponent.Alignment.CENTER);
-            dialog.add(dialogContent);
-            dialog.open();
-        });
 
         // Append
         HorizontalLayout header = new HorizontalLayout(jobTitle, new Span("-"),
@@ -388,14 +362,50 @@ public class JobDashboardView extends Div implements AfterNavigationObserver, Be
         HorizontalLayout dateAndHours = new HorizontalLayout(new Span("Ab:"), startOfWork,
                 new Span("Stunden/Woche:"), workingHours);
 
-        HorizontalLayout buttons            = new HorizontalLayout(details, delete);
-        buttons.setAlignItems(FlexComponent.Alignment.CENTER);
         HorizontalLayout salaryInfo         = new HorizontalLayout(new Span("Vergütung:"), salary);
         HorizontalLayout requirementsInfo   = new HorizontalLayout(new Span("Voraussetzungen:"), requirements);
 
         VerticalLayout cardItem= new VerticalLayout(header, jobDescription, dateAndHours, salaryInfo,
                 requirementsInfo);
         cardItem.setSpacing(false);
+
+        HorizontalLayout buttons            = new HorizontalLayout(details);
+
+        if (authorizationControl.isUserCompanyContactPerson(UtilCurrent.getCurrentUser(), companyId)) {
+            Button delete = new Button("Löschen");
+            delete.addClickListener(e -> {
+                // Preventing missclicks by opening a dialog box
+                Dialog dialog   = new Dialog();
+                Label question  = new Label("Sind sie sicher, dass Sie dieses Stellenangebot löschen möchten?");
+                Label info      = new Label("(Dieser Vorgang ist unwiderruflich.)");
+                Button yesButton = new Button("Ja");
+                Button noButton  = new Button ("Nein");
+
+                yesButton.addClickListener(jo -> {
+                    dialog.close();
+                    try {
+                        this.jobAdvertisementControl.deleteAdvertisement(jobAdvertisement);
+                        Notification notification = Notification.show("Stellenangebot gelöscht", 5000,
+                                Notification.Position.TOP_END);
+                        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                        updateGrid();
+                    } catch (DatabaseUserException ex) {
+                        ex.printStackTrace();
+                    }
+                });
+                noButton.addClickListener(no -> dialog.close());
+
+                HorizontalLayout dialogButtons = new HorizontalLayout(yesButton, noButton);
+                VerticalLayout dialogContent = new VerticalLayout(question, info, dialogButtons);
+                dialogContent.setAlignItems(FlexComponent.Alignment.CENTER);
+                dialog.add(dialogContent);
+                dialog.open();
+            });
+            buttons.add(delete);
+        }
+
+        buttons.setAlignItems(FlexComponent.Alignment.CENTER);
+
         HorizontalLayout cardLayout = new HorizontalLayout(cardItem, buttons);
         cardLayout.setWidthFull();
 
