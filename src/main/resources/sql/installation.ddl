@@ -110,7 +110,7 @@ create table col_tab_job_advertisement (
 create table col_tab_student (
      student_description varchar(2048),
      website varchar(32),
-     graduation varchar(32) not null,
+     graduation varchar(32),
      skills varchar(1024),
      interests varchar(512),
      user_id bigint not null,
@@ -134,14 +134,15 @@ create table col_tab_application (
      advertisement_id bigint not null,
      headline varchar(128) not null,
      text varchar(4096) not null,
+     date date not null,
      constraint col_pk_application_id primary key (application_id));
 
 create table col_tab_message (
     message_id bigint not null default nextval('col_seq_message_id'),
     sender_id bigint not null,
     recipient_id bigint not null,
-    content varchar not null,
-    subject varchar not null,
+    content varchar(512) not null,
+    subject varchar(64) not null,
     date date not null,
     read boolean not null default false,
     constraint col_pk_message_id primary key (message_id));
