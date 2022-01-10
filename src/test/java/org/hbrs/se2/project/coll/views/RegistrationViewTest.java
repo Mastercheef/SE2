@@ -32,8 +32,6 @@ public class RegistrationViewTest {
     private String country;
     private String email;
     private String emailRepeat;
-    private String password;
-    private String passwordRepeat;
 
     private String companyName;
     private String companyEmail;
@@ -69,8 +67,6 @@ public class RegistrationViewTest {
         country = "USA";
         email = "johnstamos@americamail.com";
         emailRepeat = email;
-        password = "whatever";
-        passwordRepeat = password;
 
         // Company
         companyName = "The Big Company";
@@ -109,8 +105,6 @@ public class RegistrationViewTest {
         Assert.assertEquals(this.country, registrationView.country.getValue());
         Assert.assertEquals(this.email, registrationView.email.getValue());
         Assert.assertEquals(this.emailRepeat, registrationView.emailRepeat.getValue());
-        Assert.assertEquals(this.password, registrationView.password.getValue());
-        Assert.assertEquals(this.passwordRepeat, registrationView.passwordRepeat.getValue());
     }
 
     @Test
@@ -173,7 +167,6 @@ public class RegistrationViewTest {
         Assert.assertEquals(this.city, userDTO.getAddress().getCity());
         Assert.assertEquals(this.country, userDTO.getAddress().getCountry());
         Assert.assertEquals(this.email, userDTO.getEmail());
-        Assert.assertEquals(this.password, userDTO.getPassword());
         Assert.assertEquals(this.type, userDTO.getType());
     }
 
@@ -218,8 +211,6 @@ public class RegistrationViewTest {
         registrationView.country.setValue(this.country);
         registrationView.email.setValue(this.email);
         registrationView.emailRepeat.setValue(this.emailRepeat);
-        registrationView.password.setValue(this.password);
-        registrationView.passwordRepeat.setValue(this.passwordRepeat);
     }
 
     private void populateCompanyForm(RegistrationView registrationView) {
