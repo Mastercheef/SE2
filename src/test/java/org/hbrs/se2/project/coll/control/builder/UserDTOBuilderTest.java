@@ -107,7 +107,7 @@ public class UserDTOBuilderTest {
 
         UserDTO dtoFromBuilder = UserDTOBuilder
                 .please()
-                .createDefaultTestStudentUserWithFullData()
+                .createDefaultTestUserWithFullData()
                 .withEmptySalutation()
                 .withEmptyTitle()
                 .withEmptyFirstName()
@@ -149,7 +149,7 @@ public class UserDTOBuilderTest {
 
         UserDTO dtoFromBuilder = UserDTOBuilder
                 .please()
-                .createDefaultTestStudentUserWithFullData()
+                .createDefaultTestUserWithFullData()
                 .withEmptySalutation()
                 .withEmptyTitle()
                 .withEmptyName()

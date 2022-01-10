@@ -142,9 +142,6 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Contact Person Div
         contact = initContactPerson();
 
-        // Job offer Div
-        //jobs = initJobOffers();
-
         // Align Layout
         this.setAlignItems(FlexComponent.Alignment.CENTER);
         HorizontalLayout mainCompanyLayout = new HorizontalLayout();
@@ -157,10 +154,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
                 hcity, hcountry, hemail, hphone, hfax, hwebsite, hdescription);
 
         // Add Edit Button ONLY when the logged-in user is the contact person of this company
-        int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
-
         if (UtilCurrent.getCurrentUser() != null &&
-                authorizationControl.isUserCompanyContactPerson(UtilCurrent.getCurrentUser(),companyId)) {
+                authorizationControl.isUserCompanyContactPerson(UtilCurrent.getCurrentUser(), companyId)) {
             companyInfoLayout.add(hbuttons);
         }
         mainCompanyLayout.add(companyInfoLayout, contactPersonLayout);

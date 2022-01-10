@@ -18,12 +18,12 @@ public class UtilNavigation {
     }
 
     public static void navigateToStudentProfile(int studentId) {
-        if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.PROFILE_VIEW))
+        if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.PROFILE_VIEW + studentId))
             UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
     }
 
     public static void navigateToCompanyProfile(int companyId) {
-        if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.COMPANYPROFILE_VIEW))
+        if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.COMPANYPROFILE_VIEW + companyId))
             UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + companyId);
     }
 
@@ -58,8 +58,8 @@ public class UtilNavigation {
     }
 
     public static void navigateToDashboard() {
-        if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.DASHBAORD_VIEW))
-            UI.getCurrent().navigate(Globals.Pages.DASHBAORD_VIEW);
+        if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.DASHBOARD_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.DASHBOARD_VIEW);
     }
 
     public static void navigateToMessages(int userId) {

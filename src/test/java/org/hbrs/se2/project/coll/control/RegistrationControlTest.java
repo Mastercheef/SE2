@@ -2,13 +2,16 @@ package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.builder.UserDTOBuilder;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
+import org.hbrs.se2.project.coll.control.factories.CompanyFactory;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 
+import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
 import org.hbrs.se2.project.coll.dtos.impl.RegistrationDTOImpl;
 import org.hbrs.se2.project.coll.dtos.impl.UserDTOImpl;
+import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -102,18 +105,143 @@ class RegistrationControlTest {
     void testRegisterUserPositiveStudent() throws DatabaseUserException {
         doReturn(null).when(userRepository).findUserByEmail(any());
 
-        UserDTO userDTO = UserDTOBuilder
+        UserDTO userDTOPosStudent = UserDTOBuilder
                 .please()
-                .createDefaultTestStudentUserWithFullData()
+                .createDefaultTestUserWithFullData()
+                .withType("st")
                 .done();
         RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl();
-        registrationDTO.setUserDTO(userDTO);
-        registrationDTO.setRepeatedEmail(userDTO.getEmail());
-        registrationDTO.setRepeatedPassword(userDTO.getPassword());
+        registrationDTO.setUserDTO(userDTOPosStudent);
+        registrationDTO.setRepeatedEmail(userDTOPosStudent.getEmail());
+        registrationDTO.setRepeatedPassword(userDTOPosStudent.getPassword());
 
         RegistrationResultDTO result = registrationControl.registerUser(registrationDTO);
         assertTrue(result.getResult());
         assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.SUCCESS));
+    }
+
+    @Test
+    void testRegisterUserNegativeStudentEmailInUse() throws DatabaseUserException {
+        doReturn(userDTO).when(userRepository).findUserByEmail(any());
+        when(userDTO.getId()).thenReturn(100);
+
+        UserDTO userDTONegStEmail = UserDTOBuilder
+                .please()
+                .createDefaultTestUserWithFullData()
+                .withType("st")
+                .done();
+        RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl();
+        registrationDTO.setUserDTO(userDTONegStEmail);
+        registrationDTO.setRepeatedEmail(userDTONegStEmail.getEmail());
+        registrationDTO.setRepeatedPassword(userDTONegStEmail.getPassword());
+
+        RegistrationResultDTO result = registrationControl.registerUser(registrationDTO);
+        assertFalse(result.getResult());
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.EMAIL_ALREADY_IN_USE));
+    }
+
+    @Test
+    void testRegisterUserNegativeStudentInformtationMissing() throws DatabaseUserException {
+        doReturn(null).when(userRepository).findUserByEmail(any());
+
+        UserDTO userDTONegStInf = UserDTOBuilder
+                .please()
+                .createDefaultTestUserWithFullData()
+                .withType("st")
+                .withoutDateOfBirth()
+                .withEmail("invalidEmail")
+                .withFirstName("invalidName*-+")
+                .withLastName("invalidName*-+")
+                .done();
+        RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl();
+        registrationDTO.setUserDTO(userDTONegStInf);
+        registrationDTO.setRepeatedEmail("different");
+        registrationDTO.setRepeatedPassword("different");
+
+        RegistrationResultDTO result = registrationControl.registerUser(registrationDTO);
+        assertFalse(result.getResult());
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.DATEOFBIRTH_MISSING));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.EMAIL_INVALID));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.FIRSTNAME_INVALID));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.LASTNAME_INVALID));
+
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.EMAIL_UNEQUAL));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.PASSWORD_UNEQUAL));
+    }
+
+    @Test
+    void testRegisterUserPositiveCompany() throws DatabaseUserException {
+        doReturn(null).when(companyRepository).findCompanyByCompanyNameAndEmailAndWebsite(any(),any(),any());
+
+        UserDTO userDTOPosComp = UserDTOBuilder
+                .please()
+                .createDefaultTestUserWithFullData()
+                .withType("cp")
+                .done();
+
+        RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl();
+        registrationDTO.setUserDTO(userDTOPosComp);
+        registrationDTO.setRepeatedEmail(userDTOPosComp.getEmail());
+        registrationDTO.setRepeatedPassword(userDTOPosComp.getPassword());
+        registrationDTO.setCompanyDTO(CompanyFactory.createTestCompany());
+
+        RegistrationResultDTO result = registrationControl.registerUser(registrationDTO);
+        assertTrue(result.getResult());
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.SUCCESS));
+    }
+
+    @Test
+    void testRegisterUserNegativeCompany() throws DatabaseUserException {
+        doReturn(companyDTO).when(companyRepository).findCompanyByCompanyNameAndEmailAndWebsite(any(),any(),any());
+        when(companyDTO.getId()).thenReturn(100);
+
+        UserDTO userDTONegComp = UserDTOBuilder
+                .please()
+                .createDefaultTestUserWithFullData()
+                .withType("cp")
+                .done();
+
+        CompanyDTOImpl companyDTONeg = new CompanyDTOImpl();
+        companyDTONeg.setCompanyName("Firma");
+        Address address = new Address();
+        companyDTONeg.setAddress(address);
+        companyDTONeg.setPhoneNumber("");
+        companyDTONeg.setFaxNumber("");
+        companyDTONeg.setEmail("");
+        companyDTONeg.setWebsite("");
+        companyDTONeg.setDescription("");
+
+
+        RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl();
+        registrationDTO.setUserDTO(userDTONegComp);
+        registrationDTO.setRepeatedEmail(userDTONegComp.getEmail());
+        registrationDTO.setRepeatedPassword(userDTONegComp.getPassword());
+        registrationDTO.setCompanyDTO(companyDTONeg);
+
+        RegistrationResultDTO result = registrationControl.registerUser(registrationDTO);
+        assertFalse(result.getResult());
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.COMPANY_ALREADY_REGISTERED));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.COMPANY_EMAIL_MISSING));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.COMPANY_PHONE_MISSING));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.COMPANY_FAX_MISSING));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.COMPANY_WEBSITE_MISSING));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.COMPANY_DESCRIPTION_MISSING));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.COMPANY_STREET_MISSING));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.COMPANY_HOUSENUMBER_MISSING));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.COMPANY_POSTALCODE_MISSING));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.COMPANY_CITY_MISSING));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.COMPANY_COUNTRY_MISSING));
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.COMPANY_EMAIL_INVALID));
+    }
+
+    @Test
+    void testRegisterUserNegativeUnexpectedException() throws DatabaseUserException {
+        RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl();
+        registrationDTO.setUserDTO(null);
+
+        RegistrationResultDTO result = registrationControl.registerUser(registrationDTO);
+        assertFalse(result.getResult());
+        assertTrue(result.getReasons().contains(RegistrationResultDTO.ReasonType.UNEXPECTED_ERROR));
     }
 
 }

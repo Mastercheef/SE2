@@ -64,9 +64,6 @@ public class JobAdvertisementGrid extends Div {
     IntegerField salaryFilter           = new IntegerField();
     int oldSalary;
 
-    String preJobType   = null;
-    String preJobTitle  = null;
-
     public void loadGridData() {
         List<JobAdvertisement> jobs = jobAdvertisementControl.getJobsByCompanyId(companyId);
         grid.setItems(jobs);
@@ -79,17 +76,18 @@ public class JobAdvertisementGrid extends Div {
     }
 
     public void setPreFilterValues(String preJobType, String preJobTitle) {
-        if (Utils.stringIsEmptyOrNull(preJobType))
-            this.preJobType = preJobType;
-        if (Utils.stringIsEmptyOrNull(preJobTitle))
-            this.preJobTitle = preJobTitle;
+        if (!Utils.stringIsEmptyOrNull(preJobType))
+            this.jobTypeFilter.setValue(preJobType);
+        if (!Utils.stringIsEmptyOrNull(preJobTitle))
+            this.jobTitleFilter.setValue(preJobTitle);
     }
 
     public void setResizeListener() {
         Page page = UI.getCurrent().getPage();
-        page.addBrowserWindowResizeListener(event -> {
-            filterBar.getCell(grid.getColumnByKey("content")).setComponent(createHeaderCard(event.getWidth()));
-        });
+        page.addBrowserWindowResizeListener(event ->
+                filterBar.getCell(grid.getColumnByKey("content"))
+                        .setComponent(createHeaderCard(event.getWidth()))
+        );
     }
 
     public JobAdvertisementGrid(JobAdvertisementControl jobAdvertisementControl,

@@ -121,9 +121,9 @@ public class JobApplicationView extends Div implements BeforeEnterObserver {
         section.setWidth("50%");
 
         Button contactApplicant = new Button("Bewerber kontaktieren");
-        contactApplicant.addClickListener(e -> {
-            UI.getCurrent().navigate(Globals.Pages.CONTACTING_VIEW + jobApplication.getStudentUser().getId());
-        });
+        contactApplicant.addClickListener(e ->
+                UI.getCurrent().navigate(Globals.Pages.CONTACTING_VIEW +
+                        jobApplication.getStudentUser().getId()));
 
         Application application = new Application();
         application.setWidth("100%");

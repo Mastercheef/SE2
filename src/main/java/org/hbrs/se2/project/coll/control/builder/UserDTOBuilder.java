@@ -20,7 +20,7 @@ public class UserDTOBuilder {
         return this;
     }
 
-    public UserDTOBuilder createDefaultTestStudentUserWithFullData() {
+    public UserDTOBuilder createDefaultTestUserWithFullData() {
         userDTO = new UserDTOImpl();
         userDTO.setSalutation("Herr");
         userDTO.setTitle("Dr.");
@@ -37,7 +37,6 @@ public class UserDTOBuilder {
         userDTO.setAddress(address);
         userDTO.setEmail("hans.meier@hbrs.de");
         userDTO.setPassword("Aa12#abcd");
-        userDTO.setType("st");
         return this;
     }
 

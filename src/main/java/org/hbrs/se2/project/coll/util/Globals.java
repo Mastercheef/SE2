@@ -31,7 +31,7 @@ public class Globals {
         public static final String RECRUITMENT_VIEW             = "recruitment_formular/";
         public static final String REGISTER_VIEW                = "register/";
         public static final String SETTINGS_VIEW                = "settings/";
-        public static final String DASHBAORD_VIEW               = "dashboard/";
+        public static final String DASHBOARD_VIEW               = "dashboard/";
     }
 
     public static class PageTitles {
