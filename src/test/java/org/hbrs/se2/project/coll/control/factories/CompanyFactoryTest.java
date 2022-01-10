@@ -1,6 +1,7 @@
 package org.hbrs.se2.project.coll.control.factories;
 
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
+import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.Company;
 import org.junit.jupiter.api.Test;
@@ -45,6 +46,38 @@ class CompanyFactoryTest {
         assertEquals("mustermann.de" , companyProfile.getWebsite());
         assertEquals("56789" , companyProfile.getFaxNumber());
         assertEquals("01234" , companyProfile.getPhoneNumber());
+    }
+
+    @Test
+    void testCreateTestCompany() {
+        CompanyDTOImpl companyDTO = new CompanyDTOImpl();
+        companyDTO.setCompanyName("Firma");
+        Address address = new Address();
+        address.setStreet("Straße");
+        address.setHouseNumber("10");
+        address.setPostalCode("56789");
+        address.setCity("Bonn");
+        address.setCountry("Deutschland");
+        companyDTO.setAddress(address);
+        companyDTO.setPhoneNumber("12345");
+        companyDTO.setFaxNumber("54321");
+        companyDTO.setEmail("valid@email.de");
+        companyDTO.setWebsite("www.website.com");
+        companyDTO.setDescription("Beschreibung");
+
+        CompanyDTOImpl factoryDTO = CompanyFactory.createTestCompany();
+
+        assertEquals(companyDTO.getCompanyName(), factoryDTO.getCompanyName());
+        assertEquals(companyDTO.getAddress().getStreet(), factoryDTO.getAddress().getStreet());
+        assertEquals(companyDTO.getAddress().getHouseNumber(), factoryDTO.getAddress().getHouseNumber());
+        assertEquals(companyDTO.getAddress().getPostalCode(), factoryDTO.getAddress().getPostalCode());
+        assertEquals(companyDTO.getAddress().getCity(), factoryDTO.getAddress().getCity());
+        assertEquals(companyDTO.getAddress().getCountry(), factoryDTO.getAddress().getCountry());
+        assertEquals(companyDTO.getPhoneNumber(), factoryDTO.getPhoneNumber());
+        assertEquals(companyDTO.getFaxNumber(), factoryDTO.getFaxNumber());
+        assertEquals(companyDTO.getEmail(), factoryDTO.getEmail());
+        assertEquals(companyDTO.getWebsite(), factoryDTO.getWebsite());
+        assertEquals(companyDTO.getDescription(), factoryDTO.getDescription());
     }
 
     @Test
