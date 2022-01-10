@@ -165,6 +165,7 @@ class GlobalsTest {
     @Test
     void getCountries() {
         assertEquals(249 , Globals.Countries.getCountries().size());
-        assertEquals("Andorra" , Globals.Countries.getCountries().get(0));
+        assertEquals("Afghanistan" , Globals.Countries.getCountries().get(0));
+        assertEquals("Österreich" , Globals.Countries.getCountries().get(248));
     }
 }
