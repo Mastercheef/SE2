@@ -1,4 +1,4 @@
-package org.hbrs.se2.project.coll.util;
+package org.hbrs.se2.project.coll.layout;
 
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
@@ -7,10 +7,12 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import org.hbrs.se2.project.coll.dtos.JobApplicationResultDTO;
 import org.hbrs.se2.project.coll.entities.StudentUser;
+import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.Utils;
 
 import java.util.List;
 
-public class JobApplicationFormularUtil {
+public class JobApplicationFormularLayout {
 
     private String error = "\"Fehler\"";
 

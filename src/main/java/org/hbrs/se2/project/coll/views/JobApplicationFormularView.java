@@ -26,7 +26,7 @@ import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
-import org.hbrs.se2.project.coll.util.JobApplicationFormularUtil;
+import org.hbrs.se2.project.coll.layout.JobApplicationFormularLayout;
 import org.hbrs.se2.project.coll.util.UtilCurrent;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
     private JobAdvertisement jobAdvertisement;
     private StudentUserDTO studentUserDTO;
 
-    JobApplicationFormularUtil jobApplicationFormularUtil = new JobApplicationFormularUtil();
+    JobApplicationFormularLayout jobApplicationFormularLayout = new JobApplicationFormularLayout();
 
 
 
@@ -60,15 +60,15 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
             jobAdvertisement = jobAdvertisementRepository.findJobAdvertisementById(Integer.parseInt(event.getRouteParameters().get("adID").get()));
 
             if (jobAdvertisement != null) {
-                jobApplicationFormularUtil.setPageHeadline(new H2("Bewerbung auf " + jobAdvertisement.getJobTitle() + " (" + jobAdvertisement.getId() + ")"));
+                jobApplicationFormularLayout.setPageHeadline(new H2("Bewerbung auf " + jobAdvertisement.getJobTitle() + " (" + jobAdvertisement.getId() + ")"));
                 createJobApplicationView();
             } else {
-                Utils.triggerDialogMessage(jobApplicationFormularUtil.getError(), "Das angegebene Stellenangebot existiert nicht");
+                Utils.triggerDialogMessage(jobApplicationFormularLayout.getError(), "Das angegebene Stellenangebot existiert nicht");
             }
         } catch (NumberFormatException e) {
-            Utils.triggerDialogMessage(jobApplicationFormularUtil.getError(), "Es handelt sich um keine gültige Stellenagebots ID");
+            Utils.triggerDialogMessage(jobApplicationFormularLayout.getError(), "Es handelt sich um keine gültige Stellenagebots ID");
         } catch (Exception exception) {
-            Utils.triggerDialogMessage(jobApplicationFormularUtil.getError(), "Beim Laden des Bewerbungsformulars, ist ein Fehler aufgetreten");
+            Utils.triggerDialogMessage(jobApplicationFormularLayout.getError(), "Beim Laden des Bewerbungsformulars, ist ein Fehler aufgetreten");
         }
 
     }
@@ -113,7 +113,7 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
     public void createJobApplicationView() {
 
         Details personalDetails = new Details("Persönliche Informationen",
-                jobApplicationFormularUtil.personalInformationVerticalLayout());
+                jobApplicationFormularLayout.personalInformationVerticalLayout());
         personalDetails.setOpened(true);
 
         HorizontalLayout detailLayout = new HorizontalLayout(personalDetails);
@@ -126,7 +126,7 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
         form.setWidth("100%");
         form.getElement().getStyle().set("Margin", "30px");
         Button applyButton = new Button("Bewerbung absenden");
-        section.add(jobApplicationFormularUtil.getPageHeadline(), detailLayout, form, applyButton);
+        section.add(jobApplicationFormularLayout.getPageHeadline(), detailLayout, form, applyButton);
 
         section.setPadding(true);
         section.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -146,7 +146,7 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
                 Utils.triggerDialogMessage("Bewerbung übermittelt", "Wir haben Ihre Bewerbung erfolgreich übermittelt");
                 navigateToJobApplication(applicationResult.getApplicationID());
             } else {
-                jobApplicationFormularUtil.setErrorFields(applicationResult.getReasons(),headline,text);
+                jobApplicationFormularLayout.setErrorFields(applicationResult.getReasons(),headline,text);
 
             }
         });
@@ -162,10 +162,10 @@ public class JobApplicationFormularView extends Div implements BeforeEnterObserv
             if(UtilCurrent.getCurrentUser() != null) {
                 studentUserDTO = studentUserRepository.findStudentUserById(UtilCurrent.getCurrentUser().getId());
                 StudentUser studentUser =  UserFactory.createStudentUser(studentUserDTO);
-                jobApplicationFormularUtil.loadStudentUserInfo(studentUser);
+                jobApplicationFormularLayout.loadStudentUserInfo(studentUser);
             }
         } catch (Exception exception) {
-            Utils.triggerDialogMessage(jobApplicationFormularUtil.getError(), "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
+            Utils.triggerDialogMessage(jobApplicationFormularLayout.getError(), "Beim Laden der Benutzerinformationen ist ein Fehler aufgetreten: " + exception);
         }
     }
 
