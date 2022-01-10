@@ -131,7 +131,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
     }
 
     @SuppressWarnings("LanguageDetectionInspection")
-    private void initNavigationBar(boolean allMessagesRead, boolean allApplicationsRead) {
+    private void initNavigationBar(boolean allMessagesRead) {
         /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
         String currentUserType = UtilCurrent.getCurrentUser().getType();
         if (Objects.equals(currentUserType, "st"))
@@ -149,24 +149,21 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
                 null, true);
         messages.addClickListener(e -> UtilNavigation.navigateToMessages(UtilCurrent.getCurrentUser().getId()));
 
-        MenuItem applications = createIconItem(inboxSubMenu, VaadinIcon.FILE, "Bewerbungen",
-                null, true);
-        applications.addClickListener(e -> UtilNavigation.navigateToDashboard());
-
+        if(!Objects.equals(UtilCurrent.getCurrentUser().getType(), "st"))
+        {
+            MenuItem applications = createIconItem(inboxSubMenu, VaadinIcon.FILE, "Bewerbungen",
+                    null, true);
+            applications.addClickListener(e -> UtilNavigation.navigateToDashboard());
+        }
         /*  Check if:
             - If a user has enabled notifications
             - There are unread messages
         */
-        if(settingsControl.getUserSettings(UtilCurrent.getCurrentUser().getId()).getNotificationIsEnabled())
+        if(settingsControl.getUserSettings(UtilCurrent.getCurrentUser().getId()).getNotificationIsEnabled() &&
+                !allMessagesRead)
         {
-            if(!allMessagesRead || !allApplicationsRead)
-                colorItem(inbox, NOTIFICATION_COLOR);
-
-            if(!allMessagesRead)
-                colorItem(messages, NOTIFICATION_COLOR);
-
-            if(!allApplicationsRead)
-                colorItem(applications, NOTIFICATION_COLOR);
+            colorItem(inbox, NOTIFICATION_COLOR);
+            colorItem(messages, NOTIFICATION_COLOR);
         }
         createIconItem(navigationBar, VaadinIcon.COG, "", null)
                 .addClickListener(e -> UtilNavigation.navigateToSettings());
@@ -199,7 +196,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         if (label != null) {
             item.add(new Text(label));
         }
-
         return item;
     }
 
@@ -245,10 +241,8 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             navigationBar.removeAll();
 
             // Highlight des Posteingang-Tabs, wenn es ungelesene Nachrichten gibt
-            initNavigationBar(
-                    messageRepository.findMessagesByRecipientAndRead(UtilCurrent.getCurrentUser().getId(),false).isEmpty(),
-                    true
-                    );
+            initNavigationBar(messageRepository.findMessagesByRecipientAndRead
+                    (UtilCurrent.getCurrentUser().getId(),false).isEmpty());
         }
 
         // Der aktuell-selektierte Tab wird gehighlighted.

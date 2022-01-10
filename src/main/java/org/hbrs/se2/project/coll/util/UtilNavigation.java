@@ -58,8 +58,8 @@ public class UtilNavigation {
     }
 
     public static void navigateToDashboard() {
-        if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.DASHBAORD_VIEW))
-            UI.getCurrent().navigate(Globals.Pages.DASHBAORD_VIEW);
+        if (!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.DASHBOARD_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.DASHBOARD_VIEW);
     }
 
     public static void navigateToMessages(int userId) {
