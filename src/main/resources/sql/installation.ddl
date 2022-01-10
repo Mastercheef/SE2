@@ -67,8 +67,8 @@ create table col_tab_address (
      address_id bigint not null default nextval('col_seq_address_id'),
      postal_code varchar(5) not null,
      city varchar(16) not null,
-     country varchar(16) not null,
-     street varchar(16) not null,
+     country varchar(32) not null,
+     street varchar(48) not null,
      house_number varchar(4) not null,
      constraint col_pk_address_id primary key (address_id));
 
@@ -80,15 +80,15 @@ create table col_tab_contact_person (
 
 create table col_tab_user (
      user_id bigint not null default nextval('col_seq_user_id'),
-     first_name varchar(16) not null,
-     last_name varchar(16) not null,
+     first_name varchar(32) not null,
+     last_name varchar(32) not null,
      address_id bigint not null,
      date_of_birth date not null,
      password varchar(255) not null,
      phone_number varchar(12) not null,
      salutation varchar(10) not null,
      title varchar(16) not null,
-     mail_address varchar(32) not null,
+     mail_address varchar(64) not null,
      type varchar(2),
      constraint col_pk_u_user_id primary key (user_id));
 
@@ -109,12 +109,13 @@ create table col_tab_job_advertisement (
 
 create table col_tab_student (
      student_description varchar(2048),
-     website varchar(32),
-     graduation varchar(32),
+     website varchar(64),
+     graduation varchar(64),
      skills varchar(1024),
+     experience varchar(1024),
      interests varchar(512),
      user_id bigint not null,
-     subject_field varchar(32),
+     subject_field varchar(64),
      constraint col_pk_s_user_id primary key (user_id));
 
 create table col_tab_company (
