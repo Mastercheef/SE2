@@ -2,10 +2,8 @@ package org.hbrs.se2.project.coll.util;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.VaadinSession;
-import org.hbrs.se2.project.coll.dtos.UserDTO;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
