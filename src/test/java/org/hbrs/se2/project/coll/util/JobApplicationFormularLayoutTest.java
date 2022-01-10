@@ -257,9 +257,8 @@ class JobApplicationFormularLayoutTest {
 
     @Test
     void personalInformationVerticalLayout() {
-        JobApplicationFormularLayout jobApplicationFormularLayout = new JobApplicationFormularLayout();
-        VerticalLayout verticalLayout = jobApplicationFormularLayout.personalInformationVerticalLayout();
-        assertEquals(VerticalLayout.class , jobApplicationFormularLayout.personalInformationVerticalLayout().getClass());
+        JobApplicationFormularLayout jobAppFormLayout = new JobApplicationFormularLayout();
+        assertEquals(VerticalLayout.class , jobAppFormLayout.personalInformationVerticalLayout().getClass());
 
     }
 
