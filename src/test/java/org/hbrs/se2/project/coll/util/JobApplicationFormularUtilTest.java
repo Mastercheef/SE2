@@ -3,6 +3,7 @@ package org.hbrs.se2.project.coll.util;
 
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import org.hbrs.se2.project.coll.dtos.JobApplicationResultDTO;
@@ -253,6 +254,13 @@ class JobApplicationFormularUtilTest {
 
 
 
+    @Test
+    void personalInformationVerticalLayout() {
+        JobApplicationFormularUtil jobApplicationFormularUtil = new JobApplicationFormularUtil();
+        VerticalLayout verticalLayout = jobApplicationFormularUtil.personalInformationVerticalLayout();
+        assertEquals(VerticalLayout.class , jobApplicationFormularUtil.personalInformationVerticalLayout().getClass());
+
+    }
 
 
 }

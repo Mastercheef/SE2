@@ -18,7 +18,7 @@ class GlobalsTest {
     String errorMessageGlobalsPagesRoles = "class org.hbrs.se2.project.coll.util.GlobalsTest cannot access a member of class org.hbrs.se2.project.coll.util.Globals$Roles with modifiers \"private\"";
     String errorMessageGlobalsPagesErrors = "class org.hbrs.se2.project.coll.util.GlobalsTest cannot access a member of class org.hbrs.se2.project.coll.util.Globals$Errors with modifiers \"private\"";
     String errorMessageGlobalsPagesCountries = "class org.hbrs.se2.project.coll.util.GlobalsTest cannot access a member of class org.hbrs.se2.project.coll.util.Globals$Countries with modifiers \"private\"";
-
+    String errorMessageGlobalsPageDateRange = "class org.hbrs.se2.project.coll.util.GlobalsTest cannot access a member of class org.hbrs.se2.project.coll.util.Globals$DateRanges with modifiers \"private\"";
 
 
     @Test
@@ -120,6 +120,17 @@ class GlobalsTest {
         constructor.setAccessible(true);
         assertThrows(ReflectiveOperationException.class,constructor::newInstance);
     }
+
+    @Test
+    void itShouldThrowIllegalAccessExceptionWhenInstancingDateRanges() throws NoSuchMethodException {
+        Constructor<Globals.DateRanges> constructor = Globals.DateRanges.class.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+        Throwable exceptionThatWasThrown = assertThrows(IllegalAccessException.class, constructor::newInstance);
+        assertEquals(errorMessageGlobalsPageDateRange, exceptionThatWasThrown.getMessage());
+        constructor.setAccessible(true);
+        assertThrows(ReflectiveOperationException.class,constructor::newInstance);
+    }
+
     @Test
     void validEmailInput() {
        assertTrue(Globals.Regex.validateEmailInput("wow@gmx.de"));
