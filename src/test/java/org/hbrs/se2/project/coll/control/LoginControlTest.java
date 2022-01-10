@@ -2,6 +2,7 @@ package org.hbrs.se2.project.coll.control;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.LoginResultDTOImpl;
 import org.hbrs.se2.project.coll.repository.UserRepository;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,7 +40,7 @@ class LoginControlTest {
     }
 
     @Test
-    void authentificate() {
+    void testAuthentificate() {
         Mockito.spy(loginControl);
         doReturn(userDTO).when(loginControl).getUser(email,plaintext);
         assertEquals(loginResult , loginControl.authentificate(email , plaintext));
@@ -49,17 +50,15 @@ class LoginControlTest {
     }
 
     @Test
-    void getUser() {
+    void testGetUserPositive() {
 
-      /*
-        String plaintext = "passwd";
+        String hashedPW = Utils.hashPassword(plaintext);
         when(repository.findUserByEmail(email)).thenReturn(userDTO);
-        when(userDTO.getPassword()).thenReturn("passwd");
+        when(userDTO.getPassword()).thenReturn(hashedPW);
         doNothing().when(loginResult).setResult(true);
-        doNothing().when(loginResult).setReason("LogIn erflogreich");
-        assertEquals(userDTO , loginControl.getUser(email,plaintext));
+        doNothing().when(loginResult).setReason("LogIn erfolgreich");
 
-       */
+        assertEquals(userDTO , loginControl.getUser(email,plaintext));
 
     }
 }
