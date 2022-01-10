@@ -112,7 +112,6 @@ create table col_tab_student (
      website varchar(64),
      graduation varchar(64),
      skills varchar(1024),
-     experience varchar(1024),
      interests varchar(512),
      user_id bigint not null,
      subject_field varchar(64),
