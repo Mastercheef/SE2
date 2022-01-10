@@ -2,6 +2,7 @@ package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.builder.UserDTOBuilder;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
+import org.hbrs.se2.project.coll.control.factories.CompanyFactory;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
@@ -104,15 +105,15 @@ class RegistrationControlTest {
     void testRegisterUserPositiveStudent() throws DatabaseUserException {
         doReturn(null).when(userRepository).findUserByEmail(any());
 
-        UserDTO userDTO = UserDTOBuilder
+        UserDTO userDTOPosStudent = UserDTOBuilder
                 .please()
                 .createDefaultTestUserWithFullData()
                 .withType("st")
                 .done();
         RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl();
-        registrationDTO.setUserDTO(userDTO);
-        registrationDTO.setRepeatedEmail(userDTO.getEmail());
-        registrationDTO.setRepeatedPassword(userDTO.getPassword());
+        registrationDTO.setUserDTO(userDTOPosStudent);
+        registrationDTO.setRepeatedEmail(userDTOPosStudent.getEmail());
+        registrationDTO.setRepeatedPassword(userDTOPosStudent.getPassword());
 
         RegistrationResultDTO result = registrationControl.registerUser(registrationDTO);
         assertTrue(result.getResult());
@@ -124,15 +125,15 @@ class RegistrationControlTest {
         doReturn(userDTO).when(userRepository).findUserByEmail(any());
         when(userDTO.getId()).thenReturn(100);
 
-        UserDTO userDTO = UserDTOBuilder
+        UserDTO userDTONegStEmail = UserDTOBuilder
                 .please()
                 .createDefaultTestUserWithFullData()
                 .withType("st")
                 .done();
         RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl();
-        registrationDTO.setUserDTO(userDTO);
-        registrationDTO.setRepeatedEmail(userDTO.getEmail());
-        registrationDTO.setRepeatedPassword(userDTO.getPassword());
+        registrationDTO.setUserDTO(userDTONegStEmail);
+        registrationDTO.setRepeatedEmail(userDTONegStEmail.getEmail());
+        registrationDTO.setRepeatedPassword(userDTONegStEmail.getPassword());
 
         RegistrationResultDTO result = registrationControl.registerUser(registrationDTO);
         assertFalse(result.getResult());
@@ -143,7 +144,7 @@ class RegistrationControlTest {
     void testRegisterUserNegativeStudentInformtationMissing() throws DatabaseUserException {
         doReturn(null).when(userRepository).findUserByEmail(any());
 
-        UserDTO userDTO = UserDTOBuilder
+        UserDTO userDTONegStInf = UserDTOBuilder
                 .please()
                 .createDefaultTestUserWithFullData()
                 .withType("st")
@@ -153,7 +154,7 @@ class RegistrationControlTest {
                 .withLastName("invalidName*-+")
                 .done();
         RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl();
-        registrationDTO.setUserDTO(userDTO);
+        registrationDTO.setUserDTO(userDTONegStInf);
         registrationDTO.setRepeatedEmail("different");
         registrationDTO.setRepeatedPassword("different");
 
@@ -172,33 +173,17 @@ class RegistrationControlTest {
     void testRegisterUserPositiveCompany() throws DatabaseUserException {
         doReturn(null).when(companyRepository).findCompanyByCompanyNameAndEmailAndWebsite(any(),any(),any());
 
-        UserDTO userDTO = UserDTOBuilder
+        UserDTO userDTOPosComp = UserDTOBuilder
                 .please()
                 .createDefaultTestUserWithFullData()
                 .withType("cp")
                 .done();
 
-        CompanyDTOImpl companyDTO = new CompanyDTOImpl();
-        companyDTO.setCompanyName("Firma");
-        Address address = new Address();
-        address.setStreet("Straße");
-        address.setHouseNumber("10");
-        address.setPostalCode("12345");
-        address.setCity("Bonn");
-        address.setCountry("Deutschland");
-        companyDTO.setAddress(address);
-        companyDTO.setPhoneNumber("12345");
-        companyDTO.setFaxNumber("12345");
-        companyDTO.setEmail("valid@email.de");
-        companyDTO.setWebsite("www.website.com");
-        companyDTO.setDescription("Beschreibung");
-
-
         RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl();
-        registrationDTO.setUserDTO(userDTO);
-        registrationDTO.setRepeatedEmail(userDTO.getEmail());
-        registrationDTO.setRepeatedPassword(userDTO.getPassword());
-        registrationDTO.setCompanyDTO(companyDTO);
+        registrationDTO.setUserDTO(userDTOPosComp);
+        registrationDTO.setRepeatedEmail(userDTOPosComp.getEmail());
+        registrationDTO.setRepeatedPassword(userDTOPosComp.getPassword());
+        registrationDTO.setCompanyDTO(CompanyFactory.createTestCompany());
 
         RegistrationResultDTO result = registrationControl.registerUser(registrationDTO);
         assertTrue(result.getResult());
@@ -210,28 +195,28 @@ class RegistrationControlTest {
         doReturn(companyDTO).when(companyRepository).findCompanyByCompanyNameAndEmailAndWebsite(any(),any(),any());
         when(companyDTO.getId()).thenReturn(100);
 
-        UserDTO userDTO = UserDTOBuilder
+        UserDTO userDTONegComp = UserDTOBuilder
                 .please()
                 .createDefaultTestUserWithFullData()
                 .withType("cp")
                 .done();
 
-        CompanyDTOImpl companyDTO = new CompanyDTOImpl();
-        companyDTO.setCompanyName("Firma");
+        CompanyDTOImpl companyDTONeg = new CompanyDTOImpl();
+        companyDTONeg.setCompanyName("Firma");
         Address address = new Address();
-        companyDTO.setAddress(address);
-        companyDTO.setPhoneNumber("");
-        companyDTO.setFaxNumber("");
-        companyDTO.setEmail("");
-        companyDTO.setWebsite("");
-        companyDTO.setDescription("");
+        companyDTONeg.setAddress(address);
+        companyDTONeg.setPhoneNumber("");
+        companyDTONeg.setFaxNumber("");
+        companyDTONeg.setEmail("");
+        companyDTONeg.setWebsite("");
+        companyDTONeg.setDescription("");
 
 
         RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl();
-        registrationDTO.setUserDTO(userDTO);
-        registrationDTO.setRepeatedEmail(userDTO.getEmail());
-        registrationDTO.setRepeatedPassword(userDTO.getPassword());
-        registrationDTO.setCompanyDTO(companyDTO);
+        registrationDTO.setUserDTO(userDTONegComp);
+        registrationDTO.setRepeatedEmail(userDTONegComp.getEmail());
+        registrationDTO.setRepeatedPassword(userDTONegComp.getPassword());
+        registrationDTO.setCompanyDTO(companyDTONeg);
 
         RegistrationResultDTO result = registrationControl.registerUser(registrationDTO);
         assertFalse(result.getResult());
