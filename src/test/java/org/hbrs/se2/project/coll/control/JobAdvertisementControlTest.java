@@ -4,6 +4,7 @@ import org.hbrs.se2.project.coll.control.factories.JobFactory;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.entities.Address;
+import org.hbrs.se2.project.coll.entities.Company;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
@@ -15,6 +16,11 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -42,6 +48,8 @@ class JobAdvertisementControlTest {
 
     @Mock
     ContactPerson contactPerson;
+    @Mock
+    Company company;
     @Mock
     JobAdvertisementDTO jobAdvertisementDTOReturn;
 
@@ -103,5 +111,41 @@ class JobAdvertisementControlTest {
         when(companyDTO.getCompanyName()).thenReturn(companyName);
         when(contactPersonRepository.findContactPersonByCompanyId(100).getEmail()).thenReturn(email);
         assertEquals(email , jobAdvertisementControl.getContactPersonEmail(jobAdvertisement));
+    }
+
+    @Test
+    void filterCompaniesByCompanyIdReturnsEmptyListByCallWithEmptyList() {
+        assertNotNull(jobAdvertisementControl.filterCompaniesByCompanyId(new ArrayList<>(), 1));
+        assertTrue(jobAdvertisementControl.filterCompaniesByCompanyId(new ArrayList<>(), 1).isEmpty());
+    }
+    @Test
+    void filterCompaniesByCompanyIdReturnsEmptyListByCallWithNotFoundArguments() {
+        Mockito.spy(jobAdvertisementControl);
+        doReturn(contactPerson).when(jobAdvertisement).getContactPerson();
+        when(contactPerson.getCompany()).thenReturn(company);
+        when(company.getId()).thenReturn(100);
+        List<JobAdvertisement> jobList = new ArrayList<>();
+        jobList.add(jobAdvertisement);
+        assertTrue(jobAdvertisementControl.filterCompaniesByCompanyId(jobList, 0).isEmpty());
+    }
+    @Test
+    void filterCompaniesByCompanyIdReturnsAllOccurrences() {
+        List<JobAdvertisement> jobList;
+        Iterator<JobAdvertisement> jobIterator;
+
+        jobIterator = mock(Iterator.class);
+        when(jobIterator.hasNext()).thenReturn(true, true, true, false);
+        when(jobIterator.next()).thenReturn(jobAdvertisement);
+
+        jobList = mock(List.class);
+        when(jobList.iterator()).thenReturn(jobIterator);
+        doCallRealMethod().when(jobList).forEach(any(Consumer.class));
+
+        Mockito.spy(jobAdvertisementControl);
+        doReturn(contactPerson).when(jobAdvertisement).getContactPerson();
+        when(contactPerson.getCompany()).thenReturn(company);
+        when(company.getId()).thenReturn(100).thenReturn(0).thenReturn(100);
+
+        assertEquals(2, jobAdvertisementControl.filterCompaniesByCompanyId(jobList, 100).size());
     }
 }

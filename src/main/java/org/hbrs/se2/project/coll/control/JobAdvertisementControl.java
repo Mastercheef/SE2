@@ -159,7 +159,7 @@ public class JobAdvertisementControl {
         return companyJobs;
     }
 
-    public List<JobAdvertisement> filterCompaniesByCompnayId(List<JobAdvertisement> jobs, int companyId) {
+    public List<JobAdvertisement> filterCompaniesByCompanyId(List<JobAdvertisement> jobs, int companyId) {
         List<JobAdvertisement> companyJobs = new ArrayList<>();
         if(!jobs.isEmpty()) {
             for (JobAdvertisement job : jobs)

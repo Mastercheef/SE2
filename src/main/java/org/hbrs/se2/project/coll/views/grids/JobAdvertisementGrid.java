@@ -245,7 +245,7 @@ public class JobAdvertisementGrid extends Div {
         /* Filter for companies. Has to be done in an extra step b/c we only have the companyId in
             JobAdvertisements, therefore has to be resolved in JobAdvertisementControl. */
         if (companyId > 0)
-            filteredJobs = jobAdvertisementControl.filterCompaniesByCompnayId(filteredJobs, companyId);
+            filteredJobs = jobAdvertisementControl.filterCompaniesByCompanyId(filteredJobs, companyId);
         else
             if(!companyFilter.isEmpty())
                 filteredJobs = jobAdvertisementControl.filterCompanies(filteredJobs, companyFilter.getValue());
