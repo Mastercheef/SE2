@@ -142,9 +142,6 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Contact Person Div
         contact = initContactPerson();
 
-        // Job offer Div
-        //jobs = initJobOffers();
-
         // Align Layout
         this.setAlignItems(FlexComponent.Alignment.CENTER);
         HorizontalLayout mainCompanyLayout = new HorizontalLayout();

@@ -159,8 +159,6 @@ public class JobDashboardView extends Div implements AfterNavigationObserver, Be
         applicationGridLayout = new HorizontalLayout(applicationDiv);
         applicationGridLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         applicationGridLayout.setWidthFull();
-
-        //add(applicationGridLayout);
     }
 
     public void updateApplicationGrid() {
