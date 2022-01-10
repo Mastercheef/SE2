@@ -126,9 +126,10 @@ public class Globals {
         public static List<String> getCountries() {
             List<String> countryNames = new ArrayList<>();
             for (String countryCode : Locale.getISOCountries()) {
-                Locale obj = new Locale("", countryCode);
-                countryNames.add(obj.getDisplayCountry());
+                Locale obj = new Locale("de", countryCode);
+                countryNames.add(obj.getDisplayCountry(Locale.GERMAN));
             }
+            Collections.sort(countryNames);
             return countryNames;
         }
     }
