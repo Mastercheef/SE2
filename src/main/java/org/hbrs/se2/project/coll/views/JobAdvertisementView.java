@@ -16,6 +16,7 @@ import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.UtilCurrent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
@@ -137,7 +138,8 @@ public class JobAdvertisementView extends VerticalLayout implements HasUrlParame
         HorizontalLayout hEmailAddress          = new HorizontalLayout(emailAddress, lEmailAddress);
 
         add(hAddress, hPhoneNumber, hTemporaryEmployment, hContactPerson, hEmailAddress);
-        add(applyButton);
+        if (UtilCurrent.getCurrentUser().getType().equals("st"))
+            add(applyButton);
     }
 
     JobAdvertisementView() {
