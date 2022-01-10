@@ -7,7 +7,6 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import org.hbrs.se2.project.coll.Generated;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDate;
@@ -41,6 +40,8 @@ public class Utils {
         dateString += date.getDayOfMonth() +"." +  date.getMonthValue() + "."+  date.getYear();
         return dateString;
     }
+
+
 
     public static void triggerDialogMessage(String headerText, String message) {
         Dialog dialog = new Dialog();

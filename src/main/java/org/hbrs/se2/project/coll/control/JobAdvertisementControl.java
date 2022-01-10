@@ -3,6 +3,7 @@ package org.hbrs.se2.project.coll.control;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.control.factories.JobFactory;
 import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
@@ -68,6 +69,10 @@ public class JobAdvertisementControl {
         return jobAdvertisementRepository.findJobAdvertisementById(jobId);
     }
 
+    public List<JobAdvertisement> getJobsByCompanyId(int companyId) {
+        return jobAdvertisementRepository.findJobAdvertisementsByCompanyId(companyId);
+    }
+
     public JobAdvertisementDTO createJobDTO(JobAdvertisement jobAdvertisement) {
         return JobFactory.createJobDTO(jobAdvertisement);
     }
@@ -101,6 +106,10 @@ public class JobAdvertisementControl {
     public int getCompanyId(JobAdvertisement jobAdvertisement) {
         return contactPersonRepository.findContactPersonById(jobAdvertisement.getContactPerson().
                 getId()).getCompany().getId();
+    }
+
+    public int getCompanyIdFromUser(UserDTO user) {
+        return contactPersonRepository.findContactPersonById(user.getId()).getCompany().getId();
     }
 
     // Used to find all available Jobs and filter them by entry date
@@ -145,6 +154,17 @@ public class JobAdvertisementControl {
                 // Used because of case sensitivity. Otherwise, works like str1.contains(str2)
                 if (Pattern.compile(Pattern.quote(companyName),
                         Pattern.CASE_INSENSITIVE).matcher(getCompanyName(job)).find())
+                    companyJobs.add(job);
+        }
+        return companyJobs;
+    }
+
+    public List<JobAdvertisement> filterCompaniesByCompnayId(List<JobAdvertisement> jobs, int companyId) {
+        List<JobAdvertisement> companyJobs = new ArrayList<>();
+        if(!jobs.isEmpty()) {
+            for (JobAdvertisement job : jobs)
+                // Used because of case sensitivity. Otherwise, works like str1.contains(str2)
+                if (job.getContactPerson().getCompany().getId() == companyId)
                     companyJobs.add(job);
         }
         return companyJobs;

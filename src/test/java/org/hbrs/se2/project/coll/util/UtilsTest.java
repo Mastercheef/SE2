@@ -1,24 +1,22 @@
 package org.hbrs.se2.project.coll.util;
 
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.server.VaadinSession;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
-
+import org.mockito.Mockito;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+
 
 class UtilsTest {
 
     String errorMessage = "class org.hbrs.se2.project.coll.util.UtilsTest cannot access a member of class org.hbrs.se2.project.coll.util.Utils with modifiers \"private\"";
 
-    @Mock
-    UserDTO userDTO;
 
     @Test
     void itShouldThrowIllegalAccessExceptionWhenInstancing() throws NoSuchMethodException {
@@ -84,5 +82,19 @@ class UtilsTest {
             assertEquals(userDTO , UtilCurrent.getCurrentUser());
         }
  */
+    }
+
+    @Test
+    void triggerDialogMessage() {
+        UI ui = new UI();
+        UI.setCurrent(ui);
+
+        VaadinSession session = Mockito.mock(VaadinSession.class);
+        Mockito.when(session.hasLock()).thenReturn(true);
+        ui.getInternals().setSession(session);
+        Utils.triggerDialogMessage("headerText" , "message");
+        UI.setCurrent(null);
+
+
     }
 }

@@ -2,6 +2,7 @@ package org.hbrs.se2.project.coll.util;
 
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import org.hbrs.se2.project.coll.dtos.JobApplicationResultDTO;
@@ -124,7 +125,7 @@ public class JobApplicationFormularUtil {
         }
     }
 
-    public  void loadStudentUserInfo(StudentUser studentUser) {
+    public void loadStudentUserInfo(StudentUser studentUser) {
         sSalutation = new Span(studentUser.getSalutation() + " " + studentUser.getTitle());
         sName = new Span(studentUser.getFirstName() + " " + studentUser.getLastName());
         sDateOfBirth = new Span(Utils.convertToGermanDateFormat(studentUser.getDateOfBirth()));
@@ -134,5 +135,12 @@ public class JobApplicationFormularUtil {
         sAddress = new Span(studentUser.getAddress().getStreet() + " " + studentUser.getAddress().getHouseNumber());
         sLocation = new Span(studentUser.getAddress().getPostalCode() + " " + studentUser.getAddress().getCity());
         sCountry = new Span(studentUser.getAddress().getCountry());
+    }
+
+    public VerticalLayout personalInformationVerticalLayout() {
+        VerticalLayout personalInformation = new VerticalLayout(sSalutation, sName, sAddress, sLocation, sCountry, sEmail, sPhone);
+        personalInformation.setSpacing(false);
+        personalInformation.setPadding(false);
+        return personalInformation;
     }
 }

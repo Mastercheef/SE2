@@ -2,12 +2,10 @@ package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.control.factories.MessageFactory;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.MessageDTOImpl;
 import org.hbrs.se2.project.coll.entities.Message;
-import org.hbrs.se2.project.coll.repository.CompanyRepository;
-import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
-import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
-import org.hbrs.se2.project.coll.repository.MessageRepository;
+import org.hbrs.se2.project.coll.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +29,9 @@ public class ContactingControl {
 
     @Autowired
     private MessageRepository messageRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     public String getJobTitle(int id) {
         return jobAdvertisementRepository.findJobAdvertisementById(id).getJobTitle();
@@ -65,5 +66,10 @@ public class ContactingControl {
                 throw new DatabaseUserException("Es ist ein unerwarteter Fehler aufgetreten.");
             }
         }
+    }
+
+    public boolean checkIfUserIsAllowedToSendMessage(UserDTO user, int reveiverId) {
+        UserDTO receiver = userRepository.findUserById(reveiverId);
+        return (receiver != null && receiver.getType() == "cp" && (user.getId()  > 0));
     }
 }

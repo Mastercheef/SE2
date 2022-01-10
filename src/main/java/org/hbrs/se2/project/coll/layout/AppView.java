@@ -122,21 +122,24 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         // If user is not logged in, show Login/Register Buttons
         if(!checkIfUserIsLoggedIn()) {
-            navigationBar.addItem("Registrieren" , e -> navigateToRegistration());
-            navigationBar.addItem("Login" , e -> navigateToLogin());
+            navigationBar.addItem("Registrieren" , e -> UtilNavigation.navigateToRegistration());
+            navigationBar.addItem("Login" , e -> UtilNavigation.navigateToLogin());
         }
         headerNavigationPanel.add(navigationBar);
         headerLayout.add( headerNavigationPanel );
         return headerLayout;
     }
 
+    @SuppressWarnings("LanguageDetectionInspection")
     private void initNavigationBar(boolean allMessagesRead, boolean allApplicationsRead) {
         /* Decide, depending on User TYPE (st = student, cp = contactperson) which button to load */
         String currentUserType = UtilCurrent.getCurrentUser().getType();
         if (Objects.equals(currentUserType, "st"))
-            navigationBar.addItem("Mein Profil", e -> navigateToUserProfile());
+            navigationBar.addItem("Mein Profil", e ->
+                    UtilNavigation.navigateToStudentProfile(UtilCurrent.getCurrentUser().getId()));
         else if (Objects.equals(currentUserType, "cp"))
-            navigationBar.addItem("Mein Firmenprofil", e -> navigateToCompanyProfile());
+            navigationBar.addItem("Mein Firmenprofil", e ->
+                    UtilNavigation.navigateToCompanyProfile(getContactPersonsCompanyId()));
 
         // Inbox and Submenu (Messages, Applications)
         MenuItem inbox = createIconItem(navigationBar, VaadinIcon.ENVELOPE, "Posteingang", null);
@@ -144,16 +147,15 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
         MenuItem messages = createIconItem(inboxSubMenu, VaadinIcon.ENVELOPE, "Nachrichten",
                 null, true);
-        messages.addClickListener(e -> navigateToMessages());
+        messages.addClickListener(e -> UtilNavigation.navigateToMessages(UtilCurrent.getCurrentUser().getId()));
 
         MenuItem applications = createIconItem(inboxSubMenu, VaadinIcon.FILE, "Bewerbungen",
                 null, true);
-
+        applications.addClickListener(e -> UtilNavigation.navigateToDashboard());
 
         /*  Check if:
             - If a user has enabled notifications
             - There are unread messages
-            - TODO: Check for unread applications
         */
         if(settingsControl.getUserSettings(UtilCurrent.getCurrentUser().getId()).getNotificationIsEnabled())
         {
@@ -167,7 +169,7 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
                 colorItem(applications, NOTIFICATION_COLOR);
         }
         createIconItem(navigationBar, VaadinIcon.COG, "", null)
-                .addClickListener(e -> navigateToSettings());
+                .addClickListener(e -> UtilNavigation.navigateToSettings());
         navigationBar.addItem("Logout", e -> logoutUser());
     }
 
@@ -203,45 +205,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
 
     private void colorItem(MenuItem item, String color) {
         item.getElement().getStyle().set("color", color);
-    }
-
-    private void navigateToUserProfile() {
-        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-        String currentUserId = Integer.toString(UtilCurrent.getCurrentUser().getId());
-        if(!Objects.equals(currentLocation, Globals.Pages.PROFILE_VIEW + currentUserId))
-            UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + currentUserId);
-    }
-
-    private void navigateToCompanyProfile() {
-        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-        String currentCompanyId = Integer.toString(getContactPersonsCompanyId());
-        if(!Objects.equals(currentLocation, Globals.Pages.COMPANYPROFILE_VIEW + currentCompanyId))
-            UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_VIEW + currentCompanyId);
-    }
-
-    private void navigateToRegistration() {
-        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-        if(!Objects.equals(currentLocation, Globals.Pages.REGISTER_VIEW))
-            UI.getCurrent().navigate(Globals.Pages.REGISTER_VIEW);
-    }
-
-    private void navigateToLogin() {
-        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-        if(!Objects.equals(currentLocation, Globals.Pages.LOGIN_VIEW))
-            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
-    }
-
-    private void navigateToMessages() {
-        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-        String currentUserId = Integer.toString(UtilCurrent.getCurrentUser().getId());
-        if(!Objects.equals(currentLocation, Globals.Pages.INBOX_VIEW + currentUserId))
-            UI.getCurrent().navigate(Globals.Pages.INBOX_VIEW + currentUserId);
-    }
-
-    private void navigateToSettings() {
-        String currentLocation = UI.getCurrent().getInternals().getActiveViewLocation().getPath();
-        if(!Objects.equals(currentLocation, Globals.Pages.SETTINGS_VIEW))
-            UI.getCurrent().navigate(Globals.Pages.SETTINGS_VIEW);
     }
 
     private void logoutUser() {
@@ -282,7 +245,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
             navigationBar.removeAll();
 
             // Highlight des Posteingang-Tabs, wenn es ungelesene Nachrichten gibt
-            // TODO: allApplicationsRead Parameter durch repository-call ersetzen für Applications
             initNavigationBar(
                     messageRepository.findMessagesByRecipientAndRead(UtilCurrent.getCurrentUser().getId(),false).isEmpty(),
                     true
@@ -314,7 +276,8 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
                 !pageTitle.equals(Globals.PageTitles.MAIN_PAGE_TITLE) &&
                 !pageTitle.equals(Globals.PageTitles.JOBADVERTISEMENT_PAGE_TITLE) &&
                 !pageTitle.equals(Globals.PageTitles.JOBLIST_PAGE_TITLE)) {
-            navigateToLogin();
+            UtilNavigation.navigateToLogin();
+            UI.getCurrent().getPage().reload();
             return false;
         }
         return true;

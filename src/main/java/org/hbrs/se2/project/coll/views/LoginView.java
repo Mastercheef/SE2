@@ -3,6 +3,7 @@ package org.hbrs.se2.project.coll.views;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import org.hbrs.se2.project.coll.control.LoginControl;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
  */
 @Route(value = "login" )
+@PageTitle("Login")
 public class LoginView extends VerticalLayout {
 
     @Autowired
@@ -40,7 +42,8 @@ public class LoginView extends VerticalLayout {
         });
 
         add(component);
-        add(new RouterLink("Don't have an account yet? Register here.", RegistrationView.class));
+
+        add(new RouterLink("Sie haben noch kein Konto? Registrieren Sie sich hier!", RegistrationView.class));
         this.setAlignItems( Alignment.CENTER );
     }
 

@@ -24,11 +24,13 @@ public class JobAdvertisement {
 
     @Id
     @GeneratedValue(
+            strategy=GenerationType.AUTO,
             generator = "advertisement_id"
     )
     @SequenceGenerator(
             name = "advertisement_id",
-            sequenceName = "collhbrs.col_seq_advertisement_id"
+            sequenceName = "collhbrs.col_seq_advertisement_id",
+            allocationSize=1
     )
     @Column(name = "advertisement_id")
     public int getId() {

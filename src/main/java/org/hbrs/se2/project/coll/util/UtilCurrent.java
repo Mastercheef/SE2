@@ -1,11 +1,14 @@
 package org.hbrs.se2.project.coll.util;
 
 import com.vaadin.flow.component.UI;
-import org.hbrs.se2.project.coll.Generated;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 
-@Generated
+
 public class UtilCurrent {// Getters
+
+    private UtilCurrent() {
+        throw new IllegalStateException("Utility Class");
+    }
 
     public static String getCurrentLocation() {
         return UI.getCurrent().getInternals().getActiveViewLocation().getPath();
