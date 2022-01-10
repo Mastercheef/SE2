@@ -23,7 +23,7 @@ class CompanyFactoryTest {
     @Mock
     private CompanyDTO companyDTO;
 
-    private final static String POSTALCODE = "56789";
+    private static final String POSTALCODE = "56789";
 
     @Test
     void createCompanyProfile() {

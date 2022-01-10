@@ -42,7 +42,7 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
     }
 
     public JobListView() {
-
+        //Required for Vaadin
     }
 
     public void init() {

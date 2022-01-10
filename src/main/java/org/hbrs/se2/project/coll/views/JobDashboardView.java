@@ -86,7 +86,7 @@ public class JobDashboardView extends Div implements AfterNavigationObserver, Be
     }
 
     public JobDashboardView() {
-
+        //Required for Vaadin
     }
 
     public void init() {

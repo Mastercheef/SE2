@@ -39,6 +39,8 @@ class LoginViewTest {
         driver.quit();
     }
 
+
+    //Test disabled because Jenkins is unable to handle selenium
     @Disabled
     @ParameterizedTest
     @ValueSource(classes = { ChromeDriver.class , EdgeDriver.class , OperaDriver.class , FirefoxDriver.class  })
@@ -51,9 +53,9 @@ class LoginViewTest {
         driver = WebDriverManager.getInstance(webDriverClass).create();
         driver.manage().window().maximize();
         driver.get(adress);
-        WebElement username=driver.findElement(By.id("vaadinLoginUsername"));
+        WebElement userNameField=driver.findElement(By.id("vaadinLoginUsername"));
         WebElement password=driver.findElement(By.id("vaadinLoginPassword"));
-        username.sendKeys(user);
+        userNameField.sendKeys(user);
         password.sendKeys(passwordUser);
         WebElement element  = driver.findElement(By.xpath("/html/body/vaadin-vertical-layout/vaadin-login-form/vaadin-login-form-wrapper/form/vaadin-button"));
         Actions builder = new Actions(driver);
@@ -64,6 +66,7 @@ class LoginViewTest {
         assertEquals(mainPage , driver.getCurrentUrl());
     }
 
+    //Test disabled because Jenkins is unable to handle selenium
     @Disabled
     @ParameterizedTest
     @ValueSource(classes = { ChromeDriver.class , EdgeDriver.class , OperaDriver.class , FirefoxDriver.class , SafariDriver.class })
