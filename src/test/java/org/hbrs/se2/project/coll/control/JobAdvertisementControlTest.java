@@ -182,4 +182,26 @@ class JobAdvertisementControlTest {
 
         assertEquals(2, jobAdvertisementControl.filterCompanies(jobList, companyName).size());
     }
+
+    @Test
+    void getContactPersonName() {
+        Mockito.spy(jobAdvertisementControl);
+        doReturn(100).when(jobAdvertisementControl).getCompanyId(jobAdvertisement);
+        doReturn(contactPerson).when(contactPersonRepository).findContactPersonByCompanyId(100);
+        when(contactPerson.getFirstName()).thenReturn("FirstName");
+        when(contactPerson.getLastName()).thenReturn("LastName");
+
+        assertEquals("FirstName LastName", jobAdvertisementControl.getContactPersonName(jobAdvertisement));
+    }
+
+    @Test
+    void getCompanyId() {
+        doReturn(contactPerson).when(jobAdvertisement).getContactPerson();
+        doReturn(100).when(contactPerson).getId();
+        doReturn(contactPerson).when(contactPersonRepository).findContactPersonById(100);
+        doReturn(company).when(contactPerson).getCompany();
+        doReturn(200).when(company).getId();
+
+        assertEquals(200, jobAdvertisementControl.getCompanyId(jobAdvertisement));
+    }
 }
