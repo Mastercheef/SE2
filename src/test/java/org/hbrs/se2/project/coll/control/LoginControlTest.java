@@ -1,8 +1,11 @@
 package org.hbrs.se2.project.coll.control;
+import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.LoginResultDTOImpl;
+import org.hbrs.se2.project.coll.dtos.impl.UserDTOImpl;
 import org.hbrs.se2.project.coll.repository.UserRepository;
 import org.hbrs.se2.project.coll.util.Utils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,41 +27,46 @@ class LoginControlTest {
     @Mock
     private UserRepository repository;
 
-    @Mock
+    /*@Mock
     UserDTO userDTO;
 
     @Mock
-    UserDTO userTmp = null;
-    @Mock
-    private LoginResultDTOImpl loginResult = new LoginResultDTOImpl();
+    private LoginResultDTOImpl loginResult = new LoginResultDTOImpl();*/
 
     String email = "email.gmx.de";
     String plaintext = "passwd";
-    @Test
-    void getCurrentUser() {
-        assertEquals(userDTO , loginControl.getCurrentUser() );
+    String loginWrongUserAndPass = "Benutzername oder Passwort falsch";
+    String loginWrongPassword = "Das eingegebene Password ist falsch!";
+    String loginSucces = "LogIn erfolgreich";
+    UserDTO tmpUserDTO;
+    String hashedPW = Utils.hashPassword(plaintext);
+
+    @BeforeEach
+    void setUp() {
+        tmpUserDTO = Mockito.mock(UserDTO.class);
+        when(tmpUserDTO.getPassword()).thenReturn(hashedPW);
+        when(repository.findUserByEmail(email)).thenReturn(tmpUserDTO);
     }
 
     @Test
-    void testAuthentificate() {
-        Mockito.spy(loginControl);
-        doReturn(userDTO).when(loginControl).getUser(email,plaintext);
-        assertEquals(loginResult , loginControl.authentificate(email , plaintext));
-
-        doReturn(null).when(loginControl).getUser(email,plaintext);
-        assertFalse(loginControl.authentificate(email,plaintext).getResult());
+    void testAuthenticatePositive() {
+        LoginResultDTO result = loginControl.authentificate(email,plaintext);
+        assertTrue(result.getResult());
+        assertEquals(loginSucces, result.getReason());
     }
 
     @Test
-    void testGetUserPositive() {
+    void testAuthenticateNegative() {
+        LoginResultDTO result = loginControl.authentificate(email,"anders");
+        assertFalse(result.getResult());
+        assertEquals(loginWrongPassword, result.getReason());
+    }
 
-        String hashedPW = Utils.hashPassword(plaintext);
-        when(repository.findUserByEmail(email)).thenReturn(userDTO);
-        when(userDTO.getPassword()).thenReturn(hashedPW);
-        doNothing().when(loginResult).setResult(true);
-        doNothing().when(loginResult).setReason("LogIn erfolgreich");
-
-        assertEquals(userDTO , loginControl.getUser(email,plaintext));
-
+    @Test
+    void testAuthenticateNegativeException() {
+        when(tmpUserDTO.getPassword()).thenThrow(org.springframework.dao.DataAccessResourceFailureException.class);
+        LoginResultDTO result = loginControl.authentificate(email,"anders");
+        assertFalse(result.getResult());
+        assertTrue(result.getReason().contains("Es ist ein Fehler während der Verbindung zur Datenbank aufgetreten"));
     }
 }
