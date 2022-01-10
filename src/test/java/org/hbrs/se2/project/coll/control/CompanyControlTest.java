@@ -9,6 +9,7 @@ import org.hbrs.se2.project.coll.entities.Company;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,9 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.dao.DataIntegrityViolationException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -103,6 +107,30 @@ class CompanyControlTest {
             assertEquals(companyReturn , companyControl.saveCompany(companyDTO));
         } catch (DatabaseUserException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    void saveCompanyDataAccessResourceFailureException() {
+        try (MockedStatic<CompanyFactory> classMock = mockStatic(CompanyFactory.class)) {
+
+
+            classMock.when(() -> CompanyFactory.createCompany(companyDTO)).thenThrow(DataAccessResourceFailureException.class);
+            DatabaseUserException thrown = Assertions.assertThrows( DatabaseUserException.class, () ->
+                    companyControl.saveCompany(companyDTO));
+            Assertions.assertEquals("Während der Verbindung zur Datenbank mit JPA ist ein Fehler aufgetreten.", thrown.getMessage());
+        }
+    }
+
+    @Test
+    void saveCompanyDatabaseUserException() {
+        try (MockedStatic<CompanyFactory> classMock = mockStatic(CompanyFactory.class)) {
+
+
+            classMock.when(() -> CompanyFactory.createCompany(companyDTO)).thenThrow(DataIntegrityViolationException.class);
+            DatabaseUserException thrown = Assertions.assertThrows( DatabaseUserException.class, () ->
+                    companyControl.saveCompany(companyDTO));
+            Assertions.assertEquals("Es ist ein unerwarteter Fehler aufgetreten.", thrown.getMessage());
         }
     }
 }
