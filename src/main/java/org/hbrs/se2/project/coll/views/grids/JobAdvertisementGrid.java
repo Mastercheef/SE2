@@ -84,9 +84,10 @@ public class JobAdvertisementGrid extends Div {
 
     public void setResizeListener() {
         Page page = UI.getCurrent().getPage();
-        page.addBrowserWindowResizeListener(event -> {
-            filterBar.getCell(grid.getColumnByKey("content")).setComponent(createHeaderCard(event.getWidth()));
-        });
+        page.addBrowserWindowResizeListener(event ->
+                filterBar.getCell(grid.getColumnByKey("content"))
+                        .setComponent(createHeaderCard(event.getWidth()))
+        );
     }
 
     public JobAdvertisementGrid(JobAdvertisementControl jobAdvertisementControl,
