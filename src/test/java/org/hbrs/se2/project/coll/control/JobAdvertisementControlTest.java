@@ -148,4 +148,38 @@ class JobAdvertisementControlTest {
 
         assertEquals(2, jobAdvertisementControl.filterCompaniesByCompanyId(jobList, 100).size());
     }
+
+    @Test
+    void filterCompaniesByNameReturnsEmptyListByCallWithEmptyList() {
+        assertNotNull(jobAdvertisementControl.filterCompanies(new ArrayList<>(), companyName));
+        assertTrue(jobAdvertisementControl.filterCompanies(new ArrayList<>(), companyName).isEmpty());
+    }
+    @Test
+    void filterCompaniesByNameReturnsEmptyListByCallWithNotFoundArguments() {
+        Mockito.spy(jobAdvertisementControl);
+        doReturn(100).when(jobAdvertisementControl).getCompanyId(jobAdvertisement);
+        doReturn(companyName).when(jobAdvertisementControl).getCompanyName(jobAdvertisement);
+
+        List<JobAdvertisement> jobList = new ArrayList<>();
+        jobList.add(jobAdvertisement);
+        assertTrue(jobAdvertisementControl.filterCompanies(jobList, "notTheCompanyName").isEmpty());
+    }
+    @Test
+    void filterCompaniesByNameReturnsAllOccurrences() {
+        List<JobAdvertisement> jobList;
+        Iterator<JobAdvertisement> jobIterator;
+
+        jobIterator = mock(Iterator.class);
+        when(jobIterator.hasNext()).thenReturn(true, true, true, false);
+        when(jobIterator.next()).thenReturn(jobAdvertisement);
+
+        jobList = mock(List.class);
+        when(jobList.iterator()).thenReturn(jobIterator);
+        doCallRealMethod().when(jobList).forEach(any(Consumer.class));
+
+        Mockito.spy(jobAdvertisementControl);
+        doReturn(companyName, "differentText", companyName).when(jobAdvertisementControl).getCompanyName(jobAdvertisement);
+
+        assertEquals(2, jobAdvertisementControl.filterCompanies(jobList, companyName).size());
+    }
 }
