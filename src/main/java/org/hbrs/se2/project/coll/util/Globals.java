@@ -122,8 +122,9 @@ public class Globals {
         private Countries() {
             throw new IllegalStateException(ExceptionMessage.UTILITY);
         }
-        private static List<String> countryNames = new ArrayList<>();
-        public static final List<String> getCountries() {
+
+        public static List<String> getCountries() {
+            List<String> countryNames = new ArrayList<>();
             for (String countryCode : Locale.getISOCountries()) {
                 Locale obj = new Locale("", countryCode);
                 countryNames.add(obj.getDisplayCountry());
