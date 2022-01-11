@@ -2,6 +2,7 @@ package org.hbrs.se2.project.coll.dtos;
 
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.entities.StudentUser;
+
 import java.time.LocalDate;
 
 

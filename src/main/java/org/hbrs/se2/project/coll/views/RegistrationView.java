@@ -5,28 +5,33 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
-
-import com.vaadin.flow.component.textfield.*;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.orderedlayout.*;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.component.tabs.TabsVariant;
+import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.component.formlayout.*;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.tabs.*;
-
-import com.vaadin.flow.component.html.*;
-
-import org.hbrs.se2.project.coll.control.*;
+import org.hbrs.se2.project.coll.control.LoginControl;
+import org.hbrs.se2.project.coll.control.RegistrationControl;
+import org.hbrs.se2.project.coll.control.SettingsControl;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
-
-import org.hbrs.se2.project.coll.dtos.impl.*;
+import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO.ReasonType;
+import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
+import org.hbrs.se2.project.coll.dtos.impl.RegistrationDTOImpl;
+import org.hbrs.se2.project.coll.dtos.impl.UserDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
-import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO.ReasonType;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.UtilNavigation;
 import org.hbrs.se2.project.coll.util.Utils;

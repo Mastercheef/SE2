@@ -1,6 +1,7 @@
 package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.dtos.JobApplicationDTO;
+import org.hbrs.se2.project.coll.dtos.JobApplicationResultDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.JobApplicationDTOImpl;
 import org.hbrs.se2.project.coll.entities.*;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
@@ -27,21 +29,20 @@ class JobApplicationControlTest {
 
     @InjectMocks
     JobApplicationControl jobApplicationControl;
-
     @Mock
     JobApplicationRepository jobApplicationRepository;
-
-    @Mock
-    JobApplicationDTO jobApplicationDTO;
-
     @Mock
     ContactPersonControl contactPersonControl;
+    @Mock
+    JobAdvertisementControl jobAdvertisementControl;
 
     UserDTO userDTO = Mockito.mock(UserDTO.class);
     StudentUser studentUser = Mockito.mock(StudentUser.class);
     JobAdvertisement jobAdvertisement = Mockito.mock(JobAdvertisement.class);
     ContactPerson contactPerson = Mockito.mock(ContactPerson.class);
     Company company = Mockito.mock(Company.class);
+    JobApplicationDTO jobApplicationDTO = Mockito.mock(JobApplicationDTO.class);
+    JobApplicationResultDTO jobApplicationResultDTO = Mockito.mock(JobApplicationResultDTO.class);
 
     List<JobApplicationDTO> applications = new ArrayList<>();
     List<JobApplicationDTO> resultListDateRange = new ArrayList<>();
@@ -50,6 +51,8 @@ class JobApplicationControlTest {
 
     String student = "student";
     String match = "match";
+    String headline = "headeline";
+    String text = "Text";
 
     @BeforeEach
     void setUp() {
@@ -94,6 +97,37 @@ class JobApplicationControlTest {
     }
 
     @Test
+    void testCreateJobApplicationPositive() {
+        JobApplication savedJobApplication = Mockito.mock(JobApplication.class);
+        when(savedJobApplication.getId()).thenReturn(10);
+        when(jobApplicationDTO.getHeadline()).thenReturn(headline);
+        when(jobApplicationDTO.getText()).thenReturn(text);
+        when(jobApplicationRepository.save(any())).thenReturn(savedJobApplication);
+        JobApplicationResultDTO result = jobApplicationControl.createJobApplication(jobApplicationDTO);
+        assertTrue(result.getResult());
+        assertTrue(result.getReasons().contains(JobApplicationResultDTO.ReasonType.SUCCESS));
+        assertEquals(savedJobApplication.getId(), result.getApplicationID());
+    }
+
+    @Test
+    void testCreateJobApplicationNegativeInformationMissing() {
+        JobApplicationResultDTO result = jobApplicationControl.createJobApplication(jobApplicationDTO);
+        assertFalse(result.getResult());
+        assertTrue(result.getReasons().contains(JobApplicationResultDTO.ReasonType.HEADLINE_MISSING));
+        assertTrue(result.getReasons().contains(JobApplicationResultDTO.ReasonType.TEXT_MISSING));
+    }
+
+    @Test
+    void testCreateJobApplicationNegativeException() {
+        when(jobApplicationDTO.getHeadline()).thenReturn(headline);
+        when(jobApplicationDTO.getText()).thenReturn(text);
+        when(jobApplicationRepository.save(any())).thenThrow(RuntimeException.class);
+        JobApplicationResultDTO result = jobApplicationControl.createJobApplication(jobApplicationDTO);
+        assertFalse(result.getResult());
+        assertTrue(result.getReasons().contains(JobApplicationResultDTO.ReasonType.UNEXPECTED_ERROR));
+    }
+
+    @Test
     void loadJobApplication() {
         when(jobApplicationRepository.findJobApplicationById(100)).thenReturn(jobApplicationDTO);
         assertEquals(jobApplicationDTO , jobApplicationControl.loadJobApplication(100));
@@ -101,7 +135,36 @@ class JobApplicationControlTest {
     }
 
     @Test
-    void testSsUserAllowedToAccessJobApplications() {
+    void testLoadJobApplicationsFromCompany() {
+        when(contactPerson.getCompany()).thenReturn(company);
+        when(company.getId()).thenReturn(10);
+        when(contactPersonControl.findContactPersonById(1)).thenReturn(contactPerson);
+        JobAdvertisement job1 = Mockito.mock(JobAdvertisement.class);
+        JobAdvertisement job2 = Mockito.mock(JobAdvertisement.class);
+        List<JobAdvertisement> jobAdds = new ArrayList<JobAdvertisement>();
+        jobAdds.add(job1);
+        jobAdds.add(job2);
+        JobApplicationDTO jobApp1 = Mockito.mock(JobApplicationDTO.class);
+        JobApplicationDTO jobApp2 = Mockito.mock(JobApplicationDTO.class);
+        List<JobApplicationDTO> jobAppsList1 = new ArrayList<JobApplicationDTO>();
+        List<JobApplicationDTO> jobAppsList2 = new ArrayList<JobApplicationDTO>();
+        jobAppsList1.add(jobApp1);
+        jobAppsList2.add(jobApp2);
+        when(jobAdvertisementControl.getJobsByCompanyId(10)).thenReturn(jobAdds);
+        when(jobApplicationRepository.findJobApplicationsByJobAdvertisement(job1)).thenReturn(jobAppsList1);
+        when(jobApplicationRepository.findJobApplicationsByJobAdvertisement(job2)).thenReturn(jobAppsList2);
+
+        when(userDTO.getId()).thenReturn(1);
+        List<JobApplicationDTO> correctList = new ArrayList<JobApplicationDTO>();
+        correctList.add(jobApp1);
+        correctList.add(jobApp2);
+
+        List<JobApplicationDTO> resultList = jobApplicationControl.loadJobApplicationsFromCompany(userDTO);
+        assertEquals(correctList, resultList);
+    }
+
+    @Test
+    void testIsUserAllowedToAccessJobApplicationsPositive() {
         when(jobApplicationRepository.findJobApplicationById(100)).thenReturn(jobApplicationDTO);
         when(studentUser.getId()).thenReturn(1);
         when(jobApplicationDTO.getStudentUser()).thenReturn(studentUser);
@@ -122,6 +185,22 @@ class JobApplicationControlTest {
         when(userDTO.getType()).thenReturn("cp");
         when(jobApplicationControl.getContactPersonFromSessionUser(userDTO)).thenReturn(contactPerson);
         assertTrue(jobApplicationControl.isUserAllowedToAccessJobApplications(userDTO));
+    }
+
+    @Test
+    void testIsUserAllowedToAccessJobApplicationsNegative() {
+        ContactPerson differentContactPerson = Mockito.mock(ContactPerson.class);
+        Company differentCompany = Mockito.mock(Company.class);
+        when(differentContactPerson.getCompany()).thenReturn(differentCompany);
+        when(differentCompany.getId()).thenReturn(1000);
+
+        when(jobApplicationDTO.getJobAdvertisement()).thenReturn(jobAdvertisement);
+        when(jobAdvertisement.getContactPerson()).thenReturn(contactPerson);
+        when(contactPerson.getCompany()).thenReturn(company);
+        when(company.getId()).thenReturn(10);
+        when(userDTO.getType()).thenReturn("cp");
+        when(jobApplicationControl.getContactPersonFromSessionUser(userDTO)).thenReturn(differentContactPerson);
+        assertFalse(jobApplicationControl.isUserAllowedToAccessJobApplications(userDTO));
     }
 
     @Test

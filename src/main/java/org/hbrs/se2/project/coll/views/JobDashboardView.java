@@ -6,7 +6,10 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.HeaderRow;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -27,9 +30,9 @@ import org.hbrs.se2.project.coll.util.Utils;
 import org.hbrs.se2.project.coll.views.grids.JobAdvertisementGrid;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.hbrs.se2.project.coll.util.Globals.DateRanges;
-
 import java.util.List;
+
+import static org.hbrs.se2.project.coll.util.Globals.DateRanges;
 
 @Route(value = "dashboard", layout = AppView.class)
 @PageTitle("Job Dashboard")
