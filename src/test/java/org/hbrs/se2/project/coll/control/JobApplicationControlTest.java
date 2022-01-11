@@ -98,7 +98,6 @@ class JobApplicationControlTest {
 
     @Test
     void testCreateJobApplicationPositive() {
-        JobApplication factoryApplication = Mockito.mock(JobApplication.class);
         JobApplication savedJobApplication = Mockito.mock(JobApplication.class);
         when(savedJobApplication.getId()).thenReturn(10);
         when(jobApplicationDTO.getHeadline()).thenReturn(headline);
@@ -142,13 +141,13 @@ class JobApplicationControlTest {
         when(contactPersonControl.findContactPersonById(1)).thenReturn(contactPerson);
         JobAdvertisement job1 = Mockito.mock(JobAdvertisement.class);
         JobAdvertisement job2 = Mockito.mock(JobAdvertisement.class);
-        List<JobAdvertisement> jobAdds = new ArrayList();
+        List<JobAdvertisement> jobAdds = new ArrayList<JobAdvertisement>();
         jobAdds.add(job1);
         jobAdds.add(job2);
         JobApplicationDTO jobApp1 = Mockito.mock(JobApplicationDTO.class);
         JobApplicationDTO jobApp2 = Mockito.mock(JobApplicationDTO.class);
-        List<JobApplicationDTO> jobAppsList1 = new ArrayList();
-        List<JobApplicationDTO> jobAppsList2 = new ArrayList();
+        List<JobApplicationDTO> jobAppsList1 = new ArrayList<JobApplicationDTO>();
+        List<JobApplicationDTO> jobAppsList2 = new ArrayList<JobApplicationDTO>();
         jobAppsList1.add(jobApp1);
         jobAppsList2.add(jobApp2);
         when(jobAdvertisementControl.getJobsByCompanyId(10)).thenReturn(jobAdds);
@@ -156,7 +155,7 @@ class JobApplicationControlTest {
         when(jobApplicationRepository.findJobApplicationsByJobAdvertisement(job2)).thenReturn(jobAppsList2);
 
         when(userDTO.getId()).thenReturn(1);
-        List<JobApplicationDTO> correctList = new ArrayList();
+        List<JobApplicationDTO> correctList = new ArrayList<JobApplicationDTO>();
         correctList.add(jobApp1);
         correctList.add(jobApp2);
 
@@ -190,19 +189,6 @@ class JobApplicationControlTest {
 
     @Test
     void testIsUserAllowedToAccessJobApplicationsNegative() {
-        when(jobApplicationRepository.findJobApplicationById(100)).thenReturn(jobApplicationDTO);
-        when(studentUser.getId()).thenReturn(1);
-        when(jobApplicationDTO.getStudentUser()).thenReturn(studentUser);
-        jobApplicationControl.loadJobApplication(100);
-
-        when(userDTO.getType()).thenReturn("st");
-        when(userDTO.getId()).thenReturn(1);
-        assertTrue(jobApplicationControl.isUserAllowedToAccessJobApplications(userDTO));
-
-        when(userDTO.getType()).thenReturn("st");
-        when(userDTO.getId()).thenReturn(10);
-        assertFalse(jobApplicationControl.isUserAllowedToAccessJobApplications(userDTO));
-
         ContactPerson differentContactPerson = Mockito.mock(ContactPerson.class);
         Company differentCompany = Mockito.mock(Company.class);
         when(differentContactPerson.getCompany()).thenReturn(differentCompany);
