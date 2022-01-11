@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -60,6 +61,15 @@ class JobAdvertisementControlTest {
     private String companyName = "companyName";
     private String phoneNumber = "0123456789";
     private String email = "email.gmx.de";
+
+    private String title = null;
+    private String type = null;
+    private String requirements = null;
+    private boolean temporaryEmployment = false;
+    private LocalDate date = null;
+    private short hours = 0;
+    private int salary = 0;
+
     @Test
     void getJob() {
         when(jobAdvertisementRepository.findJobAdvertisementById(100)).thenReturn(jobAdvertisement);
@@ -232,5 +242,31 @@ class JobAdvertisementControlTest {
 
         when(jobAdvertisementRepository.findAll(Sort.by(Sort.Direction.DESC, "startOfWork"))).thenReturn(list);
         assertEquals(list , jobAdvertisementControl.getAllJobs());
+    }
+    @Test
+    void filterOne() {
+        List<JobAdvertisement> list;
+        list = mock(List.class);
+
+        when(jobAdvertisementRepository.filterJobs(title, type, requirements, temporaryEmployment, date, hours, salary)).thenReturn(list);
+        assertEquals(list , jobAdvertisementControl.filterJobs(title, type, requirements, temporaryEmployment, date, hours, salary));
+    }
+
+    @Test
+    void filterTwo() {
+        List<JobAdvertisement> listTwo;
+        listTwo = mock(List.class);
+
+        when(jobAdvertisementRepository.filterJobs(title, type, requirements, date, hours, salary)).thenReturn(listTwo);
+        assertEquals(listTwo , jobAdvertisementControl.filterJobs(title, type, requirements, date, hours, salary));
+    }
+
+    @Test
+    void filterThree() {
+        List<JobAdvertisement> listThree;
+        listThree = mock(List.class);
+
+        when(jobAdvertisementRepository.filterJobs(title, requirements, temporaryEmployment, date, hours, salary)).thenReturn(listThree);
+        assertEquals(listThree , jobAdvertisementControl.filterJobs(title, requirements, temporaryEmployment, date, hours, salary));
     }
 }
