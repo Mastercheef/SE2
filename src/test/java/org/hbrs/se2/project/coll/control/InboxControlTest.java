@@ -50,7 +50,7 @@ class InboxControlTest {
     UserDTO userDTO;
 
     private String message = "message";
-    private String subbject = "Subject";
+    private String subject = "Subject";
     private LocalDate date = LocalDate.of(2000,1 ,12);
     @Test
     void getMessages() {
@@ -66,7 +66,7 @@ class InboxControlTest {
     void prepareSending() {
         when(messageDTO.getRecipient()).thenReturn(200);
         when(messageDTO.getSender()).thenReturn(400);
-        when(messageDTO.getSubject()).thenReturn(subbject);
+        when(messageDTO.getSubject()).thenReturn(subject);
         when(messageDTO.getDate()).thenReturn(date);
 
         messageDTOMethod = inboxControl.prepareSending(messageDTO,message);
@@ -74,7 +74,7 @@ class InboxControlTest {
         assertEquals(message , messageDTOMethod.getContent());
         assertEquals(400 , messageDTOMethod.getRecipient());
         assertEquals(200 , messageDTOMethod.getSender());
-        assertEquals(subbject , messageDTOMethod.getSubject());
+        assertEquals(subject, messageDTOMethod.getSubject());
         assertEquals(message , messageDTOMethod.getContent());
         assertEquals(LocalDate.now() , messageDTOMethod.getDate());
 
@@ -102,6 +102,30 @@ class InboxControlTest {
         when(userRepository.findUserById(100)).thenThrow(DataIntegrityViolationException.class);
         DatabaseUserException thrown = Assertions.assertThrows( DatabaseUserException.class, () ->
                 inboxControl.getUserName(100));
+        Assertions.assertEquals("Es ist ein unerwarteter Fehler aufgetreten.", thrown.getMessage());
+    }
+
+    @Test
+    void getSubject() throws DatabaseUserException {
+        when(messageRepository.findMessageById(200)).thenReturn(messageDTO);
+        when(messageRepository.findMessageById(200).getSubject()).thenReturn(subject);
+        assertEquals(subject, inboxControl.getSubject(200));
+    }
+
+    @Test
+    void getSubjectDataAccessResourceFailureException() {
+        when(messageRepository.findMessageById(200)).thenThrow(DataAccessResourceFailureException.class);
+        DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
+                inboxControl.getSubject(200));
+        Assertions.assertEquals("Während der Verbindung zur Datenbank mit JPA ist \" +\n" +
+                "                        \"ein Fehler aufgetreten.", thrown.getMessage());
+    }
+
+    @Test
+    void getSubjectDataBaseUserException() {
+        when(messageRepository.findMessageById(200)).thenThrow(DataIntegrityViolationException.class);
+        DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
+                inboxControl.getSubject(200));
         Assertions.assertEquals("Es ist ein unerwarteter Fehler aufgetreten.", thrown.getMessage());
     }
 }
