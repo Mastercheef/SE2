@@ -13,13 +13,12 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.hbrs.se2.project.coll.control.StudentProfileControl;
+import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
-import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.util.UtilCurrent;
 import org.springframework.beans.factory.annotation.Autowired;
-
 
 import java.util.Objects;
 

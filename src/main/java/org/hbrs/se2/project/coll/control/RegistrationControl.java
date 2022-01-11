@@ -1,10 +1,13 @@
 package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
-import org.hbrs.se2.project.coll.dtos.*;
+import org.hbrs.se2.project.coll.dtos.CompanyDTO;
+import org.hbrs.se2.project.coll.dtos.RegistrationDTO;
+import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO.ReasonType;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.RegistrationResultDTOImpl;
-import org.hbrs.se2.project.coll.entities.*;
+import org.hbrs.se2.project.coll.entities.Company;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.UserRepository;
 import org.hbrs.se2.project.coll.util.Globals;

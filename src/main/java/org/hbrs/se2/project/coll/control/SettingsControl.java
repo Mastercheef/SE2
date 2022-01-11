@@ -4,7 +4,7 @@ import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.control.factories.UserFactory;
 import org.hbrs.se2.project.coll.dtos.SettingsDTO;
-import org.hbrs.se2.project.coll.entities.*;
+import org.hbrs.se2.project.coll.entities.Settings;
 import org.hbrs.se2.project.coll.repository.SettingsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
