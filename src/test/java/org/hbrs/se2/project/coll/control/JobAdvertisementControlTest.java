@@ -17,6 +17,7 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -222,5 +223,14 @@ class JobAdvertisementControlTest {
         when(contactPerson.getCompany().getId()).thenReturn(100);
         when(company.getId()).thenReturn(100);
         assertEquals(100 , jobAdvertisementControl.getCompanyIdFromUser(user));
+    }
+
+    @Test
+    void getAllJobs() {
+        List<JobAdvertisement> list;
+        list = mock(List.class);
+
+        when(jobAdvertisementRepository.findAll(Sort.by(Sort.Direction.DESC, "startOfWork"))).thenReturn(list);
+        assertEquals(list , jobAdvertisementControl.getAllJobs());
     }
 }
