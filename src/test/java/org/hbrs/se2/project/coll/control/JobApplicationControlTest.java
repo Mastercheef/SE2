@@ -146,13 +146,13 @@ class JobApplicationControlTest {
         when(contactPersonControl.findContactPersonById(1)).thenReturn(contactPerson);
         JobAdvertisement job1 = Mockito.mock(JobAdvertisement.class);
         JobAdvertisement job2 = Mockito.mock(JobAdvertisement.class);
-        jobAdds = new ArrayList();
+        jobAdds = new ArrayList<>();
         jobAdds.add(job1);
         jobAdds.add(job2);
         JobApplicationDTO jobApp1 = Mockito.mock(JobApplicationDTO.class);
         JobApplicationDTO jobApp2 = Mockito.mock(JobApplicationDTO.class);
-        jobAppsList1 = new ArrayList();
-        jobAppsList2 = new ArrayList();
+        jobAppsList1 = new ArrayList<>();
+        jobAppsList2 = new ArrayList<>();
         jobAppsList1.add(jobApp1);
         jobAppsList2.add(jobApp2);
         when(jobAdvertisementControl.getJobsByCompanyId(10)).thenReturn(jobAdds);
@@ -160,7 +160,7 @@ class JobApplicationControlTest {
         when(jobApplicationRepository.findJobApplicationsByJobAdvertisement(job2)).thenReturn(jobAppsList2);
 
         when(userDTO.getId()).thenReturn(1);
-        correctList = new ArrayList();
+        correctList = new ArrayList<>();
         correctList.add(jobApp1);
         correctList.add(jobApp2);
 
