@@ -31,6 +31,8 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     private StudentUserDTO profileDTO;
     Address addr = new Address();
 
+    String floatString = "float";
+
     Label salutation    = new Label("Anrede:");
     Label title         = new Label("Titel:");
     Label firstname     = new Label("Vorname:");
@@ -151,15 +153,15 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         }
         // Css Changes for split View
         bottomDiv.setWidth("100%");
-        bottomDiv.getStyle().set("float", "left");
+        bottomDiv.getStyle().set(floatString, "left");
         leftDiv.setWidth("40%");
         leftDiv.setMinWidth("300px");
         rightDiv.setWidth("60%");
         rightDiv.setMinWidth("400px");
         div.setClassName("centered");
         div.setWidth("80%");
-        leftDiv.getStyle().set("float", "left");
-        rightDiv.getStyle().set("float", "left");
+        leftDiv.getStyle().set(floatString, "left");
+        rightDiv.getStyle().set(floatString, "left");
         add(div);
     }
     public static void navigateToEdit(int studentId) {
