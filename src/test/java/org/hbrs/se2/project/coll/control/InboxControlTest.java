@@ -1,12 +1,12 @@
 package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
-import org.hbrs.se2.project.coll.dtos.CompanyDTO;
-import org.hbrs.se2.project.coll.dtos.ContactPersonDTO;
+import org.hbrs.se2.project.coll.control.factories.MessageFactory;
 import org.hbrs.se2.project.coll.dtos.MessageDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Company;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
+import org.hbrs.se2.project.coll.entities.Message;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.repository.MessageRepository;
@@ -17,17 +17,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -48,10 +48,14 @@ class InboxControlTest {
     @Mock
     private ContactPersonRepository contactPersonRepository;
 
+
     @Mock
     MessageDTO messageDTO;
+    @Mock
+    Message sentMessage;
 
     MessageDTO messageDTOMethod;
+    Message resultMessage;
 
     @Mock
     UserDTO userDTO;
@@ -62,9 +66,11 @@ class InboxControlTest {
     @Mock
     Company company;
 
+
     private String message = "message";
     private String subject = "Subject";
     private LocalDate date = LocalDate.of(2000,1 ,12);
+
     @Test
     void getMessages() {
         ArrayList<MessageDTO> messageDTOArrayList = new ArrayList<>();
@@ -178,7 +184,69 @@ class InboxControlTest {
     }
 
     @Test
-    void setMessageAsRead() {
-
+    void sendMessage() throws DatabaseUserException {
+        try (MockedStatic<MessageFactory> classMock = mockStatic(MessageFactory.class)) {
+            classMock.when(() -> MessageFactory.createMessage(messageDTO)).thenReturn(sentMessage);
+            doReturn(sentMessage).when(messageRepository).save(sentMessage);
+            doReturn(200).when(sentMessage).getId();
+            assertEquals(sentMessage, inboxControl.sendMessage(messageDTO));
+        }
     }
+
+    @Test
+    void sentMessageDataAccessResourceFailureException() {
+        try (MockedStatic<MessageFactory> classMock = mockStatic(MessageFactory.class)) {
+            classMock.when(() -> MessageFactory.createMessage(messageDTO)).thenReturn(sentMessage);
+            when(messageRepository.save(sentMessage)).thenThrow(DataAccessResourceFailureException.class);
+            DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
+                    inboxControl.sendMessage(messageDTO));
+            Assertions.assertEquals("Während der Verbindung zur Datenbank mit JPA ist \" +\n" +
+                    "                        \"ein Fehler aufgetreten.", thrown.getMessage());
+        }
+    }
+
+    @Test
+    void sentMessageDataBaseUserException() {
+        try (MockedStatic<MessageFactory> classMock = mockStatic(MessageFactory.class)) {
+            classMock.when(() -> MessageFactory.createMessage(messageDTO)).thenReturn(sentMessage);
+            when(messageRepository.save(sentMessage)).thenThrow(DataIntegrityViolationException.class);
+            DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
+                    inboxControl.sendMessage(messageDTO));
+            Assertions.assertEquals("Es ist ein unerwarteter Fehler aufgetreten.", thrown.getMessage());
+        }
+    }
+
+    @Test
+    void deleteMessage() throws DatabaseUserException {
+        try (MockedStatic<MessageFactory> classMock = mockStatic(MessageFactory.class)) {
+            classMock.when(() -> MessageFactory.createMessage(messageDTO)).thenReturn(sentMessage);
+            doNothing().when(messageRepository).delete(sentMessage);
+            doReturn(200).when(sentMessage).getId();
+            assertEquals(sentMessage, inboxControl.deleteMessage(messageDTO));
+        }
+    }
+
+    @Test
+    void deleteMessageDataAccessResourceFailureException() {
+        try (MockedStatic<MessageFactory> classMock = mockStatic(MessageFactory.class)) {
+            classMock.when(() -> MessageFactory.createMessage(messageDTO)).thenReturn(sentMessage);
+            doThrow(DataAccessResourceFailureException.class).when(messageRepository).delete(sentMessage);
+            DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
+                    inboxControl.deleteMessage(messageDTO));
+            Assertions.assertEquals("Während der Verbindung zur Datenbank mit JPA ist \" +\n" +
+                    "                        \"ein Fehler aufgetreten.", thrown.getMessage());
+        }
+    }
+
+    @Test
+    void deleteMessageDataBaseUserException() {
+        try (MockedStatic<MessageFactory> classMock = mockStatic(MessageFactory.class)) {
+            classMock.when(() -> MessageFactory.createMessage(messageDTO)).thenReturn(sentMessage);
+            doThrow(DataIntegrityViolationException.class).when(messageRepository).delete(sentMessage);
+            DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
+                    inboxControl.deleteMessage(messageDTO));
+            Assertions.assertEquals("Es ist ein unerwarteter Fehler aufgetreten.", thrown.getMessage());
+        }
+    }
+
 }
