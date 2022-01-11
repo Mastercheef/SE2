@@ -143,12 +143,12 @@ class ContactPersonControlTest {
     void checkIfUserIsProfileOwner() {
         when(contactPersonRepository.findContactPersonByCompanyId(200)).thenReturn(contactPerson);
         when(userDTO.getId()).thenReturn(100);
-        when(contactPersonDTO.getId()).thenReturn(200);
+        when(contactPerson.getId()).thenReturn(200);
         assertFalse(contactPersonControl.checkIfUserIsProfileOwner(userDTO, 200));
         when(userDTO.getId()).thenReturn(200);
         assertTrue(contactPersonControl.checkIfUserIsProfileOwner(userDTO, 200));
         when(userDTO.getId()).thenReturn(200);
-        when(contactPersonDTO.getId()).thenReturn(300);
+        when(contactPerson.getId()).thenReturn(300);
         assertTrue(contactPersonControl.checkIfUserIsProfileOwner(userDTO, 200));
     }
 }
