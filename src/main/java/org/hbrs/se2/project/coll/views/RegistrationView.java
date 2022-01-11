@@ -396,7 +396,7 @@ public class RegistrationView extends Div {
                 Utils.triggerDialogMessage(Globals.View.ERROR, "Die angegebene Firma ist bereits registriert");
             }
             if (reason == ReasonType.COMPANY_NAME_MISSING) {
-                companyName.setErrorMessage(Globals.View.POSTAL_CODE);
+                companyName.setErrorMessage("Bitte geben Sie einen gültigen Firmennamen ein");
                 companyName.setInvalid(true);
             }
             if (reason == ReasonType.COMPANY_EMAIL_MISSING) {

@@ -73,16 +73,6 @@ class UtilsTest {
     }
 
     @Test
-    void getCurrentUser() {
-/*
-        try (MockedStatic<UI> classMock = mockStatic(UI.class)) {
-            classMock.when(() -> UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER)).thenReturn(userDTO);
-            assertEquals(userDTO , UtilCurrent.getCurrentUser());
-        }
- */
-    }
-
-    @Test
     void triggerDialogMessage() {
         UI ui = new UI();
         UI.setCurrent(ui);

@@ -106,7 +106,7 @@ public class JobApplicationControl {
 
     public List<JobApplicationDTO> filterApplicationsByHeadline(List<JobApplicationDTO> applications, String header) {
         List<JobApplicationDTO> filteredApplications = new ArrayList<>();
-        if(!applications.isEmpty()) {
+        if(applications != null && !applications.isEmpty()) {
             for (JobApplicationDTO app : applications)
                 // Used because of case sensitivity. Otherwise, works like str1.contains(str2)
                 if (Pattern.compile(Pattern.quote(header),
@@ -118,7 +118,7 @@ public class JobApplicationControl {
 
     public List<JobApplicationDTO> filterApplicationsByUsername(List<JobApplicationDTO> applications, String name) {
         List<JobApplicationDTO> filteredApplications = new ArrayList<>();
-        if(!applications.isEmpty()) {
+        if(applications != null && !applications.isEmpty()) {
             for (JobApplicationDTO app : applications)
                 // Used because of case sensitivity. Otherwise, works like str1.contains(str2)
                 if (Pattern.compile(Pattern.quote(name),
@@ -131,7 +131,7 @@ public class JobApplicationControl {
 
     public List<JobApplicationDTO> filterApplicationsByDateRange(List<JobApplicationDTO> applications, String range) {
         List<JobApplicationDTO> filteredApplications = new ArrayList<>();
-        if(!applications.isEmpty()) {
+        if(applications != null && !applications.isEmpty()) {
             for (JobApplicationDTO app : applications) {
                 // Used because of case sensitivity. Otherwise, works like str1.contains(str2)
                 if (range.equals(Globals.DateRanges.ALL)) {
@@ -145,7 +145,7 @@ public class JobApplicationControl {
         return filteredApplications;
     }
 
-    private int mapDateRange(String rangeString) {
+    protected int mapDateRange(String rangeString) {
         if (rangeString.equals(Globals.DateRanges.DAY))
             return 1;
         else if (rangeString.equals(Globals.DateRanges.WEEK))
@@ -154,7 +154,7 @@ public class JobApplicationControl {
             return 31;
     }
 
-    private boolean dateIsInRange(LocalDate date, int dayRange) {
+    protected boolean dateIsInRange(LocalDate date, int dayRange) {
         LocalDate currentDate = LocalDate.now();
         LocalDate currentDateMinusRange = currentDate.minusDays(dayRange);
 
