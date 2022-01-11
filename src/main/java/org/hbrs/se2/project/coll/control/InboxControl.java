@@ -53,11 +53,11 @@ public class InboxControl {
     }
 
     // Senden einer Nachricht an einen Nutzer
-    public void sendMessage(MessageDTO messageDTO) throws  DatabaseUserException {
+    public Message sendMessage(MessageDTO messageDTO) throws  DatabaseUserException {
         try {
             Message message = MessageFactory.createMessage(messageDTO);
             this.messageRepository.save(message);
-
+            return message;
         } catch (Exception exception) {
             LOGGER.info(Globals.LogMessage.LOG, exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
@@ -69,11 +69,11 @@ public class InboxControl {
     }
 
     // Löschen einer Nachricht aus der Datenbank
-    public void deleteMessage(MessageDTO messageDTO) throws DatabaseUserException {
+    public Message deleteMessage(MessageDTO messageDTO) throws DatabaseUserException {
         try {
             Message message = MessageFactory.createMessage(messageDTO);
             this.messageRepository.delete(message);
-
+            return message;
         } catch (Exception exception) {
             LOGGER.info(Globals.LogMessage.LOG, exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
@@ -135,7 +135,7 @@ public class InboxControl {
     }
 
     // Update read-status of a message in DB
-    public void setMessageAsRead(MessageDTO message) throws DatabaseUserException {
+    public Message setMessageAsRead(MessageDTO message) throws DatabaseUserException {
         MessageDTOImpl readMessage = new MessageDTOImpl();
         readMessage.setId(message.getId());
         readMessage.setSender(message.getSender());
@@ -148,6 +148,7 @@ public class InboxControl {
             Message updatedMessage = MessageFactory.createMessage(readMessage);
             updatedMessage.setRead(true);
             messageRepository.save(updatedMessage);
+            return updatedMessage;
         } catch (Exception exception) {
             LOGGER.info(Globals.LogMessage.LOG ,  exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
