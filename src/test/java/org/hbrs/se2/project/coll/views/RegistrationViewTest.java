@@ -6,6 +6,7 @@ import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
 import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
 import org.hbrs.se2.project.coll.dtos.impl.RegistrationDTOImpl;
 import org.hbrs.se2.project.coll.dtos.impl.UserDTOImpl;
+import org.hbrs.se2.project.coll.util.Globals;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +47,34 @@ public class RegistrationViewTest {
     private String companyCountry;
 
     private String type;
-    private String errorFirstName;
+
+    // Error messages
+    private String errorSalutationMissing;
+    private String errorFirstNameMissing;
+    private String errorTitleMissing;
+    private String errorLastNameMissing;
+    private String errorDateOfBirthMissing;
+    private String errorPhoneMissing;
+    private String errorStreetMissing;
+    private String errorHouseNumberMissing;
+    private String errorPostalCodeMissing;
+    private String errorCityMissing;
+    private String errorCountryMissing;
+    private String errorEmailInvalid;
+    private String errorPasswordMissing;
+
+    // Company error messages
+    private String errorCompanyNameMissing;
+    private String errorCompanyPhoneMissing;
+    private String errorCompanyFaxMissing;
+    private String errorCompanyWebsiteMissing;
+    private String errorCompanyDescriptionMissing;
+    private String errorCompanyStreetMissing;
+    private String errorCompanyHouseNumberMissing;
+    private String errorCompanyPostalCodeMissing;
+    private String errorCompanyCityMissing;
+    private String errorCompanyCountryMissing;
+    private String errorCompanyEmailInvalid;
 
     @Autowired
     private RegistrationControl registrationControl;
@@ -83,7 +111,31 @@ public class RegistrationViewTest {
 
         // Misc.
         type = "st";
-        errorFirstName = "Bitte geben Sie einen Vornamen ein";
+
+        errorSalutationMissing = "Bitte geben Sie eine Anrede ein";
+        errorTitleMissing = "Bitte geben Sie einen Titel ein";
+        errorFirstNameMissing = "Bitte geben Sie einen Vornamen ein";
+        errorLastNameMissing = "Bitte geben Sie einen Nachnamen ein";
+        errorDateOfBirthMissing = "Bitte geben Sie ein Geburtsdatum ein";
+        errorPhoneMissing = "Bitte geben Sie eine Telefonnummer ein";
+        errorStreetMissing = "Bitte geben Sie eine Straße ein";
+        errorHouseNumberMissing = "Bitte geben Sie eine Hausnummer ein";
+        errorPostalCodeMissing = "Bitte geben Sie eine Postleitzahl ein";
+        errorCityMissing = "Bitte geben Sie eine Stadt ein";
+        errorCountryMissing = "Bitte geben Sie ein Land ein";
+        errorEmailInvalid = "Bitte geben Sie eine gültige Email ein";
+        errorPasswordMissing = "Bitte geben Sie eine gültiges Passwort ein";
+        errorCompanyNameMissing = "Bitte geben Sie einen gültigen Firmennamen ein";
+        errorCompanyPhoneMissing = "Bitte geben Sie eine Telefonnummer ein";
+        errorCompanyFaxMissing = "Bitte geben Sie eine Faxnummer ein";
+        errorCompanyWebsiteMissing = "Bitte geben Sie eine Webseite ein";
+        errorCompanyDescriptionMissing = "Bitte geben Sie eine Beschreibung ein";
+        errorCompanyStreetMissing = "Bitte geben Sie eine Straße ein";
+        errorCompanyHouseNumberMissing = "Bitte geben Sie eine Hausnummer ein";
+        errorCompanyPostalCodeMissing = Globals.View.POSTAL_CODE;
+        errorCompanyCityMissing = "Bitte geben Sie eine Stadt ein";
+        errorCompanyCountryMissing = "Bitte geben Sie ein land ein";
+        errorCompanyEmailInvalid = "Bitte geben Sie eine gültige Email-Adresse ein";
     }
 
     @Test
@@ -193,8 +245,105 @@ public class RegistrationViewTest {
         Assert.assertNotNull(userDTO);
         Assert.assertNotNull(registrationDTO);
         Assert.assertNotNull(registrationResult);
-        Assert.assertEquals(errorFirstName, registrationView.firstName.getErrorMessage());
+        Assert.assertEquals(errorFirstNameMissing, registrationView.firstName.getErrorMessage());
         Assert.assertTrue(registrationView.firstName.isInvalid());
+    }
+
+    @Test
+    public void AllMissingValuesErrorFieldsTest() throws DatabaseUserException {
+        RegistrationView registrationView = new RegistrationView();
+        RegistrationView.RegisterForm registerForm = registrationView.new RegisterForm();
+
+        UserDTOImpl userDTO = registerForm.createNewUserDTO();
+        RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl(userDTO, registrationView.emailRepeat.getValue(),
+                registrationView.passwordRepeat.getValue());
+        RegistrationResultDTO registrationResult = registrationControl.registerUser(registrationDTO);
+        registrationView.setErrorFields(registrationResult.getReasons());
+
+        Assert.assertNotNull(registrationView);
+        Assert.assertNotNull(registerForm);
+        Assert.assertNotNull(userDTO);
+        Assert.assertNotNull(registrationDTO);
+        Assert.assertNotNull(registrationResult);
+        Assert.assertEquals(errorSalutationMissing, registrationView.salutation.getErrorMessage());
+        Assert.assertEquals(errorTitleMissing, registrationView.title.getErrorMessage());
+        Assert.assertEquals(errorFirstNameMissing, registrationView.firstName.getErrorMessage());
+        Assert.assertEquals(errorLastNameMissing, registrationView.lastName.getErrorMessage());
+        Assert.assertEquals(errorDateOfBirthMissing, registrationView.dateOfBirth.getErrorMessage());
+        Assert.assertEquals(errorPhoneMissing, registrationView.phone.getErrorMessage());
+        Assert.assertEquals(errorStreetMissing, registrationView.street.getErrorMessage());
+        Assert.assertEquals(errorHouseNumberMissing, registrationView.housenumber.getErrorMessage());
+        Assert.assertEquals(errorPostalCodeMissing, registrationView.postalcode.getErrorMessage());
+        Assert.assertEquals(errorCityMissing, registrationView.city.getErrorMessage());
+        Assert.assertEquals(errorCountryMissing, registrationView.country.getErrorMessage());
+        Assert.assertEquals(errorEmailInvalid, registrationView.email.getErrorMessage());
+        Assert.assertEquals(errorEmailInvalid, registrationView.emailRepeat.getErrorMessage());
+        Assert.assertEquals(errorPasswordMissing, registrationView.password.getErrorMessage());
+        Assert.assertEquals(errorPasswordMissing, registrationView.passwordRepeat.getErrorMessage());
+
+        Assert.assertTrue(registrationView.salutation.isInvalid());
+        Assert.assertTrue(registrationView.title.isInvalid());
+        Assert.assertTrue(registrationView.firstName.isInvalid());
+        Assert.assertTrue(registrationView.lastName.isInvalid());
+        Assert.assertTrue(registrationView.dateOfBirth.isInvalid());
+        Assert.assertTrue(registrationView.phone.isInvalid());
+        Assert.assertTrue(registrationView.street.isInvalid());
+        Assert.assertTrue(registrationView.housenumber.isInvalid());
+        Assert.assertTrue(registrationView.postalcode.isInvalid());
+        Assert.assertTrue(registrationView.city.isInvalid());
+        Assert.assertTrue(registrationView.country.isInvalid());
+        Assert.assertTrue(registrationView.email.isInvalid());
+        Assert.assertTrue(registrationView.emailRepeat.isInvalid());
+        Assert.assertTrue(registrationView.password.isInvalid());
+        Assert.assertTrue(registrationView.passwordRepeat.isInvalid());
+    }
+
+    @Test
+    public void AllMissingCompanyValuesErrorFieldsTest() throws DatabaseUserException {
+        RegistrationView registrationView = new RegistrationView();
+        RegistrationView.RegisterForm registerForm = registrationView.new RegisterForm();
+        RegistrationView.CompanyRegisterForm companyRegisterForm = registrationView.new CompanyRegisterForm();
+
+        UserDTOImpl userDTO = registerForm.createNewUserDTO();
+        userDTO.setType("cp");
+        RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl(userDTO, registrationView.emailRepeat.getValue(),
+                registrationView.passwordRepeat.getValue());
+
+        CompanyDTOImpl companyDTO = companyRegisterForm.createNewCompanyDTO();
+        registrationDTO.setCompanyDTO(companyDTO);
+
+        RegistrationResultDTO registrationResult = registrationControl.registerUser(registrationDTO);
+        registrationView.setErrorFields(registrationResult.getReasons());
+
+        Assert.assertNotNull(registrationView);
+        Assert.assertNotNull(registerForm);
+        Assert.assertNotNull(companyRegisterForm);
+        Assert.assertNotNull(userDTO);
+        Assert.assertNotNull(registrationDTO);
+        Assert.assertNotNull(registrationResult);
+        Assert.assertEquals(errorCompanyNameMissing, registrationView.companyName.getErrorMessage());
+        Assert.assertEquals(errorCompanyEmailInvalid, registrationView.companyEmail.getErrorMessage());
+        Assert.assertEquals(errorCompanyPhoneMissing, registrationView.companyPhone.getErrorMessage());
+        Assert.assertEquals(errorCompanyFaxMissing, registrationView.companyFax.getErrorMessage());
+        Assert.assertEquals(errorCompanyWebsiteMissing, registrationView.companyHomepage.getErrorMessage());
+        Assert.assertEquals(errorCompanyDescriptionMissing, registrationView.companyDescription.getErrorMessage());
+        Assert.assertEquals(errorCompanyStreetMissing, registrationView.companyStreet.getErrorMessage());
+        Assert.assertEquals(errorCompanyHouseNumberMissing, registrationView.companyHouseNumber.getErrorMessage());
+        Assert.assertEquals(errorCompanyPostalCodeMissing, registrationView.companyPostalCode.getErrorMessage());
+        Assert.assertEquals(errorCompanyCityMissing, registrationView.companyCity.getErrorMessage());
+        Assert.assertEquals(errorCompanyCountryMissing, registrationView.companyCountry.getErrorMessage());
+
+        Assert.assertTrue(registrationView.companyName.isInvalid());
+        Assert.assertTrue(registrationView.companyEmail.isInvalid());
+        Assert.assertTrue(registrationView.companyPhone.isInvalid());
+        Assert.assertTrue(registrationView.companyFax.isInvalid());
+        Assert.assertTrue(registrationView.companyHomepage.isInvalid());
+        Assert.assertTrue(registrationView.companyDescription.isInvalid());
+        Assert.assertTrue(registrationView.companyStreet.isInvalid());
+        Assert.assertTrue(registrationView.companyHouseNumber.isInvalid());
+        Assert.assertTrue(registrationView.companyPostalCode.isInvalid());
+        Assert.assertTrue(registrationView.companyCity.isInvalid());
+        Assert.assertTrue(registrationView.companyCountry.isInvalid());
     }
 
     private void populateBasicForm(RegistrationView registrationView) {
