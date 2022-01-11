@@ -1,12 +1,17 @@
 package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
+import org.hbrs.se2.project.coll.dtos.CompanyDTO;
+import org.hbrs.se2.project.coll.dtos.ContactPersonDTO;
 import org.hbrs.se2.project.coll.dtos.MessageDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.entities.Company;
+import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
 import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.repository.MessageRepository;
 import org.hbrs.se2.project.coll.repository.UserRepository;
+import org.hbrs.se2.project.coll.util.Globals;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +22,8 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.dao.DataIntegrityViolationException;
+
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,6 +55,12 @@ class InboxControlTest {
 
     @Mock
     UserDTO userDTO;
+
+    @Mock
+    ContactPerson contactPerson;
+
+    @Mock
+    Company company;
 
     private String message = "message";
     private String subject = "Subject";
@@ -127,5 +140,45 @@ class InboxControlTest {
         DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
                 inboxControl.getSubject(200));
         Assertions.assertEquals("Es ist ein unerwarteter Fehler aufgetreten.", thrown.getMessage());
+    }
+
+    @Test
+    void callProfileRouteForStudent() throws DatabaseUserException {
+        when(userRepository.findUserById(100)).thenReturn(userDTO);
+        when(userRepository.findUserById(100).getType()).thenReturn("st");
+        assertEquals(Globals.Pages.PROFILE_VIEW + 100, inboxControl.callProfileRoute(100));
+    }
+
+    @Test
+    void callProfileRouteForCompany() throws DatabaseUserException {
+        when(userRepository.findUserById(100)).thenReturn(userDTO);
+        when(userRepository.findUserById(100).getType()).thenReturn("cp");
+        when(contactPersonRepository.findContactPersonById(100)).thenReturn(contactPerson);
+        when(contactPersonRepository.findContactPersonById(100).getCompany()).thenReturn(company);
+        when(contactPersonRepository.findContactPersonById(100).getCompany().getId()).thenReturn(300);
+        assertEquals(Globals.Pages.COMPANYPROFILE_VIEW + 300, inboxControl.callProfileRoute(100));
+
+    }
+
+    @Test
+    void callProfileRouteDataAccessResourceFailureException() {
+        when(userRepository.findUserById(100)).thenThrow(DataAccessResourceFailureException.class);
+        DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
+                inboxControl.callProfileRoute(100));
+        Assertions.assertEquals("Während der Verbindung zur Datenbank mit JPA ist \" +\n" +
+                "                        \"ein Fehler aufgetreten.", thrown.getMessage());
+    }
+
+    @Test
+    void callProfileRouteDataBaseUserException() {
+        when(userRepository.findUserById(100)).thenThrow(DataIntegrityViolationException.class);
+        DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
+                inboxControl.callProfileRoute(100));
+        Assertions.assertEquals("Es ist ein unerwarteter Fehler aufgetreten.", thrown.getMessage());
+    }
+
+    @Test
+    void setMessageAsRead() {
+
     }
 }
