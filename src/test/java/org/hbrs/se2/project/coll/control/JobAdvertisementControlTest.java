@@ -3,6 +3,7 @@ package org.hbrs.se2.project.coll.control;
 import org.hbrs.se2.project.coll.control.factories.JobFactory;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.Company;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
@@ -42,17 +43,16 @@ class JobAdvertisementControlTest {
     JobAdvertisementDTO jobAdvertisementDTO;
     @Mock
     JobAdvertisement jobAdvertisement;
-
     @Mock
     Address addressReturn;
-
     @Mock
     ContactPerson contactPerson;
     @Mock
     Company company;
     @Mock
     JobAdvertisementDTO jobAdvertisementDTOReturn;
-
+    @Mock
+    UserDTO user;
     @Mock
     CompanyDTO companyDTO;
 
@@ -211,5 +211,16 @@ class JobAdvertisementControlTest {
         list = mock(List.class);
         when(jobAdvertisementRepository.findJobAdvertisementsByCompanyId(100)).thenReturn(list);
         assertEquals(list , jobAdvertisementControl.getJobsByCompanyId(100));
+    }
+
+    @Test
+    void getCompanyIdFromUser() {
+        when(contactPersonRepository.findContactPersonById(100)).thenReturn(contactPerson);
+        when(user.getId()).thenReturn(100);
+        when(contactPerson.getCompany()).thenReturn(company);
+        when(contactPerson.getId()).thenReturn(100);
+        when(contactPerson.getCompany().getId()).thenReturn(100);
+        when(company.getId()).thenReturn(100);
+        assertEquals(100 , jobAdvertisementControl.getCompanyIdFromUser(user));
     }
 }
