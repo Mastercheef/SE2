@@ -204,4 +204,12 @@ class JobAdvertisementControlTest {
 
         assertEquals(200, jobAdvertisementControl.getCompanyId(jobAdvertisement));
     }
+
+    @Test
+    void getJobsByCompanyID() {
+        List<JobAdvertisement> list;
+        list = mock(List.class);
+        when(jobAdvertisementRepository.findJobAdvertisementsByCompanyId(100)).thenReturn(list);
+        assertEquals(list , jobAdvertisementControl.getJobsByCompanyId(100));
+    }
 }
