@@ -33,6 +33,8 @@ public class RegistrationViewTest {
     private String country;
     private String email;
     private String emailRepeat;
+    private String pw;
+    private String pwRepeat;
 
     private String companyName;
     private String companyEmail;
@@ -61,7 +63,7 @@ public class RegistrationViewTest {
     private String errorCityMissing;
     private String errorCountryMissing;
     private String errorEmailInvalid;
-    private String errorPasswordMissing;
+    private String errorPWMissing;
 
     // Company error messages
     private String errorCompanyNameMissing;
@@ -95,6 +97,8 @@ public class RegistrationViewTest {
         country = "USA";
         email = "johnstamos@americamail.com";
         emailRepeat = email;
+        pw = "whatever";
+        pwRepeat = pw;
 
         // Company
         companyName = "The Big Company";
@@ -124,7 +128,7 @@ public class RegistrationViewTest {
         errorCityMissing = "Bitte geben Sie eine Stadt ein";
         errorCountryMissing = "Bitte geben Sie ein Land ein";
         errorEmailInvalid = "Bitte geben Sie eine gültige Email ein";
-        errorPasswordMissing = "Bitte geben Sie eine gültiges Passwort ein";
+        errorPWMissing = "Bitte geben Sie eine gültiges Passwort ein";
         errorCompanyNameMissing = "Bitte geben Sie einen gültigen Firmennamen ein";
         errorCompanyPhoneMissing = "Bitte geben Sie eine Telefonnummer ein";
         errorCompanyFaxMissing = "Bitte geben Sie eine Faxnummer ein";
@@ -157,6 +161,8 @@ public class RegistrationViewTest {
         Assert.assertEquals(this.country, registrationView.country.getValue());
         Assert.assertEquals(this.email, registrationView.email.getValue());
         Assert.assertEquals(this.emailRepeat, registrationView.emailRepeat.getValue());
+        Assert.assertEquals(this.pw, registrationView.password.getValue());
+        Assert.assertEquals(this.pwRepeat, registrationView.passwordRepeat.getValue());
     }
 
     @Test
@@ -220,6 +226,7 @@ public class RegistrationViewTest {
         Assert.assertEquals(this.country, userDTO.getAddress().getCountry());
         Assert.assertEquals(this.email, userDTO.getEmail());
         Assert.assertEquals(this.type, userDTO.getType());
+        Assert.assertEquals(this.pw, userDTO.getPassword());
     }
 
     @Test
@@ -278,8 +285,8 @@ public class RegistrationViewTest {
         Assert.assertEquals(errorCountryMissing, registrationView.country.getErrorMessage());
         Assert.assertEquals(errorEmailInvalid, registrationView.email.getErrorMessage());
         Assert.assertEquals(errorEmailInvalid, registrationView.emailRepeat.getErrorMessage());
-        Assert.assertEquals(errorPasswordMissing, registrationView.password.getErrorMessage());
-        Assert.assertEquals(errorPasswordMissing, registrationView.passwordRepeat.getErrorMessage());
+        Assert.assertEquals(errorPWMissing, registrationView.password.getErrorMessage());
+        Assert.assertEquals(errorPWMissing, registrationView.passwordRepeat.getErrorMessage());
 
         Assert.assertTrue(registrationView.salutation.isInvalid());
         Assert.assertTrue(registrationView.title.isInvalid());
@@ -360,6 +367,8 @@ public class RegistrationViewTest {
         registrationView.country.setValue(this.country);
         registrationView.email.setValue(this.email);
         registrationView.emailRepeat.setValue(this.emailRepeat);
+        registrationView.password.setValue(this.pw);
+        registrationView.passwordRepeat.setValue(this.pwRepeat);
     }
 
     private void populateCompanyForm(RegistrationView registrationView) {
