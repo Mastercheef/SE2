@@ -8,7 +8,6 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
@@ -22,6 +21,7 @@ import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.MessageDTO;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.UtilCurrent;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -169,15 +169,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
             // Delete button for messages
             Button delete = new Button("Nachricht löschen");
             delete.addClickListener(e -> {
-                // Preventing missclicks by opening a dialog box
-                Dialog dialog   = new Dialog();
-                Label question  = new Label("Sind sie sicher, dass Sie diese Nachricht löschen möchten?");
-                Label info      = new Label("(Dieser Vorgang ist unwiderruflich.)");
-                Button yesButton = new Button("Ja");
-                Button noButton  = new Button ("Nein");
-
-                yesButton.addClickListener(jo -> {
-                    dialog.close();
+                Runnable yesRunnable = () -> {
                     try {
                         this.removeMessage(message);
                     } catch (DatabaseUserException ex) {
@@ -188,14 +180,12 @@ public class InboxView extends Div implements HasUrlParameter<String> {
                     cleanSecondary();
                     if(grid.getColumns().isEmpty())
                         splitLayout.addToPrimary(hint);
-                });
-                noButton.addClickListener(no -> dialog.close());
+                };
 
-                HorizontalLayout buttons = new HorizontalLayout(yesButton, noButton);
-                VerticalLayout dialogContent = new VerticalLayout(question, info, buttons);
-                dialogContent.setAlignItems(FlexComponent.Alignment.CENTER);
-                dialog.add(dialogContent);
+                String questionString = "Sind sie sicher, dass Sie diese Nachricht löschen möchten?";
+                Dialog dialog   = Utils.getConfirmationDialog(questionString, yesRunnable);
                 dialog.open();
+
             });
 
             // Reply

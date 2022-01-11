@@ -10,7 +10,6 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.HeaderRow;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -342,14 +341,7 @@ public class JobAdvertisementGrid extends Div {
                 Button delete = new Button("Löschen");
                 delete.addClickListener(e -> {
                     // Preventing missclicks by opening a dialog box
-                    Dialog dialog   = new Dialog();
-                    Label question  = new Label("Sind sie sicher, dass Sie dieses Stellenangebot löschen möchten?");
-                    Label info      = new Label("(Dieser Vorgang ist unwiderruflich.)");
-                    Button yesButton = new Button("Ja");
-                    Button noButton  = new Button ("Nein");
-
-                    yesButton.addClickListener(jo -> {
-                        dialog.close();
+                    Runnable yesRunnable = () -> {
                         try {
                             this.jobAdvertisementControl.deleteAdvertisement(jobAdvertisement);
                             Notification notification = Notification.show("Stellenangebot gelöscht", 5000,
@@ -359,13 +351,10 @@ public class JobAdvertisementGrid extends Div {
                         } catch (DatabaseUserException ex) {
                             ex.printStackTrace();
                         }
-                    });
-                    noButton.addClickListener(no -> dialog.close());
+                    };
 
-                    HorizontalLayout dialogButtons = new HorizontalLayout(yesButton, noButton);
-                    VerticalLayout dialogContent = new VerticalLayout(question, info, dialogButtons);
-                    dialogContent.setAlignItems(FlexComponent.Alignment.CENTER);
-                    dialog.add(dialogContent);
+                    String questionString = "Sind sie sicher, dass Sie dieses Stellenangebot löschen möchten?";
+                    Dialog dialog   = Utils.getConfirmationDialog(questionString, yesRunnable);
                     dialog.open();
                 });
                 buttons.add(delete);

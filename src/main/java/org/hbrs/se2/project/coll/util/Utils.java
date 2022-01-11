@@ -62,6 +62,26 @@ public class Utils {
         dialog.open();
     }
 
+    public static Dialog getConfirmationDialog(String questionString, Runnable yesFunction){
+        Dialog dialog   = new Dialog();
+        Label question  = new Label(questionString);
+        Label info      = new Label("(Dieser Vorgang ist unwiderruflich.)");
+        Button yesButton = new Button("Ja");
+        Button noButton  = new Button ("Nein");
+
+        yesButton.addClickListener(jo -> {
+            yesFunction.run();
+            dialog.close();
+        });
+        noButton.addClickListener(no -> dialog.close());
+
+        HorizontalLayout dialogButtons = new HorizontalLayout(yesButton, noButton);
+        VerticalLayout dialogContent = new VerticalLayout(question, info, dialogButtons);
+        dialogContent.setAlignItems(FlexComponent.Alignment.CENTER);
+        dialog.add(dialogContent);
+        return dialog;
+    }
+
     public static String hashPassword(String plain) {
         return BCrypt.hashpw(plain, BCrypt.gensalt());
     }
