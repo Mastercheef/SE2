@@ -39,7 +39,9 @@ public class LoginControl {
         UserDTO userTmp = null;
         try {
             userTmp = repository.findUserByEmail(email);
-            if (userTmp != null && BCrypt.checkpw(plainTextPassword, userTmp.getPassword())) {
+            if (userTmp == null)
+                return null;
+            if (BCrypt.checkpw(plainTextPassword, userTmp.getPassword())) {
                 loginResult.setResult(true);
                 loginResult.setReason("LogIn erfolgreich");
             } else {
