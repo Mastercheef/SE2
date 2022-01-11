@@ -12,8 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserDTOBuilderTest {
 
-    UserDTOBuilder userDTOBuilder;
     UserDTOImpl userDTOFullData;
+
+    String street = "Straße";
+    String postalcode = "12345";
+    String country = "Deutschland";
 
     @BeforeEach
     void setUp() {
@@ -24,11 +27,11 @@ public class UserDTOBuilderTest {
         userDTOFullData.setFirstName("Hans");
         userDTOFullData.setLastName("Meier");
         Address address = new Address();
-        address.setStreet("Straße");
+        address.setStreet(street);
         address.setHouseNumber("10");
-        address.setPostalCode("12345");
+        address.setPostalCode(postalcode);
         address.setCity("Bonn");
-        address.setCountry("Deutschland");
+        address.setCountry(country);
         userDTOFullData.setAddress(address);
         userDTOFullData.setPhone("1234567890");
         userDTOFullData.setDateOfBirth(LocalDate.of(2000,01,01));
@@ -48,7 +51,7 @@ public class UserDTOBuilderTest {
                 .withTitle("Dr.")
                 .withFirstName("Hans")
                 .withLastName("Meier")
-                .withAddress("Straße", "10", "12345", "Bonn", "Deutschland")
+                .withAddress(street, "10", postalcode, "Bonn", country)
                 .withPhone("1234567890")
                 .withDateOfBirth(LocalDate.of(2000,01,01))
                 .withEmail("hans.meier@hbrs.de")
@@ -78,11 +81,11 @@ public class UserDTOBuilderTest {
         UserDTO dtoFromBuilder = UserDTOBuilder
                 .please()
                 .createEmptyUser()
-                .withStreet("Straße")
+                .withStreet(street)
                 .withHouseNumber("10")
-                .withPostalCode("12345")
+                .withPostalCode(postalcode)
                 .withCity("Bonn")
-                .withCountry("Deutschland")
+                .withCountry(country)
                 .done();
 
         assertEquals(userDTOFullData.getAddress().getStreet(), dtoFromBuilder.getAddress().getStreet());

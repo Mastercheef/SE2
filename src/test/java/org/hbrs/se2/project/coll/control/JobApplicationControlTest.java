@@ -48,11 +48,14 @@ class JobApplicationControlTest {
     List<JobApplicationDTO> resultListUsername = new ArrayList<>();
     List<JobApplicationDTO> resultListHeadline= new ArrayList<>();
 
+    String student = "student";
+    String match = "match";
+
     @BeforeEach
     void setUp() {
         StudentUser studentUser1 = new StudentUser();
-        studentUser1.setFirstName("student");
-        studentUser1.setLastName("match");
+        studentUser1.setFirstName(student);
+        studentUser1.setLastName(match);
         JobAdvertisement jobAd1 = new JobAdvertisement();
         JobApplicationDTOImpl job1 = new JobApplicationDTOImpl();
         job1.setHeadline("Job1");
@@ -61,8 +64,8 @@ class JobApplicationControlTest {
         job1.setJobAdvertisementDTO(jobAd1);
 
         StudentUser studentUser2 = new StudentUser();
-        studentUser2.setFirstName("student");
-        studentUser2.setLastName("match");
+        studentUser2.setFirstName(student);
+        studentUser2.setLastName(match);
         JobAdvertisement jobAd2 = new JobAdvertisement();
         JobApplicationDTOImpl job2 = new JobApplicationDTOImpl();
         job2.setHeadline("Job2");
@@ -71,7 +74,7 @@ class JobApplicationControlTest {
         job2.setJobAdvertisementDTO(jobAd2);
 
         StudentUser studentUser3 = new StudentUser();
-        studentUser3.setFirstName("student");
+        studentUser3.setFirstName(student);
         studentUser3.setLastName("drei");
         JobAdvertisement jobAd3 = new JobAdvertisement();
         JobApplicationDTOImpl job3 = new JobApplicationDTOImpl();
@@ -152,7 +155,7 @@ class JobApplicationControlTest {
         filtered = jobApplicationControl.filterApplicationsByUsername(empty, "Name");
         assertTrue(filtered.size() == 0);
 
-        filtered = jobApplicationControl.filterApplicationsByUsername(applications, "match");
+        filtered = jobApplicationControl.filterApplicationsByUsername(applications, match);
         assertTrue(filtered.size() == 2);
         assertEquals(resultListUsername, filtered);
     }
