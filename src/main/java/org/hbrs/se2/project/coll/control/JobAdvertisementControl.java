@@ -5,6 +5,8 @@ import org.hbrs.se2.project.coll.control.factories.JobFactory;
 import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
+import org.hbrs.se2.project.coll.entities.Company;
+import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
