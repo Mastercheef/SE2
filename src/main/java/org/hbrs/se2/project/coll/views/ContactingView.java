@@ -63,9 +63,9 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                     }
 
                     if (companyId != null && jobId != null)
-                        receiver = contactingControl.getContactPerson(Integer.parseInt(companyId));
+                        this.receiver = contactingControl.getContactPerson(Integer.parseInt(companyId));
                     else {
-                        receiver = userId;
+                        this.receiver = userId;
                         receiverUser = userRepository.findUserById(userId);
                     }
                     initContacting();
@@ -129,7 +129,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                     contactingControl.sendMessage(
                             textArea.getValue(),
                             UtilCurrent.getCurrentUser().getId(),
-                            receiver,
+                            this.receiver,
                             subjectField.getValue(),
                             LocalDate.now()
                     );
