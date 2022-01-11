@@ -269,4 +269,12 @@ class JobAdvertisementControlTest {
         when(jobAdvertisementRepository.filterJobs(title, requirements, temporaryEmployment, date, hours, salary)).thenReturn(listThree);
         assertEquals(listThree , jobAdvertisementControl.filterJobs(title, requirements, temporaryEmployment, date, hours, salary));
     }
+    @Test
+    void filterFour() {
+        List<JobAdvertisement> listFour;
+        listFour = mock(List.class);
+
+        when(jobAdvertisementRepository.filterJobs(title, requirements, date, hours, salary)).thenReturn(listFour);
+        assertEquals(listFour , jobAdvertisementControl.filterJobs(title, requirements, date, hours, salary));
+    }
 }
