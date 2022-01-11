@@ -30,7 +30,7 @@ class LoginControlTest {
     String plaintext = "passwd";
     String loginWrongUserAndPass = "Benutzername oder Passwort falsch";
     String loginWrongPassword = "Das eingegebene Password ist falsch!";
-    String loginSucces = "LogIn erfolgreich";
+    String loginSuccess = "LogIn erfolgreich";
     UserDTO tmpUserDTO;
     String hashedPW = Utils.hashPassword(plaintext);
 
@@ -53,7 +53,7 @@ class LoginControlTest {
         when(tmpUserDTO.getPassword()).thenReturn(hashedPW);
         LoginResultDTO result = loginControl.authentificate(email,plaintext);
         assertTrue(result.getResult());
-        assertEquals(loginSucces, result.getReason());
+        assertEquals(loginSuccess, result.getReason());
     }
 
     @Test

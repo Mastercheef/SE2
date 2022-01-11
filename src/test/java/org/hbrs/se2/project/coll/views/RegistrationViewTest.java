@@ -230,12 +230,7 @@ public class RegistrationViewTest {
     }
 
     @Test
-    public void autoLoginAfterRegistrationTest() {
-
-    }
-
-    @Test
-    public void MissingValueErrorFieldsTest() throws DatabaseUserException {
+    public void missingValueErrorFieldsTest() throws DatabaseUserException {
         RegistrationView registrationView = new RegistrationView();
         RegistrationView.RegisterForm registerForm = registrationView.new RegisterForm();
         populateBasicForm(registrationView);
@@ -257,7 +252,7 @@ public class RegistrationViewTest {
     }
 
     @Test
-    public void AllMissingValuesErrorFieldsTest() throws DatabaseUserException {
+    public void allMissingValuesErrorFieldsTest() throws DatabaseUserException {
         RegistrationView registrationView = new RegistrationView();
         RegistrationView.RegisterForm registerForm = registrationView.new RegisterForm();
 
@@ -306,7 +301,7 @@ public class RegistrationViewTest {
     }
 
     @Test
-    public void AllMissingCompanyValuesErrorFieldsTest() throws DatabaseUserException {
+    public void allMissingCompanyValuesErrorFieldsTest() throws DatabaseUserException {
         RegistrationView registrationView = new RegistrationView();
         RegistrationView.RegisterForm registerForm = registrationView.new RegisterForm();
         RegistrationView.CompanyRegisterForm companyRegisterForm = registrationView.new CompanyRegisterForm();
