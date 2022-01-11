@@ -58,7 +58,6 @@ public class JobApplicationControl {
             LOGGER.info("LOG : {}" , exception.getMessage());
             applicationResultDTO.setResult(false);
             applicationResultDTO.addReason(JobApplicationResultDTO.ReasonType.UNEXPECTED_ERROR);
-            throw exception;
         }
         return applicationResultDTO;
     }
