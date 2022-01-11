@@ -169,8 +169,8 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         if (UtilCurrent.getCurrentUser() != null &&
                 !authorizationControl.isUserCompanyContactPerson(UtilCurrent.getCurrentUser(),companyId)) {
             jobAdvertisementGrid = new JobAdvertisementGrid(jobAdvertisementControl, jobApplicationControl,
-                    authorizationControl, companyId, true,
-                    true, true, false, true);
+                    authorizationControl, companyId, true);
+            jobAdvertisementGrid.setGridItemButtons(true, true, false, true);
             jobAdvertisementGrid.setWidth("99%");
             jobAdvertisementGrid.loadGridData();
             HorizontalLayout jobGridLayout = new HorizontalLayout(jobAdvertisementGrid);

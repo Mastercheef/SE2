@@ -49,6 +49,7 @@ public class JobAdvertisementGrid extends Div {
     private boolean contact = false;
     private boolean profile = false;
     private boolean apply = false;
+    private boolean filterOption = true;
     HeaderRow filterBar;
 
     TextField companyFilter             = new TextField();
@@ -66,6 +67,9 @@ public class JobAdvertisementGrid extends Div {
     int oldWorkingHours;
     IntegerField salaryFilter           = new IntegerField();
     int oldSalary;
+    
+    String filter = "Filtern ...";
+    String content = "content";
 
     public void loadGridData() {
         List<JobAdvertisement> jobs = jobAdvertisementControl.getJobsByCompanyId(companyId);
@@ -88,15 +92,21 @@ public class JobAdvertisementGrid extends Div {
     public void setResizeListener() {
         Page page = UI.getCurrent().getPage();
         page.addBrowserWindowResizeListener(event ->
-                filterBar.getCell(grid.getColumnByKey("content"))
+                filterBar.getCell(grid.getColumnByKey(content))
                         .setComponent(createHeaderCard(event.getWidth()))
         );
     }
 
+    public void setGridItemButtons(boolean details, boolean contact, boolean profile, boolean apply) {
+        this.details = details;
+        this.contact = contact;
+        this.profile = profile;
+        this.apply = apply;
+    }
+
     public JobAdvertisementGrid(JobAdvertisementControl jobAdvertisementControl,
                                 JobApplicationControl jobApplicationControl,
-                                AuthorizationControl authorizationControl, int companyId, boolean filterOption,
-                                boolean details, boolean contact, boolean profile, boolean apply) {
+                                AuthorizationControl authorizationControl, int companyId, boolean filterOption) {
 
         // Setting Controller (Can't be autowired because of how vaadin works)
         this.jobAdvertisementControl = jobAdvertisementControl;
@@ -104,10 +114,7 @@ public class JobAdvertisementGrid extends Div {
         this.authorizationControl = authorizationControl;
         // Setting Options for Grid
         this.companyId = companyId;
-        this.details = details;
-        this.contact = contact;
-        this.profile = profile;
-        this.apply = apply;
+        this.filterOption = filterOption;
         this.setHeightFull();
         setResizeListener();
 
@@ -120,8 +127,8 @@ public class JobAdvertisementGrid extends Div {
         requirementsFilter.setPlaceholder("Voraussetzungen filtern ...");
         jobTypeFilter.setPlaceholder("Jobtypen filtern ...");
         temporaryFilter.setPlaceholder("Kurzfristige Beschäftigung?");
-        workingHoursFilter.setPlaceholder("Filtern ...");
-        salaryFilter.setPlaceholder("Filtern ...");
+        workingHoursFilter.setPlaceholder(filter);
+        salaryFilter.setPlaceholder(filter);
 
         companyFilter.setLabel("Firma:");
         jobTitleFilter.setLabel("Titel:");
@@ -195,10 +202,11 @@ public class JobAdvertisementGrid extends Div {
         filterBar = grid.appendHeaderRow();
 
         // Prepare Content of Grid (jobs)
-        grid.addComponentColumn(this::createJobCard).setKey("content");
+        grid.addComponentColumn(this::createJobCard).setKey(content);
 
         // Set Header Content
-        filterBar.getCell(grid.getColumnByKey("content")).setComponent(createHeaderCard(2000));
+        if (this.filterOption)
+            filterBar.getCell(grid.getColumnByKey(content)).setComponent(createHeaderCard(2000));
 
         addDiv.add(advertisementHeader, grid);
 
@@ -300,7 +308,7 @@ public class JobAdvertisementGrid extends Div {
     }
 
     private HorizontalLayout createJobCardButtons(JobAdvertisement jobAdvertisement) {
-        int companyId = jobAdvertisementControl.getCompanyId(jobAdvertisement);
+        int compId = jobAdvertisementControl.getCompanyId(jobAdvertisement);
         HorizontalLayout buttons = new HorizontalLayout();
         Button messageBtn  = new Button("Frage stellen");
         Button profileBtn  = new Button("Profil besuchen");
@@ -313,7 +321,7 @@ public class JobAdvertisementGrid extends Div {
         }
         if (this.contact) {
             messageBtn.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.CONTACTING_VIEW +
-                    companyId + "/" + jobAdvertisement.getId(), "_blank"));
+                    compId + "/" + jobAdvertisement.getId(), "_blank"));
         }
         if (this.apply) {
             applyBtn.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.JOBADVERTISEMENT_VIEW +
@@ -323,14 +331,14 @@ public class JobAdvertisementGrid extends Div {
         if(UtilCurrent.getCurrentUser() != null ) {
             if(this.profile) {
                 profileBtn.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.COMPANYPROFILE_VIEW
-                        + companyId));
+                        + compId));
                 buttons.add(profileBtn);
             }
             if (Objects.equals(UtilCurrent.getCurrentUser().getType(), "st")) {
                 buttons.add(messageBtn);
                 buttons.add(applyBtn);
             }
-            if (this.authorizationControl.isUserCompanyContactPerson(UtilCurrent.getCurrentUser(), companyId)) {
+            if (this.authorizationControl.isUserCompanyContactPerson(UtilCurrent.getCurrentUser(), compId)) {
                 Button delete = new Button("Löschen");
                 delete.addClickListener(e -> {
                     // Preventing missclicks by opening a dialog box
@@ -383,10 +391,10 @@ public class JobAdvertisementGrid extends Div {
             temporaryFilter.setValue(null);
             temporaryFilter.setPlaceholder("Kurzfristige Beschäftigung?");
             workingHoursFilter.setValue(60);
-            workingHoursFilter.setPlaceholder("Filtern ...");
+            workingHoursFilter.setPlaceholder(filter);
             oldWorkingHours = 60;
             salaryFilter.setValue(1);
-            salaryFilter.setPlaceholder("Filtern ...");
+            salaryFilter.setPlaceholder(filter);
             oldSalary = 1;
             LocalDate newDate = LocalDate.of(LocalDate.now().getYear(), 1, 1);
             oldDate = newDate;

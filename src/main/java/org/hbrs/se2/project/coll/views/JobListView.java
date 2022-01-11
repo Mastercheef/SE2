@@ -47,8 +47,8 @@ public class JobListView extends Div implements AfterNavigationObserver, BeforeE
 
     public void init() {
         jobAdvertisementGrid = new JobAdvertisementGrid(jobAdvertisementControl, jobApplicationControl,
-                authorizationControl, 0, true,
-                true, true, true, true);
+                authorizationControl, 0, true);
+        jobAdvertisementGrid.setGridItemButtons(true, true, true, true);
         add(jobAdvertisementGrid);
         this.setHeightFull();
     }

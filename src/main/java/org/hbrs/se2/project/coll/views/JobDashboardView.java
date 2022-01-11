@@ -119,8 +119,8 @@ public class JobDashboardView extends Div implements AfterNavigationObserver, Be
         add(tabs);
 
         jobAdvertisementGrid = new JobAdvertisementGrid(jobAdvertisementControl, jobApplicationControl,
-                authorizationControl, companyId, true,
-                true, false, false, false);
+                authorizationControl, companyId, true);
+        jobAdvertisementGrid.setGridItemButtons(true, false, false, false);
         jobAdvertisementGrid.setHeight("800px");
         jobAdvertisementGrid.setWidthFull();
         tabContent.add(jobAdvertisementGrid);
