@@ -41,7 +41,7 @@ public class ContactingControl {
         return companyRepository.findCompanyProfileById(id).getCompanyName();
     }
 
-    public int getContactPerson(int id) { return contactPersonRepository.findContactPersonByCompanyId(id).getId(); }
+    public int getContactPersonId(int id) { return contactPersonRepository.findContactPersonByCompanyId(id).getId(); }
 
     public void sendMessage(String content, int sender, int recipient, String subject,
                             LocalDate date) throws DatabaseUserException {

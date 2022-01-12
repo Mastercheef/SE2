@@ -4,6 +4,7 @@ import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.control.factories.MessageFactory;
 import org.hbrs.se2.project.coll.dtos.MessageDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.dtos.impl.MessageDTOImpl;
 import org.hbrs.se2.project.coll.entities.Company;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.Message;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -48,23 +50,16 @@ class InboxControlTest {
     @Mock
     private ContactPersonRepository contactPersonRepository;
 
-
-    @Mock
-    MessageDTO messageDTO;
-    @Mock
-    Message sentMessage;
+    MessageDTO messageDTO = Mockito.mock(MessageDTO.class);
+    Message sentMessage = Mockito.mock(Message.class);
 
     MessageDTO messageDTOMethod;
     Message resultMessage;
 
-    @Mock
-    UserDTO userDTO;
+    UserDTO userDTO = Mockito.mock(UserDTO.class);
 
-    @Mock
-    ContactPerson contactPerson;
-
-    @Mock
-    Company company;
+    ContactPerson contactPerson = Mockito.mock(ContactPerson.class);
+    Company company = Mockito.mock(Company.class);
 
 
     private String message = "message";
@@ -112,8 +107,7 @@ class InboxControlTest {
         when(userRepository.findUserById(100)).thenThrow(DataAccessResourceFailureException.class);
         DatabaseUserException thrown = Assertions.assertThrows( DatabaseUserException.class, () ->
                 inboxControl.getUserName(100));
-        Assertions.assertEquals("Während der Verbindung zur Datenbank mit JPA ist \" +\n" +
-                "                        \"ein Fehler aufgetreten.", thrown.getMessage());
+        Assertions.assertEquals(Globals.LogMessage.CONNECTED, thrown.getMessage());
     }
 
     @Test
@@ -121,7 +115,7 @@ class InboxControlTest {
         when(userRepository.findUserById(100)).thenThrow(DataIntegrityViolationException.class);
         DatabaseUserException thrown = Assertions.assertThrows( DatabaseUserException.class, () ->
                 inboxControl.getUserName(100));
-        Assertions.assertEquals("Es ist ein unerwarteter Fehler aufgetreten.", thrown.getMessage());
+        Assertions.assertEquals(Globals.LogMessage.ERROR, thrown.getMessage());
     }
 
     @Test
@@ -136,8 +130,7 @@ class InboxControlTest {
         when(messageRepository.findMessageById(200)).thenThrow(DataAccessResourceFailureException.class);
         DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
                 inboxControl.getSubject(200));
-        Assertions.assertEquals("Während der Verbindung zur Datenbank mit JPA ist \" +\n" +
-                "                        \"ein Fehler aufgetreten.", thrown.getMessage());
+        Assertions.assertEquals(Globals.LogMessage.CONNECTED, thrown.getMessage());
     }
 
     @Test
@@ -145,7 +138,7 @@ class InboxControlTest {
         when(messageRepository.findMessageById(200)).thenThrow(DataIntegrityViolationException.class);
         DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
                 inboxControl.getSubject(200));
-        Assertions.assertEquals("Es ist ein unerwarteter Fehler aufgetreten.", thrown.getMessage());
+        Assertions.assertEquals(Globals.LogMessage.ERROR, thrown.getMessage());
     }
 
     @Test
@@ -171,8 +164,7 @@ class InboxControlTest {
         when(userRepository.findUserById(100)).thenThrow(DataAccessResourceFailureException.class);
         DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
                 inboxControl.callProfileRoute(100));
-        Assertions.assertEquals("Während der Verbindung zur Datenbank mit JPA ist \" +\n" +
-                "                        \"ein Fehler aufgetreten.", thrown.getMessage());
+        Assertions.assertEquals(Globals.LogMessage.CONNECTED, thrown.getMessage());
     }
 
     @Test
@@ -180,7 +172,7 @@ class InboxControlTest {
         when(userRepository.findUserById(100)).thenThrow(DataIntegrityViolationException.class);
         DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
                 inboxControl.callProfileRoute(100));
-        Assertions.assertEquals("Es ist ein unerwarteter Fehler aufgetreten.", thrown.getMessage());
+        Assertions.assertEquals(Globals.LogMessage.ERROR, thrown.getMessage());
     }
 
     @Test
@@ -200,8 +192,7 @@ class InboxControlTest {
             when(messageRepository.save(sentMessage)).thenThrow(DataAccessResourceFailureException.class);
             DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
                     inboxControl.sendMessage(messageDTO));
-            Assertions.assertEquals("Während der Verbindung zur Datenbank mit JPA ist \" +\n" +
-                    "                        \"ein Fehler aufgetreten.", thrown.getMessage());
+            Assertions.assertEquals(Globals.LogMessage.CONNECTED, thrown.getMessage());
         }
     }
 
@@ -212,7 +203,7 @@ class InboxControlTest {
             when(messageRepository.save(sentMessage)).thenThrow(DataIntegrityViolationException.class);
             DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
                     inboxControl.sendMessage(messageDTO));
-            Assertions.assertEquals("Es ist ein unerwarteter Fehler aufgetreten.", thrown.getMessage());
+            Assertions.assertEquals(Globals.LogMessage.ERROR, thrown.getMessage());
         }
     }
 
@@ -233,8 +224,7 @@ class InboxControlTest {
             doThrow(DataAccessResourceFailureException.class).when(messageRepository).delete(sentMessage);
             DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
                     inboxControl.deleteMessage(messageDTO));
-            Assertions.assertEquals("Während der Verbindung zur Datenbank mit JPA ist \" +\n" +
-                    "                        \"ein Fehler aufgetreten.", thrown.getMessage());
+            Assertions.assertEquals(Globals.LogMessage.CONNECTED, thrown.getMessage());
         }
     }
 
@@ -245,8 +235,40 @@ class InboxControlTest {
             doThrow(DataIntegrityViolationException.class).when(messageRepository).delete(sentMessage);
             DatabaseUserException thrown = Assertions.assertThrows(DatabaseUserException.class, () ->
                     inboxControl.deleteMessage(messageDTO));
-            Assertions.assertEquals("Es ist ein unerwarteter Fehler aufgetreten.", thrown.getMessage());
+            Assertions.assertEquals(Globals.LogMessage.ERROR, thrown.getMessage());
         }
+    }
+
+    @Test
+    void testSetMessageAsRead() throws DatabaseUserException {
+        MessageDTOImpl messageDTOImpl = new MessageDTOImpl();
+        messageDTOImpl.setId(1);
+        messageDTOImpl.setSender(10);
+        messageDTOImpl.setRecipient(20);
+        messageDTOImpl.setSubject("Subject");
+        messageDTOImpl.setDate(LocalDate.now());
+        messageDTOImpl.setContent("Content");
+
+        Message readMessage = inboxControl.setMessageAsRead(messageDTOImpl);
+        assertEquals(messageDTOImpl.getId(), readMessage.getId());
+        assertEquals(messageDTOImpl.getSender(), readMessage.getSender());
+        assertEquals(messageDTOImpl.getRecipient(), readMessage.getRecipient());
+        assertEquals(messageDTOImpl.getSubject(), readMessage.getSubject());
+        assertEquals(messageDTOImpl.getDate(), readMessage.getDate());
+        assertEquals(messageDTOImpl.getContent(), readMessage.getContent());
+    }
+
+    @Test
+    void testSetMessageAsReadDARFE() {
+        when(messageRepository.save(any())).thenThrow(DataAccessResourceFailureException.class);
+        assertThrows( DatabaseUserException.class, () -> inboxControl.setMessageAsRead(messageDTO));
+    }
+
+    @Test
+    void testSetMessageAsReadException() {
+
+        when(messageRepository.save(any())).thenThrow(RuntimeException.class);
+        assertThrows( DatabaseUserException.class, () -> inboxControl.setMessageAsRead(messageDTO));
     }
 
 }

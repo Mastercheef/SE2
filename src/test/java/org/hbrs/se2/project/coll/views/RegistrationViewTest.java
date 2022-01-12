@@ -240,7 +240,9 @@ public class RegistrationViewTest {
         RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl(userDTO, registrationView.emailRepeat.getValue(),
                 registrationView.passwordRepeat.getValue());
         RegistrationResultDTO registrationResult = registrationControl.registerUser(registrationDTO);
-        registrationView.setErrorFields(registrationResult.getReasons());
+        for (RegistrationResultDTO.ReasonType reason : registrationResult.getReasons()) {
+            registrationView.setErrorField(reason);
+        }
 
         Assert.assertNotNull(registrationView);
         Assert.assertNotNull(registerForm);
@@ -260,7 +262,9 @@ public class RegistrationViewTest {
         RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl(userDTO, registrationView.emailRepeat.getValue(),
                 registrationView.passwordRepeat.getValue());
         RegistrationResultDTO registrationResult = registrationControl.registerUser(registrationDTO);
-        registrationView.setErrorFields(registrationResult.getReasons());
+        for (RegistrationResultDTO.ReasonType reason : registrationResult.getReasons()) {
+            registrationView.setErrorField(reason);
+        }
 
         Assert.assertNotNull(registrationView);
         Assert.assertNotNull(registerForm);
@@ -315,7 +319,9 @@ public class RegistrationViewTest {
         registrationDTO.setCompanyDTO(companyDTO);
 
         RegistrationResultDTO registrationResult = registrationControl.registerUser(registrationDTO);
-        registrationView.setErrorFields(registrationResult.getReasons());
+        for (RegistrationResultDTO.ReasonType reason : registrationResult.getReasons()) {
+            registrationView.setErrorField(reason);
+        }
 
         Assert.assertNotNull(registrationView);
         Assert.assertNotNull(registerForm);

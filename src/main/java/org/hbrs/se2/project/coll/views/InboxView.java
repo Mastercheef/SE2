@@ -8,7 +8,6 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
@@ -22,6 +21,7 @@ import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.MessageDTO;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.UtilCurrent;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -38,10 +38,10 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     InboxControl inboxControl;
 
     // Grid may NOT be final.
-    private static Grid<MessageDTO> grid;
-    private static List<MessageDTO> messages  = new ArrayList<>();
-    private static Div hint;
-    private static SplitLayout splitLayout = new SplitLayout();
+    private Grid<MessageDTO> grid;
+    private List<MessageDTO> messages = new ArrayList<>();
+    private Div hint;
+    private SplitLayout splitLayout = new SplitLayout();
 
     private static final Logger LOGGER = Logger.getLogger(InboxView.class.getName());
 
@@ -58,7 +58,6 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     }
 
     private void setupGrid() {
-
         grid = new Grid<>(MessageDTO.class, false);
         grid.setAllRowsVisible(true);
 
@@ -110,12 +109,12 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         });
 
         // Fetch messages for current user and fill grid with them
-        InboxView.messages = inboxControl.getMessages(UtilCurrent.getCurrentUser().getId());
+        this.messages = inboxControl.getMessages(UtilCurrent.getCurrentUser().getId());
         grid.setItems(messages);
 
         // Hint if user has no messages
-        InboxView.hint = new Div();
-        InboxView.hint.setText("Sie haben keine Nachrichten.");
+        this.hint = new Div();
+        this.hint.setText("Sie haben keine Nachrichten.");
         setDivStyle(hint);
 
         // Setup right side of the Layout, which works as a message Display / Answering UI
@@ -128,15 +127,15 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         VerticalLayout reply = new VerticalLayout(hint2);
 
         // Compose both sides
-        InboxView.splitLayout = new SplitLayout(inbox, reply);
-        InboxView.splitLayout.setSplitterPosition(1000);
-        InboxView.splitLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
+        this.splitLayout = new SplitLayout(inbox, reply);
+        this.splitLayout.setSplitterPosition(1000);
+        this.splitLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
 
-        InboxView.splitLayout.setSizeFull();
-        InboxView.splitLayout.setHeight("100%");
+        this.splitLayout.setSizeFull();
+        this.splitLayout.setHeight("100%");
         setSizeFull();
         setHeight("100%");
-        add(InboxView.splitLayout);
+        add(this.splitLayout);
     }
 
     private void toggleReply(MessageDTO message, boolean selected) throws DatabaseUserException {
@@ -169,15 +168,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
             // Delete button for messages
             Button delete = new Button("Nachricht löschen");
             delete.addClickListener(e -> {
-                // Preventing missclicks by opening a dialog box
-                Dialog dialog   = new Dialog();
-                Label question  = new Label("Sind sie sicher, dass Sie diese Nachricht löschen möchten?");
-                Label info      = new Label("(Dieser Vorgang ist unwiderruflich.)");
-                Button yesButton = new Button("Ja");
-                Button noButton  = new Button ("Nein");
-
-                yesButton.addClickListener(jo -> {
-                    dialog.close();
+                Runnable yesRunnable = () -> {
                     try {
                         this.removeMessage(message);
                     } catch (DatabaseUserException ex) {
@@ -188,14 +179,12 @@ public class InboxView extends Div implements HasUrlParameter<String> {
                     cleanSecondary();
                     if(grid.getColumns().isEmpty())
                         splitLayout.addToPrimary(hint);
-                });
-                noButton.addClickListener(no -> dialog.close());
+                };
 
-                HorizontalLayout buttons = new HorizontalLayout(yesButton, noButton);
-                VerticalLayout dialogContent = new VerticalLayout(question, info, buttons);
-                dialogContent.setAlignItems(FlexComponent.Alignment.CENTER);
-                dialog.add(dialogContent);
+                String questionString = "Sind sie sicher, dass Sie diese Nachricht löschen möchten?";
+                Dialog dialog   = Utils.getConfirmationDialog(questionString, yesRunnable);
                 dialog.open();
+
             });
 
             // Reply
@@ -293,13 +282,13 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     }
 
     // Layout when a message has been deselected
-    private static  void cleanSecondary() {
-        hint = new Div();
-        hint.setText("Es wurde keine Nachricht ausgewählt.");
-        setDivStyle(hint);
-        splitLayout.remove(splitLayout.getSecondaryComponent());
-        VerticalLayout vHint = new VerticalLayout(hint);
-        splitLayout.addToSecondary(vHint);
+    private void cleanSecondary() {
+        this.hint = new Div();
+        this.hint.setText("Es wurde keine Nachricht ausgewählt.");
+        setDivStyle(this.hint);
+        this.splitLayout.remove(this.splitLayout.getSecondaryComponent());
+        VerticalLayout vHint = new VerticalLayout(this.hint);
+        this.splitLayout.addToSecondary(vHint);
     }
 
     private void refreshGrid() {
