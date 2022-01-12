@@ -241,21 +241,21 @@ class InboxControlTest {
 
     @Test
     void testSetMessageAsRead() throws DatabaseUserException {
-        MessageDTOImpl messageDTO = new MessageDTOImpl();
-        messageDTO.setId(1);
-        messageDTO.setSender(10);
-        messageDTO.setRecipient(20);
-        messageDTO.setSubject("Subject");
-        messageDTO.setDate(LocalDate.now());
-        messageDTO.setContent("Content");
+        MessageDTOImpl messageDTOImpl = new MessageDTOImpl();
+        messageDTOImpl.setId(1);
+        messageDTOImpl.setSender(10);
+        messageDTOImpl.setRecipient(20);
+        messageDTOImpl.setSubject("Subject");
+        messageDTOImpl.setDate(LocalDate.now());
+        messageDTOImpl.setContent("Content");
 
-        Message readMessage = inboxControl.setMessageAsRead(messageDTO);
-        assertEquals(messageDTO.getId(), readMessage.getId());
-        assertEquals(messageDTO.getSender(), readMessage.getSender());
-        assertEquals(messageDTO.getRecipient(), readMessage.getRecipient());
-        assertEquals(messageDTO.getSubject(), readMessage.getSubject());
-        assertEquals(messageDTO.getDate(), readMessage.getDate());
-        assertEquals(messageDTO.getContent(), readMessage.getContent());
+        Message readMessage = inboxControl.setMessageAsRead(messageDTOImpl);
+        assertEquals(messageDTOImpl.getId(), readMessage.getId());
+        assertEquals(messageDTOImpl.getSender(), readMessage.getSender());
+        assertEquals(messageDTOImpl.getRecipient(), readMessage.getRecipient());
+        assertEquals(messageDTOImpl.getSubject(), readMessage.getSubject());
+        assertEquals(messageDTOImpl.getDate(), readMessage.getDate());
+        assertEquals(messageDTOImpl.getContent(), readMessage.getContent());
     }
 
     @Test
