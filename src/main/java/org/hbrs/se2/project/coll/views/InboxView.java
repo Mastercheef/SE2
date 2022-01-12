@@ -38,7 +38,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     InboxControl inboxControl;
 
     // Grid may NOT be final.
-    private static Grid<MessageDTO> grid;
+    private Grid<MessageDTO> grid;
     private static List<MessageDTO> messages  = new ArrayList<>();
     private static Div hint;
     private static SplitLayout splitLayout = new SplitLayout();
