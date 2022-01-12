@@ -1,6 +1,10 @@
 node_modules
 HELP.md
 
+target/ 
+webpack.generated.js
+package-lock.json
+
 
 ### IntelliJ IDEA ###
 .idea

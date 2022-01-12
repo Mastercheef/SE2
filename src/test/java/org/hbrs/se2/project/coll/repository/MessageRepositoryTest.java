@@ -1,141 +1,68 @@
 package org.hbrs.se2.project.coll.repository;
 
-import org.hbrs.se2.project.coll.control.factories.MessageFactory;
-import org.hbrs.se2.project.coll.dtos.MessageDTO;
-import org.hbrs.se2.project.coll.dtos.impl.MessageDTOImpl;
-import org.hbrs.se2.project.coll.entities.Message;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-@SpringBootTest
-public class MessageRepositoryTest {
+import static org.junit.jupiter.api.Assertions.*;
+@DataJpaTest
+@AutoConfigureEmbeddedDatabase(provider = AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY )
+@Sql( {"/schema.sql" , "/data.sql"})
+class MessageRepositoryTest {
 
     @Autowired
-    private MessageRepository messageRepository;
+    MessageRepository messageRepository;
 
+    int id = 50000000;
     @Test
-    void findMessageByIdTest() {
-        Message message = initMessage();
-        messageRepository.save(message);
-
-        MessageDTO messageDTO = messageRepository.findMessageById(message.getId());
-        assertEquals(messageDTO.getContent(), message.getContent());
-        assertEquals(messageDTO.getSender(), message.getSender());
-        assertEquals(messageDTO.getRecipient(), message.getRecipient());
-        assertEquals(messageDTO.getSubject(), message.getSubject());
-        assertEquals(messageDTO.getDate(), message.getDate());
-        messageRepository.delete(message);
+    void findMessageByIDNotNull() {
+        assertNotNull(messageRepository.findMessageById(id));
     }
 
     @Test
-    void findMessagesBySenderTest() {
-        List<Message> messages = initMessages();
-        messageRepository.saveAll(messages);
-
-        List<MessageDTO> messageDTOs = messageRepository.findMessagesBySender(messages.get(0).getSender());
-
-        for(int i = 0; i < messageDTOs.size(); i++) {
-            assertEquals(messageDTOs.get(i).getId(), messages.get(i).getId());
-            assertEquals(messageDTOs.get(i).getContent(), messages.get(i).getContent());
-            assertEquals(messageDTOs.get(i).getRecipient(), messages.get(i).getRecipient());
-            assertEquals(messageDTOs.get(i).getSubject(), messages.get(i).getSubject());
-            assertEquals(messageDTOs.get(i).getDate(), messages.get(i).getDate());
-        }
-        messageRepository.deleteAll(messages);
+    void findMessageByIDNull() {
+        assertNull(messageRepository.findMessageById(50000123));
+    }
+    @Test
+    void findMessageByID() {
+        assertEquals("Frage bzgl. Super Engineer" , messageRepository.findMessageById(id).getSubject());
+        assertEquals("hallo" , messageRepository.findMessageById(id).getContent());
+        assertEquals( 20000000, messageRepository.findMessageById(id).getSender());
+        assertEquals(LocalDate.of(2021,12,29), messageRepository.findMessageById(id).getDate());
+        assertEquals(20000001 , messageRepository.findMessageById(id).getRecipient());
+        assertEquals(true , messageRepository.findMessageById(id).getRead());
     }
 
     @Test
-    void findMessagesByRecipientTest() {
-        List<Message> messages = initMessages();
-        messageRepository.saveAll(messages);
-
-        List<MessageDTO> messageDTOs = messageRepository.findMessagesByRecipient(messages.get(0).getRecipient());
-
-        for(int i = 0; i < messageDTOs.size(); i++) {
-            assertEquals(messageDTOs.get(i).getId(), messages.get(i).getId());
-            assertEquals(messageDTOs.get(i).getContent(), messages.get(i).getContent());
-            assertEquals(messageDTOs.get(i).getSender(), messages.get(i).getSender());
-            assertEquals(messageDTOs.get(i).getSubject(), messages.get(i).getSubject());
-            assertEquals(messageDTOs.get(i).getDate(), messages.get(i).getDate());
-        }
-        messageRepository.deleteAll(messages);
+    void findMessagesByRecipientNotEmpty() {
+        assertFalse(messageRepository.findMessagesByRecipient(20000001).isEmpty());
     }
 
     @Test
-    void findMessagesBySubjectTest() {
-        List<Message> messages = initMessages();
-        messageRepository.saveAll(messages);
-
-        List<MessageDTO> messageDTOs = messageRepository.findMessagesBySubject(messages.get(0).getSubject());
-
-        for(int i = 0; i < messageDTOs.size(); i++) {
-            assertEquals(messageDTOs.get(i).getId(), messages.get(i).getId());
-            assertEquals(messageDTOs.get(i).getContent(), messages.get(i).getContent());
-            assertEquals(messageDTOs.get(i).getSender(), messages.get(i).getSender());
-            assertEquals(messageDTOs.get(i).getRecipient(), messages.get(i).getRecipient());
-            assertEquals(messageDTOs.get(i).getDate(), messages.get(i).getDate());
-        }
-        messageRepository.deleteAll(messages);
+    void findMessagesByRecipientSize() {
+        assertTrue(messageRepository.findMessagesByRecipient(20000001).size() == 3);
     }
 
     @Test
-    void findMessagesBySubjectAndDateTest() {
-        List<Message> messages = initMessages();
-        messageRepository.saveAll(messages);
-
-        List<MessageDTO> messageDTOs = messageRepository.findMessagesBySubjectAndDate(
-                messages.get(0).getSubject(),
-                messages.get(0).getDate()
-                );
-
-        for(int i = 0; i < messageDTOs.size(); i++) {
-            assertEquals(messageDTOs.get(i).getId(), messages.get(i).getId());
-            assertEquals(messageDTOs.get(i).getContent(), messages.get(i).getContent());
-            assertEquals(messageDTOs.get(i).getSender(), messages.get(i).getSender());
-            assertEquals(messageDTOs.get(i).getRecipient(), messages.get(i).getRecipient());
-            assertEquals(messageDTOs.get(i).getDate(), messages.get(i).getDate());
-        }
-        messageRepository.deleteAll(messages);
+    void findMessagesByRecipientEmpty() {
+        assertTrue(messageRepository.findMessagesByRecipient(20009001).isEmpty());
     }
 
-    Message initMessage() {
-        MessageDTOImpl newMessage = new MessageDTOImpl();
-        newMessage.setContent("Hallo, hierbei handelt es sich um eine Testnachricht. Großartig.");
-        newMessage.setSender(20000012);
-        newMessage.setRecipient(20000000);
-        newMessage.setSubject(30000000);
-        newMessage.setDate(LocalDate.now());
-
-        return MessageFactory.createMessage(newMessage);
+    @Test
+    void findMessagesByRecipientAndReadNotEmpty() {
+        assertFalse(messageRepository.findMessagesByRecipientAndRead(20000001,true).isEmpty());
+    }
+    @Test
+    void findMessagesByRecipientAndReadEmpty() {
+        assertTrue(messageRepository.findMessagesByRecipientAndRead(20000000,true).isEmpty());
     }
 
-    List<Message> initMessages() {
-        List<Message> messages = new ArrayList<>();
-
-        MessageDTOImpl message1 = new MessageDTOImpl();
-        message1.setContent("Hallo, hierbei handelt es sich um eine Testnachricht. Großartig.");
-        message1.setSender(20000012);
-        message1.setRecipient(20000000);
-        message1.setSubject(30000000);
-        message1.setDate(LocalDate.now());
-
-        MessageDTOImpl message2 = new MessageDTOImpl();
-        message2.setContent("Eine weitere Nachricht für dich.");
-        message2.setSender(20000012);
-        message2.setRecipient(20000000);
-        message2.setSubject(30000000);
-        message2.setDate(LocalDate.now());
-
-        messages.add(MessageFactory.createMessage(message1));
-        messages.add(MessageFactory.createMessage(message2));
-        return messages;
+    @Test
+    void findMessagesByRecipientAndReadSize() {
+        assertTrue(messageRepository.findMessagesByRecipientAndRead(20000001,true).size() == 2);
     }
-
 }

@@ -3,7 +3,10 @@ package org.hbrs.se2.project.coll.views;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
-import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -16,8 +19,12 @@ import org.hbrs.se2.project.coll.dtos.impl.StudentUserDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.UtilCurrent;
+import org.hbrs.se2.project.coll.util.UtilNavigation;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Objects;
 
 @Route(value = "profile_edit", layout = AppView.class)
 @PageTitle("StudentProfileEdit")
@@ -32,8 +39,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
 
     //automatisches binding der Textfelder in ein DTO kann nicht durchgeführt werden,
     //da address eigene Entity ist und kein String
-    //private Binder<StudentUserDTOImpl> binder = new Binder(StudentUserDTOImpl.class);
-
     Label       infoText        = new Label("Mit (*) markierte Felder sind notwendig.");
     Label       lsalutation     = new Label("Anrede (*):");
     Label       ltitle          = new Label("Titel:");
@@ -47,7 +52,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     Label       lcity           = new Label("Ort (*):");
     Label       lcountry        = new Label("Land (*):");
     Label       lskills         = new Label("Skills:");
-    Label       lemail          = new Label("E-Mail (*):");
     Label       lphone          = new Label("Telefon (*):");
     Label       linterests      = new Label("Interessen:");
     Label       lwebsite        = new Label("Webseite:");
@@ -65,25 +69,27 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     TextField   city            = new TextField();
     TextField   country         = new TextField();
     TextField   skills          = new TextField();
-    TextField   email           = new TextField();
     TextField   phone           = new TextField();
     TextField   interests       = new TextField();
     TextField   website         = new TextField();
     TextField   description     = new TextField();
 
     Div         div           = new Div();
+    Div         leftDiv = new Div();
+    Div         rightDiv = new Div();
+    Div         bottomDiv = new Div();
+
+    private String floatVar = "float";
+    private String left = "left";
 
     @Override
     public void setParameter(BeforeEvent event,
                              String parameter) {
-        if (!Utils.stringIsEmptyOrNull(parameter)) {
-            checkIfUserIsLoggedIn();
+        if (!Utils.stringIsEmptyOrNull(parameter) && checkIfUserIsLoggedIn()) {
             profileDTO = profileControl.loadProfileDataById(Integer.parseInt(parameter));
             studentId  = profileDTO.getId();
 
-            boolean ownership = checkIfUserIsProfileOwner();
-
-            if(ownership) {
+            if(checkIfUserIsProfileOwner()) {
                 initLabels(profileDTO);
                 createProfileEditView();
             }
@@ -113,7 +119,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         country.setValue(addr.getCountry());
         graduation.setValue(profileDTO.getGraduation() == null ? "" : profileDTO.getGraduation());
         skills.setValue(profileDTO.getSkills() == null ? "" : profileDTO.getSkills());
-        email.setValue(profileDTO.getEmail() == null ? "" : profileDTO.getEmail());
         phone.setValue(profileDTO.getPhone() == null ? "" : profileDTO.getPhone());
         interests.setValue(profileDTO.getInterests() == null ? "" : profileDTO.getInterests());
         website.setValue(profileDTO.getWebsite() == null ? "" : profileDTO.getWebsite());
@@ -124,7 +129,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
     public void createProfileEditView() {
         H2 h2 = new H2("Editiere mein Profil");
 
-        // TODO: Get Image from Database
         // Profile Image
         Image profileImage = new Image("https://thispersondoesnotexist.com/image", "placeholder");
         profileImage.setWidth("200px");
@@ -132,14 +136,14 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
 
         // Styling
         for (Label label : new Label[]{ lsalutation, ltitle, lfirstname, llastname, lgraduation, ldateOfBirth, lstreet,
-                lstreetnumber, lpostalcode, lcity, lcountry, lskills, lemail, lphone, linterests, lwebsite,
+                lstreetnumber, lpostalcode, lcity, lcountry, lskills, lphone, linterests, lwebsite,
                 ldescription}) {
             label.getElement().getStyle().set("font-weight", "bold");
             label.getElement().getStyle().set("width", "200px");        // For alignment
         }
 
         for (TextField textfield : new TextField[]{ salutation, title, firstName, lastName, graduation, street,
-                streetnumber, postalcode, city, country, skills, email, phone, interests, website, description }) {
+                streetnumber, postalcode, city, country, skills, phone, interests, website, description }) {
             textfield.getElement().getStyle().set("height", "20px");
             textfield.getElement().getStyle().set("width", "300px");
         }
@@ -158,7 +162,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         HorizontalLayout hcity          = new HorizontalLayout(lcity, city);
         HorizontalLayout hcountry       = new HorizontalLayout(lcountry, country);
         HorizontalLayout hskills        = new HorizontalLayout(lskills, skills);
-        HorizontalLayout hemail         = new HorizontalLayout(lemail, email);
         HorizontalLayout hnumber        = new HorizontalLayout(lphone, phone);
         HorizontalLayout hinterests     = new HorizontalLayout(linterests, interests);
         HorizontalLayout hwebsite       = new HorizontalLayout(lwebsite, website);
@@ -172,24 +175,38 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         saveButton.addClickListener(e -> {
             if(!checkForEmptyInput()) {
                 updateProfileData();
-                UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
+                navigateToProfile(studentId);
             }
         });
-        cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW +
-                studentId));
+        cancelButton.addClickListener(e -> navigateToProfile(studentId));
         hbuttons.add(saveButton, cancelButton);
 
         // Alignment of profile information
         for (HorizontalLayout HL : new HorizontalLayout[]{ hinfotext, hsalutation, htitle, hfirstname, hlastname,
-                hoccupation, hbirthdate, hstreet, hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail,
+                hoccupation, hbirthdate, hstreet, hstreetnumber, hpostalcode, hcity, hcountry, hskills,
                 hnumber, hinterests, hwebsite, haboutme, hbuttons }) {
             HL.getElement().getStyle().set("margin-top", "10px");
         }
 
         // Append everything to the site
-        div.add(h2, profileImage, hinfotext, hsalutation, htitle, hfirstname, hlastname, hoccupation, hbirthdate,
-                hstreet, hstreetnumber, hpostalcode, hcity, hcountry, hskills, hemail, hnumber, hinterests, hwebsite,
-                haboutme, hbuttons);
+        leftDiv.add(profileImage, hsalutation, htitle, hfirstname, hlastname, hbirthdate,
+                hstreet, hstreetnumber, hpostalcode, hcity, hcountry, hnumber);
+        rightDiv.add(hoccupation, hwebsite, hskills, hinterests, haboutme);
+        bottomDiv.add(hbuttons);
+        div.add(h2, leftDiv, rightDiv, bottomDiv);
+        add(div);
+
+        // Css Changes for split View
+        leftDiv.setWidth("40%");
+        leftDiv.setMinWidth("300px");
+        rightDiv.setWidth("60%");
+        rightDiv.setMinWidth("400px");
+        bottomDiv.setWidth("100%");
+        bottomDiv.getStyle().set(floatVar, left);
+        div.setClassName("centered");
+        div.setWidth("80%");
+        leftDiv.getStyle().set(floatVar, left);
+        rightDiv.getStyle().set(floatVar,left);
         add(div);
     }
 
@@ -206,7 +223,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         updatedProfile.setGraduation(graduation.getValue());
         updatedProfile.setDateOfBirth(dateOfBirth.getValue());
         updatedProfile.setSkills(skills.getValue());
-        updatedProfile.setEmail(email.getValue());
+        updatedProfile.setEmail(profileDTO.getEmail());
         updatedProfile.setPhone(phone.getValue());
         updatedProfile.setInterests(interests.getValue());
         updatedProfile.setWebsite(website.getValue());
@@ -238,7 +255,6 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
                 checkForEmptyTextField(city) ||
                 checkForEmptyDatePicker(dateOfBirth) ||
                 checkForEmptyTextField(country) ||
-                checkForEmptyTextField(email) ||
                 checkForEmptyTextField(phone);
     }
 
@@ -268,28 +284,32 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
         return empty;
     }
 
-    private void checkIfUserIsLoggedIn() {
-        // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
-        UserDTO userDTO = this.getCurrentUser();
-        if (userDTO == null) {
-            UI.getCurrent().navigate(Globals.Pages.LOGIN_VIEW);
-        }
+    public static void navigateToProfile(int studentId) {
+        if(!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.PROFILE_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
     }
 
-    // If the user is not the owner of this profile, they get redirected to the profile
-    private boolean checkIfUserIsProfileOwner() {
-        if(this.getCurrentUser() != null && this.getCurrentUser().getId() != studentId)
-        {
-            UI.getCurrent().navigate(Globals.Pages.PROFILE_VIEW + studentId);
-            UI.getCurrent().getPage().reload();
+    private boolean checkIfUserIsLoggedIn() {
+        // Falls der Benutzer nicht eingeloggt ist, dann wird er auf die Startseite gelenkt
+        UserDTO userDTO = UtilCurrent.getCurrentUser();
+        if (userDTO == null) {
+            UtilNavigation.navigateToLogin();
             return false;
         }
         else
             return true;
     }
 
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
+    // If the user is not the owner of this profile, they get redirected to the profile
+    private boolean checkIfUserIsProfileOwner() {
+        if(UtilCurrent.getCurrentUser() != null && UtilCurrent.getCurrentUser().getId() != studentId)
+        {
+            navigateToProfile(studentId);
+            UI.getCurrent().getPage().reload();
+            return false;
+        }
+        else
+            return true;
     }
 
     @Override
@@ -303,7 +323,7 @@ public class StudentProfileEditView extends VerticalLayout implements HasUrlPara
      *
      */
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if (getCurrentUser() == null){
+        if (UtilCurrent.getCurrentUser() == null){
             beforeEnterEvent.rerouteTo(Globals.Pages.LOGIN_VIEW);
         }
     }

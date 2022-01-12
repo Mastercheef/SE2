@@ -1,16 +1,20 @@
 package org.hbrs.se2.project.coll.control.factories;
 
 import org.hbrs.se2.project.coll.dtos.ContactPersonDTO;
+import org.hbrs.se2.project.coll.dtos.SettingsDTO;
 import org.hbrs.se2.project.coll.dtos.StudentUserDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
-import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
+import org.hbrs.se2.project.coll.entities.Settings;
 import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.entities.User;
-
-import java.time.LocalDate;
+import org.hbrs.se2.project.coll.util.Utils;
 
 public class UserFactory {
+
+    private UserFactory() {
+        throw new IllegalStateException("Factory Class");
+    }
 
     public static StudentUser createStudentUser(StudentUserDTO studentDTO) {
         StudentUser studentUser = new StudentUser();
@@ -46,7 +50,7 @@ public class UserFactory {
         studentUser.setPhone(userDTO.getPhone());
         studentUser.setDateOfBirth(userDTO.getDateOfBirth());
         studentUser.setEmail(userDTO.getEmail());
-        studentUser.setPassword(userDTO.getPassword());
+        studentUser.setPassword(Utils.hashPassword(userDTO.getPassword()));
 
         return studentUser;
     }
@@ -83,8 +87,17 @@ public class UserFactory {
         contactPerson.setDateOfBirth(userDTO.getDateOfBirth());
         contactPerson.setEmail(userDTO.getEmail());
         contactPerson.setPassword(userDTO.getPassword());
+        contactPerson.setPassword(Utils.hashPassword(userDTO.getPassword()));
 
         return contactPerson;
+    }
+
+    public static Settings createSettings(SettingsDTO settingsDTO) {
+        Settings settings = new Settings();
+        settings.setId(settingsDTO.getId());
+        settings.setNotificationIsEnabled(settingsDTO.getNotificationIsEnabled());
+
+        return settings;
     }
 
     public static User createUser(UserDTO userDTO) {
@@ -102,5 +115,6 @@ public class UserFactory {
 
         return user;
     }
+
 
 }

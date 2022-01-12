@@ -11,21 +11,23 @@ class UserTest {
 
     private User userOne = new User();
     private User userTwo = new User();
-    private User userThree = new User();
-    private Address address = new Address();
+    private Address addressOne = new Address();
+    private Address addressTwo = new Address();
+    private Settings settingsOne = new Settings();
     @BeforeEach
     void setUp() {
+        userOne.setSettings(settingsOne);
         userOne.setId(197);
         userOne.setSalutation("Herr");
         userOne.setTitle("Dr.");
         userOne.setFirstName("Max");
         userOne.setLastName("Mustermann");
-        address.setPostalCode("12345");
-        address.setStreet("Musterstrasse");
-        address.setCity("Musterstadt");
-        address.setCountry("Deutschland");
-        address.setHouseNumber("1");
-        userOne.setAddress(address);
+        addressOne.setPostalCode("12345");
+        addressOne.setStreet("Musterstrasse");
+        addressOne.setCity("Musterstadt");
+        addressOne.setCountry("Deutschland");
+        addressOne.setHouseNumber("1");
+        userOne.setAddress(addressOne);
         userOne.setPhone("0123456789");
         userOne.setDateOfBirth(LocalDate.of(2000,1,1));
         userOne.setEmail("max@gmx.de");
@@ -37,61 +39,118 @@ class UserTest {
         userTwo.setTitle("Dr.");
         userTwo.setFirstName("Maxina");
         userTwo.setLastName("Testermann");
-        address.setPostalCode("54321");
-        address.setStreet("Testerstraße");
-        address.setCity("Testerstadt");
-        address.setCountry("Schweiz");
-        address.setHouseNumber("2");
-        userTwo.setAddress(address);
+        addressTwo.setPostalCode("54321");
+        addressTwo.setStreet("Testerstraße");
+        addressTwo.setCity("Testerstadt");
+        addressTwo.setCountry("Schweiz");
+        addressTwo.setHouseNumber("2");
+        userTwo.setAddress(addressTwo);
         userTwo.setPhone("9876543210");
         userTwo.setDateOfBirth(LocalDate.of(2001,1,1));
         userTwo.setEmail("maxina@gmx.de");
         userTwo.setType("!st");
         userTwo.setPassword("passwd2");
-
-        userOne.setId(199);
-        userOne.setSalutation("Herr");
-        userOne.setTitle("Dr.");
-        userOne.setFirstName("Max");
-        userOne.setLastName("Mustermann");
-        address.setPostalCode("12345");
-        address.setStreet("Musterstrasse");
-        address.setCity("Musterstadt");
-        address.setCountry("Deutschland");
-        address.setHouseNumber("1");
-        userOne.setAddress(address);
-        userOne.setPhone("0123456789");
-        userOne.setDateOfBirth(LocalDate.of(2002,1,1));
-        userOne.setEmail("max@gmx.de");
-        userOne.setType("st");
-        userOne.setPassword("passwd");
-
     }
+
+    @Test
+    void testGetSalutation(){
+        assertEquals("Herr", userOne.getSalutation());
+    }
+
+    @Test
+    void testGetTitle(){
+        assertEquals("Dr.", userOne.getTitle());
+    }
+
+    @Test
+    void testGetFirstName(){
+        assertEquals("Max", userOne.getFirstName());
+    }
+
+    @Test
+    void testGetLastName(){
+        assertEquals("Mustermann", userOne.getLastName());
+    }
+
+    @Test
+    void testGetAddress(){
+        assertEquals(addressOne, userOne.getAddress());
+    }
+
+    @Test
+    void testGetPhone(){
+        assertEquals("0123456789", userOne.getPhone());
+    }
+
+    @Test
+    void testGetDateOfBirth(){
+        assertEquals(LocalDate.of(2000,1,1), userOne.getDateOfBirth());
+    }
+
+    @Test
+    void testGetEmail(){
+        assertEquals("max@gmx.de", userOne.getEmail());
+    }
+
+    @Test
+    void testGetType(){
+        assertEquals("st", userOne.getType());
+    }
+
+    @Test
+    void testGetId(){
+        assertEquals(197, userOne.getId());
+    }
+
+    @Test
+    void testGetSettings(){
+        assertEquals(settingsOne, userOne.getSettings());
+    }
+
     @Test
     void testEqualsSameUser() {
-
-        assertEquals(userOne, userOne);
-    }
-
-    @Test
-    void testEqualsDifferentUser() {
-
-        assertNotEquals(userOne, userTwo);
+        assertTrue(userOne.equals(userOne));
+        assertFalse(userOne.equals(userTwo));
     }
 
     @Test
     void testEqualNull() {
-        assertNotEquals(null, userOne);
+        // The equals object is null
+        assertFalse(userOne.equals(null));
+        // The equals object is not null
+        assertFalse(userOne.equals(Object.class));
     }
 
     @Test
-    void testOtherClass() {
-        assertNotEquals(userOne.getClass(), StudentUser.class);
+    void testEqualClass() {
+        //The equals object is not a user class
+        assertFalse(userOne.equals(StudentUser.class));
+        //The equals object is a a user class
+        assertFalse(userOne.equals(User.class));
     }
 
+    @Test
+    void testEqualsMethod() {
+        assertNotEquals(userOne.getAddress(),userTwo.getAddress());
+        assertFalse(userOne.equals(userTwo));
+        userTwo.setFirstName(userOne.getFirstName());
+        assertFalse(userOne.equals(userTwo));
+        userTwo.setLastName(userOne.getLastName());
+        assertFalse(userOne.equals(userTwo));
+        userTwo.setAddress(userOne.getAddress());
+        assertFalse(userOne.equals(userTwo));
+        userTwo.setPhone(userOne.getPhone());
+        assertFalse(userOne.equals(userTwo));
+        userTwo.setDateOfBirth(userOne.getDateOfBirth());
+        assertFalse(userOne.equals(userTwo));
+        userTwo.setEmail(userOne.getEmail());
+        assertFalse(userOne.equals(userTwo));
+        userTwo.setId(userOne.getId());
+        assertTrue(userOne.equals(userTwo));
+    }
     @Test
     void testToString() {
-        assertEquals("199, Herr, Dr., Max, Mustermann, 2002-01-01, 0123456789, Musterstrasse 1\n" +
+        assertEquals("197, Herr, Dr., Max, Mustermann, 2000-01-01, 0123456789, Musterstrasse 1\n" +
                 "12345 Musterstadt\n" +
                 "Deutschland, max@gmx.de, st", userOne.toString());
     }

@@ -17,9 +17,6 @@ import org.springframework.stereotype.Component;
  */
 public interface StudentUserRepository extends JpaRepository<StudentUser, Integer> {
 
-    // SELECT *
-    // FROM User p
-    // WHERE p.userid = [StringValueOf( userid )]StudentUserDTO findStudentUserById(int userid);
     StudentUserDTO findStudentUserById ( int id );
 
 }

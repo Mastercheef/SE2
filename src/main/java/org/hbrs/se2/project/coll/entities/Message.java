@@ -6,21 +6,23 @@ import java.time.LocalDate;
 @Entity
 @Table( name ="col_tab_message" , schema = "collhbrs" )
 public class Message {
-    private int id;
-    private int sender;
-    private int recipient;
-    private String content;
-    private int subject;
-    private LocalDate date;
-    private boolean read;
+    private int         id;
+    private int         sender;
+    private int         recipient;
+    private String      content;
+    private String      subject;
+    private LocalDate   date;
+    private boolean     read;
 
     @Id
     @GeneratedValue(
+            strategy=GenerationType.AUTO,
             generator = "message_id"
     )
     @SequenceGenerator(
             name = "message_id",
-            sequenceName = "collhbrs.col_seq_message_id"
+            sequenceName = "collhbrs.col_seq_message_id" ,
+            allocationSize=1
     )
     @Column(name = "message_id")
     public int getId() {
@@ -50,9 +52,9 @@ public class Message {
     public void setContent(String content) { this.content = content; }
 
     @Basic
-    @Column(name = "subject_id")
-    public int getSubject() { return subject; }
-    public void setSubject(int subject) { this.subject = subject; }
+    @Column(name = "subject")
+    public String getSubject() { return subject; }
+    public void setSubject(String subject) { this.subject = subject; }
 
     @Basic
     @Column(name = "date")

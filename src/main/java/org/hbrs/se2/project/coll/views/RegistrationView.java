@@ -1,33 +1,40 @@
 package org.hbrs.se2.project.coll.views;
 
-import com.vaadin.flow.component.Text;
+
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
-import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.textfield.*;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.orderedlayout.*;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.component.tabs.TabsVariant;
+import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.component.formlayout.*;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.tabs.*;
-
-import com.vaadin.flow.component.html.*;
-
-import org.hbrs.se2.project.coll.control.*;
+import org.hbrs.se2.project.coll.control.LoginControl;
+import org.hbrs.se2.project.coll.control.RegistrationControl;
+import org.hbrs.se2.project.coll.control.SettingsControl;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.LoginResultDTO;
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
-import org.hbrs.se2.project.coll.dtos.impl.*;
+import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO.ReasonType;
+import org.hbrs.se2.project.coll.dtos.impl.CompanyDTOImpl;
+import org.hbrs.se2.project.coll.dtos.impl.RegistrationDTOImpl;
+import org.hbrs.se2.project.coll.dtos.impl.UserDTOImpl;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
-import org.hbrs.se2.project.coll.layout.LayoutAlternative;
-import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO.ReasonType;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.UtilNavigation;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -41,9 +48,11 @@ public class RegistrationView extends Div {
     private RegistrationControl registrationControl;
     @Autowired
     private LoginControl loginControl;
+    @Autowired
+    private SettingsControl settingsControl;
 
     Tab studentUser = new Tab("Student");
-    Tab companyUser = new Tab("Unternehmen");
+    Tab companyUser = new Tab(Globals.View.COMPANY);
     Tabs tabs       = new Tabs(studentUser, companyUser);
 
     // Basic User
@@ -117,8 +126,8 @@ public class RegistrationView extends Div {
             CompanyDTOImpl newCompanyDTO = new CompanyDTOImpl();
             newCompanyDTO.setCompanyName(companyName.getValue());
             newCompanyDTO.setEmail(companyEmail.getValue());
-            newCompanyDTO.setPhoneNumber(Integer.parseInt(companyPhone.getValue()));
-            newCompanyDTO.setFaxNumber(Integer.parseInt(companyFax.getValue()));
+            newCompanyDTO.setPhoneNumber(companyPhone.getValue());
+            newCompanyDTO.setFaxNumber(companyFax.getValue());
             newCompanyDTO.setWebsite(companyHomepage.getValue());
             newCompanyDTO.setDescription(companyDescription.getValue());
 
@@ -267,189 +276,189 @@ public class RegistrationView extends Div {
 
                 RegistrationResultDTO registrationResult = registrationControl.registerUser(registrationDTO);
 
-                if (registrationResult.getResult() == true) {
+                if (registrationResult.getResult()) {
                     // Success meldung
-                    triggerDialogMessage("Registrierung abgeschlossen", "Sie haben sich erfolgreich registriert");
+                    Utils.triggerDialogMessage("Registrierung abgeschlossen", "Sie haben sich erfolgreich registriert");
                     // automatischer Login
                     autoLoginAfterRegistration(userDTO);
                     // Routing auf main Seite
-                    UI.getCurrent().navigate(Globals.Pages.MENU_VIEW);
+                    UtilNavigation.navigateToMain();
                 } else {
+                    List<ReasonType> reasons = registrationResult.getReasons();
+                    if (reasons.contains(ReasonType.UNEXPECTED_ERROR))
+                        Utils.triggerDialogMessage(Globals.View.ERROR, "Es ist ein unerwarteter Fehler aufgetreten");
+
                     // Fehlerbehandlung: Fehlerhafte TextFields mit Error Message versehen und auf invalid setzen
-                    setErrorFields(registrationResult.getReasons());
+                    setUserErrorFields(reasons);
+                    setCompanyErrorFields(reasons);
+
                 }
             } catch (DatabaseUserException databaseUserException) {
-                triggerDialogMessage("Fehler","Während der Registrierung ist ein Fehler aufgetreten: " + databaseUserException.getReason());
+                Utils.triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein Fehler aufgetreten: " + databaseUserException.getErrorCode());
             } catch (Exception exception) {
-                triggerDialogMessage("Fehler","Während der Registrierung ist ein unerwarteter Fehler aufgetreten: " + exception);
+                Utils.triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein unerwarteter Fehler aufgetreten: " + exception);
             }
         });
         add(siteLayout);
     }
 
-    public void autoLoginAfterRegistration(UserDTOImpl userDTO) {
+    public void autoLoginAfterRegistration(UserDTOImpl userDTO)  {
         LoginResultDTO isAuthenticated = loginControl.authentificate(userDTO.getEmail(), userDTO.getPassword());
         if (isAuthenticated.getResult()) {
             UI.getCurrent().getSession().setAttribute( Globals.CURRENT_USER, loginControl.getCurrentUser() );
         } else {
-            triggerDialogMessage("Fehler","Fehler beim automatischen einloggen. Bitte versuchen Sie es erneut");
+            Utils.triggerDialogMessage(Globals.View.ERROR,"Fehler beim automatischen einloggen. Bitte versuchen Sie es erneut");
         }
     }
 
-    public void setErrorFields(List<ReasonType> reasons) {
+    public void setUserErrorFields(List<ReasonType> reasons) {
         for (ReasonType reason : reasons) {
-            if (reason == ReasonType.UNEXPECTED_ERROR) {
-                triggerDialogMessage("Fehler", "Es ist ein unerwarteter Fehler aufgetreten");
-            }
-            if (reason == ReasonType.SALUTATION_MISSING) {
-                salutation.setErrorMessage("Bitte geben Sie eine Anrede ein");
-                salutation.setInvalid(true);
-            }
-            if (reason == ReasonType.TITLE_MISSING) {
-                title.setErrorMessage("Bitte geben Sie einen Titel ein");
-                title.setInvalid(true);
-            }
-            if (reason == ReasonType.FIRSTNAME_MISSING) {
-                firstName.setErrorMessage("Bitte geben Sie einen Vornamen ein");
-                firstName.setInvalid(true);
-            }
-            if (reason == ReasonType.LASTNAME_MISSING) {
-                lastName.setErrorMessage("Bitte geben Sie einen Nachnamen ein");
-                lastName.setInvalid(true);
-            }
-            if (reason == ReasonType.DATEOFBIRTH_MISSING) {
-                dateOfBirth.setErrorMessage("Bitte geben Sie ein Geburtsdatum ein");
-                dateOfBirth.setInvalid(true);
-            }
-            if (reason == ReasonType.PHONE_MISSING) {
-                phone.setErrorMessage("Bitte geben Sie eine Telefonnummer ein");
-                phone.setInvalid(true);
-            }
-            if (reason == ReasonType.STREET_MISSING) {
-                street.setErrorMessage("Bitte geben Sie eine Straße ein");
-                street.setInvalid(true);
-            }
-            if (reason == ReasonType.HOUSENUMBER_MISSING) {
-                housenumber.setErrorMessage("Bitte geben Sie eine Hausnummer ein");
-                housenumber.setInvalid(true);
-            }
-            if (reason == ReasonType.POSTALCODE_MISSING) {
-                postalcode.setErrorMessage("Bitte geben Sie eine Postleitzahl ein");
-                postalcode.setInvalid(true);
-            }
-            if (reason == ReasonType.CITY_MISSING) {
-                city.setErrorMessage("Bitte geben Sie eine Stadt ein");
-                city.setInvalid(true);
-            }
-            if (reason == ReasonType.COUNTRY_MISSING) {
-                country.setErrorMessage("Bitte geben Sie ein Land ein");
-                country.setInvalid(true);
-            }
-            if (reason == ReasonType.EMAIL_ALREADY_IN_USE) {
-                email.setErrorMessage("Die angegebene Email wird bereits verwendet");
-                email.setInvalid(true);
-                emailRepeat.setErrorMessage("Die angegebene Email wird bereits verwendet");
-                emailRepeat.setInvalid(true);
-            }
-            if (reason == ReasonType.EMAIL_INVALID) {
-                email.setErrorMessage("Bitte geben Sie eine gültige Email ein");
-                email.setInvalid(true);
-                emailRepeat.setErrorMessage("Bitte geben Sie eine gültige Email ein");
-                emailRepeat.setInvalid(true);
-            }
-            if (reason == ReasonType.PASSWORD_INVALID) {
-                password.setErrorMessage("Bitte geben Sie ein gültiges Password ein: Min 5 Zeichen");
-                password.setInvalid(true);
-                passwordRepeat.setErrorMessage("Bitte geben Sie ein gültiges Password ein: Min 5 Zeichen");
-                passwordRepeat.setInvalid(true);
-            }
-            if (reason == ReasonType.EMAIL_UNEQUAL) {
-                email.setErrorMessage("Die eingebene Email Adressen stimmen nicht überein");
-                email.setInvalid(true);
-                emailRepeat.setErrorMessage("Die eingebene Email Adressen stimmen nicht überein");
-                emailRepeat.setInvalid(true);
-            }
-            if (reason == ReasonType.PASSWORD_UNEQUAL) {
-                password.setErrorMessage("Die eingegebenen Passwörter stimmen nicht überein");
-                password.setInvalid(true);
-                passwordRepeat.setErrorMessage("Die eingegebenen Passwörter stimmen nicht überein");
-                passwordRepeat.setInvalid(true);
-            }
-            if (reason == ReasonType.PASSWORD_MISSING) {
-                password.setErrorMessage("Bitte geben Sie eine gültiges Passwort ein");
-                password.setInvalid(true);
-                passwordRepeat.setErrorMessage("Bitte geben Sie eine gültiges Passwort ein");
-                passwordRepeat.setInvalid(true);
-            }
+            switch (reason) {
+                case SALUTATION_MISSING:
+                    salutation.setErrorMessage("Bitte geben Sie eine Anrede ein");
+                    salutation.setInvalid(true);
+                    break;
+                case TITLE_MISSING:
+                    title.setErrorMessage("Bitte geben Sie einen Titel ein");
+                    title.setInvalid(true);
+                    break;
+                case FIRSTNAME_MISSING:
+                    firstName.setErrorMessage("Bitte geben Sie einen Vornamen ein");
+                    firstName.setInvalid(true);
+                    break;
+                case LASTNAME_MISSING:
+                    lastName.setErrorMessage("Bitte geben Sie einen Nachnamen ein");
+                    lastName.setInvalid(true);
+                    break;
+                case DATEOFBIRTH_MISSING:
+                    dateOfBirth.setErrorMessage("Bitte geben Sie ein Geburtsdatum ein");
+                    dateOfBirth.setInvalid(true);
+                    break;
+                case PHONE_MISSING:
+                    phone.setErrorMessage("Bitte geben Sie eine Telefonnummer ein");
+                    phone.setInvalid(true);
+                    break;
+                case STREET_MISSING:
+                    street.setErrorMessage("Bitte geben Sie eine Straße ein");
+                    street.setInvalid(true);
+                    break;
+                case HOUSENUMBER_MISSING:
+                    housenumber.setErrorMessage("Bitte geben Sie eine Hausnummer ein");
+                    housenumber.setInvalid(true);
+                    break;
+                case POSTALCODE_MISSING:
+                    postalcode.setErrorMessage(Globals.View.POSTAL_CODE);
+                    postalcode.setInvalid(true);
+                    break;
+                case CITY_MISSING:
+                    city.setErrorMessage("Bitte geben Sie eine Stadt ein");
+                    city.setInvalid(true);
+                    break;
+                case COUNTRY_MISSING:
+                    country.setErrorMessage("Bitte geben Sie ein Land ein");
+                    country.setInvalid(true);
+                    break;
+                case EMAIL_ALREADY_IN_USE:
+                    email.setErrorMessage("Die angegebene Email wird bereits verwendet");
+                    email.setInvalid(true);
+                    emailRepeat.setErrorMessage("Die angegebene Email wird bereits verwendet");
+                    emailRepeat.setInvalid(true);
+                    break;
+                case EMAIL_INVALID:
+                    email.setErrorMessage("Bitte geben Sie eine gültige Email ein");
+                    email.setInvalid(true);
+                    emailRepeat.setErrorMessage("Bitte geben Sie eine gültige Email ein");
+                    emailRepeat.setInvalid(true);
+                    break;
+                case PASSWORD_INVALID:
+                    password.setErrorMessage("Bitte geben Sie ein gültiges Password ein: Min 5 Zeichen");
+                    password.setInvalid(true);
+                    passwordRepeat.setErrorMessage("Bitte geben Sie ein gültiges Password ein: Min 5 Zeichen");
+                    passwordRepeat.setInvalid(true);
+                    break;
+                case EMAIL_UNEQUAL:
+                    email.setErrorMessage("Die eingebene Email Adressen stimmen nicht überein");
+                    email.setInvalid(true);
+                    emailRepeat.setErrorMessage("Die eingebene Email Adressen stimmen nicht überein");
+                    emailRepeat.setInvalid(true);
+                    break;
+                case PASSWORD_UNEQUAL:
+                    password.setErrorMessage("Die eingegebenen Passwörter stimmen nicht überein");
+                    password.setInvalid(true);
+                    passwordRepeat.setErrorMessage("Die eingegebenen Passwörter stimmen nicht überein");
+                    passwordRepeat.setInvalid(true);
+                    break;
+                case PASSWORD_MISSING:
+                    password.setErrorMessage("Bitte geben Sie eine gültiges Passwort ein");
+                    password.setInvalid(true);
+                    passwordRepeat.setErrorMessage("Bitte geben Sie eine gültiges Passwort ein");
+                    passwordRepeat.setInvalid(true);
+                    break;
 
-            // Company Fields
-            if (reason == ReasonType.COMPANY_ALREADY_REGISTERED) {
-                triggerDialogMessage("Fehler", "Die angegebene Firma ist bereits registriert");
-            }
-            if (reason == ReasonType.COMPANY_NAME_MISSING) {
-                companyName.setErrorMessage("Bitte geben Sie eine Postleitzahl ein");
-                companyName.setInvalid(true);
-            }
-            if (reason == ReasonType.COMPANY_EMAIL_MISSING) {
-                companyEmail.setErrorMessage("Bitte geben Sie eine Email ein");
-                companyEmail.setInvalid(true);
-            }
-            if (reason == ReasonType.COMPANY_PHONE_MISSING) {
-                companyPhone.setErrorMessage("Bitte geben Sie eine Telefonnummer ein");
-                companyPhone.setInvalid(true);
-            }
-            if (reason == ReasonType.COMPANY_FAX_MISSING) {
-                companyFax.setErrorMessage("Bitte geben Sie eine Faxnummer ein");
-                companyFax.setInvalid(true);
-            }
-            if (reason == ReasonType.COMPANY_WEBSITE_MISSING) {
-                companyHomepage.setErrorMessage("Bitte geben Sie eine Webseite ein");
-                companyHomepage.setInvalid(true);
-            }
-            if (reason == ReasonType.COMPANY_DESCRIPTION_MISSING) {
-                companyDescription.setErrorMessage("Bitte geben Sie eine Beschreibung ein");
-                companyDescription.setInvalid(true);
-            }
-            if (reason == ReasonType.COMPANY_STREET_MISSING) {
-                companyStreet.setErrorMessage("Bitte geben Sie eine Straße ein");
-                companyStreet.setInvalid(true);
-            }
-            if (reason == ReasonType.COMPANY_HOUSENUMBER_MISSING) {
-                companyHouseNumber.setErrorMessage("Bitte geben Sie eine Hausnummer ein");
-                companyHouseNumber.setInvalid(true);
-            }
-            if (reason == ReasonType.COMPANY_POSTALCODE_MISSING) {
-                companyPostalCode.setErrorMessage("Bitte geben Sie eine Postleitzahl ein");
-                companyPostalCode.setInvalid(true);
-            }
-            if (reason == ReasonType.COMPANY_CITY_MISSING) {
-                companyCity.setErrorMessage("Bitte geben Sie eine Stadt ein");
-                companyCity.setInvalid(true);
-            }
-            if (reason == ReasonType.COMPANY_COUNTRY_MISSING) {
-                companyCountry.setErrorMessage("Bitte geben Sie ein land ein");
-                companyCountry.setInvalid(true);
-            }
-            if (reason == ReasonType.COMPANY_EMAIL_INVALID) {
-                companyEmail.setErrorMessage("Bitte geben Sie eine gültige Email-Adresse ein");
-                companyEmail.setInvalid(true);
+                default:
+                    break;
             }
         }
     }
 
-    public void triggerDialogMessage(String header, String message) {
-        Dialog dialog = new Dialog();
-        dialog.add(new H3(header));
-        dialog.add(new Text(message));
-        dialog.setWidth("600px");
-        dialog.setHeight("250px");
-        dialog.add(new Button("OK", e -> { dialog.close(); }));
-        dialog.getElement().getStyle().set("display", "flex");
-        dialog.getElement().getStyle().set("flex-direction", "column");
-        dialog.getElement().getStyle().set("align-items", "center");
-        dialog.getElement().getStyle().set("justify-content", "space-around");
-        dialog.open();
+    public void setCompanyErrorFields(List<ReasonType> reasons) {
+        for (ReasonType reason : reasons) {
+            switch (reason) {
+                case COMPANY_ALREADY_REGISTERED:
+                    Utils.triggerDialogMessage(Globals.View.ERROR, "Die angegebene Firma ist bereits registriert");
+                    break;
+                case COMPANY_NAME_MISSING:
+                    companyName.setErrorMessage("Bitte geben Sie einen gültigen Firmennamen ein");
+                    companyName.setInvalid(true);
+                    break;
+                case COMPANY_EMAIL_MISSING:
+                    companyEmail.setErrorMessage("Bitte geben Sie eine Email ein");
+                    companyEmail.setInvalid(true);
+                    break;
+                case COMPANY_PHONE_MISSING:
+                    companyPhone.setErrorMessage("Bitte geben Sie eine Telefonnummer ein");
+                    companyPhone.setInvalid(true);
+                    break;
+                case COMPANY_FAX_MISSING:
+                    companyFax.setErrorMessage("Bitte geben Sie eine Faxnummer ein");
+                    companyFax.setInvalid(true);
+                    break;
+                case COMPANY_WEBSITE_MISSING:
+                    companyHomepage.setErrorMessage("Bitte geben Sie eine Webseite ein");
+                    companyHomepage.setInvalid(true);
+                    break;
+                case COMPANY_DESCRIPTION_MISSING:
+                    companyDescription.setErrorMessage("Bitte geben Sie eine Beschreibung ein");
+                    companyDescription.setInvalid(true);
+                    break;
+                case COMPANY_STREET_MISSING:
+                    companyStreet.setErrorMessage("Bitte geben Sie eine Straße ein");
+                    companyStreet.setInvalid(true);
+                    break;
+                case COMPANY_HOUSENUMBER_MISSING:
+                    companyHouseNumber.setErrorMessage("Bitte geben Sie eine Hausnummer ein");
+                    companyHouseNumber.setInvalid(true);
+                    break;
+                case COMPANY_POSTALCODE_MISSING:
+                    companyPostalCode.setErrorMessage(Globals.View.POSTAL_CODE);
+                    companyPostalCode.setInvalid(true);
+                    break;
+                case COMPANY_CITY_MISSING:
+                    companyCity.setErrorMessage("Bitte geben Sie eine Stadt ein");
+                    companyCity.setInvalid(true);
+                    break;
+                case COMPANY_COUNTRY_MISSING:
+                    companyCountry.setErrorMessage("Bitte geben Sie ein land ein");
+                    companyCountry.setInvalid(true);
+                    break;
+                case COMPANY_EMAIL_INVALID:
+                    companyEmail.setErrorMessage("Bitte geben Sie eine gültige Email-Adresse ein");
+                    companyEmail.setInvalid(true);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
-
 }
 

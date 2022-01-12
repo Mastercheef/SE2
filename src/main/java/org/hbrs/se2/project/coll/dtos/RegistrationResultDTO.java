@@ -6,6 +6,7 @@ public interface RegistrationResultDTO {
     public boolean getResult();
 
     public enum ReasonType {
+        DATABASE_USER_EXCEPTION,
         SUCCESS,
         SALUTATION_MISSING,
         TITLE_MISSING,

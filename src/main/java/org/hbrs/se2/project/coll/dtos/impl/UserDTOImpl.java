@@ -19,7 +19,6 @@ public class UserDTOImpl implements UserDTO {
     private String phone;
     private String password;
     private String type;
-    //private List<RoleDTO> roles;
 
     public void setSalutation(String salutation) {
         this.salutation = salutation;

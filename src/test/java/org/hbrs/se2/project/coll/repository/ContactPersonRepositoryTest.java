@@ -1,41 +1,49 @@
 package org.hbrs.se2.project.coll.repository;
 
-import org.hbrs.se2.project.coll.entities.ContactPerson;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-
 @RunWith(SpringRunner.class)
-@AutoConfigureTestEntityManager
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+
+@AutoConfigureEmbeddedDatabase(provider = AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY )
+@Sql( {"/schema.sql" , "/data.sql"})
 class ContactPersonRepositoryTest {
 
-
     @Autowired
-    private TestEntityManager entityManager;
+    ContactPersonRepository contactPersonRepository;
 
-    @Autowired
-    private ContactPersonRepository contactPersonRepository;
-
-    private ContactPerson contactPerson;
     @Test
-    void findContactPersonById() {
-        contactPerson = contactPersonRepository.findContactPersonById(20000012);
-        assertEquals("HR Department" , contactPerson.getRole());
+    void findContactPersonByCompanyIdNotNull() {
+            assertNotNull(        contactPersonRepository.findContactPersonByCompanyId(40000000));
+    }
+
+    @Test
+    void findContactPersonByIdNotNull() {
+        assertNotNull(contactPersonRepository.findContactPersonById(20000001));
+    }
+    @Test
+    void findContactPersonByCompanyIdNull() {
+        assertNull(        contactPersonRepository.findContactPersonByCompanyId(40004010));
+    }
+    @Test
+    void findContactPersonByIdNull() {
+        assertNull(        contactPersonRepository.findContactPersonById(19993453));
     }
 
     @Test
     void findContactPersonByCompanyId() {
-        contactPerson = contactPersonRepository.findContactPersonByCompanyId(40000000);
-        assertEquals("HR Department" , contactPerson.getRole());
+        assertEquals(     "admin" ,    contactPersonRepository.findContactPersonByCompanyId(40000000).getRole());
+    }
+
+    @Test
+    void findContactPersonById() {
+        assertEquals("admin",contactPersonRepository.findContactPersonById(20000001).getRole());
     }
 }

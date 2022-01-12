@@ -20,16 +20,17 @@ public class JobAdvertisement {
     private String jobDescription;
     private int salary;
     private String jobTitle;
-    private Company company;
-    private Set<StudentUser> applicants;
+    private Set<JobApplication> applications;
 
     @Id
     @GeneratedValue(
+            strategy=GenerationType.AUTO,
             generator = "advertisement_id"
     )
     @SequenceGenerator(
             name = "advertisement_id",
-            sequenceName = "collhbrs.col_seq_advertisement_id"
+            sequenceName = "collhbrs.col_seq_advertisement_id",
+            allocationSize=1
     )
     @Column(name = "advertisement_id")
     public int getId() {
@@ -133,21 +134,12 @@ public class JobAdvertisement {
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
-/*
-    @ManyToOne
-    @JoinTable(name = "col_tab_contact_person", schema = "collhbrs", joinColumns = @JoinColumn(name = "company_id"))
-    public CompanyProfile getCompany() {
-        return company;
+
+    @OneToMany(mappedBy = "jobAdvertisement")
+    public Set<JobApplication> getApplicants() {
+        return applications;
     }
-    public void setCompany(CompanyProfile company) {
-        this.company = company;
-    }
-*/
-    @ManyToMany(mappedBy = "applications")
-    public Set<StudentUser> getApplicants() {
-        return applicants;
-    }
-    public void setApplicants(Set<StudentUser> applicants) {
-        this.applicants = applicants;
+    public void setApplicants(Set<JobApplication> applications) {
+        this.applications = applications;
     }
 }

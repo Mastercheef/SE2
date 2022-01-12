@@ -1,89 +1,68 @@
 package org.hbrs.se2.project.coll.repository;
 
-import org.hbrs.se2.project.coll.entities.Address;
-import org.junit.jupiter.api.BeforeEach;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.jdbc.Sql;
 
-import javax.transaction.Transactional;
-import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-
-@RunWith(SpringRunner.class)
-@AutoConfigureTestEntityManager
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Transactional
+@AutoConfigureEmbeddedDatabase(provider = AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY )
+@Sql( {"/schema.sql" , "/data.sql"})
 class AddressRepositoryTest {
 
     @Autowired
-    private TestEntityManager entityManager;
-
-    @Autowired
-    private AddressRepository addressRepository;
-
-    private Address address;
-
-    @BeforeEach
-    void setup() {
-        address = new Address();
-        entityManager.flush();
-        entityManager.clear();
-        addressRepository.flush();
-    }
+    AddressRepository addressRepository ;
 
     @Test
-    void getByIdTestEntityManager() {
-
-        Optional<Address> address2;
-        address.setCountry("DE");
-        address.setHouseNumber("2");
-        address.setCity("WA");
-        address.setStreet("Landgraben");
-        address.setPostalCode("12345");
-
-        entityManager.persist(address);
-        System.out.println(address.getId());
-        address2 = addressRepository.findById(address.getId());
-
-        assertEquals("Landgraben", address2.get().getStreet());
+    void getByIdNotNull() {
+        assertNotNull(addressRepository.getById(10000000).toString());
     }
 
     @Test
     void getById() {
-        address = this.addressRepository.getById(10000001);
-        assertThat(address.getStreet()).isEqualTo("Landgraben");
+        assertEquals("Thielenstrasse " , addressRepository.getById(10000000).getStreet());
+    }
 
-
+    @Test
+    void getByIdNull() {
+        assertNull(addressRepository.getById(19999999));
     }
 
     @Test
     void getAddressByStreetAndHouseNumberAndPostalCodeAndCityAndCountry() {
-        address = this.addressRepository.getAddressByStreetAndHouseNumberAndPostalCodeAndCityAndCountry(
-                "Landgraben",
-                "12",
-                "53773",
-                "Hennef",
-                "Deutschland"
-        );
 
-        assertThat(address.getId()).isEqualTo(10000001);
+        assertNotNull(addressRepository.getAddressByStreetAndHouseNumberAndPostalCodeAndCityAndCountry(
+                "Finkenherd" , "4", "56075" , "Koblenz" , "Deutschland" ));
     }
 
     @Test
-    void getAllByPostalCode() {
+    void getAddressByStreetAndHouseNumberAndPostalCodeAndCityAndCountryID() {
+        assertEquals(10000001 , addressRepository.getAddressByStreetAndHouseNumberAndPostalCodeAndCityAndCountry(
+                "Finkenherd" , "4", "56075" , "Koblenz" , "Deutschland" ).getId());
+    }
+
+    @Test
+    void getAddressByStreetAndHouseNumberAndPostalCodeAndCityAndCountryIDNull() {
+        assertNull(addressRepository.getAddressByStreetAndHouseNumberAndPostalCodeAndCityAndCountry(
+                "Müll" , "Falsch", "Text" , "wda" , "Narnia" ));
+    }
+
+    @Test
+    void getByIdAfterNotNull() {
+        assertNotNull(addressRepository.getByIdAfter(10000002));
     }
 
     @Test
     void getByIdAfter() {
+        assertEquals(1 ,addressRepository.getByIdAfter(10000001).size());
+    }
+
+    @Test
+    void getByIdAfterNull() {
+        assertNotNull(addressRepository.getByIdAfter(19999999));
     }
 }

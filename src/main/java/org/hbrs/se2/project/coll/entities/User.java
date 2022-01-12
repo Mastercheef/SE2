@@ -1,8 +1,5 @@
 package org.hbrs.se2.project.coll.entities;
 
-
-import org.mindrot.jbcrypt.BCrypt;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -24,6 +21,7 @@ public class User {
     private String email;
     private String password;
     private String type;
+    private Settings settings;
 
     @Basic
     @Column(name = "salutation")
@@ -95,11 +93,9 @@ public class User {
         return password;
     }
     public void setPassword(String password) {
-        this.password = hashPassword(password);
+        this.password = password;
     }
-    private String hashPassword(String plain) {
-        return BCrypt.hashpw(plain, BCrypt.gensalt());
-    }
+
 
     @Basic
     @Column(name = "type")
@@ -108,11 +104,13 @@ public class User {
 
     @Id
     @GeneratedValue(
+            strategy=GenerationType.AUTO,
             generator = "user_id"
     )
     @SequenceGenerator(
             name = "user_id",
-            sequenceName = "collhbrs.col_seq_user_id"
+            sequenceName = "collhbrs.col_seq_user_id",
+            allocationSize=1
     )
     @Column(name = "user_id")
     public int getId() {
@@ -122,18 +120,14 @@ public class User {
         this.id = id;
     }
 
-    /*@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_to_rolle", catalog = "demouser",
-            schema = "collhbrs",
-            joinColumns = @JoinColumn(name = "userid", referencedColumnName = "id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "bezeichnung", referencedColumnName = "bezeichhnung", nullable = false))
-    public List<Role> getRoles() {
-        return roles;
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.ALL})
+    @PrimaryKeyJoinColumn
+    public Settings getSettings() {
+        return settings;
     }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }*/
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -154,6 +148,7 @@ public class User {
     public int hashCode() {
         return Objects.hash( firstName, lastName, address, phone, dateOfBirth, email, password, id);
     }
+
 
     @Override
     public String toString() {

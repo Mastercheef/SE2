@@ -1,22 +1,27 @@
 package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
-import org.hbrs.se2.project.coll.dtos.*;
+import org.hbrs.se2.project.coll.dtos.CompanyDTO;
+import org.hbrs.se2.project.coll.dtos.RegistrationDTO;
+import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO;
 import org.hbrs.se2.project.coll.dtos.RegistrationResultDTO.ReasonType;
+import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.dtos.impl.RegistrationResultDTOImpl;
-import org.hbrs.se2.project.coll.entities.*;
+import org.hbrs.se2.project.coll.entities.Company;
 import org.hbrs.se2.project.coll.repository.CompanyRepository;
 import org.hbrs.se2.project.coll.repository.UserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class RegistrationControl {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationControl.class);
 
     @Autowired
     UserRepository userRepository;
@@ -30,11 +35,15 @@ public class RegistrationControl {
     StudentUserControl studentUserControl;
     @Autowired
     ContactPersonControl contactPersonControl;
+    @Autowired
+    SettingsControl settingsControl;
 
-    RegistrationDTO registrationDTO;
-    RegistrationResultDTOImpl registrationResult;
+    private RegistrationDTO registrationDTO;
+    private RegistrationResultDTOImpl registrationResult;
 
+    @Transactional
     public RegistrationResultDTO registerUser(RegistrationDTO registrationDTO) throws DatabaseUserException {
+
         try {
             this.registrationResult = new RegistrationResultDTOImpl();
             this.registrationDTO = registrationDTO;
@@ -75,15 +84,15 @@ public class RegistrationControl {
 
 
         } catch (Exception exception) {
-            System.out.println("LOG : " + exception.getMessage());
+            LOGGER.info("LOG : {}" , exception.getMessage());
             registrationResult.setResult(false);
             registrationResult.addReason(ReasonType.UNEXPECTED_ERROR);
-            throw exception;
+
         }
         return registrationResult;
     }
 
-    private void checkForRequiredUserInformation() {
+    protected void checkForRequiredUserInformation() {
         checkValueAndSetResponse(registrationDTO.getUserDTO().getSalutation(), RegistrationResultDTO.ReasonType.SALUTATION_MISSING);
         checkValueAndSetResponse(registrationDTO.getUserDTO().getTitle(), ReasonType.TITLE_MISSING);
         checkValueAndSetResponse(registrationDTO.getUserDTO().getFirstName(), ReasonType.FIRSTNAME_MISSING);
@@ -101,7 +110,7 @@ public class RegistrationControl {
         checkValueAndSetResponse(registrationDTO.getUserDTO().getAddress().getCountry(), ReasonType.COUNTRY_MISSING);
     }
 
-    private void checkForRequiredCompanyInformation() {
+    protected void checkForRequiredCompanyInformation() {
         checkValueAndSetResponse(registrationDTO.getCompanyDTO().getCompanyName(), ReasonType.COMPANY_NAME_MISSING);
         checkValueAndSetResponse(registrationDTO.getCompanyDTO().getEmail(), ReasonType.COMPANY_EMAIL_MISSING);
         checkValueAndSetResponse(String.valueOf(registrationDTO.getCompanyDTO().getPhoneNumber()), ReasonType.COMPANY_PHONE_MISSING);
@@ -116,7 +125,7 @@ public class RegistrationControl {
         checkValueAndSetResponse(registrationDTO.getCompanyDTO().getAddress().getCountry(), ReasonType.COMPANY_COUNTRY_MISSING);
     }
 
-    private void checkValueAndSetResponse(String value, ReasonType reason){
+    protected void checkValueAndSetResponse(String value, ReasonType reason){
         if(Utils.stringIsEmptyOrNull(value)) {
             registrationResult.addReason(reason);
         }
@@ -148,7 +157,7 @@ public class RegistrationControl {
         }
     }
 
-    private void validateRequiredUserInformation() {
+    protected void validateRequiredUserInformation() {
         if (!Globals.Regex.validateEmailInput(registrationDTO.getUserDTO().getEmail())) {
             registrationResult.addReason(ReasonType.EMAIL_INVALID);
         }
@@ -160,7 +169,7 @@ public class RegistrationControl {
         }
     }
 
-    private void validateRequiredCompanyInformation() {
+    protected void validateRequiredCompanyInformation() {
         if (!Globals.Regex.validateEmailInput(registrationDTO.getCompanyDTO().getEmail())) {
             registrationResult.addReason(ReasonType.COMPANY_EMAIL_INVALID);
         }

@@ -17,7 +17,6 @@ public class LoginControl {
 
     private UserDTO userDTO = null;
 
-    //private LoginResultDTO loginResult = new LoginResultDTO();
     private LoginResultDTOImpl loginResult = new LoginResultDTOImpl();
 
     public LoginResultDTO authentificate(String email, String plainTextPassword ) {
@@ -29,19 +28,19 @@ public class LoginControl {
             loginResult.setResult(false);
             loginResult.setReason("Benutzername oder Passwort falsch");
         }
-
         return loginResult;
     }
 
     public UserDTO getCurrentUser(){
         return this.userDTO;
-
     }
 
-    private UserDTO getUser(String email , String plainTextPassword ) {
+    protected UserDTO getUser(String email , String plainTextPassword ) {
         UserDTO userTmp = null;
         try {
             userTmp = repository.findUserByEmail(email);
+            if (userTmp == null)
+                return null;
             if (BCrypt.checkpw(plainTextPassword, userTmp.getPassword())) {
                 loginResult.setResult(true);
                 loginResult.setReason("LogIn erfolgreich");
@@ -55,5 +54,4 @@ public class LoginControl {
         }
         return userTmp;
     }
-
 }

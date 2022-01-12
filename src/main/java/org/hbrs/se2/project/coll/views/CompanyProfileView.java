@@ -3,25 +3,25 @@ package org.hbrs.se2.project.coll.views;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
+import org.hbrs.se2.project.coll.control.AuthorizationControl;
 import org.hbrs.se2.project.coll.control.CompanyControl;
+import org.hbrs.se2.project.coll.control.JobAdvertisementControl;
+import org.hbrs.se2.project.coll.control.JobApplicationControl;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
-import org.hbrs.se2.project.coll.dtos.UserDTO;
 import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
-import org.hbrs.se2.project.coll.entities.JobAdvertisement;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
-import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.util.Globals;
+import org.hbrs.se2.project.coll.util.LabelCompany;
+import org.hbrs.se2.project.coll.util.UtilCurrent;
+import org.hbrs.se2.project.coll.views.grids.JobAdvertisementGrid;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,10 +34,17 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     private ContactPersonRepository contactPersonRepository;
 
     @Autowired
-    private JobAdvertisementRepository jobAdvertisementRepository;
+    private JobAdvertisementControl jobAdvertisementControl;
+    @Autowired
+    private JobApplicationControl jobApplicationControl;
+    @Autowired
+    private AuthorizationControl authorizationControl;
 
     @Autowired
-    private CompanyControl profileControl;
+    private CompanyControl companyControl;
+
+    JobAdvertisementGrid jobAdvertisementGrid;
+
     Address address;
     int companyId;
 
@@ -46,17 +53,9 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     private static final Logger LOGGER = Logger.getLogger(CompanyProfileView.class.getName());
 
-    Label companyname   = new Label("Firmenname:");
-    Label street        = new Label("Strasse:");
-    Label streetnumber  = new Label("Hausnummer:");
-    Label postalcode    = new Label("PLZ:");
-    Label city          = new Label("Ort:");
-    Label country       = new Label("Land:");
-    Label email         = new Label("E-Mail:");
-    Label phone         = new Label("Telefon:");
-    Label fax           = new Label("Fax:");
-    Label website       = new Label("Webseite:");
-    Label description   = new Label("Beschreibung:");
+    LabelCompany labelCompany = new LabelCompany();
+
+    H2 companyName;
 
     Label lcompanyname;
     Label lstreet;
@@ -72,14 +71,13 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     Div   div       = new Div();
     Div   contact   = new Div();
-    Div   jobs      = new Div();
 
     // Profiles can only be accesses via ID
     @Override
     public void setParameter(BeforeEvent event, String parameter) {
         try {
             if (!Objects.equals(parameter, "")) {
-                CompanyDTO profileDTO = profileControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
+                CompanyDTO profileDTO = companyControl.findCompanyProfileByCompanyId(Integer.parseInt(parameter));
                 address = profileDTO.getAddress();
                 initLabels(profileDTO);
                 createProfile();
@@ -92,6 +90,7 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
     // Used to read DTO data and inject it into the labels
     public void initLabels(CompanyDTO profileDTO) {
         companyId       = profileDTO.getId();
+        companyName     = new H2(profileDTO.getCompanyName());
         lcompanyname    = new Label(profileDTO.getCompanyName());
         lstreet         = new Label(address.getStreet());
         lstreetnumber   = new Label(address.getHouseNumber());
@@ -107,39 +106,31 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
     // Build profile content
     public void createProfile() {
-        H2 h2 = new H2("Firmenprofil");
-
-        // TODO: Get Image from Database
+        div.setWidthFull();
         // Profile Image
         Image profileImage = new Image("https://thispersondoesnotexist.com/image", "placeholder");
         profileImage.setWidth(WIDTH);
         profileImage.getElement().getStyle().set("border", "1px solid black");
 
         // Styling
-        for (Label label : new Label[]{ companyname, street, streetnumber, postalcode, city, country, email,
-                phone, fax, website, description}) {
-            label.getElement().getStyle().set(FONT, "bold");
-            label.setWidth(WIDTH);
-        }
 
         // Profile Data
-        HorizontalLayout hcompanyname   = new HorizontalLayout(companyname, lcompanyname);
-        HorizontalLayout hstreet        = new HorizontalLayout(street, lstreet);
-        HorizontalLayout hstreetnumber  = new HorizontalLayout(streetnumber, lstreetnumber);
-        HorizontalLayout hpostalcode    = new HorizontalLayout(postalcode, lpostalcode);
-        HorizontalLayout hcity          = new HorizontalLayout(city, lcity);
-        HorizontalLayout hcountry       = new HorizontalLayout(country, lcountry);
-        HorizontalLayout hemail         = new HorizontalLayout(email, lemail);
-        HorizontalLayout hphone         = new HorizontalLayout(phone, lphone);
-        HorizontalLayout hfax           = new HorizontalLayout(fax, lfax);
-        HorizontalLayout hwebsite       = new HorizontalLayout(website, lwebsite);
-        HorizontalLayout hdescription   = new HorizontalLayout(description, ldescription);
+        HorizontalLayout hcompanyname   = new HorizontalLayout(labelCompany.getCompanyname(), lcompanyname);
+        HorizontalLayout hstreet        = new HorizontalLayout(labelCompany.getStreet(), lstreet);
+        HorizontalLayout hstreetnumber  = new HorizontalLayout(labelCompany.getStreetnumber(), lstreetnumber);
+        HorizontalLayout hpostalcode    = new HorizontalLayout(labelCompany.getPostalcode(), lpostalcode);
+        HorizontalLayout hcity          = new HorizontalLayout(labelCompany.getCity(), lcity);
+        HorizontalLayout hcountry       = new HorizontalLayout(labelCompany.getCountry(), lcountry);
+        HorizontalLayout hemail         = new HorizontalLayout(labelCompany.getEmail(), lemail);
+        HorizontalLayout hphone         = new HorizontalLayout(labelCompany.getPhone(), lphone);
+        HorizontalLayout hfax           = new HorizontalLayout(labelCompany.getFax(), lfax);
+        HorizontalLayout hwebsite       = new HorizontalLayout(labelCompany.getWebsite(), lwebsite);
+        HorizontalLayout hdescription   = new HorizontalLayout(labelCompany.getDescription(), ldescription);
 
         // Edit Profile Button
         HorizontalLayout hbuttons = new HorizontalLayout();
         Button button = new Button("Profil editieren");
-        button.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_EDIT_VIEW +
-                companyId));
+        button.addClickListener(e -> navigateToEdit(companyId));
         hbuttons.add(button);
 
         // Alignment of profile information
@@ -151,28 +142,37 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         // Contact Person Div
         contact = initContactPerson();
 
-        // Job offer Div
-        jobs = initJobOffers();
-
         // Align Layout
-        HorizontalLayout finalLayout = new HorizontalLayout();
-        VerticalLayout jobsAndContact = new VerticalLayout();
-        jobsAndContact.add(contact, jobs);
+        this.setAlignItems(FlexComponent.Alignment.CENTER);
+        HorizontalLayout mainCompanyLayout = new HorizontalLayout();
+        VerticalLayout companyInfoLayout = new VerticalLayout();
+        VerticalLayout contactPersonLayout = new VerticalLayout();
+        contactPersonLayout.add(contact);
 
         // Append everything to the site
-        div.add(h2, profileImage, hcompanyname, hstreet, hstreetnumber, hpostalcode,
+        companyInfoLayout.add(companyName, profileImage, hstreet, hstreetnumber, hpostalcode,
                 hcity, hcountry, hemail, hphone, hfax, hwebsite, hdescription);
 
         // Add Edit Button ONLY when the logged-in user is the contact person of this company
-        int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
-
-        if (getCurrentUser() != null) {
-            int currentUserId = getCurrentUser().getId();
-            if(Objects.equals(contactPersonId, currentUserId))
-                div.add(hbuttons);
+        if (UtilCurrent.getCurrentUser() != null &&
+                authorizationControl.isUserCompanyContactPerson(UtilCurrent.getCurrentUser(), companyId)) {
+            companyInfoLayout.add(hbuttons);
         }
-        finalLayout.add(div, jobsAndContact);
-        add(finalLayout);
+        mainCompanyLayout.add(companyInfoLayout, contactPersonLayout);
+        add(mainCompanyLayout);
+
+        if (UtilCurrent.getCurrentUser() != null &&
+                !authorizationControl.isUserCompanyContactPerson(UtilCurrent.getCurrentUser(),companyId)) {
+            jobAdvertisementGrid = new JobAdvertisementGrid(jobAdvertisementControl, jobApplicationControl,
+                    authorizationControl, companyId, true);
+            jobAdvertisementGrid.setGridItemButtons(true, true, false, true);
+            jobAdvertisementGrid.setWidth("99%");
+            jobAdvertisementGrid.loadGridData();
+            HorizontalLayout jobGridLayout = new HorizontalLayout(jobAdvertisementGrid);
+            jobGridLayout.setWidthFull();
+            jobGridLayout.setHeight("800px");
+            add(jobGridLayout);
+        }
     }
 
     public Div initContactPerson() {
@@ -181,134 +181,36 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
 
         // Labels
         H3 contactHeadline  = new H3("Kontaktperson dieser Firma");
-        Label name          = new Label("Name:");
-        Label phone         = new Label("Telefon:");
-        Label email         = new Label("E-Mail:");
-        Label position      = new Label("Abteilung:");
+        Label contactName          = new Label("Name:");
+        Label contactPhone         = new Label("Telefon:");
+        Label contactEmail         = new Label("E-Mail:");
+        Label contactPosition      = new Label("Abteilung:");
 
-        Label lname         = new Label(contactPerson.getFirstName() + " " + contactPerson.getLastName());
-        Label lphone        = new Label(contactPerson.getPhone());
-        Label lemail        = new Label(contactPerson.getEmail());
-        Label lposition     = new Label(contactPerson.getRole());
+        Label lcontactName         = new Label(contactPerson.getFirstName() + " " + contactPerson.getLastName());
+        Label lcontactPhone        = new Label(contactPerson.getPhone());
+        Label lcontactEmail        = new Label(contactPerson.getEmail());
+        Label lcontactPosition     = new Label(contactPerson.getRole());
 
         // Styling
-        for (Label label : new Label[]{ name, phone, email, position }) {
+        for (Label label : new Label[]{ contactName, contactPhone, contactEmail, contactPosition }) {
             label.getElement().getStyle().set(FONT, "bold");
             label.setWidth("100px");
         }
 
         // Alignment
-        HorizontalLayout hname      = new HorizontalLayout(name, lname);
-        HorizontalLayout hphone     = new HorizontalLayout(phone, lphone);
-        HorizontalLayout hemail     = new HorizontalLayout(email, lemail);
-        HorizontalLayout hposition  = new HorizontalLayout(position, lposition);
+        HorizontalLayout hContactName      = new HorizontalLayout(contactName, lcontactName);
+        HorizontalLayout hContactPhone     = new HorizontalLayout(contactPhone, lcontactPhone);
+        HorizontalLayout hContactEmail     = new HorizontalLayout(contactEmail, lcontactEmail);
+        HorizontalLayout hContactPosition  = new HorizontalLayout(contactPosition, lcontactPosition);
 
         // Add to div
-        form.add(contactHeadline, hname, hphone, hemail, hposition);
+        form.add(contactHeadline, hContactName, hContactPhone, hContactEmail, hContactPosition);
         return form;
     }
 
-    public Div initJobOffers() {
-        Div form        = new Div();
-        H3 jobHeadline  = new H3("Stellenangebote dieser Firma");
-        H4 jobNumber;
-        form.add(jobHeadline);
-
-        Button newJob = new Button("Neues Stellenangebot");
-        newJob.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.RECRUITMENT_VIEW +
-                companyId));
-        HorizontalLayout hbuttons = new HorizontalLayout(newJob);
-
-        // Add "New Job" Button ONLY when the logged-in user is the contact person of this company
-        int contactPersonId = contactPersonRepository.findContactPersonByCompanyId(companyId).getId();
-
-        if (getCurrentUser() != null) {
-            int currentUserId = getCurrentUser().getId();
-            if(Objects.equals(contactPersonId, currentUserId))
-                form.add(hbuttons);
-        }
-
-        // Find Job Advertisements for this company
-        List<JobAdvertisement> jobAdvertisements =
-                jobAdvertisementRepository.findJobAdvertisementsByCompanyId(companyId);
-
-        // Only print them if they exist
-        if(jobAdvertisements.isEmpty()){
-            Label noJobs = new Label("Diese Firma hat zur Zeit keine Stellenangebote.");
-            form.add(noJobs);
-        }
-        else
-        {
-            int count = 1;
-
-            for(JobAdvertisement job : jobAdvertisements)
-            {
-                Label jobTitle          = new Label("Titel:");
-                Label jobType           = new Label("Tätigkeit:");
-                Label jobHours          = new Label("Stundenzahl/Woche:");
-                Label jobRequirements   = new Label("Voraussetzungen:");
-                Label jobDescription    = new Label("Beschreibung:");
-                Label jobStart          = new Label("Beginn der Tätigkeit:");
-                Label jobEnd            = new Label("Ende der Tätigkeit:");
-                Label jobTemporary      = new Label("Temporäre Beschäftigung:");
-
-                Label lJobTitle;
-                Label lJobType;
-                Label lJobHours;
-                Label lJobRequirements;
-                Label lJobDescription;
-                Label lJobStart;
-                Label lJobEnd;
-                Label lJobTemporary;
-
-                // Styling
-                for (Label label : new Label[]{ jobTitle, jobType, jobHours, jobRequirements, jobDescription, jobStart,
-                        jobEnd, jobTemporary }) {
-                    label.getElement().getStyle().set(FONT, "bold");
-                    label.setWidth(WIDTH);
-                }
-
-                // Count Job offers
-                jobNumber = new H4("Stellenanzeige Nr. " + count);
-                count++;
-
-                // Fill labels with content
-                lJobTitle           = new Label(job.getJobTitle());
-                lJobType            = new Label(job.getTypeOfEmployment());
-                lJobHours           = new Label(String.valueOf(job.getWorkingHours()));
-                lJobRequirements    = new Label(job.getRequirements());
-                lJobDescription     = new Label(job.getJobDescription());
-                lJobStart           = new Label(job.getStartOfWork().toString());
-                lJobEnd             = new Label(job.getEndOfWork().toString());
-
-                if(String.valueOf(job.getTemporaryEmployment()).equals("true"))
-                    lJobTemporary = new Label("Ja");
-                else
-                    lJobTemporary = new Label("Nein");
-
-                HorizontalLayout hJobTitle          = new HorizontalLayout(jobTitle, lJobTitle);
-                HorizontalLayout hJobType           = new HorizontalLayout(jobType, lJobType);
-                HorizontalLayout hJobHours          = new HorizontalLayout(jobHours, lJobHours);
-                HorizontalLayout hJobRequirements   = new HorizontalLayout(jobRequirements, lJobRequirements);
-                HorizontalLayout hJobDescription    = new HorizontalLayout(jobDescription, lJobDescription);
-                HorizontalLayout hJobStart          = new HorizontalLayout(jobStart, lJobStart);
-                HorizontalLayout hJobEnd            = new HorizontalLayout(jobEnd, lJobEnd);
-                HorizontalLayout hJobTemporary      = new HorizontalLayout(jobTemporary, lJobTemporary);
-
-                // Create Buttons to get in contact with the Company
-                Button contactButton = new Button("Kontakt aufnehmen");
-                contactButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.CONTACTING_VIEW +
-                        companyId + "/" + job.getId()));
-
-                // Add everything to the container
-                form.add(jobNumber, hJobTitle, hJobType, hJobHours, hJobRequirements, hJobDescription, hJobStart,
-                            hJobEnd, hJobTemporary, contactButton);
-            }
-        }
-        return form;
-    }
-    private UserDTO getCurrentUser() {
-        return (UserDTO) UI.getCurrent().getSession().getAttribute(Globals.CURRENT_USER);
+    public static void navigateToEdit(int companyId) {
+        if(!Objects.equals(UtilCurrent.getCurrentLocation(), Globals.Pages.COMPANYPROFILE_EDIT_VIEW))
+            UI.getCurrent().navigate(Globals.Pages.COMPANYPROFILE_EDIT_VIEW + companyId);
     }
 
     public CompanyProfileView() {

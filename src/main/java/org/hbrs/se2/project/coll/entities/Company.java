@@ -9,8 +9,8 @@ public class Company {
     private int id;
     private String companyName;
     private Address address;
-    private int phoneNumber;
-    private int faxNumber;
+    private String phoneNumber;
+    private String faxNumber;
     private String email;
     private String website;
     private String description;
@@ -27,11 +27,13 @@ public class Company {
 
     @Id
     @GeneratedValue(
+            strategy=GenerationType.AUTO,
             generator = "company_id"
     )
     @SequenceGenerator(
             name = "company_id",
-            sequenceName = "collhbrs.col_seq_company_id"
+            sequenceName = "collhbrs.col_seq_company_id",
+            allocationSize=1
     )
     @Column(name = "company_id")
     public int getId() {
@@ -57,10 +59,10 @@ public class Company {
 
     @Basic
     @Column(name = "fax_number")
-    public int getFaxNumber() {
+    public String getFaxNumber() {
         return faxNumber;
     }
-    public void setFaxNumber(int faxNumber) {
+    public void setFaxNumber(String faxNumber) {
         this.faxNumber = faxNumber;
     }
 
@@ -80,8 +82,8 @@ public class Company {
 
     @Basic
     @Column(name = "phone_number")
-    public int getPhoneNumber() { return phoneNumber; }
-    public void setPhoneNumber(int phone) { this.phoneNumber = phone; }
+    public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phone) { this.phoneNumber = phone; }
 
     @OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
     public Set<ContactPerson> getContactPersons() {
