@@ -39,9 +39,9 @@ public class InboxView extends Div implements HasUrlParameter<String> {
 
     // Grid may NOT be final.
     private Grid<MessageDTO> grid;
-    private static List<MessageDTO> messages  = new ArrayList<>();
-    private static Div hint;
-    private static SplitLayout splitLayout = new SplitLayout();
+    private List<MessageDTO> messages = new ArrayList<>();
+    private Div hint;
+    private SplitLayout splitLayout = new SplitLayout();
 
     private static final Logger LOGGER = Logger.getLogger(InboxView.class.getName());
 
@@ -109,12 +109,12 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         });
 
         // Fetch messages for current user and fill grid with them
-        InboxView.messages = inboxControl.getMessages(UtilCurrent.getCurrentUser().getId());
+        this.messages = inboxControl.getMessages(UtilCurrent.getCurrentUser().getId());
         grid.setItems(messages);
 
         // Hint if user has no messages
-        InboxView.hint = new Div();
-        InboxView.hint.setText("Sie haben keine Nachrichten.");
+        this.hint = new Div();
+        this.hint.setText("Sie haben keine Nachrichten.");
         setDivStyle(hint);
 
         // Setup right side of the Layout, which works as a message Display / Answering UI
@@ -127,15 +127,15 @@ public class InboxView extends Div implements HasUrlParameter<String> {
         VerticalLayout reply = new VerticalLayout(hint2);
 
         // Compose both sides
-        InboxView.splitLayout = new SplitLayout(inbox, reply);
-        InboxView.splitLayout.setSplitterPosition(1000);
-        InboxView.splitLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
+        this.splitLayout = new SplitLayout(inbox, reply);
+        this.splitLayout.setSplitterPosition(1000);
+        this.splitLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
 
-        InboxView.splitLayout.setSizeFull();
-        InboxView.splitLayout.setHeight("100%");
+        this.splitLayout.setSizeFull();
+        this.splitLayout.setHeight("100%");
         setSizeFull();
         setHeight("100%");
-        add(InboxView.splitLayout);
+        add(this.splitLayout);
     }
 
     private void toggleReply(MessageDTO message, boolean selected) throws DatabaseUserException {
@@ -282,13 +282,13 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     }
 
     // Layout when a message has been deselected
-    private static  void cleanSecondary() {
-        hint = new Div();
-        hint.setText("Es wurde keine Nachricht ausgewählt.");
-        setDivStyle(hint);
-        splitLayout.remove(splitLayout.getSecondaryComponent());
-        VerticalLayout vHint = new VerticalLayout(hint);
-        splitLayout.addToSecondary(vHint);
+    private void cleanSecondary() {
+        this.hint = new Div();
+        this.hint.setText("Es wurde keine Nachricht ausgewählt.");
+        setDivStyle(this.hint);
+        this.splitLayout.remove(this.splitLayout.getSecondaryComponent());
+        VerticalLayout vHint = new VerticalLayout(this.hint);
+        this.splitLayout.addToSecondary(vHint);
     }
 
     private void refreshGrid() {
