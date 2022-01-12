@@ -181,8 +181,10 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
                     dialog.open();
                 } catch (DatabaseUserException databaseUserException) {
                     Utils.triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein Fehler aufgetreten: " + databaseUserException.getErrorCode());
+                    databaseUserException.printStackTrace();
                 } catch (Exception exception) {
                     Utils.triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein unerwarteter Fehler aufgetreten: " + exception);
+                    exception.printStackTrace();
                 }
             }
         });
@@ -262,7 +264,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         newJob.setStartOfWork(lStartOfWork.getValue());
         newJob.setEndOfWork(lEndOfWork.getValue());
         newJob.setJobDescription(lJobDescription.getValue());
-        newJob.setSalary((int) Math.round(lSalary.getValue()));
+        newJob.setSalary((int) Math.round(lSalary.getValue() != null ? lSalary.getValue() : 0));
 
         newJob.setTemporaryEmployment(Objects.equals(lTemporaryEmployment.getValue(), "Ja"));
 
