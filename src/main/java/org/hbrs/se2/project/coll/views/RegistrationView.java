@@ -37,7 +37,6 @@ import org.hbrs.se2.project.coll.util.UtilNavigation;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.Objects;
 
 @Route(value = "register" , layout = AppView.class)
@@ -285,7 +284,11 @@ public class RegistrationView extends Div {
                     UtilNavigation.navigateToMain();
                 } else {
                     // Fehlerbehandlung: Fehlerhafte TextFields mit Error Message versehen und auf invalid setzen
-                    setErrorFields(registrationResult.getReasons());
+
+                    for (ReasonType reason : registrationResult.getReasons()) {
+                        setErrorField(reason);
+                    }
+
                 }
             } catch (DatabaseUserException databaseUserException) {
                 Utils.triggerDialogMessage(Globals.View.ERROR,"Während der Registrierung ist ein Fehler aufgetreten: " + databaseUserException.getErrorCode());
@@ -305,146 +308,144 @@ public class RegistrationView extends Div {
         }
     }
 
-    public void setErrorFields(List<ReasonType> reasons) {
-        for (ReasonType reason : reasons) {
-            switch (reason) {
-                case UNEXPECTED_ERROR:
-                    Utils.triggerDialogMessage(Globals.View.ERROR, "Es ist ein unerwarteter Fehler aufgetreten");
-                    break;
-                case SALUTATION_MISSING:
-                    salutation.setErrorMessage("Bitte geben Sie eine Anrede ein");
-                    salutation.setInvalid(true);
-                    break;
-                case TITLE_MISSING:
-                    title.setErrorMessage("Bitte geben Sie einen Titel ein");
-                    title.setInvalid(true);
-                    break;
-                case FIRSTNAME_MISSING:
-                    firstName.setErrorMessage("Bitte geben Sie einen Vornamen ein");
-                    firstName.setInvalid(true);
-                    break;
-                case LASTNAME_MISSING:
-                    lastName.setErrorMessage("Bitte geben Sie einen Nachnamen ein");
-                    lastName.setInvalid(true);
-                    break;
-                case DATEOFBIRTH_MISSING:
-                    dateOfBirth.setErrorMessage("Bitte geben Sie ein Geburtsdatum ein");
-                    dateOfBirth.setInvalid(true);
-                    break;
-                case PHONE_MISSING:
-                    phone.setErrorMessage("Bitte geben Sie eine Telefonnummer ein");
-                    phone.setInvalid(true);
-                    break;
-                case STREET_MISSING:
-                    street.setErrorMessage("Bitte geben Sie eine Straße ein");
-                    street.setInvalid(true);
-                    break;
-                case HOUSENUMBER_MISSING:
-                    housenumber.setErrorMessage("Bitte geben Sie eine Hausnummer ein");
-                    housenumber.setInvalid(true);
-                    break;
-                case POSTALCODE_MISSING:
-                    postalcode.setErrorMessage(Globals.View.POSTAL_CODE);
-                    postalcode.setInvalid(true);
-                    break;
-                case CITY_MISSING:
-                    city.setErrorMessage("Bitte geben Sie eine Stadt ein");
-                    city.setInvalid(true);
-                    break;
-                case COUNTRY_MISSING:
-                    country.setErrorMessage("Bitte geben Sie ein Land ein");
-                    country.setInvalid(true);
-                    break;
-                case EMAIL_ALREADY_IN_USE:
-                    email.setErrorMessage("Die angegebene Email wird bereits verwendet");
-                    email.setInvalid(true);
-                    emailRepeat.setErrorMessage("Die angegebene Email wird bereits verwendet");
-                    emailRepeat.setInvalid(true);
-                    break;
-                case EMAIL_INVALID:
-                    email.setErrorMessage("Bitte geben Sie eine gültige Email ein");
-                    email.setInvalid(true);
-                    emailRepeat.setErrorMessage("Bitte geben Sie eine gültige Email ein");
-                    emailRepeat.setInvalid(true);
-                    break;
-                case PASSWORD_INVALID:
-                    password.setErrorMessage("Bitte geben Sie ein gültiges Password ein: Min 5 Zeichen");
-                    password.setInvalid(true);
-                    passwordRepeat.setErrorMessage("Bitte geben Sie ein gültiges Password ein: Min 5 Zeichen");
-                    passwordRepeat.setInvalid(true);
-                    break;
-                case EMAIL_UNEQUAL:
-                    email.setErrorMessage("Die eingebene Email Adressen stimmen nicht überein");
-                    email.setInvalid(true);
-                    emailRepeat.setErrorMessage("Die eingebene Email Adressen stimmen nicht überein");
-                    emailRepeat.setInvalid(true);
-                    break;
-                case PASSWORD_UNEQUAL:
-                    password.setErrorMessage("Die eingegebenen Passwörter stimmen nicht überein");
-                    password.setInvalid(true);
-                    passwordRepeat.setErrorMessage("Die eingegebenen Passwörter stimmen nicht überein");
-                    passwordRepeat.setInvalid(true);
-                    break;
-                case PASSWORD_MISSING:
-                    password.setErrorMessage("Bitte geben Sie eine gültiges Passwort ein");
-                    password.setInvalid(true);
-                    passwordRepeat.setErrorMessage("Bitte geben Sie eine gültiges Passwort ein");
-                    passwordRepeat.setInvalid(true);
-                    break;
-                case COMPANY_ALREADY_REGISTERED:
-                    Utils.triggerDialogMessage(Globals.View.ERROR, "Die angegebene Firma ist bereits registriert");
-                    break;
-                case COMPANY_NAME_MISSING:
-                    companyName.setErrorMessage("Bitte geben Sie einen gültigen Firmennamen ein");
-                    companyName.setInvalid(true);
-                    break;
-                case COMPANY_EMAIL_MISSING:
-                    companyEmail.setErrorMessage("Bitte geben Sie eine Email ein");
-                    companyEmail.setInvalid(true);
-                    break;
-                case COMPANY_PHONE_MISSING:
-                    companyPhone.setErrorMessage("Bitte geben Sie eine Telefonnummer ein");
-                    companyPhone.setInvalid(true);
-                    break;
-                case COMPANY_FAX_MISSING:
-                    companyFax.setErrorMessage("Bitte geben Sie eine Faxnummer ein");
-                    companyFax.setInvalid(true);
-                    break;
-                case COMPANY_WEBSITE_MISSING:
-                    companyHomepage.setErrorMessage("Bitte geben Sie eine Webseite ein");
-                    companyHomepage.setInvalid(true);
-                    break;
-                case COMPANY_DESCRIPTION_MISSING:
-                    companyDescription.setErrorMessage("Bitte geben Sie eine Beschreibung ein");
-                    companyDescription.setInvalid(true);
-                    break;
-                case COMPANY_STREET_MISSING:
-                    companyStreet.setErrorMessage("Bitte geben Sie eine Straße ein");
-                    companyStreet.setInvalid(true);
-                    break;
-                case COMPANY_HOUSENUMBER_MISSING:
-                    companyHouseNumber.setErrorMessage("Bitte geben Sie eine Hausnummer ein");
-                    companyHouseNumber.setInvalid(true);
-                    break;
-                case COMPANY_POSTALCODE_MISSING:
-                    companyPostalCode.setErrorMessage(Globals.View.POSTAL_CODE);
-                    companyPostalCode.setInvalid(true);
-                    break;
-                case COMPANY_CITY_MISSING:
-                    companyCity.setErrorMessage("Bitte geben Sie eine Stadt ein");
-                    companyCity.setInvalid(true);
-                    break;
-                case COMPANY_COUNTRY_MISSING:
-                    companyCountry.setErrorMessage("Bitte geben Sie ein land ein");
-                    companyCountry.setInvalid(true);
-                    break;
-                case COMPANY_EMAIL_INVALID:
-                    companyEmail.setErrorMessage("Bitte geben Sie eine gültige Email-Adresse ein");
-                    companyEmail.setInvalid(true);
-                    break;
-                default:
-                    break;
-            }
+    public void setErrorField(ReasonType reason) {
+        switch (reason) {
+            case UNEXPECTED_ERROR:
+                Utils.triggerDialogMessage(Globals.View.ERROR, "Es ist ein unerwarteter Fehler aufgetreten");
+                break;
+            case SALUTATION_MISSING:
+                salutation.setErrorMessage("Bitte geben Sie eine Anrede ein");
+                salutation.setInvalid(true);
+                break;
+            case TITLE_MISSING:
+                title.setErrorMessage("Bitte geben Sie einen Titel ein");
+                title.setInvalid(true);
+                break;
+            case FIRSTNAME_MISSING:
+                firstName.setErrorMessage("Bitte geben Sie einen Vornamen ein");
+                firstName.setInvalid(true);
+                break;
+            case LASTNAME_MISSING:
+                lastName.setErrorMessage("Bitte geben Sie einen Nachnamen ein");
+                lastName.setInvalid(true);
+                break;
+            case DATEOFBIRTH_MISSING:
+                dateOfBirth.setErrorMessage("Bitte geben Sie ein Geburtsdatum ein");
+                dateOfBirth.setInvalid(true);
+                break;
+            case PHONE_MISSING:
+                phone.setErrorMessage("Bitte geben Sie eine Telefonnummer ein");
+                phone.setInvalid(true);
+                break;
+            case STREET_MISSING:
+                street.setErrorMessage("Bitte geben Sie eine Straße ein");
+                street.setInvalid(true);
+                break;
+            case HOUSENUMBER_MISSING:
+                housenumber.setErrorMessage("Bitte geben Sie eine Hausnummer ein");
+                housenumber.setInvalid(true);
+                break;
+            case POSTALCODE_MISSING:
+                postalcode.setErrorMessage(Globals.View.POSTAL_CODE);
+                postalcode.setInvalid(true);
+                break;
+            case CITY_MISSING:
+                city.setErrorMessage("Bitte geben Sie eine Stadt ein");
+                city.setInvalid(true);
+                break;
+            case COUNTRY_MISSING:
+                country.setErrorMessage("Bitte geben Sie ein Land ein");
+                country.setInvalid(true);
+                break;
+            case EMAIL_ALREADY_IN_USE:
+                email.setErrorMessage("Die angegebene Email wird bereits verwendet");
+                email.setInvalid(true);
+                emailRepeat.setErrorMessage("Die angegebene Email wird bereits verwendet");
+                emailRepeat.setInvalid(true);
+                break;
+            case EMAIL_INVALID:
+                email.setErrorMessage("Bitte geben Sie eine gültige Email ein");
+                email.setInvalid(true);
+                emailRepeat.setErrorMessage("Bitte geben Sie eine gültige Email ein");
+                emailRepeat.setInvalid(true);
+                break;
+            case PASSWORD_INVALID:
+                password.setErrorMessage("Bitte geben Sie ein gültiges Password ein: Min 5 Zeichen");
+                password.setInvalid(true);
+                passwordRepeat.setErrorMessage("Bitte geben Sie ein gültiges Password ein: Min 5 Zeichen");
+                passwordRepeat.setInvalid(true);
+                break;
+            case EMAIL_UNEQUAL:
+                email.setErrorMessage("Die eingebene Email Adressen stimmen nicht überein");
+                email.setInvalid(true);
+                emailRepeat.setErrorMessage("Die eingebene Email Adressen stimmen nicht überein");
+                emailRepeat.setInvalid(true);
+                break;
+            case PASSWORD_UNEQUAL:
+                password.setErrorMessage("Die eingegebenen Passwörter stimmen nicht überein");
+                password.setInvalid(true);
+                passwordRepeat.setErrorMessage("Die eingegebenen Passwörter stimmen nicht überein");
+                passwordRepeat.setInvalid(true);
+                break;
+            case PASSWORD_MISSING:
+                password.setErrorMessage("Bitte geben Sie eine gültiges Passwort ein");
+                password.setInvalid(true);
+                passwordRepeat.setErrorMessage("Bitte geben Sie eine gültiges Passwort ein");
+                passwordRepeat.setInvalid(true);
+                break;
+            case COMPANY_ALREADY_REGISTERED:
+                Utils.triggerDialogMessage(Globals.View.ERROR, "Die angegebene Firma ist bereits registriert");
+                break;
+            case COMPANY_NAME_MISSING:
+                companyName.setErrorMessage("Bitte geben Sie einen gültigen Firmennamen ein");
+                companyName.setInvalid(true);
+                break;
+            case COMPANY_EMAIL_MISSING:
+                companyEmail.setErrorMessage("Bitte geben Sie eine Email ein");
+                companyEmail.setInvalid(true);
+                break;
+            case COMPANY_PHONE_MISSING:
+                companyPhone.setErrorMessage("Bitte geben Sie eine Telefonnummer ein");
+                companyPhone.setInvalid(true);
+                break;
+            case COMPANY_FAX_MISSING:
+                companyFax.setErrorMessage("Bitte geben Sie eine Faxnummer ein");
+                companyFax.setInvalid(true);
+                break;
+            case COMPANY_WEBSITE_MISSING:
+                companyHomepage.setErrorMessage("Bitte geben Sie eine Webseite ein");
+                companyHomepage.setInvalid(true);
+                break;
+            case COMPANY_DESCRIPTION_MISSING:
+                companyDescription.setErrorMessage("Bitte geben Sie eine Beschreibung ein");
+                companyDescription.setInvalid(true);
+                break;
+            case COMPANY_STREET_MISSING:
+                companyStreet.setErrorMessage("Bitte geben Sie eine Straße ein");
+                companyStreet.setInvalid(true);
+                break;
+            case COMPANY_HOUSENUMBER_MISSING:
+                companyHouseNumber.setErrorMessage("Bitte geben Sie eine Hausnummer ein");
+                companyHouseNumber.setInvalid(true);
+                break;
+            case COMPANY_POSTALCODE_MISSING:
+                companyPostalCode.setErrorMessage(Globals.View.POSTAL_CODE);
+                companyPostalCode.setInvalid(true);
+                break;
+            case COMPANY_CITY_MISSING:
+                companyCity.setErrorMessage("Bitte geben Sie eine Stadt ein");
+                companyCity.setInvalid(true);
+                break;
+            case COMPANY_COUNTRY_MISSING:
+                companyCountry.setErrorMessage("Bitte geben Sie ein land ein");
+                companyCountry.setInvalid(true);
+                break;
+            case COMPANY_EMAIL_INVALID:
+                companyEmail.setErrorMessage("Bitte geben Sie eine gültige Email-Adresse ein");
+                companyEmail.setInvalid(true);
+                break;
+            default:
+                break;
         }
     }
 }
