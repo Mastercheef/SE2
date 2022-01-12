@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 @Route(value = "companyprofile", layout = AppView.class)
 @PageTitle("Profile")
-public class CompanyProfileView extends VerticalLayout implements HasUrlParameter<String>, AfterNavigationObserver {
+public class CompanyProfileView extends VerticalLayout implements HasUrlParameter<String> {
 
     @Autowired
     private ContactPersonRepository contactPersonRepository;
@@ -85,11 +85,6 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         } catch (Exception e) {
             LOGGER.log(Level.INFO,e.toString());
         }
-    }
-
-    @Override
-    public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
-
     }
 
     // Used to read DTO data and inject it into the labels
