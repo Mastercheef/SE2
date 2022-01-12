@@ -144,6 +144,11 @@ class ContactingControlTest {
     void testCheckUrlParameterInvalid() {
         //Block1
         assertTrue(contactingControl.checkUrlParameterInvalid(0,0,0));
+        assertFalse(contactingControl.checkUrlParameterInvalid(1,0,0));
+        assertTrue(contactingControl.checkUrlParameterInvalid(0,1,0));
+        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,1));
+        assertTrue(contactingControl.checkUrlParameterInvalid(0,1,1));
+
         assertFalse(contactingControl.checkUrlParameterInvalid(10,10,10));
 
         //Block2
@@ -161,5 +166,22 @@ class ContactingControlTest {
         //Block6
         assertTrue(contactingControl.checkUrlParameterInvalid(10,0,10));
         assertTrue(contactingControl.checkUrlParameterInvalid(0,10,0));
+
+        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,1));
+        assertTrue(contactingControl.checkUrlParameterInvalid(0,1,0));
+        assertTrue(contactingControl.checkUrlParameterInvalid(0,1,1));
+        assertFalse(contactingControl.checkUrlParameterInvalid(1,0,0));
+        assertTrue(contactingControl.checkUrlParameterInvalid(1,0,1));
+        assertTrue(contactingControl.checkUrlParameterInvalid(1,1,0));
+        assertFalse(contactingControl.checkUrlParameterInvalid(1,1,1));
+
+        assertFalse(contactingControl.checkUrlParameterInvalid(2,2,2));
+        assertTrue(contactingControl.checkUrlParameterInvalid(2,2,0));
+        assertTrue(contactingControl.checkUrlParameterInvalid(2,0,2));
+        assertFalse(contactingControl.checkUrlParameterInvalid(2,0,0));
+        assertTrue(contactingControl.checkUrlParameterInvalid(0,2,2));
+        assertTrue(contactingControl.checkUrlParameterInvalid(0,2,0));
+        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,2));
+        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,0));
     }
 }
