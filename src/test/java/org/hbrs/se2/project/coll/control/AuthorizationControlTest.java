@@ -33,7 +33,7 @@ class AuthorizationControlTest {
     }
 
     @Test
-    void checkPositiveIsUserAllowedToAccessCompanyApplications() {
+    void checkPositiveIsUserCompanyContactPerson() {
 
         Mockito.when(contactPersonControl.findContactPersonById(anyInt())).thenReturn(contactPerson);
 
@@ -43,7 +43,7 @@ class AuthorizationControlTest {
     }
 
     @Test
-    void checkNegativeNullIsUserAllowedToAccessCompanyApplications() {
+    void checkNegativeNullIsUserCompanyContactPerson() {
 
         Mockito.when(contactPersonControl.findContactPersonById(anyInt())).thenReturn(null);
 
@@ -53,7 +53,7 @@ class AuthorizationControlTest {
     }
 
     @Test
-    void checkNegativeContactIsUserAllowedToAccessCompanyApplications() {
+    void checkNegativeIsUserCompanyContactPerson() {
 
         Mockito.when(contactPersonControl.findContactPersonById(anyInt())).thenReturn(contactPerson);
 

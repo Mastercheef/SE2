@@ -43,7 +43,7 @@ public class ContactingControl {
 
     public int getContactPersonId(int id) { return contactPersonRepository.findContactPersonByCompanyId(id).getId(); }
 
-    public void sendMessage(String content, int sender, int recipient, String subject,
+    public boolean sendMessage(String content, int sender, int recipient, String subject,
                             LocalDate date) throws DatabaseUserException {
         try {
             // Create new message
@@ -57,6 +57,7 @@ public class ContactingControl {
             // Send the message / save in DB
             Message message = MessageFactory.createMessage(newMessage);
             messageRepository.save(message);
+            return true;
         } catch (Exception exception) {
             LOGGER.info("LOG: {}" , exception.toString());
             if (exception instanceof org.springframework.dao.DataAccessResourceFailureException) {
@@ -70,6 +71,12 @@ public class ContactingControl {
 
     public boolean checkIfUserIsAllowedToSendMessage(UserDTO user, int reveiverId) {
         UserDTO receiver = userRepository.findUserById(reveiverId);
-        return (receiver != null && receiver.getType() == "cp" && (user.getId()  > 0));
+        return (receiver != null && user.getId()  > 0 && !(receiver.getType() == "st" && user.getType() == "st"));
+    }
+
+    public boolean checkUrlParameterInvalid(int userId, int companyId, int jobId) {
+        return (userId < 1 && companyId < 1 && jobId < 1 || userId < 1 && companyId > 0 && jobId > 0 ||
+                userId < 1 && companyId > 0 && jobId < 1 || userId < 1 && companyId < 1 && jobId > 0 ||
+                userId > 0 && companyId > 0 && jobId < 1 || userId > 0 && companyId < 1 && jobId > 0);
     }
 }
