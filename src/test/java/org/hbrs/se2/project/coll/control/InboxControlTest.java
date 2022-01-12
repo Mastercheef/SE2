@@ -4,6 +4,7 @@ import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.control.factories.MessageFactory;
 import org.hbrs.se2.project.coll.dtos.MessageDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
+import org.hbrs.se2.project.coll.dtos.impl.MessageDTOImpl;
 import org.hbrs.se2.project.coll.entities.Company;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.Message;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -48,23 +50,16 @@ class InboxControlTest {
     @Mock
     private ContactPersonRepository contactPersonRepository;
 
-
-    @Mock
-    MessageDTO messageDTO;
-    @Mock
-    Message sentMessage;
+    MessageDTO messageDTO = Mockito.mock(MessageDTO.class);
+    Message sentMessage = Mockito.mock(Message.class);
 
     MessageDTO messageDTOMethod;
     Message resultMessage;
 
-    @Mock
-    UserDTO userDTO;
+    UserDTO userDTO = Mockito.mock(UserDTO.class);
 
-    @Mock
-    ContactPerson contactPerson;
-
-    @Mock
-    Company company;
+    ContactPerson contactPerson = Mockito.mock(ContactPerson.class);
+    Company company = Mockito.mock(Company.class);
 
 
     private String message = "message";
@@ -242,6 +237,38 @@ class InboxControlTest {
                     inboxControl.deleteMessage(messageDTO));
             Assertions.assertEquals(Globals.LogMessage.ERROR, thrown.getMessage());
         }
+    }
+
+    @Test
+    void testSetMessageAsRead() throws DatabaseUserException {
+        MessageDTOImpl messageDTO = new MessageDTOImpl();
+        messageDTO.setId(1);
+        messageDTO.setSender(10);
+        messageDTO.setRecipient(20);
+        messageDTO.setSubject("Subject");
+        messageDTO.setDate(LocalDate.now());
+        messageDTO.setContent("Content");
+
+        Message readMessage = inboxControl.setMessageAsRead(messageDTO);
+        assertEquals(messageDTO.getId(), readMessage.getId());
+        assertEquals(messageDTO.getSender(), readMessage.getSender());
+        assertEquals(messageDTO.getRecipient(), readMessage.getRecipient());
+        assertEquals(messageDTO.getSubject(), readMessage.getSubject());
+        assertEquals(messageDTO.getDate(), readMessage.getDate());
+        assertEquals(messageDTO.getContent(), readMessage.getContent());
+    }
+
+    @Test
+    void testSetMessageAsReadDARFE() {
+        when(messageRepository.save(any())).thenThrow(DataAccessResourceFailureException.class);
+        assertThrows( DatabaseUserException.class, () -> inboxControl.setMessageAsRead(messageDTO));
+    }
+
+    @Test
+    void testSetMessageAsReadException() {
+
+        when(messageRepository.save(any())).thenThrow(RuntimeException.class);
+        assertThrows( DatabaseUserException.class, () -> inboxControl.setMessageAsRead(messageDTO));
     }
 
 }
