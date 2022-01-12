@@ -96,8 +96,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         headerLayout.setAlignItems(FlexComponent.Alignment.CENTER);
         headerLayout.setJustifyContentMode( FlexComponent.JustifyContentMode.EVENLY );
 
-        // Hinzufügen des Toogle ('Big Mac') zum Ein- und Ausschalten des Drawers
-
         HorizontalLayout homeIconHorizontalLayout = new HorizontalLayout();
         homeIconHorizontalLayout.setHeightFull();
         homeIconHorizontalLayout.setAlignItems(FlexComponent.Alignment.CENTER);
@@ -139,24 +137,23 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
         if (Objects.equals(currentUserType, "st"))
             navigationBar.addItem("Mein Profil", e ->
                     UtilNavigation.navigateToStudentProfile(UtilCurrent.getCurrentUser().getId()));
-        else if (Objects.equals(currentUserType, "cp"))
-            navigationBar.addItem("Mein Firmenprofil", e ->
+        else if (Objects.equals(currentUserType, "cp")) {
+            MenuItem accountItem = navigationBar.addItem("Meine Firma");
+            SubMenu subMenu = accountItem.getSubMenu();
+            subMenu.addItem("Profil", e ->
                     UtilNavigation.navigateToCompanyProfile(getContactPersonsCompanyId()));
+            subMenu.addItem("Dashboard", e ->
+                    UtilNavigation.navigateToDashboard());
+        }
+
+        navigationBar.addItem("Stellenangebote", e ->
+                UtilNavigation.navigateToJobList());
 
         // Inbox and Submenu (Messages, Applications)
-        MenuItem inbox = createIconItem(navigationBar, VaadinIcon.ENVELOPE, "Posteingang", null);
-        SubMenu inboxSubMenu = inbox.getSubMenu();
+        MenuItem inbox = createIconItem(navigationBar, VaadinIcon.ENVELOPE, "", null);
+        inbox.addClickListener(e -> UtilNavigation.navigateToMessages(UtilCurrent.getCurrentUser().getId()));
 
-        MenuItem messages = createIconItem(inboxSubMenu, VaadinIcon.ENVELOPE, "Nachrichten",
-                null, true);
-        messages.addClickListener(e -> UtilNavigation.navigateToMessages(UtilCurrent.getCurrentUser().getId()));
 
-        if(!Objects.equals(UtilCurrent.getCurrentUser().getType(), "st"))
-        {
-            MenuItem applications = createIconItem(inboxSubMenu, VaadinIcon.FILE, "Bewerbungen",
-                    null, true);
-            applications.addClickListener(e -> UtilNavigation.navigateToDashboard());
-        }
         /*  Check if:
             - If a user has enabled notifications
             - There are unread messages
@@ -165,7 +162,6 @@ public class AppView extends AppLayout implements BeforeEnterObserver {
                 !allMessagesRead)
         {
             colorItem(inbox, NOTIFICATION_COLOR);
-            colorItem(messages, NOTIFICATION_COLOR);
         }
         createIconItem(navigationBar, VaadinIcon.COG, "", null)
                 .addClickListener(e -> UtilNavigation.navigateToSettings());
