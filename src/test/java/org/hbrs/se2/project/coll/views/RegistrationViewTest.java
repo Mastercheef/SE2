@@ -236,6 +236,12 @@ public class RegistrationViewTest {
         populateBasicForm(registrationView);
         registrationView.firstName.setValue("");
 
+        userDTO(registerForm, registrationView, registrationControl);
+        Assert.assertEquals(errorFirstNameMissing, registrationView.firstName.getErrorMessage());
+        Assert.assertTrue(registrationView.firstName.isInvalid());
+    }
+
+    private void userDTO(RegistrationView.RegisterForm registerForm, RegistrationView registrationView, RegistrationControl registrationControl) throws DatabaseUserException {
         UserDTOImpl userDTO = registerForm.createNewUserDTO();
         RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl(userDTO, registrationView.emailRepeat.getValue(),
                 registrationView.passwordRepeat.getValue());
@@ -249,8 +255,6 @@ public class RegistrationViewTest {
         Assert.assertNotNull(userDTO);
         Assert.assertNotNull(registrationDTO);
         Assert.assertNotNull(registrationResult);
-        Assert.assertEquals(errorFirstNameMissing, registrationView.firstName.getErrorMessage());
-        Assert.assertTrue(registrationView.firstName.isInvalid());
     }
 
     @Test
@@ -258,19 +262,7 @@ public class RegistrationViewTest {
         RegistrationView registrationView = new RegistrationView();
         RegistrationView.RegisterForm registerForm = registrationView.new RegisterForm();
 
-        UserDTOImpl userDTO = registerForm.createNewUserDTO();
-        RegistrationDTOImpl registrationDTO = new RegistrationDTOImpl(userDTO, registrationView.emailRepeat.getValue(),
-                registrationView.passwordRepeat.getValue());
-        RegistrationResultDTO registrationResult = registrationControl.registerUser(registrationDTO);
-        for (RegistrationResultDTO.ReasonType reason : registrationResult.getReasons()) {
-            registrationView.setErrorField(reason);
-        }
-
-        Assert.assertNotNull(registrationView);
-        Assert.assertNotNull(registerForm);
-        Assert.assertNotNull(userDTO);
-        Assert.assertNotNull(registrationDTO);
-        Assert.assertNotNull(registrationResult);
+        userDTO(registerForm, registrationView, registrationControl);
         Assert.assertEquals(errorSalutationMissing, registrationView.salutation.getErrorMessage());
         Assert.assertEquals(errorTitleMissing, registrationView.title.getErrorMessage());
         Assert.assertEquals(errorFirstNameMissing, registrationView.firstName.getErrorMessage());
