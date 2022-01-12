@@ -1,6 +1,5 @@
 package org.hbrs.se2.project.coll.control;
 
-import org.hbrs.se2.project.coll.control.builder.UserDTOBuilder;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
@@ -140,147 +139,17 @@ class ContactingControlTest {
         assertTrue(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO ,100));
     }
 
-
     @Test
-    void testCheckUrlParameterInvalid() {
-        //Block1
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,0));
-        assertFalse(contactingControl.checkUrlParameterInvalid(1,0,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,1,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,1));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,1,1));
-
-        assertFalse(contactingControl.checkUrlParameterInvalid(10,10,10));
-
-        //Block2
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,10,10));
-        assertFalse(contactingControl.checkUrlParameterInvalid(10,0,0));
-
-        //Block3
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,10,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(10,0,10));
-
-        //Block4
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,10));
-        assertTrue(contactingControl.checkUrlParameterInvalid(10,10,0));
-
-        //Block6
-        assertTrue(contactingControl.checkUrlParameterInvalid(10,0,10));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,10,0));
+    void testcheckUrlParameterValid() {
+        assertFalse(contactingControl.checkUrlParameterValid(0,0,0));
+        assertFalse(contactingControl.checkUrlParameterValid(0,0,10));
+        assertFalse(contactingControl.checkUrlParameterValid(0,10,0));
+        assertTrue(contactingControl.checkUrlParameterValid(10,0,0));
+        assertFalse(contactingControl.checkUrlParameterValid(10,10,0));
+        assertFalse(contactingControl.checkUrlParameterValid(0,10,10));
+        assertFalse(contactingControl.checkUrlParameterValid(10,0,10));
+        assertTrue(contactingControl.checkUrlParameterValid(10,10,10));
 
     }
 
-    @Test
-    void testCheckUrlParameterInvalidOne() {
-
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,1));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,1,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,1,1));
-        assertFalse(contactingControl.checkUrlParameterInvalid(1,0,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(1,0,1));
-        assertTrue(contactingControl.checkUrlParameterInvalid(1,1,0));
-        assertFalse(contactingControl.checkUrlParameterInvalid(1,1,1));
-    }
-
-    @Test
-    void testCheckUrlParameterInvalidTwo() {
-        assertFalse(contactingControl.checkUrlParameterInvalid(2,2,2));
-        assertTrue(contactingControl.checkUrlParameterInvalid(2,2,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(2,0,2));
-        assertFalse(contactingControl.checkUrlParameterInvalid(2,0,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,2,2));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,2,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,2));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,0));
-    }
-
-    @Test
-    void testCheckUrlParameterInvalidNegativ() {
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,-1));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,-1,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,-1,-1));
-        assertTrue(contactingControl.checkUrlParameterInvalid(-1,0,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(-1,0,-1));
-        assertTrue(contactingControl.checkUrlParameterInvalid(-1,-1,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(-1,-1,-1));
-    }
-
-    @Test
-    void testCheckUrlParameterInvalidOneAndTwo() {
-        assertFalse(contactingControl.checkUrlParameterInvalid(2,2,2));
-        assertFalse(contactingControl.checkUrlParameterInvalid(2,2,1));
-        assertFalse(contactingControl.checkUrlParameterInvalid(2,1,2));
-        assertFalse(contactingControl.checkUrlParameterInvalid(2,1,1));
-        assertFalse(contactingControl.checkUrlParameterInvalid(1,2,2));
-        assertFalse(contactingControl.checkUrlParameterInvalid(1,2,1));
-        assertFalse(contactingControl.checkUrlParameterInvalid(1,1,2));
-    }
-
-    @Test
-    void testCheckUrlParameterInvalidTwoAndNegative() {
-        assertFalse(contactingControl.checkUrlParameterInvalid(2,2,2));
-        assertTrue(contactingControl.checkUrlParameterInvalid(2,2,-1));
-        assertTrue(contactingControl.checkUrlParameterInvalid(2,-1,2));
-        assertFalse(contactingControl.checkUrlParameterInvalid(2,-1,-1));
-        assertTrue(contactingControl.checkUrlParameterInvalid(-1,2,2));
-        assertTrue(contactingControl.checkUrlParameterInvalid(-1,2,-1));
-        assertTrue(contactingControl.checkUrlParameterInvalid(-1,-1,2));
-    }
-
-    @Test
-    void testNull() {
-
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            contactingControl.checkUrlParameterInvalid(2,2,integerForNull);
-        });
-
-        String actualMessage = exception.getMessage();
-
-        assertEquals(null , actualMessage);
-    }
-
-    @Test
-    void testNull2() {
-
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            contactingControl.checkUrlParameterInvalid(2,integerForNull,2);
-        });
-        assertEquals(null , exception.getMessage());
-    }
-    @Test
-    void testNull3() {
-
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            contactingControl.checkUrlParameterInvalid(2,integerForNull,integerForNull);
-        });
-        assertEquals(null , exception.getMessage());
-    }
-
-    @Test
-    void testNull4() {
-
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            contactingControl.checkUrlParameterInvalid(integerForNull,2,2);
-        });
-        assertEquals(null , exception.getMessage());
-    }
-
-    @Test
-    void testNull5() {
-
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            contactingControl.checkUrlParameterInvalid(integerForNull,2,integerForNull);
-        });
-        assertEquals(null , exception.getMessage());
-    }
-
-    @Test
-    void testNull6() {
-
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            contactingControl.checkUrlParameterInvalid(integerForNull,integerForNull,integerForNull);
-        });
-        assertEquals(null , exception.getMessage());
-    }
 }

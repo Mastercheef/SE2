@@ -74,9 +74,8 @@ public class ContactingControl {
         return (receiver != null && user.getId()  > 0 && !(receiver.getType() == "st" && user.getType() == "st"));
     }
 
-    public boolean checkUrlParameterInvalid(int userId, int companyId, int jobId) {
-        return (userId < 1 && companyId < 1 && jobId < 1 || userId < 1 && companyId > 0 && jobId > 0 ||
-                userId < 1 && companyId > 0 && jobId < 1 || userId < 1 && companyId < 1 && jobId > 0 ||
-                userId > 0 && companyId > 0 && jobId < 1 || userId > 0 && companyId < 1 && jobId > 0);
+    public boolean checkUrlParameterValid(int userId, int companyId, int jobId) {
+        return userId > 0 && companyId > 0 && jobId > 0 || userId > 0 && companyId < 1 && jobId < 1;
     }
+
 }

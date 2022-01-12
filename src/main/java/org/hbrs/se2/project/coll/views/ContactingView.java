@@ -52,11 +52,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
             event.getRouteParameters().get("jobId").ifPresent((value -> jobId = Integer.parseInt(value)));
             event.getRouteParameters().get("userId").ifPresent((value -> receiverId = Integer.parseInt(value)));
 
-            if(contactingControl.checkUrlParameterInvalid(receiverId, companyId, jobId)) {
-                Utils.triggerDialogMessage("Fehler", "Die übergebenen Parameter sind ungültig");
-                UtilNavigation.navigateToMain();
-                event.rerouteTo(Globals.Pages.MAIN_VIEW);
-            } else {
+            if(contactingControl.checkUrlParameterValid(receiverId, companyId, jobId)) {
                 if (UtilCurrent.getCurrentUser() != null) {
                     if (!contactingControl.checkIfUserIsAllowedToSendMessage(UtilCurrent.getCurrentUser(), receiverId)) {
                         Utils.triggerDialogMessage("Zugriff Verweigert", "Sie können keine Nachricht an andere Studenten schicken");
@@ -68,6 +64,10 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
 
                     initContacting();
                 }
+            } else {
+                Utils.triggerDialogMessage("Fehler", "Die übergebenen Parameter sind ungültig");
+                UtilNavigation.navigateToMain();
+                event.rerouteTo(Globals.Pages.MAIN_VIEW);
             }
         } catch (Exception exception) {
             LOGGER.info("Exception" + exception);
