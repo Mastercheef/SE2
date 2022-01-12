@@ -60,6 +60,6 @@ class ContactingControlTest {
     void getContactPerson() {
         when(contactPersonRepository.findContactPersonByCompanyId(100)).thenReturn(contactPerson);
         when(contactPersonRepository.findContactPersonByCompanyId(100).getId()).thenReturn(200);
-        assertEquals(200 , contactingControl.getContactPerson(100));
+        assertEquals(200 , contactingControl.getContactPersonId(100));
     }
 }

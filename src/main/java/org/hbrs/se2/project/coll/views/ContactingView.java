@@ -40,6 +40,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
     private String jobId = null;
     private int userId;
     private UserDTO receiverUser;
+    private int receiver;
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
@@ -61,8 +62,13 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                         event.rerouteTo(Globals.Pages.MAIN_VIEW);
                     }
 
-                    if (companyId == null && jobId == null)
+                    if (companyId != null && jobId != null)
+                        this.receiver = contactingControl.getContactPersonId(Integer.parseInt(companyId));
+                    else {
+                        this.receiver = userId;
                         receiverUser = userRepository.findUserById(userId);
+                    }
+
 
                     initContacting();
                 }
@@ -115,13 +121,6 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
         textArea.setErrorMessage("Bitte geben Sie eine Nachricht ein.");
         textArea.setMinLength(1);
 
-        int receiver;
-        if (companyId != null && jobId != null)
-            receiver = contactingControl.getContactPerson(Integer.parseInt(companyId));
-        else {
-            receiver = userId;
-        }
-
         // Create buttons to send message and cancel progress
         Button saveButton   = new Button("Senden");
         Button cancelButton = new Button("Abbrechen");
@@ -132,7 +131,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                     contactingControl.sendMessage(
                             textArea.getValue(),
                             UtilCurrent.getCurrentUser().getId(),
-                            receiver,
+                            this.receiver,
                             subjectField.getValue(),
                             LocalDate.now()
                     );
