@@ -144,7 +144,7 @@ class ContactingControlTest {
     void testCheckUrlParameterInvalid() {
         //Block1
         assertTrue(contactingControl.checkUrlParameterInvalid(0,0,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(10,10,10));
+        assertFalse(contactingControl.checkUrlParameterInvalid(10,10,10));
 
         //Block2
         assertTrue(contactingControl.checkUrlParameterInvalid(0,10,10));
