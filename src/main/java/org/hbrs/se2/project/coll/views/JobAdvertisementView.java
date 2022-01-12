@@ -87,15 +87,17 @@ public class JobAdvertisementView extends VerticalLayout implements HasUrlParame
         lCompanyName        = new Label(jobAdvertisementControl.getCompanyName(job));
         lTypeofEmployment   = new Label(job.getTypeOfEmployment());
         lWorkingHours       = new Label(Short.toString(job.getWorkingHours()));
-        lStartOfWork        = new Label(job.getStartOfWork().toString());
-        lEndOfWork          = new Label(job.getEndOfWork().toString());
-        lJobDescription     = new Label(job.getJobDescription());
-        lRequirements       = new Label(job.getRequirements());
         lAddress            = new Label(jobAdvertisementControl.getCompanyAddress(job).toString());
         lPhoneNumber        = new Label(jobAdvertisementControl.getCompanyPhoneNumber(job));
         lContactPerson      = new Label(jobAdvertisementControl.getContactPersonName(job));
         lEmailAddress       = new Label(jobAdvertisementControl.getContactPersonEmail(job));
         lSalary             = new Label(Integer.toString(job.getSalary()));
+
+        // Possible Null Fields
+        lStartOfWork        = new Label(job.getStartOfWork() != null ? job.getStartOfWork().toString() : "");
+        lEndOfWork          = new Label(job.getEndOfWork() != null ? job.getEndOfWork().toString() : "");
+        lRequirements       = new Label(job.getRequirements() != null ? job.getRequirements() : "");
+        lJobDescription     = new Label(job.getJobDescription() != null ? job.getJobDescription() : "");
 
         if(job.getTemporaryEmployment())
             lTemporaryEmployment = new Label("Ja");
