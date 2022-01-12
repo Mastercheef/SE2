@@ -42,7 +42,6 @@ class JobApplicationControlTest {
     ContactPerson contactPerson = Mockito.mock(ContactPerson.class);
     Company company = Mockito.mock(Company.class);
     JobApplicationDTO jobApplicationDTO = Mockito.mock(JobApplicationDTO.class);
-    JobApplicationResultDTO jobApplicationResultDTO = Mockito.mock(JobApplicationResultDTO.class);
 
     List<JobApplicationDTO> applications = new ArrayList<>();
     List<JobApplicationDTO> resultListDateRange = new ArrayList<>();
@@ -219,46 +218,46 @@ class JobApplicationControlTest {
     @Test
     void testFilterApplicationsByHeadline() {
         List<JobApplicationDTO> filtered = jobApplicationControl.filterApplicationsByHeadline(null, "Gibts nicht");
-        assertTrue(filtered.size() == 0);
+        assertEquals(0 , filtered.size());
 
         List<JobApplicationDTO> empty = new ArrayList<>();
         filtered = jobApplicationControl.filterApplicationsByHeadline(empty, "Headline");
-        assertTrue(filtered.size() == 0);
+        assertEquals(0 , filtered.size());
 
         filtered = jobApplicationControl.filterApplicationsByHeadline(applications, "Job1");
-        assertTrue(filtered.size() == 1);
+        assertEquals(1 , filtered.size());
         assertEquals(resultListHeadline, filtered);
     }
 
     @Test
     void testFilterApplicationsByUsername() {
         List<JobApplicationDTO> filtered = jobApplicationControl.filterApplicationsByUsername(null, "Gibts nicht");
-        assertTrue(filtered.size() == 0);
+        assertEquals(0 , filtered.size());
 
         List<JobApplicationDTO> empty = new ArrayList<>();
         filtered = jobApplicationControl.filterApplicationsByUsername(empty, "Name");
-        assertTrue(filtered.size() == 0);
+        assertEquals(0 , filtered.size());
 
         filtered = jobApplicationControl.filterApplicationsByUsername(applications, match);
-        assertTrue(filtered.size() == 2);
+        assertEquals(2 , filtered.size());
         assertEquals(resultListUsername, filtered);
     }
 
     @Test
     void testFilterApplicationsByDateRange() {
         List<JobApplicationDTO> filtered = jobApplicationControl.filterApplicationsByDateRange(null, Globals.DateRanges.DAY);
-        assertTrue(filtered.size() == 0);
+        assertEquals(0 , filtered.size());
 
         List<JobApplicationDTO> empty = new ArrayList<>();
         filtered = jobApplicationControl.filterApplicationsByDateRange(empty, Globals.DateRanges.DAY);
-        assertTrue(filtered.size() == 0);
+        assertEquals(0 , filtered.size());
 
         filtered = jobApplicationControl.filterApplicationsByDateRange(applications, Globals.DateRanges.DAY);
-        assertTrue(filtered.size() == 2);
+        assertEquals(2 , filtered.size());
         assertEquals(resultListDateRange, filtered);
 
         filtered = jobApplicationControl.filterApplicationsByDateRange(applications, Globals.DateRanges.ALL);
-        assertTrue(filtered.size() == 3);
+        assertEquals(3 , filtered.size());
         assertEquals(applications, filtered);
     }
 

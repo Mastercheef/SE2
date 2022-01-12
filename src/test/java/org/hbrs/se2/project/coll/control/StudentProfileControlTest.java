@@ -2,6 +2,7 @@ package org.hbrs.se2.project.coll.control;
 
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.impl.StudentUserDTOImpl;
+import org.hbrs.se2.project.coll.entities.StudentUser;
 import org.hbrs.se2.project.coll.repository.StudentUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,8 @@ class StudentProfileControlTest {
     @Mock
     StudentUserControl studentUserControl;
 
+    @Mock
+    StudentUser studentUser;
 
     StudentUserDTOImpl studentUserDTO;
     StudentUserDTOImpl studentUserDTOUpdated;
@@ -51,7 +54,7 @@ class StudentProfileControlTest {
     @Test
     void updateStudentProfile() throws DatabaseUserException {
         MockitoAnnotations.openMocks(this);
-        doReturn(studentUserDTOUpdated).when(studentUserControl).updateStudentUser(studentUserDTO);
-        assertEquals(studentUserDTOUpdated , studentProfileControl.updateStudentProfile(studentUserDTO));
+        doReturn(studentUser).when(studentUserControl).updateStudentUser(studentUserDTO);
+        assertEquals(studentUser , studentProfileControl.updateStudentProfile(studentUserDTO));
     }
 }

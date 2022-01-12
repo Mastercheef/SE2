@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -92,6 +93,12 @@ class ContactingControlTest {
         when(userRepository.findUserById(100)).thenReturn(null);
         when(reciever.getType()).thenReturn("cp");
         assertFalse(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO ,100));
+
+    }
+
+    @Test
+    void sendMessage() {
+        Mockito.spy(contactingControl);
 
     }
 }

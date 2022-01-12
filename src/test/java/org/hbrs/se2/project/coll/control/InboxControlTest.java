@@ -45,22 +45,14 @@ class InboxControlTest {
     private UserRepository userRepository;
 
     @Mock
-    private JobAdvertisementRepository jobAdvertisementRepository;
-
-    @Mock
     private ContactPersonRepository contactPersonRepository;
 
     MessageDTO messageDTO = Mockito.mock(MessageDTO.class);
     Message sentMessage = Mockito.mock(Message.class);
-
     MessageDTO messageDTOMethod;
-    Message resultMessage;
-
     UserDTO userDTO = Mockito.mock(UserDTO.class);
-
     ContactPerson contactPerson = Mockito.mock(ContactPerson.class);
     Company company = Mockito.mock(Company.class);
-
 
     private String message = "message";
     private String subject = "Subject";

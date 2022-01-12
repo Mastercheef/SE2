@@ -51,7 +51,6 @@ class RegistrationControlTest {
     @Mock
     CompanyDTO companyDTO;
 
-    UserDTOImpl user;
 
     @Test
     void checkIfEmailAlreadyInUse() {
