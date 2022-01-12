@@ -18,6 +18,7 @@ import org.hbrs.se2.project.coll.entities.Address;
 import org.hbrs.se2.project.coll.layout.AppView;
 import org.hbrs.se2.project.coll.util.Globals;
 import org.hbrs.se2.project.coll.util.UtilCurrent;
+import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
@@ -39,7 +40,7 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
     Label lastname      = new Label("Nachname:");
     Label occupation    = new Label("Abschluss:");
     Label birthdate     = new Label("Geburtsdatum:");
-    Label address = new Label("Anschrift:");
+    Label address       = new Label("Anschrift:");
     Label skills        = new Label("Skills:");
     Label email         = new Label("E-Mail:");
     Label number        = new Label("Telefon:");
@@ -83,7 +84,7 @@ public class StudentProfileView extends VerticalLayout implements HasUrlParamete
         lfirstname      = new Label(profileDTO.getFirstName());
         llastname       = new Label(profileDTO.getLastName());
         loccupation     = new Label(profileDTO.getGraduation() == null ? "" : profileDTO.getGraduation());
-        lbirthdate      = new Label(profileDTO.getDateOfBirth().toString());
+        lbirthdate      = new Label(Utils.convertToGermanDateFormat(profileDTO.getDateOfBirth()));
         lstreet         = new Label();
         lstreet.getElement().setProperty("innerHTML", addr.toString().replaceAll("\n", "<br>"));
         lskills         = new Label(profileDTO.getSkills() == null ? "" : profileDTO.getSkills());

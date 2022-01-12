@@ -277,7 +277,7 @@ public class JobAdvertisementGrid extends Div {
 
         // Mini-description
         Span jobDescription     = new Span(jobAdvertisement.getJobDescription());
-        Span startOfWork        = new Span(jobAdvertisement.getStartOfWork().toString());
+        Span startOfWork        = new Span(Utils.convertToGermanDateFormat(jobAdvertisement.getStartOfWork()));
         Span workingHours       = new Span(Short.toString(jobAdvertisement.getWorkingHours()));
         Span salary             = new Span(jobAdvertisement.getSalary() + " €");
         Span requirements       = new Span(jobAdvertisement.getRequirements());
