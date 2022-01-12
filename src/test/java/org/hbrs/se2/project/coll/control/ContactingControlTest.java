@@ -35,16 +35,27 @@ class ContactingControlTest {
     private ContactPersonRepository contactPersonRepository;
 
     @Mock
+    CompanyDTO companyDTO;
+
+    @Mock
+    private MessageRepository messageRepository;
+
+
+    @Mock
+    private ContactPerson contactPerson;
+
+    @Mock
     private UserRepository userRepository;
 
     @Mock
+    UserDTO userDTO;
+
+    @Mock
+    UserDTO reciever;
+
+    @Mock
     JobAdvertisement jobAdvertisement;
-    @Mock
-    private MessageRepository messageRepository;
-    @Mock
-    private ContactPerson contactPerson;
-    @Mock
-    CompanyDTO companyDTO;
+
 
     private String jobtitle = "Datenbankexperte";
     private String companName = "Mustermann GMBH";
@@ -167,6 +178,44 @@ class ContactingControlTest {
 
         assertTrue(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO, 100));
     }
+
+
+    @Test
+    void checkIfUserIsAllowedToSendM() {
+
+        //Everything true
+        when(userRepository.findUserById(100)).thenReturn(reciever);
+        when(userDTO.getId()).thenReturn(100);
+        when(reciever.getType()).thenReturn("st");
+        when(userDTO.getType()).thenReturn("cp");
+        assertTrue(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO ,100));
+
+        when(userRepository.findUserById(100)).thenReturn(null);
+        assertFalse(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO ,100));
+
+        when(userRepository.findUserById(100)).thenReturn(reciever);
+        when(userDTO.getId()).thenReturn(0);
+        assertFalse(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO ,100));
+
+        when(userDTO.getId()).thenReturn(100);
+        when(reciever.getType()).thenReturn("st");
+        when(userDTO.getType()).thenReturn("st");
+        assertFalse(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO ,100));
+
+        when(userDTO.getType()).thenReturn("st");
+        when(reciever.getType()).thenReturn("st");
+        assertFalse(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO ,100));
+
+
+        when(reciever.getType()).thenReturn("cp");
+        when(userDTO.getType()).thenReturn("st");
+        assertTrue(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO ,100));
+
+        when(reciever.getType()).thenReturn("st");
+        when(userDTO.getType()).thenReturn("cp");
+        assertTrue(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO ,100));
+    }
+
 
     @Test
     void testCheckUrlParameterInvalid() {
