@@ -9,7 +9,6 @@ import org.hbrs.se2.project.coll.entities.Company;
 import org.hbrs.se2.project.coll.entities.ContactPerson;
 import org.hbrs.se2.project.coll.entities.Message;
 import org.hbrs.se2.project.coll.repository.ContactPersonRepository;
-import org.hbrs.se2.project.coll.repository.JobAdvertisementRepository;
 import org.hbrs.se2.project.coll.repository.MessageRepository;
 import org.hbrs.se2.project.coll.repository.UserRepository;
 import org.hbrs.se2.project.coll.util.Globals;
