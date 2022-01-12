@@ -442,6 +442,8 @@ public class RegistrationView extends Div {
                     companyEmail.setErrorMessage("Bitte geben Sie eine gültige Email-Adresse ein");
                     companyEmail.setInvalid(true);
                     break;
+                default:
+                    break;
             }
         }
     }
