@@ -204,4 +204,15 @@ class ContactingControlTest {
         assertTrue(contactingControl.checkUrlParameterInvalid(-1,-1,0));
         assertTrue(contactingControl.checkUrlParameterInvalid(-1,-1,-1));
     }
+
+    @Test
+    void testCheckUrlParameterInvalidOneAndTwo() {
+        assertFalse(contactingControl.checkUrlParameterInvalid(2,2,2));
+        assertFalse(contactingControl.checkUrlParameterInvalid(2,2,1));
+        assertFalse(contactingControl.checkUrlParameterInvalid(2,1,2));
+        assertFalse(contactingControl.checkUrlParameterInvalid(2,1,1));
+        assertFalse(contactingControl.checkUrlParameterInvalid(1,2,2));
+        assertFalse(contactingControl.checkUrlParameterInvalid(1,2,1));
+        assertFalse(contactingControl.checkUrlParameterInvalid(1,1,2));
+    }
 }
