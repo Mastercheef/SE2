@@ -64,6 +64,7 @@ class ContactingControlTest {
     private int recipient = 20;
     private String subject = "subject";
     private LocalDate date = LocalDate.now();
+    Integer integerForNull = null;
 
     @Test
     void getJobTitle() {
@@ -228,15 +229,58 @@ class ContactingControlTest {
     }
 
     @Test
-    void test() {
-        Integer integerForNull = null;
+    void testNull() {
+
         Exception exception = assertThrows(NullPointerException.class, () -> {
             contactingControl.checkUrlParameterInvalid(2,2,integerForNull);
         });
 
-        String expectedMessage = "For input string";
         String actualMessage = exception.getMessage();
 
         assertEquals(null , actualMessage);
+    }
+
+    @Test
+    void testNull2() {
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            contactingControl.checkUrlParameterInvalid(2,integerForNull,2);
+        });
+        assertEquals(null , exception.getMessage());
+    }
+    @Test
+    void testNull3() {
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            contactingControl.checkUrlParameterInvalid(2,integerForNull,integerForNull);
+        });
+        assertEquals(null , exception.getMessage());
+    }
+
+    @Test
+    void testNull4() {
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            contactingControl.checkUrlParameterInvalid(integerForNull,2,2);
+        });
+        assertEquals(null , exception.getMessage());
+    }
+
+    @Test
+    void testNull5() {
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            contactingControl.checkUrlParameterInvalid(integerForNull,2,integerForNull);
+        });
+        assertEquals(null , exception.getMessage());
+    }
+
+    @Test
+    void testNull6() {
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            contactingControl.checkUrlParameterInvalid(integerForNull,integerForNull,integerForNull);
+        });
+        assertEquals(null , exception.getMessage());
     }
 }
