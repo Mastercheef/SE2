@@ -38,7 +38,7 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     InboxControl inboxControl;
 
     // Grid may NOT be final.
-    private static Grid<MessageDTO> grid;
+    private static volatile Grid<MessageDTO> grid;
     private static List<MessageDTO> messages  = new ArrayList<>();
     private static Div hint;
     private static SplitLayout splitLayout = new SplitLayout();
@@ -58,7 +58,6 @@ public class InboxView extends Div implements HasUrlParameter<String> {
     }
 
     private void setupGrid() {
-
         grid = new Grid<>(MessageDTO.class, false);
         grid.setAllRowsVisible(true);
 
