@@ -320,7 +320,7 @@ public class JobAdvertisementGrid extends Div {
         }
         if (this.contact) {
             messageBtn.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.CONTACTING_VIEW +
-                    compId + "/" + jobAdvertisement.getId(), "_blank"));
+                    jobAdvertisement.getContactPerson().getId() + "/" + compId + "/" + jobAdvertisement.getId(), "_blank"));
         }
         if (this.apply) {
             applyBtn.addClickListener(e -> UI.getCurrent().getPage().open(Globals.Pages.JOBADVERTISEMENT_VIEW +

@@ -9,6 +9,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
+import org.hbrs.se2.project.coll.control.AuthorizationControl;
 import org.hbrs.se2.project.coll.control.ContactingControl;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
@@ -24,7 +25,7 @@ import java.time.LocalDate;
 import java.util.logging.Logger;
 
 
-@Route(value = "contacting/:companyId/:jobId", layout = AppView.class)
+@Route(value = "contacting/:userId/:companyId/:jobId", layout = AppView.class)
 @RouteAlias(value = "contacting/:userId", layout = AppView.class)
 @PageTitle("Kontaktaufnahme")
 public class ContactingView extends VerticalLayout implements BeforeEnterObserver {
@@ -35,40 +36,35 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
     ContactingControl contactingControl;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    private AuthorizationControl authorizationControl;
 
-    private String companyId = null;
-    private String jobId = null;
-    private int userId;
+    private int companyId = 0;
+    private int jobId = 0;
+    private int receiverId = 0;
     private UserDTO receiverUser;
-    private int receiver;
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
 
         try {
-            event.getRouteParameters().get("companyId").ifPresent((value -> companyId = value));
-            event.getRouteParameters().get("jobId").ifPresent((value -> jobId = value));
-            event.getRouteParameters().get("userId").ifPresent((value -> userId = Integer.parseInt(value)));
+            event.getRouteParameters().get("companyId").ifPresent((value -> companyId = Integer.parseInt(value)));
+            event.getRouteParameters().get("jobId").ifPresent((value -> jobId = Integer.parseInt(value)));
+            event.getRouteParameters().get("userId").ifPresent((value -> receiverId = Integer.parseInt(value)));
 
-            if(beforeEnterBoolean()) {
+            if(contactingControl.checkUrlParameterInvalid(receiverId, companyId, jobId)) {
                 Utils.triggerDialogMessage("Fehler", "Die übergebenen Parameter sind ungültig");
                 UtilNavigation.navigateToMain();
                 event.rerouteTo(Globals.Pages.MAIN_VIEW);
             } else {
                 if (UtilCurrent.getCurrentUser() != null) {
-                    if (contactingControl.checkIfUserIsAllowedToSendMessage(UtilCurrent.getCurrentUser(), userId)) {
+                    if (!contactingControl.checkIfUserIsAllowedToSendMessage(UtilCurrent.getCurrentUser(), receiverId)) {
                         Utils.triggerDialogMessage("Zugriff Verweigert", "Sie können keine Nachricht an andere Studenten schicken");
                         UtilNavigation.navigateToMain();
                         event.rerouteTo(Globals.Pages.MAIN_VIEW);
                     }
 
-                    if (companyId != null && jobId != null)
-                        this.receiver = contactingControl.getContactPersonId(Integer.parseInt(companyId));
-                    else {
-                        this.receiver = userId;
-                        receiverUser = userRepository.findUserById(userId);
-                    }
-
+                    receiverUser = userRepository.findUserById(receiverId);
 
                     initContacting();
                 }
@@ -81,12 +77,6 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
         }
     }
 
-
-    private boolean beforeEnterBoolean() {
-        return (companyId == null && jobId == null && userId < 1 || companyId != null && jobId == null && userId < 1 ||
-                companyId == null && jobId != null && userId < 1);
-    }
-
     public void initContacting() {
         setSizeFull();
         TextField subjectField = new TextField();
@@ -94,15 +84,15 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
         // Title
         H2 title;
         H4 subtitle;
-        if (checkIfContactingUser()) {
-            title = new H2("Nachricht an " + receiverUser.getFirstName() + " " + receiverUser.getLastName());
-            subtitle = new H4();
-        } else {
-            String jobTitle = contactingControl.getJobTitle(Integer.parseInt(jobId));
-            String companyName = contactingControl.getCompanyName(Integer.parseInt(companyId));
+        if (authorizationControl.isUserCompanyContactPerson(receiverUser, companyId)) {
+            String jobTitle = contactingControl.getJobTitle(jobId);
+            String companyName = contactingControl.getCompanyName(companyId);
             title = new H2("Kontaktaufnahme bezüglich \"" + jobTitle + "\"");
             subtitle = new H4("bei \"" + companyName + "\"");
             subjectField.setValue("Frage bzgl. " + jobTitle);
+        } else {
+            title = new H2("Nachricht an " + receiverUser.getFirstName() + " " + receiverUser.getLastName());
+            subtitle = new H4();
         }
         subtitle.getElement().getStyle().set("margin-top", "-12px");
 
@@ -131,17 +121,17 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                     contactingControl.sendMessage(
                             textArea.getValue(),
                             UtilCurrent.getCurrentUser().getId(),
-                            this.receiver,
+                            this.receiverUser.getId(),
                             subjectField.getValue(),
                             LocalDate.now()
                     );
                     Dialog dialog = new Dialog();
                     dialog.add("Ihre Nachricht wurde gesendet!");
                     dialog.open();
-                    if (checkIfContactingUser())
-                        UtilNavigation.navigateToMain();
+                    if (authorizationControl.isUserCompanyContactPerson(receiverUser, companyId))
+                        UtilNavigation.navigateToCompanyProfile(companyId);
                     else
-                        UtilNavigation.navigateToCompanyProfile(Integer.parseInt(companyId));
+                        UtilNavigation.navigateToMain();
                 } catch (DatabaseUserException ex) {
                     ex.printStackTrace();
                     Dialog dialog = new Dialog();
@@ -153,16 +143,12 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
                 textArea.setInvalid(true);
 
         });
-        cancelButton.addClickListener(e -> UtilNavigation.navigateToCompanyProfile(Integer.parseInt(companyId)));
+        cancelButton.addClickListener(e -> UtilNavigation.navigateToCompanyProfile(companyId));
 
         HorizontalLayout hbuttons = new HorizontalLayout(saveButton, cancelButton);
 
         add(title, subtitle, subjectField, textArea, hbuttons);
 
-    }
-
-    public boolean checkIfContactingUser() {
-        return userId > 0;
     }
 
     ContactingView() {
