@@ -1,6 +1,5 @@
 package org.hbrs.se2.project.coll.control;
 
-import org.hbrs.se2.project.coll.control.builder.UserDTOBuilder;
 import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.UserDTO;
@@ -231,9 +230,9 @@ class ContactingControlTest {
     @Test
     void testNull() {
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            contactingControl.checkUrlParameterInvalid(2,2,integerForNull);
-        });
+        Exception exception = assertThrows(NullPointerException.class, () ->
+            contactingControl.checkUrlParameterInvalid(2,2,integerForNull)
+        );
 
         String actualMessage = exception.getMessage();
 
@@ -243,44 +242,44 @@ class ContactingControlTest {
     @Test
     void testNull2() {
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            contactingControl.checkUrlParameterInvalid(2,integerForNull,2);
-        });
+        Exception exception = assertThrows(NullPointerException.class, () ->
+            contactingControl.checkUrlParameterInvalid(2,integerForNull,2));
+
         assertEquals(null , exception.getMessage());
     }
     @Test
     void testNull3() {
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            contactingControl.checkUrlParameterInvalid(2,integerForNull,integerForNull);
-        });
+        Exception exception = assertThrows(NullPointerException.class, () ->
+            contactingControl.checkUrlParameterInvalid(2,integerForNull,integerForNull)
+        );
         assertEquals(null , exception.getMessage());
     }
 
     @Test
     void testNull4() {
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            contactingControl.checkUrlParameterInvalid(integerForNull,2,2);
-        });
+        Exception exception = assertThrows(NullPointerException.class, () ->
+            contactingControl.checkUrlParameterInvalid(integerForNull,2,2)
+        );
         assertEquals(null , exception.getMessage());
     }
 
     @Test
     void testNull5() {
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            contactingControl.checkUrlParameterInvalid(integerForNull,2,integerForNull);
-        });
+        Exception exception = assertThrows(NullPointerException.class, () ->
+            contactingControl.checkUrlParameterInvalid(integerForNull,2,integerForNull)
+        );
         assertEquals(null , exception.getMessage());
     }
 
     @Test
     void testNull6() {
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            contactingControl.checkUrlParameterInvalid(integerForNull,integerForNull,integerForNull);
-        });
+        Exception exception = assertThrows(NullPointerException.class, () ->
+            contactingControl.checkUrlParameterInvalid(integerForNull,integerForNull,integerForNull)
+        );
         assertEquals(null , exception.getMessage());
     }
 }
