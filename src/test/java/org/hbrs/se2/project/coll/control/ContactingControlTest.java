@@ -226,4 +226,17 @@ class ContactingControlTest {
         assertTrue(contactingControl.checkUrlParameterInvalid(-1,2,-1));
         assertTrue(contactingControl.checkUrlParameterInvalid(-1,-1,2));
     }
+
+    @Test
+    void test() {
+        Integer integerForNull = null;
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            contactingControl.checkUrlParameterInvalid(2,2,integerForNull);
+        });
+
+        String expectedMessage = "For input string";
+        String actualMessage = exception.getMessage();
+
+        assertEquals(null , actualMessage);
+    }
 }
