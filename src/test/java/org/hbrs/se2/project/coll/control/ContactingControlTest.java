@@ -104,83 +104,6 @@ class ContactingControlTest {
     }
 
     @Test
-    void testCheckIfUserIsAllowedToSendMessageCpToCp() {
-        UserDTO userDTO = UserDTOBuilder
-                .please()
-                .createEmptyUser()
-                .withId(10)
-                .withType("cp")
-                .done();
-        UserDTO userReceiver = UserDTOBuilder
-                .please()
-                .createEmptyUser()
-                .withId(100)
-                .withType("cp")
-                .done();
-        when(userRepository.findUserById(100)).thenReturn(userReceiver);
-
-        assertTrue(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO, 100));
-    }
-
-    @Test
-    void testCheckIfUserIsAllowedToSendMessageCpToSt() {
-        UserDTO userDTO = UserDTOBuilder
-                .please()
-                .createEmptyUser()
-                .withId(10)
-                .withType("cp")
-                .done();
-        UserDTO userReceiver = UserDTOBuilder
-                .please()
-                .createEmptyUser()
-                .withId(100)
-                .withType("st")
-                .done();
-        when(userRepository.findUserById(100)).thenReturn(userReceiver);
-
-        assertTrue(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO, 100));
-    }
-
-    @Test
-    void testCheckIfUserIsAllowedToSendMessageStToSt() {
-        UserDTO userDTO = UserDTOBuilder
-                .please()
-                .createEmptyUser()
-                .withId(10)
-                .withType("st")
-                .done();
-        UserDTO userReceiver = UserDTOBuilder
-                .please()
-                .createEmptyUser()
-                .withId(100)
-                .withType("st")
-                .done();
-        when(userRepository.findUserById(100)).thenReturn(userReceiver);
-
-        assertFalse(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO, 100));
-    }
-
-    @Test
-    void testCheckIfUserIsAllowedToSendMessageStToCp() {
-        UserDTO userDTO = UserDTOBuilder
-                .please()
-                .createEmptyUser()
-                .withId(10)
-                .withType("st")
-                .done();
-        UserDTO userReceiver = UserDTOBuilder
-                .please()
-                .createEmptyUser()
-                .withId(100)
-                .withType("cp")
-                .done();
-        when(userRepository.findUserById(100)).thenReturn(userReceiver);
-
-        assertTrue(contactingControl.checkIfUserIsAllowedToSendMessage(userDTO, 100));
-    }
-
-
-    @Test
     void checkIfUserIsAllowedToSendM() {
 
         //Everything true
@@ -219,14 +142,24 @@ class ContactingControlTest {
 
     @Test
     void testCheckUrlParameterInvalid() {
+        //Block1
         assertTrue(contactingControl.checkUrlParameterInvalid(0,0,0));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,10));
-        assertTrue(contactingControl.checkUrlParameterInvalid(0,10,0));
-        assertFalse(contactingControl.checkUrlParameterInvalid(10,0,0));
-        assertFalse(contactingControl.checkUrlParameterInvalid(10,10,10));
-        assertTrue(contactingControl.checkUrlParameterInvalid(10,0,10));
+        assertTrue(contactingControl.checkUrlParameterInvalid(10,10,10));
+
+        //Block2
         assertTrue(contactingControl.checkUrlParameterInvalid(0,10,10));
+        assertFalse(contactingControl.checkUrlParameterInvalid(10,0,0));
+
+        //Block3
+        assertTrue(contactingControl.checkUrlParameterInvalid(0,10,0));
+        assertTrue(contactingControl.checkUrlParameterInvalid(10,0,10));
+
+        //Block4
+        assertTrue(contactingControl.checkUrlParameterInvalid(0,0,10));
         assertTrue(contactingControl.checkUrlParameterInvalid(10,10,0));
-        assertFalse(contactingControl.checkUrlParameterInvalid(20000002,40000000,30000000));
+
+        //Block6
+        assertTrue(contactingControl.checkUrlParameterInvalid(10,0,10));
+        assertTrue(contactingControl.checkUrlParameterInvalid(0,10,0));
     }
 }
