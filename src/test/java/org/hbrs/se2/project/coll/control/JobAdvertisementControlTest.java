@@ -1,5 +1,6 @@
 package org.hbrs.se2.project.coll.control;
 
+import org.hbrs.se2.project.coll.control.exceptions.DatabaseUserException;
 import org.hbrs.se2.project.coll.control.factories.JobFactory;
 import org.hbrs.se2.project.coll.dtos.CompanyDTO;
 import org.hbrs.se2.project.coll.dtos.JobAdvertisementDTO;
@@ -17,6 +18,7 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
@@ -69,6 +71,41 @@ class JobAdvertisementControlTest {
     private LocalDate date = null;
     private short hours = 0;
     private int salary = 0;
+
+    @Test
+    void testSaveAdvertisement() throws DatabaseUserException {
+        jobAdvertisementControl.saveAdvertisement(jobAdvertisementDTO);
+    }
+
+    @Test
+    void testSaveAdvertisementDARFE() {
+        doThrow(DataAccessResourceFailureException.class).when(jobAdvertisementRepository).save(any());
+        assertThrows( DatabaseUserException.class, () -> jobAdvertisementControl.saveAdvertisement(jobAdvertisementDTO));
+    }
+
+    @Test
+    void testSaveAdvertisementException() {
+        doThrow(RuntimeException.class).when(jobAdvertisementRepository).save(any());
+        assertThrows( DatabaseUserException.class, () -> jobAdvertisementControl.saveAdvertisement(jobAdvertisementDTO));
+    }
+
+    @Test
+    void testDeleteAdvertisement() throws DatabaseUserException {
+        jobAdvertisementControl.deleteAdvertisement(jobAdvertisement);
+    }
+
+    @Test
+    void testDeleteAdvertisementDARFE() {
+        doThrow(DataAccessResourceFailureException.class).when(jobAdvertisementRepository).delete(any());
+        assertThrows( DatabaseUserException.class, () -> jobAdvertisementControl.deleteAdvertisement(jobAdvertisement));
+    }
+
+    @Test
+    void testException() {
+
+        doThrow(RuntimeException.class).when(jobAdvertisementRepository).delete(any());
+        assertThrows( DatabaseUserException.class, () -> jobAdvertisementControl.deleteAdvertisement(jobAdvertisement));
+    }
 
     @Test
     void getJob() {
