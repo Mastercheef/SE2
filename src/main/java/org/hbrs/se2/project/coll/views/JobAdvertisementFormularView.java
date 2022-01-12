@@ -37,6 +37,7 @@ import org.hbrs.se2.project.coll.util.UtilNavigation;
 import org.hbrs.se2.project.coll.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,7 +80,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
     Select<String>  lTypeOfEmployment    = new Select<>();
     TextField       lWorkingHours        = new TextField();
     TextArea        lRequirements        = new TextArea();
-    DatePicker      lStartOfWork         = new DatePicker();
+    DatePicker      lStartOfWork         = new DatePicker(LocalDate.now());
     DatePicker      lEndOfWork           = new DatePicker();
     TextArea        lJobDescription      = new TextArea();
     NumberField     lSalary              = new NumberField();
@@ -264,7 +265,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         newJob.setStartOfWork(lStartOfWork.getValue());
         newJob.setEndOfWork(lEndOfWork.getValue());
         newJob.setJobDescription(lJobDescription.getValue());
-        newJob.setSalary((int) Math.round(lSalary.getValue() != null ? lSalary.getValue() : 0));
+        newJob.setSalary((int) Math.round(lSalary.getValue() != null ? lSalary.getValue() : 1));
 
         newJob.setTemporaryEmployment(Objects.equals(lTemporaryEmployment.getValue(), "Ja"));
 
