@@ -40,7 +40,7 @@ public class ContactingView extends VerticalLayout implements BeforeEnterObserve
     private String jobId = null;
     private int userId;
     private UserDTO receiverUser;
-    private int receiver = 0;
+    private int receiver;
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
