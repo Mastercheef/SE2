@@ -319,7 +319,7 @@ public class RegistrationViewTest {
         Assert.assertNotNull(userDTO);
         Assert.assertNotNull(registrationDTO);
         Assert.assertNotNull(registrationResult);
-        //Assert.assertEquals(errorCompanyNameMissing, registrationView.companyName.getErrorMessage());
+        Assert.assertEquals(errorCompanyNameMissing, registrationView.companyName.getErrorMessage());
         Assert.assertEquals(errorCompanyEmailInvalid, registrationView.companyEmail.getErrorMessage());
         Assert.assertEquals(errorCompanyPhoneMissing, registrationView.companyPhone.getErrorMessage());
         Assert.assertEquals(errorCompanyFaxMissing, registrationView.companyFax.getErrorMessage());
