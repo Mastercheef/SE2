@@ -41,7 +41,7 @@ public class SettingsView extends VerticalLayout implements AfterNavigationObser
      */
     private CheckboxGroup<String> initCheckboxGroup(SettingsDTO settingsDTO) {
         CheckboxGroup<String> checkboxGroup = new CheckboxGroup<>();
-        checkboxGroup.setItems("Benachrichtigungen aktivieren", "Option A", "Option B", "Option C", "und so weiter");   // Platzhalter
+        checkboxGroup.setItems("Benachrichtigungen aktivieren");
 
         if(settingsDTO.getNotificationIsEnabled())
             checkboxGroup.select("Benachrichtigungen aktivieren");
