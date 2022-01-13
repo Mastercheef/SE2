@@ -184,15 +184,13 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         Label contactName          = new Label("Name:");
         Label contactPhone         = new Label("Telefon:");
         Label contactEmail         = new Label("E-Mail:");
-        Label contactPosition      = new Label("Abteilung:");
 
         Label lcontactName         = new Label(contactPerson.getFirstName() + " " + contactPerson.getLastName());
         Label lcontactPhone        = new Label(contactPerson.getPhone());
         Label lcontactEmail        = new Label(contactPerson.getEmail());
-        Label lcontactPosition     = new Label(contactPerson.getRole());
 
         // Styling
-        for (Label label : new Label[]{ contactName, contactPhone, contactEmail, contactPosition }) {
+        for (Label label : new Label[]{ contactName, contactPhone, contactEmail }) {
             label.getElement().getStyle().set(FONT, "bold");
             label.setWidth("100px");
         }
@@ -201,10 +199,9 @@ public class CompanyProfileView extends VerticalLayout implements HasUrlParamete
         HorizontalLayout hContactName      = new HorizontalLayout(contactName, lcontactName);
         HorizontalLayout hContactPhone     = new HorizontalLayout(contactPhone, lcontactPhone);
         HorizontalLayout hContactEmail     = new HorizontalLayout(contactEmail, lcontactEmail);
-        HorizontalLayout hContactPosition  = new HorizontalLayout(contactPosition, lcontactPosition);
 
         // Add to div
-        form.add(contactHeadline, hContactName, hContactPhone, hContactEmail, hContactPosition);
+        form.add(contactHeadline, hContactName, hContactPhone, hContactEmail);
         return form;
     }
 

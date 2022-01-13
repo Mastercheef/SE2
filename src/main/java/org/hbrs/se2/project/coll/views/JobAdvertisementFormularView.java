@@ -277,7 +277,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         newJob.setTypeOfEmployment(lTypeOfEmployment.getValue());
         newJob.setWorkingHours(Short.parseShort(lWorkingHours.getValue()));
         newJob.setRequirements(lRequirements.getValue());
-        newJob.setStartOfWork(lStartOfWork.getValue());
+        newJob.setStartOfWork(lStartOfWork.getValue() != null ? lStartOfWork.getValue() : LocalDate.now());
         newJob.setEndOfWork(lEndOfWork.getValue());
         newJob.setJobDescription(lJobDescription.getValue());
         newJob.setSalary((int) Math.round(lSalary.getValue() != null ? lSalary.getValue() : 1));
