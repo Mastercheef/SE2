@@ -275,8 +275,12 @@ public class JobAdvertisementGrid extends Div {
             span.getElement().getStyle().set("font-weight", "bold");
         }
 
+        String jobDescriptionString = "";
+        if (jobAdvertisement.getJobDescription().length() > 147) {
+            jobDescriptionString = jobAdvertisement.getJobDescription().substring(0, 147) + "...";
+        }
         // Mini-description
-        Span jobDescription     = new Span(jobAdvertisement.getJobDescription());
+        Span jobDescription     = new Span(jobDescriptionString);
         Span startOfWork        = new Span(Utils.convertToGermanDateFormat(jobAdvertisement.getStartOfWork()));
         Span workingHours       = new Span(Short.toString(jobAdvertisement.getWorkingHours()));
         Span salary             = new Span(jobAdvertisement.getSalary() + " €");
@@ -295,14 +299,18 @@ public class JobAdvertisementGrid extends Div {
         VerticalLayout cardItem= new VerticalLayout(header, jobDescription, dateAndHours, salaryInfo,
                 requirementsInfo);
         cardItem.setSpacing(false);
+        cardItem.getElement().getStyle().set("overflow", "hidden");
+        cardItem.setAlignSelf(FlexComponent.Alignment.STRETCH);
 
         HorizontalLayout buttons = this.createJobCardButtons(jobAdvertisement);
         buttons.setAlignItems(FlexComponent.Alignment.CENTER);
+        buttons.setWidth("auto");
 
         HorizontalLayout cardLayout = new HorizontalLayout(cardItem, buttons);
         cardLayout.setWidthFull();
 
         card.add(cardLayout);
+        card.setHeight("auto");
         return card;
     }
 

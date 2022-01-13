@@ -228,8 +228,23 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
     public boolean checkForEmptyInput() {
         return checkForEmptyTextField(lJobTitle) ||
                 checkForEmptyTextField(lWorkingHours) ||
-                checkForEmptyTextArea(lJobDescription);
+                checkForEmptyTextArea(lJobDescription) ||
+                checkForZeroSalary(lSalary);
     }
+
+    public boolean checkForZeroSalary(NumberField lSalary) {
+
+        boolean zero = lSalary.getValue() == 0;
+        if(zero) {
+            lSalary.setInvalid(true);
+            Notification notification = new Notification("Lassen sie dieses Feld bitte frei wenn kein Geht gezahlt werden soll.", 3000);
+            notification.open();
+        } else {
+            lSalary.setInvalid(false);
+        }
+        return zero;
+    }
+
     public boolean checkForEmptyTextField(TextField textField) {
         boolean empty = Utils.stringIsEmptyOrNull(textField.getValue());
         if (empty) {
@@ -262,7 +277,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
         newJob.setTypeOfEmployment(lTypeOfEmployment.getValue());
         newJob.setWorkingHours(Short.parseShort(lWorkingHours.getValue()));
         newJob.setRequirements(lRequirements.getValue());
-        newJob.setStartOfWork(lStartOfWork.getValue());
+        newJob.setStartOfWork(lStartOfWork.getValue() != null ? lStartOfWork.getValue() : LocalDate.now());
         newJob.setEndOfWork(lEndOfWork.getValue());
         newJob.setJobDescription(lJobDescription.getValue());
         newJob.setSalary((int) Math.round(lSalary.getValue() != null ? lSalary.getValue() : 1));
