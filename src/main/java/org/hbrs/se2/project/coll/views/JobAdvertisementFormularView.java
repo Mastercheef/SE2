@@ -73,7 +73,7 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
     Label startOfWork           = new Label("Eintrittsdatum");
     Label endOfWork             = new Label("Enddatum");
     Label jobDescription        = new Label("Stellenbeschreibung (*)");
-    Label salary                = new Label("Lohn");
+    Label salary                = new Label("Lohn (*)");
 
     TextField       lJobTitle            = new TextField();
     Select<String>  lTemporaryEmployment = new Select<>();
@@ -234,10 +234,11 @@ public class JobAdvertisementFormularView extends VerticalLayout implements HasU
 
     public boolean checkForZeroSalary(NumberField lSalary) {
 
-        boolean zero = lSalary.getValue() == 0;
+        boolean zero = lSalary.getValue() == 0 ||
+                lSalary.getValue() == null;
         if(zero) {
             lSalary.setInvalid(true);
-            Notification notification = new Notification("Lassen sie dieses Feld bitte frei wenn kein Geht gezahlt werden soll.", 3000);
+            Notification notification = new Notification("Lassen sie dieses Feld bitte frei wenn kein Gehalt gezahlt werden soll.", 3000);
             notification.open();
         } else {
             lSalary.setInvalid(false);
