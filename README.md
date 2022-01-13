@@ -1,6 +1,18 @@
 <h1 align="center">Welcome to Coll@HBRS 👋</h1>
 
-### Inhaltsverzeichnis
+
+###Authors:
+- **Scrum Master** [Hendrik Oude Hengel (houde2s)](malito:hendrik.oude@smail.inf.h-brs.de)
+- **Product Owner Proxy** [Florian Hoelscher (fhoels2s)](malito:florian.hoelscher@smail.inf.h-brs.de)
+- **Datenbank Experte** [Frederick Behringer (fbehri2s)](malito:frederick.behringer@smail.inf.h-brs.de)
+- **Usability Experte** [Lars Michaelis (lmicha2s)](malito:lars.michaelis@smail.inf.h-brs.de)
+- **Qualitäts Manager** [Erik Autenrieth (eauten2s)](malito:erik.autenrieth@smail.inf.h-brs.de)
+- **Senior Programmer** [Pascal Jansen (pjanse2s)](malito:pascal.jansen@smail.inf.h-brs.de)
+- **Software Architekt** [Michael Galußek (mgalus2s)](malito:michael.galusek@smail.inf.h-brs.de)
+- **Test Manager** [Kevin Reinartz (kreina2s)](malito:kevin.reinartz@smail.inf.h-brs.de)
+
+
+### Table of contents
 
 [About](#about)<br>
 [Prerequisites](#prerequisites)<br>
