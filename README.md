@@ -2,25 +2,25 @@
 
 
 ### Authors:
-- **Scrum Master** [Hendrik Oude Hengel ](malito:hendrik.oude@smail.inf.h-brs.de)
-- **Product Owner Proxy** [Florian Hoelscher ](malito:florian.hoelscher@smail.inf.h-brs.de)
-- **Datenbank Experte** [Frederick Behringer ](malito:frederick.behringer@smail.inf.h-brs.de)
-- **Usability Experte** [Lars Michaelis ](malito:lars.michaelis@smail.inf.h-brs.de)
+- **Scrum Master** [Hendrik Oude Hengel ](mailto:hendrik.oude@smail.inf.h-brs.de)
+- **Product Owner Proxy** [Florian Hoelscher ](mailto:florian.hoelscher@smail.inf.h-brs.de)
+- **Datenbank Experte** [Frederick Behringer ](mailto:frederick.behringer@smail.inf.h-brs.de)
+- **Usability Experte** [Lars Michaelis ](mailto:lars.michaelis@smail.inf.h-brs.de)
 - **Qualitäts Manager** [Erik Autenrieth ](mailto:erik.autenrieth@smail.inf.h-brs.de)
-- **Senior Programmer** [Pascal Jansen ](malito:pascal.jansen@smail.inf.h-brs.de)
-- **Software Architekt** [Michael Galußek ](malito:michael.galusek@smail.inf.h-brs.de)
-- **Test Manager** [Kevin Reinartz ](malito:kevin.reinartz@smail.inf.h-brs.de)
+- **Senior Programmer** [Pascal Jansen ](mailto:pascal.jansen@smail.inf.h-brs.de)
+- **Software Architekt** [Michael Galußek ](mailto:michael.galusek@smail.inf.h-brs.de)
+- **Test Manager** [Kevin Reinartz ](mailto:kevin.reinartz@smail.inf.h-brs.de)
 
 
 ### Table of contents
 
-[About](#about)<br>
-[Prerequisites](#prerequisites)<br>
-[Running Tests](#running_tests)<br>
-[Getting Started](#getting_started)<br>
-[Built Using](#built_using)<br>
-[Roadmap](#roadmap)<br>
-[License](#license)<br>
+1. [About](#about)<br>
+2. [Prerequisites](#prerequisites)<br>
+3. [Running Tests](#running_tests)<br>
+4. [Getting Started](#getting_started)<br>
+5. [Built Using](#built_using)<br>
+6. [Roadmap](#roadmap)<br>
+7. [License](#license)<br>
 
 ## About <a name = "about"></a>
 Coll@HBRS is an employment website to connect students and employers
